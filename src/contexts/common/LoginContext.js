@@ -4,39 +4,58 @@
 import React, { createContext, useState, useEffect } from 'react';
 
 /**
- * @AccessToken 
- * @LoginStatus 
- * @DevMode 
- * 
- * can be used by VanilaJS to check respective status 
+ * @AccessToken
+ * @LoginStatus
+ * @DevMode
+ * can be used by VanilaJS to check respective status
+ * @logout : function to logout user
  */
 
 export var AccessToken = localStorage.getItem('accessToken');
-export var LoginStatus = localStorage.getItem('loginStatus');
-export var DevMode = localStorage.getItem('devMode');
+export var LoginStatus = (localStorage.getItem('loginStatus') === true ? true : undefined);
+export var DevMode = (localStorage.getItem('devMode') === true ? true : undefined);
+let logoutFunction;
+export const logout = async (init) => {
+  if (init !== undefined)
+    await init();
+  logoutFunction();
+};
 
 export const LoginContext = createContext();
 export const LoginProvider = props => {
   const { children } = props;
   const [devMode, _setDevMode] = useState((DevMode !== '' ? DevMode : false));
-  const [loginStatus, _setLoginStatus] = useState(LoginStatus);
-  const [accessToken, _setAccessToken] = useState(AccessToken);
-
+  const [loginStatus, _setLoginStatus] = useState(localStorage.getItem('loginStatus') === 'true' ? true : false);
+  const [accessToken, _setAccessToken] = useState(localStorage.getItem('accessToken'));
   /**
-  * Functions 
-  * 
+  * Functions
+  *
   * setLoginStatus()
   * setDevMode()
-  * setAccessToken() 
-  * 
-  * are wrapperfunctions which changes respective values in localStorage, Context and VanilaJS Global Variables 
+  * setAccessToken()
+  *
+  * are wrapperfunctions which changes respective values in localStorage, Context and VanilaJS Global Variables
   */
 
   const setLoginStatus = (data) => {
-    window.localStorage.setItem('loginStatus', data);
-    LoginStatus = data;
-    _setLoginStatus(data);
+    if (data === true) {
+      window.localStorage.setItem('loginStatus', true);
+      LoginStatus = true;
+      _setLoginStatus(true);
+    } else {
+      window.localStorage.setItem('loginStatus', false);
+      LoginStatus = false;
+      _setLoginStatus(false);
+    }
   };
+  const logoutUser = async (init) => {
+    window.localStorage.setItem('loginStatus', false);
+    LoginStatus = false;
+    _setLoginStatus(false);
+  };
+  useEffect(() => {
+    logoutFunction = logoutUser;
+  }, []);
   const setDevMode = (data) => {
     window.localStorage.setItem('devMode', data);
     DevMode = data;
@@ -48,22 +67,30 @@ export const LoginProvider = props => {
     _setAccessToken(data);
   };
   useEffect(() => {
-    if (accessToken) {
-      setLoginStatus(true);
-      setAccessToken(accessToken)
-    }
+    if (accessToken !== undefined)
+      if (accessToken !== null)
+        if (accessToken) {
+          setLoginStatus(true);
+          setAccessToken(accessToken);
+        } else {
+          setLoginStatus(false);
+        }
   }, [accessToken]);
   useEffect(() => {
-    if (!loginStatus)
-      setAccessToken('')
+    if (loginStatus !== undefined)
+      if (loginStatus !== null)
+        if (!loginStatus)
+          setAccessToken('');
   }, [loginStatus]);
   useEffect(() => {
-    if (DevMode !== "true")
-      _setDevMode(false)
+    if (DevMode !== undefined)
+      if (DevMode !== 'true')
+        _setDevMode(false);
   }, []);
   useEffect(() => {
-    if (!accessToken)
-      setLoginStatus(false)
-  }, [devMode, accessToken])
-  return (<LoginContext.Provider value={{ loginStatus, accessToken, devMode, setAccessToken, setLoginStatus, setDevMode }}>{children}</LoginContext.Provider>)
-}
+    if (!accessToken) {
+      setLoginStatus(false);
+    }
+  }, [devMode, accessToken]);
+  return (<LoginContext.Provider value={{ loginStatus, accessToken, devMode, setAccessToken, setLoginStatus, setDevMode }}>{children}</LoginContext.Provider>);
+};

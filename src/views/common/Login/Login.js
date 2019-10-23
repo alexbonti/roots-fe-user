@@ -2,12 +2,12 @@
  *  Created by Sanchit Dang
  ***/
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import { TextField, Paper, makeStyles, Typography, Button, Box, Grid } from '@material-ui/core';
-import { LoginContext } from 'contexts';
+import { LoginContext, ApplicationContext } from 'contexts';
 import { notify } from 'components';
 import { DevModeConfig } from 'configurations';
 import { API } from 'helpers';
+import { Redirect, withRouter } from 'react-router-dom';
 
 
 const useStyles = makeStyles(theme => ({
@@ -43,28 +43,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const Login = () => {
+const Login = () => {
   const classes = useStyles();
   const [pageHeading] = useState('Login');
   const [emailId, setEmailId] = useState('');
   const [password, setPassword] = useState('');
+  const [redirectToChangePasswordView, setRedirectToChangePasswordView] = useState(false);
+  const [loginAccessToken, setLoginAccessToken] = useState('');
   const { devMode, loginStatus, setLoginStatus, setAccessToken } = useContext(LoginContext);
+  const { setFirstLoginStatus } = useContext(ApplicationContext);
+
   const performLogin = () => {
     if (DevModeConfig.bypassBackend) {
       setLoginStatus(true);
       setAccessToken('dummyToken');
     } else {
       let details = {
-        username: (devMode ? (DevModeConfig.devDetails !== undefined ? DevModeConfig.devDetails.user : '') : emailId),
+        emailId: (devMode ? (DevModeConfig.devDetails !== undefined ? DevModeConfig.devDetails.user : '') : emailId),
         password: (devMode ? (DevModeConfig.devDetails !== undefined ? DevModeConfig.devDetails.password : '') : password)
-      }
-      API.login(details, setLoginStatus)
+      };
+      API.login(details, setAccessToken, setRedirectToChangePasswordView, setLoginAccessToken, setFirstLoginStatus);
     }
-  }
+  };
 
   const validationCheck = () => {
     if (devMode) {
-      return performLogin()
+      return performLogin();
     }
     if (!loginStatus) {
       const email = emailId;
@@ -72,7 +76,7 @@ export const Login = () => {
       let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       let emailPatternTest = emailPattern.test(email);
       if (emailPatternTest && pwd) {
-        performLogin()
+        performLogin();
         return true;
       } else if (emailPatternTest === undefined && pwd === undefined) {
         notify('Email or password must not be empty!');
@@ -88,12 +92,12 @@ export const Login = () => {
         return false;
       }
     }
-  }
+  };
 
   let content = (
     <div>
       <Grid container spacing={0} justify="center">
-        <Grid className={classes.loginBox} item xs={10} lg={2}>
+        <Grid className={classes.loginBox} item xs={10} sm={6} md={4} lg={3} xl={2}>
           <Paper className={classes.paper}>
             <Typography component="h1" variant="h5">
               {pageHeading}
@@ -102,7 +106,7 @@ export const Login = () => {
               <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" onChange={e => setEmailId(e.target.value)} autoFocus />
               <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" onChange={e => setPassword(e.target.value)} autoComplete="current-password" />
               <Button fullWidth variant="contained" color="primary" className={classes.buttons} onClick={validationCheck}>Login</Button>
-              <Button fullWidth variant="contained" color="primary" className={classes.buttons} component={Link} to='/register'>Sign Up</Button>
+              {/* <Button fullWidth variant="contained" color="primary" className={classes.buttons} component={Link} to='/register'>Sign Up</Button> */}
             </form>
           </Paper>
         </Grid>
@@ -111,11 +115,17 @@ export const Login = () => {
           <Box mt={5}>
             <Typography variant="body2" color="textSecondary" align="center">
               Developed by Deakin Launchpad
-        </Typography>
+            </Typography>
           </Box>
         </Grid>
       </Grid>
     </div >
   );
+
+  if (redirectToChangePasswordView)
+    return (<Redirect to={{ pathname: '/change-password', state: { accessToken: loginAccessToken } }} />);
+
   return content;
-}
+};
+
+export default withRouter(Login);

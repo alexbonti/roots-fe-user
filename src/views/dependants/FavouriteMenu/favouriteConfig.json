@@ -1,0 +1,19 @@
+{
+  "headerWelcomeText": "Home",
+  "landingPage": "/home",
+  "menuItems": [
+    {
+      "name": "Modules",
+      "type": "button",
+      "icon": "home",
+      "controller": "/favourites/modules",
+      "customTitle": "Modules",
+      "isFavourite": true,
+      "subMenuItems": []
+    }
+  ],
+  "bottomMobileNavigation": true,
+  "displayMobileMenuHam": true,
+  "displayMobileHeader": true,
+  "menuButtonLabel": "Toolkit"
+}

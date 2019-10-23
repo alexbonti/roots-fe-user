@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import clsx from 'clsx';
-import { AppBar, Toolbar, Typography, makeStyles, Drawer, Divider, IconButton } from '@material-ui/core'
-import { LoginContext, LayoutContext } from 'contexts';
+import { AppBar, Toolbar, Typography, makeStyles, Drawer, Divider, IconButton, useMediaQuery } from '@material-ui/core';
+import { LayoutContext } from 'contexts';
 import { SideMenuItems } from './SideMenuItems';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ExitToApp from '@material-ui/icons/ExitToApp';
+import { LayoutConfig } from 'configurations';
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -80,29 +80,24 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
   }
-}))
+}));
 
 export const Header = () => {
+  let isItDesktop = useMediaQuery('(min-width:600px) and (min-height:600px)');
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const { setAccessToken, setLoginStatus } = useContext(LoginContext)
-  const { pageTitle } = useContext(LayoutContext)
+  const [open, setOpen] = useState(isItDesktop ? (LayoutConfig.sideMenu.default === 'open' ? true : false) : false);
+  const { pageTitle, headerElements } = useContext(LayoutContext);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const logout = () => {
-    window.localStorage.clear();
-    setLoginStatus(false);
-    setAccessToken('')
-  }
   let content = (
-    <div style={{display:"flex"}}>
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+    <>
+      <AppBar position={LayoutConfig.sideMenu.permanent ? 'fixed' : 'absolute'} className={LayoutConfig.sideMenu.permanent ? (isItDesktop ? classes.appBarShift : classes.appBar) : clsx(classes.appBar, open && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>
-          <IconButton
+          {isItDesktop ? LayoutConfig.sideMenu.permanent ? null : < IconButton
             edge="start"
             color="inherit"
             aria-label="Open drawer"
@@ -110,31 +105,33 @@ export const Header = () => {
             className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
             <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            {pageTitle}
-          </Typography>
-          <IconButton color="inherit" onClick={() => logout()}>
-            <ExitToApp />
-          </IconButton>
+          </IconButton> : null}
+          {
+            headerElements !== null ? headerElements :
+              <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                {pageTitle}
+              </Typography>
+          }
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <SideMenuItems />
-      </Drawer>
-    </div>
-  )
+      {
+        isItDesktop ? <Drawer
+          variant="permanent"
+          classes={{
+            paper: LayoutConfig.sideMenu.permanent ? classes.drawerPaper : clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          }}
+          open={LayoutConfig.sideMenu.permanent ? true : open}
+        >
+          <div className={classes.toolbarIcon}>
+            {LayoutConfig.sideMenu.permanent ? null : <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>}
+          </div>
+          <Divider />
+          <SideMenuItems />
+        </Drawer> : null
+      }
+    </ >
+  );
   return content;
-}
+};
