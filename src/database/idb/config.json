@@ -1,9 +1,4 @@
 {
-  "dbName": "ipan",
-  "drop": true,
-  "stores": [
-    "generic",
-    "GENERIC2"
-  ],
-  "easter": true
+  "dbName":"boilerPlate",
+  "genericStores": ["generic"] 
 }

@@ -1,11 +1,6 @@
 {
   "visible": false,
   "label": "God Mode",
-  "bypassBackend": false,
-  "verticlePosition": "top",
-  "horizontalPosition": "left",
-  "devDetails": {
-    "user": "navit@test.com",
-    "password": "H6NFEi6BNsec"
-  }
+  "verticlePosition": "bottom",
+  "horizontalPosition": "left"
 }

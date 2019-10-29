@@ -1,159 +1,256 @@
-import { AccessToken, logout } from 'contexts/helpers'
-import { notify } from 'components'
-import { axiosInstance } from './index';
-/**
- *  @errorHelper :  Function to return error StatusText.
- */
-const errorHelper = (error) => {
-  if (error.response === undefined) {
-    notify("Network Error");
-    return false;
-  }
-  if(error.response.data.message!==undefined){
-    notify(error.response.data.message);
-  }
-  
-  if (error.response.statusCode === 401) {
-    notify("You may have been logged out");
-    logout();
-    return false;
-  }
-  if (error.response.statusText !== "") {
-    notify(error.response.statusText);
-    return false;
-  }
-}
+import { AccessToken } from "contexts/helpers";
+import axios from "axios";
+import { axiosInstance } from "helpers";
+
+let config = {
+  headers: { authorization: "Bearer " + AccessToken },
+};
+
 class API {
-  displayAccessToken = () => {
-    console.log(AccessToken)
-  }
-
-  login = (data, setAccessToken, setRedirectToChangePasswordView, setLoginAccessToken, setFirstLoginStatus) => {
-    axiosInstance.post('user/login', data)
-      .then(response => {
-        setFirstLoginStatus(response.data.data.userDetails.firstLogin);
-        setLoginAccessToken(response.data.data.accessToken);
-        return response.data.data.userDetails.firstLogin ? setAccessToken(response.data.data.accessToken) : setRedirectToChangePasswordView(true);
-      })
-      .catch(error => {
-        errorHelper(error)
-      })
-  }
-
-  changePassword = (data, accessToken, setRedirectionStatus) => {
-    axiosInstance.put('user/changePassword', data, {
-      headers: {
-        authorization: "Bearer " + accessToken
-      }})
-      .then(response => {
-        return setRedirectionStatus(accessToken)
-      })
-      .catch(error => {
-        errorHelper(error);
-      })
-  }
-
-  profileChangePassword = async (data) => {
-    return await axiosInstance.put('user/changePassword', data, {
-      headers: {
-        authorization: "Bearer " + localStorage.getItem('accessToken')
-      }})
-      .then(response => {
-        return { status: true };
-      })
-      .catch(error => {
-        errorHelper(error);
-        return { message: error.response.data.message, status: false };
-      })
-  }
-
-  logoutUser = (callback) => {
-    logout()
-    if (typeof callback === "function") {
-      callback()
-    }
-  }
-
-  logout = async (token) => {
-    return await axiosInstance.put(`/user/logout`, {}, {
-      headers: {
-        authorization: "Bearer " + token,
-      }
-    })
-  }
-
-  // Get all timetable for users
-  getUserProfileData = async () => {
-    return await axiosInstance.get(`/user/getProfile`, {
-      headers: {
-        authorization: "Bearer " + localStorage.getItem('accessToken'),
-      }
+  loginEmployer = async (data, setAccessToken) => {
+    return await axios({
+      method: "post",
+      url: "http://localhost:8031/api/employer/login",
+      data,
     })
       .then(response => {
-        return { data: response.data.data.customerData, status: true };
+        setAccessToken(response.data.data.accessToken);
+        return response.data.data.employerDetails;
       })
       .catch(error => {
-        errorHelper(error);
-        return { message: error.response.data.message, status: false };
+        console.log(error);
+        return false;
+      });
+  };
+
+
+  logout = async (accessToken) => {
+    accessToken = localStorage.getItem("accessToken");
+    return await axiosInstance
+    .put("/employer/logout",{}, {
+      headers: {
+        authorization: "Bearer " + accessToken,
+      }
+    })
+    .then(response => {
+      return {"response": response}
+    })
+    .catch(error => window.localStorage.clear)
+  }
+
+  registerEmployer = async data => {
+    return await axios({
+      method: "post",
+      url: "http://localhost:8031/api/employer/register",
+      data,
+    })
+      .then(response => {
+        return { response: response.data.data };
+      })
+      .catch(error => {
+        console.log(error);
+        return false;
+      });
+  };
+
+  sendOTP = async (data, accessToken) => {
+    //accessToken = localStorage.getItem("accessToken");
+    return await axios
+      .put("http://localhost:8031/api/employer/verifyOTP", data, {
+        headers: {
+          authorization: "Bearer " + accessToken,
+        },
+      })
+      .then(response => {
+        return response.status;
+      })
+      .catch(error => console.log(error));
+  };
+
+  postOpportunity = data => {
+    let accessToken = localStorage.getItem("accessToken");
+    axiosInstance
+      .post("/jobs/opportunities", data, {
+        headers: {
+          authorization: "Bearer " + accessToken,
+        },
+      } )
+      .then(response => response)
+      .catch(error => console.log(error));
+  };
+
+  postOpportunityDraft = data => {
+    axiosInstance
+      .post("/jobs/opportunityDraft", data, config)
+      .then(response => response)
+      .catch(error => console.log(error));
+  };
+
+  createMyCompany = async (data, accessToken ) => {
+    console.log(accessToken)
+    return await axiosInstance
+      .post("/employer/createcompany", data, {
+        headers: {
+          authorization: "Bearer " + accessToken,
+        },
+      })
+      .then(response => {return response})
+      .catch(error => console.log(error));
+  };
+
+  getOpportunity = async (accessToken) => {
+    accessToken = localStorage.getItem("accessToken");
+    return await axiosInstance
+      .get("/employer/viewjobsposted", {
+        headers: {
+          authorization: "Bearer " + accessToken,
+        }
+      })
+      .then(response => {
+        return { response: response.data.data.jobsData, status: true };
+      })
+      .catch(error => {
+        console.log(error);
+        return { status: false };
+      });
+  };
+
+  getOpportunityDraft = async accessToken => {
+     accessToken = localStorage.getItem("accessToken");
+    return axiosInstance
+      .get("jobs/getOpportunityDraft", {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        }
+      })
+      .then(response => {
+        return {
+          response: response.data.data.opportunityData,
+          status: true,
+        };
+      })
+      .catch(error => {
+        console.log(error);
+        return { status: false };
+      });
+  };
+
+  getApplicantsData = async (data,accessToken) => {
+    accessToken = localStorage.getItem("accessToken");
+    return axiosInstance
+      .post(
+        "employer/viewjobapplicants",
+        data,
+        {
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+          }
+        }
+      )
+      .then(response => {
+        return ({"response": response.data.data});
+      })
+      .catch(error => console.log(error));
+  };
+
+
+  getProfileEmployer = async(auth) =>{
+    let accessToken = localStorage.getItem("accessToken");
+    return await axiosInstance
+      .get('/employer/getProfile', {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        }
+      })
+      .then(response => {
+        return {"response": response.data.data.customerData}
+      })
+      .catch(error => {
+        return {"error": error}
       })
   }
 
-  // Get all modules for users
-  getAllModules = (programId, setModulesArray) => {
-    axiosInstance.get(`/program/${programId}`)
+  uploadImage = async data => {
+    return await axiosInstance
+      .post("/upload/uploadImage", data, {
+        headers: {
+          "Content-Type": "multipart/form-data; boundary='boundary'",
+        },
+      })
       .then(response => {
-        return setModulesArray(response.data.data.moduleData);
+        return { "response": response };
       })
       .catch(error => {
-        errorHelper(error);
+        return { "error": error };
+      });
+  };
+
+  getAddress = async input => {
+    const app_id = "TUbNW3GcKxN51q3zZJB0";
+    const app_code = "SOaMBDA1FYyc8mAtg7STgg";
+    return axios({
+      method: "get",
+      url: ` http://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=${app_id}&app_code=${app_code}&query=${input}`,
+    })
+      .then(response => response.data.suggestions)
+      .catch(error => console.log(error));
+  };
+
+  getCompanyDetails = async auth => {
+    let accessToken = localStorage.getItem("accessToken");
+
+    return await axiosInstance
+      .get("/employer/getcompany", {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
       })
+      .then(response => {
+        return { "response": response.data.data.companyData };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
+  };
+
+  updateCompanyDetails = async (data, auth) => {
+    let accessToken = localStorage.getItem("accessToken");
+
+    return await axiosInstance
+      .put("/employer/updatecompany", data, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
+  };
+
+
+  updateShortList = async (array) => {
+    let accessToken = localStorage.getItem("accessToken");
+    return await axiosInstance
+      .put("/jobs/updateShortListed", array, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
   }
 
-  // Get specific module for users
-  getSpecificModule = async (programId, moduleId) => {
-    return await axiosInstance.get(`/program/${programId}/module/${moduleId}`)
-      .then(response => {
-        return { data: response.data.data.moduleData, status: true };
-      })
-      .catch(error => {
-        errorHelper(error);
-        return { message: error.response.data.message, status: false };
-      })
-  }
-
-  // Get all timetable for users
-  getAllTimetable = async (programId, moduleId) => {
-    return await axiosInstance.get(`/program/${programId}/module/${moduleId}/timeTable`)
-      .then(response => {
-        return { data: response.data.data.timeTableData, status: true };
-      })
-      .catch(error => {
-        // errorHelper(error);
-        return { message: error.response.data.message, status: false };
-      })
-  }
-
-  // Get all activities for users
-  getListOfActivities = async (programId, moduleId, setDataArray) => {
-    return await axiosInstance.get(`/program/${programId}/module/${moduleId}/activity`)
-      .then(response => {
-        return response.data.data;
-      })
-      .catch(error => {
-        errorHelper(error);
-      })
-  }
-
-  // Get all timetable for users
-  getSpecificActivity = async (programId, moduleId, activityId) => {
-    return await axiosInstance.get(`/program/${programId}/module/${moduleId}/activity/${activityId}`)
-      .then(response => {
-        return { data: response.data.data.activityData, status: true };
-      })
-      .catch(error => {
-        errorHelper(error);
-      })
-  }
 }
+  
+
+
+
 const instance = new API();
 export default instance;

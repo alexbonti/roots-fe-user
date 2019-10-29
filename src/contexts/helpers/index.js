@@ -1,8 +1,7 @@
-import { AccessToken, DevMode, LoginStatus, logout } from '../common/LoginContext';
+import { AccessToken, DevMode, LoginStatus } from '../common/LoginContext'
 
 export {
   AccessToken,
   DevMode,
-  LoginStatus,
-  logout
-};
+  LoginStatus
+}

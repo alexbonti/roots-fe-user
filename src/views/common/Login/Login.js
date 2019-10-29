@@ -1,68 +1,87 @@
-/***
- *  Created by Sanchit Dang
- ***/
-import React, { useState, useContext } from 'react';
-import { TextField, Paper, makeStyles, Typography, Button, Box, Grid } from '@material-ui/core';
-import { LoginContext, ApplicationContext } from 'contexts';
-import { notify } from 'components';
-import { DevModeConfig } from 'configurations';
-import { API } from 'helpers';
-import { Redirect, withRouter } from 'react-router-dom';
+import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 
+import {
+  TextField,
+  makeStyles,
+  createMuiTheme,
+  Typography,
+  Button,
+  Box,
+  Grid
+} from "@material-ui/core";
+import { LoginContext } from "contexts";
+import { notify } from "components";
+import { API } from "helpers/index";
+import { Header } from "../../../components/dependants/Header";
+import { ThemeProvider } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
-  '@global': {
+  "@global": {
     body: {
-      backgroundColor: theme.palette.common.dark,
-    },
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: theme.spacing(4)
+      backgroundColor: theme.palette.common.dark
+    }
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   },
   loginBox: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(10)
   },
+
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 2)
   },
   buttons: {
-    marginTop: theme.spacing(1)
+    color: "white",
+    borderRadius: "25px",
+    border: "1px solid #087b94",
+    backgroundColor: "#087b94 !important",
+    width: "80%",
+    margin: "1rem"
   },
   developMessage: {
     position: "absolute",
     bottom: "2vh"
+  },
+  inputText: {
+    ".MuiInput-underline:after": {
+      borderBottom: "2px solid green"
+    }
   }
 }));
 
-const Login = () => {
-  const classes = useStyles();
-  const [pageHeading] = useState('Login');
-  const [emailId, setEmailId] = useState('');
-  const [password, setPassword] = useState('');
-  const [redirectToChangePasswordView, setRedirectToChangePasswordView] = useState(false);
-  const [loginAccessToken, setLoginAccessToken] = useState('');
-  const { devMode, loginStatus, setLoginStatus, setAccessToken } = useContext(LoginContext);
-  const { setFirstLoginStatus } = useContext(ApplicationContext);
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#087B94" },
+    secondary: { main: "#C74197" },
+    terziary: { main: "#2B2B28" },
+    accent: { main: "#FFD922" },
+    error: { main: "#D0011B" },
+    contrastThreshold: 3,
+    // Used to shift a color's luminance by approximately
+    // two indexes within its tonal palette.
+    // E.g., shift from Red 500 to Red 300 or Red 700.
+    tonalOffset: 0.2
+  }
+});
 
-  const performLogin = () => {
-    if (DevModeConfig.bypassBackend) {
-      setLoginStatus(true);
-      setAccessToken('dummyToken');
-    } else {
-      let details = {
-        emailId: (devMode ? (DevModeConfig.devDetails !== undefined ? DevModeConfig.devDetails.user : '') : emailId),
-        password: (devMode ? (DevModeConfig.devDetails !== undefined ? DevModeConfig.devDetails.password : '') : password)
-      };
-      API.login(details, setAccessToken, setRedirectToChangePasswordView, setLoginAccessToken, setFirstLoginStatus);
+export const Login = () => {
+  const classes = useStyles();
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
+  const { devMode, loginStatus, setAccessToken } = useContext(LoginContext);
+
+  const performLogin = async () => {
+    const data = {
+      emailId,
+      password
+    };
+    const otp = await API.loginEmployer(data, setAccessToken);
+    if (!otp) {
+      notify("Email or Password are wrong");
     }
   };
 
@@ -79,53 +98,87 @@ const Login = () => {
         performLogin();
         return true;
       } else if (emailPatternTest === undefined && pwd === undefined) {
-        notify('Email or password must not be empty!');
+        notify("Email or password must not be empty!");
         return false;
       } else if (!emailPatternTest) {
-        notify('Email must not be empty!');
+        notify("Email must not be empty!");
         return false;
       } else if (!emailPatternTest && email.length > 0) {
-        notify('Invalid email!');
+        notify("Invalid email!");
         return false;
       } else if (!pwd) {
-        notify('Password must not be empty!');
+        notify("Password must not be empty!");
         return false;
       }
     }
   };
 
   let content = (
-    <div>
-      <Grid container spacing={0} justify="center">
-        <Grid className={classes.loginBox} item xs={10} sm={6} md={4} lg={3} xl={2}>
-          <Paper className={classes.paper}>
-            <Typography component="h1" variant="h5">
-              {pageHeading}
-            </Typography>
+    <ThemeProvider theme={theme}>
+      <div>
+        <Header />
+        <Grid
+          container
+          spacing={0}
+          justify="center"
+          alignItems="center"
+          style={{ height: "65vh" }}
+        >
+          <Grid className={classes.loginBox} item xs={10} lg={2}>
             <form noValidate>
-              <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" onChange={e => setEmailId(e.target.value)} autoFocus />
-              <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password" id="password" onChange={e => setPassword(e.target.value)} autoComplete="current-password" />
-              <Button fullWidth variant="contained" color="primary" className={classes.buttons} onClick={validationCheck}>Login</Button>
-              {/* <Button fullWidth variant="contained" color="primary" className={classes.buttons} component={Link} to='/register'>Sign Up</Button> */}
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={e => setEmailId(e.target.value)}
+                autoFocus
+                className={classes.inputText}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                onChange={e => setPassword(e.target.value)}
+                autoComplete="current-password"
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                className={classes.buttons}
+                onClick={validationCheck}
+              >
+                Login
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                className={classes.buttons}
+                component={Link}
+                to="/register"
+              >
+                Register
+              </Button>
             </form>
-          </Paper>
-        </Grid>
+          </Grid>
 
-        <Grid item xs={12} className={classes.developMessage}>
-          <Box mt={5}>
-            <Typography variant="body2" color="textSecondary" align="center">
-              Developed by Deakin Launchpad
-            </Typography>
-          </Box>
+          <Grid item xs={12} className={classes.developMessage}>
+            <Box mt={5}>
+              <Typography variant="body2" color="textSecondary" align="center">
+                Developed by Deakin Launchpad
+              </Typography>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </div >
+      </div>
+    </ThemeProvider>
   );
-
-  if (redirectToChangePasswordView)
-    return (<Redirect to={{ pathname: '/change-password', state: { accessToken: loginAccessToken } }} />);
-
   return content;
 };
-
-export default withRouter(Login);

@@ -1,155 +1,206 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { withRouter, Redirect, Link } from 'react-router-dom';
-import { TabularModuleCard, EnhancedModal, GridModuleCard , HeaderElements} from 'components';
-import { ApplicationContext, LayoutContext } from 'contexts';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Grid, Avatar } from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import PropTypes from 'prop-types';
-import { API } from 'helpers';
+import React, { useEffect, useState, useContext } from "react";
+import PropTypes from "prop-types";
+import SwipeableViews from "react-swipeable-views";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import {
+  AppBar,
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+  Grid,
+  Container
+} from "@material-ui/core/";
+import { HomeContext, LoginContext } from "contexts";
+import {
+  AddOpportunity,
+  ListOpportunity,
+  MyCompany,
+  EditMyCompany
+} from "../../../components/index";
+import API from "../../../helpers/api";
+import { ThemeProvider } from "@material-ui/styles";
+import SingleJob from "../../../components/dependants/SingleJob";
+import { ListOfCandidatesOfASingleJob } from "components/dependants/ListOfCandidatesOfASingleJob";
 
-const _ = require('underscore');
-
-const SELECTION_TEXT = 'Select the module you want to start with';
-const EMPTY_MODULES_ARRAY = 'No module currently in this program';
-
-const useStyles = makeStyles(() => ({
-  customMargin: {
-    margin: '8px',
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%",
+    flexGrow: 1,
+    padding: "0"
   },
-  viewAllButton: {
-    color: 'black',
-    textDecoration: 'none',
+  icon: {
+    margin: theme.spacing(0)
   },
+  iconHover: {
+    margin: theme.spacing(0),
+    "&:hover": {
+      color: "red"
+    }
+  },
+  topSpace: {
+    display: "flex",
+    height: "15vh",
+    backgroundColor: "white",
+    fontSize: 30,
+    padding: "10px 0",
+    fontWeight: "bolder",
+    margin: 0,
+    width: "100vw",
+    maxWidth: "none"
+  }
 }));
 
-// Enroll status in module
-const IsEnrolled = false;
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
-const Home = props => {
-  const matches = useMediaQuery('(max-width:335px)');
-  const { location: { state } } = props;
-  const { programId, firstLoginStatus } = useContext(ApplicationContext);
-  const [modulesArray, setModulesArray] = useState(null);
-  const [redirectToIntro] = useState(state !== undefined && Object.prototype.hasOwnProperty.call(state, 'loginStatus') ? state.loginStatus : firstLoginStatus);
-  const [isEnrolledStatus] = useState(IsEnrolled);
-  const classes = useStyles();
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
-  const [modalContent, setModalContent] = useState('');
-  const [selectedModule, setSelectedModule] = useState(null);
-  const [redirectToModuleDescrip, setRedirectToModuleDescrip] = useState(false);
-  const { setHeaderElements } = useContext(LayoutContext);
-
-  useEffect(() => {
-    setHeaderElements(
-      <HeaderElements>
-        <Grid container direction="row" justify="space-between" alignItems="center">
-          <Grid item xs>
-            <Typography variant="body1">
-              Home
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Avatar alt="user_profile_image" src="" component={Link} to='/profile' />
-          </Grid>
-        </Grid>
-      </HeaderElements>
-    );
-  }, [setHeaderElements]);
-
-  useEffect(() => {
-    if (redirectToIntro)
-      API.getAllModules(programId, setModulesArray);
-  }, [programId, redirectToIntro]);
-
-  if (!redirectToIntro) {
-    return <Redirect to={{ pathname: '/intro' }} />;
-  }
-
-  if (isEnrolledStatus) {
-    return <Redirect to={{ pathname: `/module/:id` }} />;
-  }
-
-  if (redirectToModuleDescrip && !_.isNull(selectedModule)) {
-    return <Redirect push to={{ pathname: `/module/${selectedModule}` }} />;
-  }
-
-  if (!_.isNull(modulesArray)) {
-    return (
-      <Grid container direction="column">
-
-        <Grid item xs={12}>
-          <Typography variant="body2" display="block" align="left" className={classes.customMargin}>
-            {modulesArray.length < 1 ? EMPTY_MODULES_ARRAY : SELECTION_TEXT}
-          </Typography>
-        </Grid>
-
-        <Grid
-          item
-          xs={12}
-          container
-          direction={matches ? "column" : "row"}
-          alignItems="stretch"
-          spacing={2}
-          style={{ margin: 0 }}
-        >
-          {
-            modulesArray.map(obj => {
-              return matches ? (
-                <TabularModuleCard
-                  moduleData={obj}
-                  nextViewPathname={`/module/${obj.id}`}
-                  key={obj.id}
-                  onClick={() => {
-                    setSelectedModule(obj.id);
-                    setModalTitle(obj.title);
-                    setModalContent(obj.description);
-                    setIsOpen(true);
-                  }}
-                />
-              ) : (
-                <GridModuleCard
-                  moduleData={obj}
-                  nextViewPathname={`/module/${obj.id}`}
-                  key={obj.id}
-                  onClick={() => {
-                    setSelectedModule(obj.id);
-                    setModalTitle(obj.title);
-                    setModalContent(obj.description);
-                    setIsOpen(true);
-                  }}
-                />
-              );
-            })
-          }
-        </Grid>
-        <EnhancedModal
-          isOpen={isOpen}
-          dialogContent={modalContent}
-          dialogTitle={modalTitle}
-          submitButtonName={"Enroll"}
-          onClose={() => setIsOpen(false)}
-          onSubmit={() => { setRedirectToModuleDescrip(true); }}
-        />
-      </Grid>
-    );
-  }
-
-  // Return when null data in state i.e., Program doesn't exist
   return (
-    <Typography variant="body1" align="center">
-      Program doesn&rsquo;t esists
+    <Typography
+      component="div"
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      <Box p={3}>{children}</Box>
     </Typography>
   );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired
 };
 
-export default withRouter(Home);
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    "aria-controls": `full-width-tabpanel-${index}`
+  };
+}
 
-Home.propTypes = {
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      loginStatus: PropTypes.any,
-    }),
-  }),
+export const Home = () => {
+  const classes = useStyles();
+  const [value, setValue] = useState(0);
+  const [dataJobs, setDataJobs] = useState("");
+  const [dataJobsDraft, setDataJobsDraft] = useState("");
+  const {
+    addOpportunity,
+    jobView,
+    setTabNumber,
+    isListCanditatesOfAJob,
+    isEditMyCompany,
+    mainTitle,
+    setMainTitle
+  } = useContext(HomeContext);
+  const { loginStatus } = useContext(LoginContext);
+
+  const handleChange = (event, newValue) => {
+    // main title tab
+    newValue === 1
+      ? setMainTitle("Canditates")
+      : newValue === 2
+      ? setMainTitle("Company Profile")
+      : setMainTitle(
+          "Let's create an opportunity and start making a difference"
+        );
+
+    setTabNumber(newValue);
+    setValue(newValue);
+  };
+
+  const handleChangeIndex = index => setValue(index);
+
+  useEffect(() => {
+    const triggerAPI = async () => {
+      const oppResponse = await API.getOpportunity();
+      const oppDraftResponse = await API.getOpportunityDraft();
+      if (oppResponse.status && oppDraftResponse.status) {
+        setDataJobs(oppResponse.response);
+        setDataJobsDraft(oppDraftResponse.response);
+      }
+    };
+    if (loginStatus) {
+      triggerAPI();
+    }
+    // if (loginStatus) {
+    //   API.getOpportunity(setDataJobs);
+    //   API.getOpportunityDraft(setDataJobsDraft);
+    // }
+  }, [loginStatus]);
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: { main: "#087B94", light: "#FFD922" },
+      secondary: { main: "#FFD922" },
+      terziary: { main: "#2B2B28" },
+      accent: { main: "#FFD922" },
+      error: { main: "#D0011B" },
+      // Used by `getContrastText()` to maximize the contrast between the background and
+      // the text.
+      contrastThreshold: 3,
+      // Used to shift a color's luminance by approximately
+      // two indexes within its tonal palette.
+      // E.g., shift from Red 500 to Red 300 or Red 700.
+      tonalOffset: 0.2
+    }
+  });
+
+  const list = !addOpportunity ? (
+    dataJobs !== "" && dataJobsDraft !== "" ? (
+      <ListOpportunity data={dataJobs} data2={dataJobsDraft} />
+    ) : (
+      "loading"
+    )
+  ) : (
+    <AddOpportunity />
+  );
+
+
+  return (
+    <ThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <Container className={classes.topSpace}>
+          <Grid container justify="center" alignItems="center">
+            <Grid item>{mainTitle} </Grid>
+          </Grid>
+        </Container>
+        <AppBar position="static" color="primary">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="secondary"
+            textColor="inherit"
+            variant="fullWidth"
+            aria-label="full width tabs example"
+          >
+            <Tab label="Your Opportunity" {...a11yProps(0)} />
+            <Tab label="Candidates" {...a11yProps(1)} />
+            <Tab label="My Company" {...a11yProps(2)} />
+          </Tabs>
+        </AppBar>
+        <SwipeableViews
+          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+          index={value}
+          onChangeIndex={handleChangeIndex}
+        >
+          <TabPanel value={value} index={0} dir={theme.direction}>
+            <Grid container className={classes.root} spacing={2}>
+              <Grid item xs={12}>
+                {jobView ? <SingleJob /> : list}
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value={value} index={1} dir={theme.direction}>
+            {isListCanditatesOfAJob ? <ListOfCandidatesOfASingleJob /> : list}
+          </TabPanel>
+          <TabPanel value={value} index={2} dir={theme.direction}>
+            {isEditMyCompany ? <EditMyCompany /> : <MyCompany />}
+          </TabPanel>
+        </SwipeableViews>
+      </div>
+    </ThemeProvider>
+  );
 };

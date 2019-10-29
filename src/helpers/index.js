@@ -1,10 +1,5 @@
-import { axiosInstance } from './axiosInstance';
-import API from './api';
-import TextHelper from './TextHelper';
-import OutputHelper from './OutputHelper';
-export {
-  axiosInstance,
-  API,
-  TextHelper,
-  OutputHelper
-};
+import { axiosInstance } from "./axiosInstance";
+import { arrayfy } from "./arrayfy";
+import API from "./api";
+
+export { axiosInstance, arrayfy, API };

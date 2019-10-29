@@ -1,38 +1,19 @@
-import IDBService from './service';
-import { DevModeConfig } from 'configurations';
-var CONFIG = require('./config.json');
-
-/**
- * This IndexedDB service is using Google's Promise based wrapper of IndexedDB.
- * guide at : https://www.youtube.com/watch?v=VNFDoawcmNc
- */
+import IDBService from "./service";
+var CONFIG = require("./config.json");
+const DBDropStatus = process.env.REACT_APP_DROP_IDB_DATABASE;
 
 const init = () => {
-  if (!('indexedDB' in window)) {
-    console.log('This browser doesn\'t support IndexedDB');
+  if (!("indexedDB" in window)) {
+    console.log("This browser doesn't support IndexedDB");
     return;
-  }
-  else {
-    if (CONFIG && CONFIG.stores && CONFIG.dbName && CONFIG.drop !== undefined) {
-      if (CONFIG.drop) {
-        IDBService.reset();
-      }
-      IDBService.createGenericObject(CONFIG.stores, true);
+  } else {
+    if (DBDropStatus) {
+      IDBService.reset();
     }
-
-    else console.log('issue in indexDB configuration! :(');
-  }
-  if (DevModeConfig.visible && CONFIG.easter) {
-    try {
-      require('easter-egg-collection');
-    } catch (easter) {
-      console.log('%c the green hulk got mad!', ' line-height: 40px; background: white; border-radius:10px; display: block; color: green; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 5px 3px -5px rgba(0, 0, 0, 0.5), 0 -13px 5px -10px rgba(255, 255, 255, 0.4) inset font - weight: bold; ');
-    }
+    CONFIG.genericStores.forEach((value, i) => {
+      IDBService.createGenericObject(value, i + 1, true);
+    });
   }
 };
 
 init();
-
-export {
-  IDBService
-};
