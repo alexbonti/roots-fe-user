@@ -15,15 +15,17 @@ import { LoginContext } from "contexts";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import  API  from "../../helpers/api";
+import API from "../../helpers/api";
+import { TemporaryDrawer } from "../index";
+
 // import { AccessToken } from "contexts/helpers/index";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-    backgroundColor: "#2B2B28",
+    paddingRight: 2, // keep right padding when drawer closed
+    backgroundColor: "#2C2C29",
   },
   avatar: {
     margin: 10,
@@ -115,7 +117,7 @@ const theme = createMuiTheme({
     primary: { main: "#087B94" },
     secondary: { main: "#C74197" },
     terziary: { main: "#2B2B28" },
-    accent: { main: "#FFD922" },
+    accent: { main: "#f5f5f5" },
     error: { main: "#D0011B" },
     contrastThreshold: 3,
     // Used to shift a color's luminance by approximately
@@ -128,16 +130,19 @@ const theme = createMuiTheme({
 export const Header = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const { setAccessToken, setLoginStatus, loginStatus, accessToken } = useContext(
-    LoginContext
-  );
+  const {
+    setAccessToken,
+    setLoginStatus,
+    loginStatus,
+    accessToken,
+  } = useContext(LoginContext);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
   const logout = () => {
-
-    const logOut = async (auth) => {
+    const logOut = async auth => {
       const putLogout = await API.logout(auth);
       window.localStorage.clear();
       setLoginStatus(false);
@@ -146,113 +151,30 @@ export const Header = () => {
     };
 
     logOut(accessToken);
-
   };
 
-
+  let menu = !loginStatus ? "" : <TemporaryDrawer />;
   let content = (
     <ThemeProvider theme={theme}>
-      <div style={{ display: "flex" }}>
-        <AppBar
-          position="absolute"
-          color="primary"
-          className={clsx(classes.appBar, open && classes.appBarShift)}
-        >
-          <Toolbar className={classes.toolbar}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={handleDrawerOpen}
-              className={clsx(
-                classes.menuButton,
-                open && classes.menuButtonHidden
-              )}
-            >
-              {/* <MenuIcon /> */}
-            </IconButton>
-            <Grid
-              container
-              spacing={5}
-              alignItems="center"
-              justify="flex-start"
-              style={{ width: "80%" }}
-            >
-              <Grid item container xs={3}>
-                <Grid item>
-                  <Avatar
-                    alt="Remy Sharp"
-                    src="https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/0004/3497/brand.gif?itok=eQnX_TD5"
-                    className={classes.avatar}
-                  />
-                </Grid>
-                <Grid item>
-                  <Typography
-                    component="h1"
-                    variant="h6"
-                    color="inherit"
-                    noWrap
-                    className={classes.title}
-                  >
-                    DEAKIN <br /> CREATE
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              <Grid item xs={3}>
-                <Typography
-                  component="h1"
-                  variant="h6"
-                  color="inherit"
-                  noWrap
-                  className={classes.title}
-                >
-                  Your Create
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography
-                  component="h1"
-                  variant="h6"
-                  color="inherit"
-                  noWrap
-                  className={classes.title}
-                >
-                  About Us
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography
-                  component="h1"
-                  variant="h6"
-                  color="inherit"
-                  className={classes.title}
-                >
-                  Help
-                </Typography>
-              </Grid>
+      <AppBar className={classes.toolbar}>
+        <Grid container alignItems="center" justify="space-around" style={{padding: "1vh"}} >
+          <Grid container item xs={10} justify="flex-start" alignItems="center" >
+            <Grid style={{marginRight: "2vw"}}>
+              <Avatar>D</Avatar>
             </Grid>
-            <Button className={classes.buttonTop}>Create Opportunities</Button>
-            {loginStatus ? (
-              <IconButton color="inherit" onClick={() => logout()}>
-                <ExitToApp />
-              </IconButton>
-            ) : (
-              <Link to="/login" className={classes.login}>
-                <Typography
-                  component="h1"
-                  variant="h6"
-                  color="inherit"
-                  noWrap
-                  className={classes.title}
-                >
-                  Login >
-                </Typography>
-              </Link>
-            )}
-          </Toolbar>
-        </AppBar>
-      </div>
+            <Grid>
+              <Typography color="inherit" gutterBottom={true} variant="subtitle1" display="block">
+                DEAKIN <br />
+                CREATE
+              </Typography>
+            </Grid>
+          </Grid>
+          
+          <Grid item xs={2}>
+            {menu}
+          </Grid>
+        </Grid>
+      </AppBar>
     </ThemeProvider>
   );
   return content;

@@ -4,69 +4,96 @@ import { Link } from "react-router-dom";
 import {
   TextField,
   makeStyles,
-  createMuiTheme,
   Typography,
   Button,
-  Box,
-  Grid
+  Grid,
+  List,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  ListItem
+
 } from "@material-ui/core";
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
 import { LoginContext } from "contexts";
 import { notify } from "components";
 import { API } from "helpers/index";
-import { Header } from "../../../components/dependants/Header";
-import { ThemeProvider } from "@material-ui/styles";
+
+import {
+  createMuiTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
+
+import Image from "../../../helpers/img/header.png";
+
+let theme = createMuiTheme({
+  palette: {
+    primary: { main: "#007D98" },
+    secondary: { main: "#11cb5f" },
+  },
+});
+
+theme = responsiveFontSizes(theme);
 
 const useStyles = makeStyles(theme => ({
   "@global": {
     body: {
-      backgroundColor: theme.palette.common.dark
-    }
+      backgroundColor: theme.palette.common.dark,
+    },
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+  body: {
+    height: "65vh",
   },
-  loginBox: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(10)
+  header: {
+    height: "35vh",
+    backgroundImage: `url(${Image})`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "100% 100%",
+  },
+  footer: {
+    backgroundColor: "#363635",
+    color: "#f0f0f0",
+    fontSize: ".3rem"
   },
 
+  creator: {
+    fontSize: ".7rem",
+    padding: ".5rem"
+  },
+  
+  divider: {
+    border: "1px solid #FFD923",
+    width: "65%",
+    marginLeft: "10%"
+  },
+
+
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  loginBox: {},
+
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(3, 0, 2),
   },
   buttons: {
     color: "white",
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
-    width: "80%",
-    margin: "1rem"
   },
-  developMessage: {
-    position: "absolute",
-    bottom: "2vh"
-  },
+  developMessage: {},
   inputText: {
     ".MuiInput-underline:after": {
-      borderBottom: "2px solid green"
-    }
-  }
+      borderBottom: "2px solid green",
+    },
+  },
 }));
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#087B94" },
-    secondary: { main: "#C74197" },
-    terziary: { main: "#2B2B28" },
-    accent: { main: "#FFD922" },
-    error: { main: "#D0011B" },
-    contrastThreshold: 3,
-    // Used to shift a color's luminance by approximately
-    // two indexes within its tonal palette.
-    // E.g., shift from Red 500 to Red 300 or Red 700.
-    tonalOffset: 0.2
-  }
-});
 
 export const Login = () => {
   const classes = useStyles();
@@ -77,7 +104,7 @@ export const Login = () => {
   const performLogin = async () => {
     const data = {
       emailId,
-      password
+      password,
     };
     const otp = await API.loginEmployer(data, setAccessToken);
     if (!otp) {
@@ -114,17 +141,16 @@ export const Login = () => {
   };
 
   let content = (
-    <ThemeProvider theme={theme}>
-      <div>
-        <Header />
+    <div>
+      <ThemeProvider theme={theme}>
+        <Grid container justify="center" className={classes.header}></Grid>
         <Grid
           container
-          spacing={0}
           justify="center"
-          alignItems="center"
-          style={{ height: "65vh" }}
+          alignItems="flex-start"
+          className={classes.body}
         >
-          <Grid className={classes.loginBox} item xs={10} lg={2}>
+          <Grid className={classes.loginBox} item xs={11}>
             <form noValidate>
               <TextField
                 margin="normal"
@@ -149,6 +175,17 @@ export const Login = () => {
                 onChange={e => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
+            </form>
+          </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            justify="space-between"
+            alignItems="center"
+            style={{ padding: "3vh 5vw" }}
+          >
+            <Grid item xs={12} style={{ paddingBottom: "3vh" }}>
               <Button
                 fullWidth
                 variant="contained"
@@ -157,6 +194,13 @@ export const Login = () => {
               >
                 Login
               </Button>
+            </Grid>
+            <Grid item xs={12} style={{ paddingBottom: "3vh" }}>
+              <Typography align="center" variant="caption" display="block">
+                Or
+              </Typography>
+            </Grid>
+            <Grid item xs={12} style={{ paddingBottom: "5vh" }}>
               <Button
                 fullWidth
                 variant="contained"
@@ -166,19 +210,95 @@ export const Login = () => {
               >
                 Register
               </Button>
-            </form>
-          </Grid>
-
-          <Grid item xs={12} className={classes.developMessage}>
-            <Box mt={5}>
-              <Typography variant="body2" color="textSecondary" align="center">
-                Developed by Deakin Launchpad
-              </Typography>
-            </Box>
+            </Grid>
           </Grid>
         </Grid>
-      </div>
-    </ThemeProvider>
+        <Grid container justify="center" className={classes.footer}>
+          <Grid item xs={12} className={classes.developMessage}>
+            <Grid container  item justify="space-between" >
+              <Grid
+                container
+                item
+                xs={5}
+                direction="column"
+                justify="flex-start"
+              >
+                <List component="nav"  >
+                  <ListItem component="a" >
+                    <ListItemText primary="Deakin"/>
+                  </ListItem>
+                  <Divider className={classes.divider}/>
+                  <ListItem component="a">
+                    <ListItemText secondary="Copyright" />
+                  </ListItem>
+                  <ListItem component="a">
+                    <ListItemText secondary="Disclaimner" />
+                  </ListItem>
+                  <ListItem component="a">
+                    <ListItemText secondary="Privacy" />
+                  </ListItem>
+                </List>
+                <List component="nav">
+                  <ListItem component="a">
+                    <ListItemText primary="Help" />
+                  </ListItem>
+                  <Divider className={classes.divider}/>
+                  <ListItem component="a">
+                    <ListItemText secondary="FAQ" />
+                  </ListItem>
+                  <ListItem component="a">
+                    <ListItemText secondary="Contact" />
+                  </ListItem>
+                </List>
+              </Grid>
+
+              {/* <Grid container item direction="column">
+                  <Grid item>
+                    <Typography
+                      variant="body2"
+                      color="primary"
+                      align="center"
+                    >
+                      Deakin Create
+                    </Typography>
+                  </Grid> */}
+              {/* <Grid item xs={6}>
+                    <Divider color="primary" light={true}/>
+                  </Grid> */}
+
+              {/* <Grid item>1</Grid>
+                <Grid item>1</Grid> */}
+              <Grid
+                container
+                item
+                xs={5}
+                direction="column"
+                justify="flex-start"
+                alignItems="center"
+              >
+                <List component="nav"  >
+                  <ListItem component="a" >
+                    <ListItemText primary="Follow Us" className={classes.footer}/>
+                  </ListItem>
+                  <Divider className={classes.divider}/>
+                  <ListItem component="a">
+                    <ListItemIcon secondary="Copyright">
+                      <FacebookIcon color="primary"/> 
+                    </ListItemIcon>
+                    <ListItemIcon secondary="Copyright">
+                      <InstagramIcon color="primary"/>
+                    </ListItemIcon>
+                  </ListItem>
+                </List>
+              </Grid>
+            </Grid>
+            <Typography variant="body2"  align="left" className={classes.creator}>
+              Developed by Deakin Launchpad
+            </Typography>
+          </Grid>
+        </Grid>
+      </ThemeProvider>
+    </div>
   );
   return content;
 };
