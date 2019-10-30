@@ -3,13 +3,18 @@
  ***/
 import React, { useContext, useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { LoginContext } from "contexts";
-import { Login, Register, Home2, RegistrationConfirmation } from "views";
+import { LoginContext, UserContext } from "contexts";
+import { Login, Register, Home2, RegistrationConfirmation, OnBoarding } from "views";
 import { Layout } from "../layout";
 
 export const AppRoutes = props => {
   const { loginStatus } = useContext(LoginContext);
+  const {userProfile} = useContext(UserContext)
   const [redirectToLogin, setRedirectToLogin] = useState(false);
+
+  const {firstLogin} = {userProfile};
+
+  console.log(firstLogin);
 
   useEffect(() => {
     if (loginStatus) setRedirectToLogin(false);
@@ -66,6 +71,11 @@ export const AppRoutes = props => {
           exact
           path="/registerSuccess"
           render={() => <RegistrationConfirmation {...props} />}
+        />
+        <Route
+          exact
+          path="/onboarding"
+          render={() => <OnBoarding {...props} />}
         />
       </Layout>
     </Switch>

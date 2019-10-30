@@ -14,7 +14,6 @@ import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
 import { Header } from "../../../components/dependants/Header";
 import { withRouter } from "react-router-dom";
-import { MyCompanyContext } from "../../../contexts/dependants/MyCompanyContext";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,56 +24,26 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     color: theme.palette.text.secondary,
   },
+  buttons: {
+    color: "white",
+    borderRadius: "25px",
+    border: "1px solid #087b94",
+    backgroundColor: "#087b94 !important",
+    margin: "4vh 0"
+  },
 }));
-// }));
-// const useStyles = makeStyles(theme => ({
-//   avatar: {
-//     margin: theme.spacing(1),
-//     backgroundColor: theme.palette.secondary.main
-//   },
-//   registerBox: {
-//     //width: "100%", // Fix IE 11 issue.
-//     marginTop: theme.spacing(2)
-//   },
-//   submit: {
-//     margin: theme.spacing(3, 0, 2)
-//   },
-//   buttons: {
-//     marginTop: theme.spacing(1),
-//     borderRadius: "1rem"
-//   },
-//   developMessage: {
-//     position: "absolute",
-//     bottom: "1vh"
-//   },
-//   blockTop: {
-//     color: "black",
-//     fontSize: "20px",
-//     height: "20vh",
-//     backgroundColor: "rgba(8, 123, 148, 0.08)",
-//     margin: "30px 0",
-//     maxWidth: "100%"
-//   },
-//   text: {
-//     fontFamily: "Lato, Helvetica, Arial, sans-serif",
-//     fontSize: "2.5rem",
-//     fontWeight: "600"
-//   }
-// }));
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: { main: "#087B94" },
-//     secondary: { main: "#C74197" },
-//     terziary: { main: "#2B2B28" },
-//     accent: { main: "#FFD922" },
-//     error: { main: "#D0011B" },
-//     contrastThreshold: 3,
-//     // Used to shift a color's luminance by approximately
-//     // two indexes within its tonal palette.
-//     // E.g., shift from Red 500 to Red 300 or Red 700.
-//     tonalOffset: 0.2
-//   }
-// });
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#087B94" },
+    secondary: { main: "#C74197" },
+    terziary: { main: "#2B2B28" },
+    accent: { main: "#FFD922" },
+    error: { main: "#D0011B" },
+    contrastThreshold: 3,
+    tonalOffset: 0.2,
+  },
+});
 const Register = props => {
   // const { setLoginStatus } = React.useContex(LoginContext);
   const classes = useStyles();
@@ -84,33 +53,28 @@ const Register = props => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [companyId, setCompanyId] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [accessToken, setAccessToken] = useState("");
   const [emailVerified, setEmailVerified] = useState("");
+  const [userDetails, setUserDetails] = useState("")
 
-  const {
-    companyLogo,
-    companyDescription,
-    companyIndustry,
-    companyLocation,
-  } = useContext(MyCompanyContext);
 
   // const { setOpenModal } = useContext(LoginContext);
 
-  const registerEmployer = () => {
+  const registerUser = () => {
     const data = {
       first_name: firstName,
       last_name: lastName,
-      companyId: companyId.toLowerCase(),
       emailId,
       password,
     };
 
     const triggerAPI = async () => {
-      const registerData = await API.registerEmployer(data);
+      const registerData = await API.registerUser(data);
+      console.log(registerData)
       setAccessToken(registerData.response.accessToken);
-      setEmailVerified(registerData.response.employerDetails.emailVerified);
+      setEmailVerified(registerData.response.userDetails.emailVerified);
+      setUserDetails(registerData.response.userDetails);
       setRedirect(true);
     };
     triggerAPI();
@@ -123,7 +87,6 @@ const Register = props => {
       confirmPassword.length < 0 ||
       firstName.length < 0 ||
       lastName.length < 0 ||
-      companyId.lenght < 0 ||
       emailId === "" ||
       password === "" ||
       confirmPassword === "" ||
@@ -141,7 +104,7 @@ const Register = props => {
       return notify("Passwords don't match.");
     }
     if (emailPatternTest) {
-      return registerEmployer();
+      return registerUser();
     }
   };
 
@@ -149,138 +112,98 @@ const Register = props => {
     <Redirect
       to={{
         pathname: "/registerSuccess",
-        state: { accessToken, emailVerified, emailId },
+        state: { accessToken, emailVerified, emailId, userDetails },
       }}
     />
   ) : (
     <>
-      <Header />
-      <Grid container justify="center">
-        <Grid item>
-          <form noValidate>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="firstName"
-              label="First Name"
-              name="firstName"
-              autoComplete="email"
-              onChange={e => setFirstName(e.target.value)}
-              autoFocus
-            />
-          </form>
+      <ThemeProvider theme={theme}>
+        <Header />
+        <Grid style={{ height: "7vh" }} />
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "22vh" }}
+        >
+          <Grid item xs={10}>
+            <Typography variant="h5">Let's Start</Typography>
+          </Grid>
         </Grid>
-      </Grid>
+        <Grid container justify="space-evenly" alignItems="center">
+          <Grid item xs={10}>
+            <form noValidate>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                name="firstName"
+                autoComplete="email"
+                onChange={e => setFirstName(e.target.value)}
+                autoFocus
+              />{" "}
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="email"
+                onChange={e => setLastName(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={e => setEmailId(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                onChange={e => setPassword(e.target.value)}
+                autoComplete="current-password"
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                id="confirmPassword"
+                onChange={e => setConfirmPassword(e.target.value)}
+                autoComplete="current-password"
+              />
+            </form>
+          </Grid>
+          <Grid item xs={10}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={validationCheck}
+              className={classes.buttons}
+            >
+              Register
+            </Button>
+          </Grid>
+        </Grid>
+      </ThemeProvider>
     </>
   );
-  //   <ThemeProvider theme={theme}>
-  //     <div>
 
-  //       <Grid
-  //         className={classes.blockTop}
-  //         container
-  //         alignContent="center"
-  //         justify="center"
-  //       >
-  //         <Grid item xs={5}>
-  //           <Typography className={classes.text}>
-  //             {"Great, Let 's do this"}
-  //           </Typography>
-  //         </Grid>
-  //       </Grid>
-  //       <Grid container spacing={0} justify="center">
-  //         <Grid className={classes.registerBox} item xs={5}>
-  //           <Typography component="h1" variant="h5">
-  //             {pageHeading}
-  //           </Typography>
-  //           <form noValidate>
-  //             <TextField
-  //               margin="normal"
-  //               required
-  //               fullWidth
-  //               id="firstName"
-  //               label="First Name"
-  //               name="firstName"
-  //               autoComplete="email"
-  //               onChange={e => setFirstName(e.target.value)}
-  //               autoFocus
-  //             />
-  //             <TextField
-  //               margin="normal"
-  //               required
-  //               fullWidth
-  //               id="lastName"
-  //               label="Last Name"
-  //               name="lastName"
-  //               autoComplete="email"
-  //               onChange={e => setLastName(e.target.value)}
-  //             />
-  //             <TextField
-  //               margin="normal"
-  //               required
-  //               fullWidth
-  //               id="email"
-  //               label="Email Address"
-  //               name="email"
-  //               autoComplete="email"
-  //               onChange={e => setEmailId(e.target.value)}
-  //             />
-  //             <TextField
-  //               margin="normal"
-  //               required
-  //               fullWidth
-  //               id="companyId"
-  //               label="Company Name"
-  //               name="Company Name"
-  //               autoComplete="Company Name"
-  //               onChange={e => setCompanyId(e.target.value)}
-  //             />
-  //             <TextField
-  //               margin="normal"
-  //               required
-  //               fullWidth
-  //               name="password"
-  //               label="Password"
-  //               type="password"
-  //               id="password"
-  //               onChange={e => setPassword(e.target.value)}
-  //               autoComplete="current-password"
-  //             />
-  //             <TextField
-  //               margin="normal"
-  //               required
-  //               fullWidth
-  //               name="confirmPassword"
-  //               label="Confirm Password"
-  //               type="password"
-  //               id="confirmPassword"
-  //               onChange={e => setConfirmPassword(e.target.value)}
-  //               autoComplete="current-password"
-  //             />
-  //             <Button
-  //               fullWidth
-  //               variant="contained"
-  //               color="primary"
-  //               className={classes.buttons}
-  //               onClick={validationCheck}
-  //             >
-  //               Register
-  //             </Button>
-  //           </form>
-  //         </Grid>
-
-  //         <Grid item xs={12} className={classes.developMessage}>
-  //           <Box mt={5}>
-  //             <Typography variant="body2" color="textSecondary" align="center">
-  //               Developed by Deakin Launchpad
-  //             </Typography>
-  //           </Box>
-  //         </Grid>
-  //       </Grid>
-  //     </div>
-  //   </ThemeProvider>
-  // );
   return content;
 };
 

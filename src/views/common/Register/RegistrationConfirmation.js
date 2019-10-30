@@ -5,35 +5,36 @@ import {
   Button,
   Grid,
   TextField,
-  createMuiTheme
+  createMuiTheme,
+  Typography,
 } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import { API } from "helpers/index";
-import { LoginContext } from "../../../contexts/common/LoginContext";
+import { LoginContext, UserContext } from "../../../contexts";
 
 const useStyles = makeStyles(theme => ({
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   registerBox: {
     width: "100%", // Fix IE 11 issue.
     height: "50vh",
     marginTop: theme.spacing(2),
-    backgroundColor: "azure"
+    backgroundColor: "azure",
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(3, 0, 2),
   },
   buttons: {
     marginTop: theme.spacing(1),
     borderRadius: "1rem",
     backgroundColor: "#087B94",
-    color: "white"
+    color: "white",
   },
   developMessage: {
     position: "absolute",
-    bottom: "1vh"
+    bottom: "1vh",
   },
   blockTop: {
     color: "black",
@@ -41,17 +42,18 @@ const useStyles = makeStyles(theme => ({
     height: "20vh",
     backgroundColor: "rgba(8, 123, 148, 0.08)",
     margin: "30px 0",
-    maxWidth: "100%"
+    maxWidth: "100%",
   },
   text: {
     fontFamily: "Lato, Helvetica, Arial, sans-serif",
     fontSize: "large",
-    fontWeight: "600"
+    fontWeight: "600",
+    textAlign: "center",
   },
   containerButton: {
     lineHeight: "5rem",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -63,16 +65,16 @@ const theme = createMuiTheme({
     error: { main: "#D0011B" },
     contrastThreshold: 3,
 
-    tonalOffset: 0.2
-  }
+    tonalOffset: 0.2,
+  },
 });
 
-const RegistrationConfirmation = ({...props}) => {
-  console.log(props)
+const RegistrationConfirmation = ({ ...props }) => {
   const classes = useStyles();
   const [code, setCode] = useState("");
   const [isVerified, setIsVerified] = useState(false);
   const { setLoginStatus, setAccessToken } = useContext(LoginContext);
+  const { userProfile, setUserProfile } = useContext(UserContext);
   const [hasGotRights] = useState(
     props.location.state &&
       props.location.state.hasOwnProperty("accessToken") &&
@@ -81,25 +83,31 @@ const RegistrationConfirmation = ({...props}) => {
       : false
   );
 
-  console.log(props);
 
   let accessToken =
     props.location.state && props.location.state.hasOwnProperty("accessToken")
       ? props.location.state.accessToken
       : "";
 
+  const userDetails =
+    props.location.state && props.location.state.hasOwnProperty("userDetails")
+      ? props.location.state.userDetails
+      : "";
+
   React.useEffect(() => {
     if (isVerified) {
       setLoginStatus(true);
     }
-  }, [code, isVerified, setLoginStatus]);
+  }, [isVerified, setLoginStatus]);
 
   const sendCode = async () => {
+    console.log(userDetails)
     const verificationStatus = await API.sendOTP(
       { "OTPCode": code },
       accessToken
     );
     if (verificationStatus === 200) {
+      setUserProfile(userDetails);
       window.localStorage.setItem("accessToken", accessToken);
       setIsVerified(true);
     }
@@ -112,15 +120,14 @@ const RegistrationConfirmation = ({...props}) => {
         className={classes.registerBox}
         alignItems="center"
         justify="center"
-        direction="column"
       >
-        <Grid item xs={3} className={classes.text}>
-          Your account has been verified{" "}
+        <Grid item xs={10} className={classes.text}>
+          Your account has been verified
         </Grid>
-        <Grid item xs={3} container spacing={2}>
-          <Grid item xs={6} className={classes.containerButton}>
-            <Button className={classes.buttons}>
-              <Link to="/">Home</Link>
+        <Grid item xs={10} container justify="center">
+          <Grid item xs={6}>
+            <Button fullWidth className={classes.buttons}>
+              <Link to="/onboarding" user={userProfile}>Home</Link>
             </Button>
           </Grid>
         </Grid>
@@ -133,12 +140,23 @@ const RegistrationConfirmation = ({...props}) => {
         className={classes.registerBox}
         alignItems="center"
         justify="center"
-        direction="column"
       >
-        <Grid item xs={3} className={classes.text}>
-          A verification code has been sent to {props.location.state.emailId}
+        <Grid
+          item
+          xs={10}
+          container
+          justify="space-between"
+          alignItems="center"
+          spacing={3}
+          direction="column"
+          className={classes.text}
+        >
+          A verification code has been sent to:
+          <Typography variant="h5" color="secondary">
+            {props.location.state.emailId}
+          </Typography>
         </Grid>
-        <Grid item xs={3} container spacing={2}>
+        <Grid item xs={10} container alignItems="center" justify="center">
           <Grid item xs={6}>
             <TextField
               margin="normal"
@@ -150,8 +168,9 @@ const RegistrationConfirmation = ({...props}) => {
               onChange={e => setCode(e.target.value)}
             ></TextField>
           </Grid>
-          <Grid item xs={6} className={classes.containerButton}>
+          <Grid item xs={10} className={classes.containerButton}>
             <Button
+              fullWidth
               className={classes.buttons}
               onClick={() => {
                 sendCode();

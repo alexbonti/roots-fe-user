@@ -38,13 +38,11 @@ class API {
     .catch(error => window.localStorage.clear)
   }
 
-  registerEmployer = async data => {
-    return await axios({
-      method: "post",
-      url: "http://localhost:8031/api/employer/register",
-      data,
-    })
+  registerUser = async data => {
+    return await axiosInstance
+      .post("/user/register", data)
       .then(response => {
+        console.log(response)
         return { response: response.data.data };
       })
       .catch(error => {
@@ -55,8 +53,8 @@ class API {
 
   sendOTP = async (data, accessToken) => {
     //accessToken = localStorage.getItem("accessToken");
-    return await axios
-      .put("http://localhost:8031/api/employer/verifyOTP", data, {
+    return await axiosInstance
+      .put("/user/verifyOTP", data, {
         headers: {
           authorization: "Bearer " + accessToken,
         },
@@ -87,7 +85,6 @@ class API {
   };
 
   createMyCompany = async (data, accessToken ) => {
-    console.log(accessToken)
     return await axiosInstance
       .post("/employer/createcompany", data, {
         headers: {

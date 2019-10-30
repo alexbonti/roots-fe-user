@@ -2,20 +2,24 @@ import React from "react";
 import { LoginContext, LoginProvider } from "./common/LoginContext";
 import { LayoutContext, LayoutProvider } from "./common/LayoutContext";
 import { HomeContext, HomeProvider } from "./dependants/HomeContext";
+import { UserContext, UserProvider } from "./dependants/UserContext";
 import {
   EditOpportunityContext,
-  EditOpportunityProvider
+  EditOpportunityProvider,
 } from "./dependants/EditOpportunityContext";
 import {
   MyCompanyContext,
-  MyCompanyProvider
+  MyCompanyProvider,
 } from "./dependants/MyCompanyContext";
 import {
   CandidateContext,
-  CandidateProvider
+  CandidateProvider,
 } from "./dependants/CandidateContext";
 
-import {TextEditorContext, TextEditorProvider} from './dependants/TextEditorContext'
+import {
+  TextEditorContext,
+  TextEditorProvider,
+} from "./dependants/TextEditorContext";
 
 export {
   LoginContext,
@@ -31,7 +35,9 @@ export {
   CandidateContext,
   CandidateProvider,
   TextEditorContext,
-  TextEditorProvider
+  TextEditorProvider,
+  UserContext,
+  UserProvider,
 };
 
 export const ContextManager = props => {
@@ -39,15 +45,19 @@ export const ContextManager = props => {
   return (
     <LayoutProvider>
       <LoginProvider>
-        <HomeProvider>
-          <MyCompanyProvider>
-            <CandidateProvider>
-              <EditOpportunityProvider>
-                <TextEditorProvider>{children}</TextEditorProvider>
-              </EditOpportunityProvider>
-            </CandidateProvider>
-          </MyCompanyProvider>
-        </HomeProvider>
+        <UserProvider>
+          <HomeProvider>
+            <EditOpportunityProvider>
+              <MyCompanyProvider>
+                <CandidateProvider>
+                  <EditOpportunityProvider>
+                    <TextEditorProvider>{children}</TextEditorProvider>
+                  </EditOpportunityProvider>
+                </CandidateProvider>
+              </MyCompanyProvider>
+            </EditOpportunityProvider>
+          </HomeProvider>
+        </UserProvider>
       </LoginProvider>
     </LayoutProvider>
   );

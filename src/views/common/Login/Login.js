@@ -25,8 +25,6 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
-
 import Image from "../../../helpers/img/header.png";
 
 let theme = createMuiTheme({
@@ -76,8 +74,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
-  loginBox: {},
-
+  secondaryText: {
+    color: "white"
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
@@ -150,7 +149,7 @@ export const Login = () => {
           alignItems="flex-start"
           className={classes.body}
         >
-          <Grid className={classes.loginBox} item xs={11}>
+          <Grid className={classes.loginBox} item xs={10}>
             <form noValidate>
               <TextField
                 margin="normal"
@@ -228,14 +227,14 @@ export const Login = () => {
                     <ListItemText primary="Deakin"/>
                   </ListItem>
                   <Divider className={classes.divider}/>
-                  <ListItem component="a">
-                    <ListItemText secondary="Copyright" />
+                  <ListItem component="a" >
+                    <ListItemText secondary="Copyright"  />
                   </ListItem>
                   <ListItem component="a">
-                    <ListItemText secondary="Disclaimner" />
+                    <ListItemText secondary="Disclaimner"  />
                   </ListItem>
                   <ListItem component="a">
-                    <ListItemText secondary="Privacy" />
+                    <ListItemText secondary="Privacy"  />
                   </ListItem>
                 </List>
                 <List component="nav">
@@ -244,30 +243,13 @@ export const Login = () => {
                   </ListItem>
                   <Divider className={classes.divider}/>
                   <ListItem component="a">
-                    <ListItemText secondary="FAQ" />
+                    <ListItemText secondary="FAQ"  />
                   </ListItem>
                   <ListItem component="a">
                     <ListItemText secondary="Contact" />
                   </ListItem>
                 </List>
               </Grid>
-
-              {/* <Grid container item direction="column">
-                  <Grid item>
-                    <Typography
-                      variant="body2"
-                      color="primary"
-                      align="center"
-                    >
-                      Deakin Create
-                    </Typography>
-                  </Grid> */}
-              {/* <Grid item xs={6}>
-                    <Divider color="primary" light={true}/>
-                  </Grid> */}
-
-              {/* <Grid item>1</Grid>
-                <Grid item>1</Grid> */}
               <Grid
                 container
                 item
