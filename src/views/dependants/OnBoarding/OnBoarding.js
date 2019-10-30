@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core/";
 import { UserContext, LoginContext, OnBoardingContext } from "contexts";
 import { API } from "helpers";
-import { StartOnBoarding } from "components";
+import { StartOnBoarding, IndustrySelection } from "components";
 
 const useStyles = makeStyles(theme => ({
   topper: {
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
-    margin: "4vh 0",
+    margin: "1vh 0",
   },
 }));
 
@@ -97,22 +97,55 @@ export const OnBoarding = props => {
     setActiveStep(0);
   };
 
-  const buttonStepper =
-    isStart ? (
-      <Grid item xs={10}>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.buttons}
-          onClick={handleNext}
-        >
-          {activeStep === steps.length - 1 ? "Finish" : "Next"}
-        </Button>
-      </Grid>
-    ) : (
-      ""
-    );
+  // ---------------------button stepper------------------------
+
+  const buttonStepper = isStart ? (
+    <Grid item xs={10}>
+      <Button
+        fullWidth
+        variant="contained"
+        color="primary"
+        className={classes.buttons}
+        onClick={handleNext}
+      >
+        {activeStep === steps.length - 1 ? "Finish" : "Next"}
+      </Button>
+    </Grid>
+  ) : (
+    ""
+  );
+
+  //--------------------------------------------------------------
+  function getStepContent(stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return startContent;
+      case 1:
+        return <IndustrySelection />;
+      case 2:
+        return "avatar picture appload";
+      default:
+        return "Unknown stepIndex";
+    }
+  }
+  //-------------------content------------------------------------
+
+  const startContent = (
+    <>
+    <StartOnBoarding />
+    <Grid
+      container
+      style={{ backgroundColor: "white", height: "5vh" }}
+      justify="center"
+      alignItems="flex-end"
+    >
+      {buttonStepper}
+    </Grid>
+    </>
+  );
+
+   
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -171,15 +204,7 @@ export const OnBoarding = props => {
               </Step>
             </Stepper>
           </Grid>
-          <StartOnBoarding />
-          <Grid
-            container
-            style={{ backgroundColor: "white", height: "20vh" }}
-            justify="center"
-            alignItems="flex-end"
-          >
-            {buttonStepper}
-          </Grid>
+          {getStepContent(activeStep)}
         </Grid>
       </ThemeProvider>
     </>

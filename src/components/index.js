@@ -13,8 +13,12 @@ import { ExperienceCV } from "./dependants/cv/ExperienceCV";
 import { EducationCV } from "./dependants/cv/EducationCV";
 import { CoverLetterCV } from "./dependants/cv/CoverLetterCV";
 import { VolunteerCV } from "./dependants/cv/VolunteerCV";
-import {TemporaryDrawer} from './common/Drawer'
-import {StartOnBoarding} from './dependants/onBoarding/StartOnBoarding'
+import { TemporaryDrawer } from "./common/Drawer";
+import { StartOnBoarding } from "./dependants/onBoarding/StartOnBoarding";
+import { NoExperience } from "./dependants/onBoarding/NoExperience";
+import { GotExperience } from "./dependants/onBoarding/GotExperience";
+import {CurtainIndustrySelection} from "./dependants/onBoarding/CurtainIndustrySelection"
+import {IndustrySelection} from "./dependants/onBoarding/IndustrySelection"
 
 export {
   AddOpportunity,
@@ -34,5 +38,9 @@ export {
   CoverLetterCV,
   VolunteerCV,
   TemporaryDrawer,
-  StartOnBoarding
+  StartOnBoarding,
+  NoExperience,
+  GotExperience,
+  IndustrySelection,
+  CurtainIndustrySelection
 };

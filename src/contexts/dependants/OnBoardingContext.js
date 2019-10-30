@@ -7,6 +7,12 @@ export const OnBoardingProvider = props => {
   const [activeStep, setActiveStep] = useState(0);
   const [isStart, setIsStart] = useState(false)
   const [isUpdated, setIsUpdated] = useState(false);
+  const [location, setLocation] = useState("");
+  const [positionTitle, setPositionTitle] = useState("")
+  const [companyName, setCompanyName] = useState("")
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
+  
   const { children } = props;
 
   return (
@@ -16,7 +22,18 @@ export const OnBoardingProvider = props => {
         setActiveStep,
         isUpdated,
         setIsUpdated,
-        isStart, setIsStart
+        isStart, 
+        setIsStart,
+        positionTitle,
+        setPositionTitle,
+        location,
+        setLocation,
+        companyName,
+        setCompanyName,
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate  
       }}
     >
       {children}

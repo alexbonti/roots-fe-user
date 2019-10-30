@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Typography, Grid, Button, Tabs, Tab, Box } from "@material-ui/core/";
-import { OnBoardingContext } from "contexts";
+import { Typography, Grid, Tabs, Tab, Box } from "@material-ui/core/";
+import {NoExperience, GotExperience} from "components";
 import PropTypes from "prop-types";
 
 function TabPanel(props) {
@@ -65,7 +65,6 @@ const theme = createMuiTheme({
 
 export const StartOnBoarding = props => {
   const classes = useStyles();
-  const { setIsStart } = useContext(OnBoardingContext);
   const [isStarted, setIsStarted] = useState(false);
   const [value, setValue] = React.useState(0);
 
@@ -83,17 +82,20 @@ export const StartOnBoarding = props => {
     }
   };
 
+
+   
+
   const tabsRender = isStarted ? (
     <Grid item container justify="center">
       <TabPanel value={value} index={0}>
-        Item One
+        <NoExperience />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <GotExperience />
       </TabPanel>
     </Grid>
   ) : (
-    <Grid item xs={8} container spacing={2}>
+    <Grid item xs={10} container spacing={2} justify="center">
       <Grid item container justify="center">
         <Typography variant="body1" align="center">
           {" "}
@@ -114,14 +116,14 @@ export const StartOnBoarding = props => {
       <ThemeProvider theme={theme}>
         <Grid
           container
-          justify="space-evenly"
+          justify="center"
           className={classes.rootMain}
           spacing={2}
         >
-          <Grid item xs={8} container>
-            <Typography variant="body1">
+          <Grid item xs={9} container justify="flex-start">
+            <Typography variant="body1" >
               {" "}
-              First of all, <br /> have you got experience before ?
+              First of all,<br />have you got experience before ?
             </Typography>
           </Grid>
           <Grid container item xs={12} justify="space-evenly">
