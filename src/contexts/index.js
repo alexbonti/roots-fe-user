@@ -21,6 +21,11 @@ import {
   TextEditorProvider,
 } from "./dependants/TextEditorContext";
 
+import {
+  OnBoardingContext,
+  OnBoardingProvider,
+} from "./dependants/OnBoardingContext";
+
 export {
   LoginContext,
   LoginProvider,
@@ -38,6 +43,8 @@ export {
   TextEditorProvider,
   UserContext,
   UserProvider,
+  OnBoardingContext,
+  OnBoardingProvider,
 };
 
 export const ContextManager = props => {
@@ -46,17 +53,19 @@ export const ContextManager = props => {
     <LayoutProvider>
       <LoginProvider>
         <UserProvider>
-          <HomeProvider>
-            <EditOpportunityProvider>
-              <MyCompanyProvider>
-                <CandidateProvider>
-                  <EditOpportunityProvider>
-                    <TextEditorProvider>{children}</TextEditorProvider>
-                  </EditOpportunityProvider>
-                </CandidateProvider>
-              </MyCompanyProvider>
-            </EditOpportunityProvider>
-          </HomeProvider>
+          <OnBoardingProvider>
+            <HomeProvider>
+              <EditOpportunityProvider>
+                <MyCompanyProvider>
+                  <CandidateProvider>
+                    <EditOpportunityProvider>
+                      <TextEditorProvider>{children}</TextEditorProvider>
+                    </EditOpportunityProvider>
+                  </CandidateProvider>
+                </MyCompanyProvider>
+              </EditOpportunityProvider>
+            </HomeProvider>
+          </OnBoardingProvider>
         </UserProvider>
       </LoginProvider>
     </LayoutProvider>

@@ -11,7 +11,9 @@ import {
   Stepper,
   Button,
 } from "@material-ui/core/";
-import { UserContext, LoginContext } from "contexts";
+import { UserContext, LoginContext, OnBoardingContext } from "contexts";
+import { API } from "helpers";
+import { StartOnBoarding } from "components";
 
 const useStyles = makeStyles(theme => ({
   topper: {
@@ -65,8 +67,23 @@ function getStepContent(stepIndex) {
 
 export const OnBoarding = props => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const { activeStep, setActiveStep, isStart } = useContext(OnBoardingContext);
   const steps = getSteps();
+  const { loginStatus, accessToken } = useContext(LoginContext);
+  const { userProfile, setUserProfile, isUpdated, setIsUpdated } = useContext(
+    UserContext
+  );
+
+  useEffect(() => {
+    if (loginStatus) {
+      const triggerAPI = async () => {
+        const profileData = await API.getUserProfile(accessToken);
+        setUserProfile(profileData.response);
+        console.log("context profile", userProfile);
+      };
+      triggerAPI(accessToken);
+    }
+  }, [accessToken, loginStatus, setUserProfile]);
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -79,6 +96,23 @@ export const OnBoarding = props => {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  const buttonStepper =
+    isStart ? (
+      <Grid item xs={10}>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.buttons}
+          onClick={handleNext}
+        >
+          {activeStep === steps.length - 1 ? "Finish" : "Next"}
+        </Button>
+      </Grid>
+    ) : (
+      ""
+    );
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -98,9 +132,16 @@ export const OnBoarding = props => {
           alignItems="center"
           style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "22vh" }}
         >
-          <Grid container item xs={10} justify="center" alignItems="center" style={{height: "15vh"}}>
+          <Grid
+            container
+            item
+            xs={11}
+            justify="center"
+            alignItems="center"
+            style={{ height: "15vh" }}
+          >
             <Typography variant="h5">
-              Welcome, User. <br />
+              Welcome, {userProfile.first_name}. <br />
               Let's get your profile ready.
             </Typography>
           </Grid>
@@ -130,18 +171,14 @@ export const OnBoarding = props => {
               </Step>
             </Stepper>
           </Grid>
-          <Grid container style={{ backgroundColor: "white", height: "60vh" }} justify="center" alignItems="flex-end">
-            <Grid item xs={10}>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.buttons}
-                onClick={handleNext}
-              >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
-            </Grid>
+          <StartOnBoarding />
+          <Grid
+            container
+            style={{ backgroundColor: "white", height: "20vh" }}
+            justify="center"
+            alignItems="flex-end"
+          >
+            {buttonStepper}
           </Grid>
         </Grid>
       </ThemeProvider>

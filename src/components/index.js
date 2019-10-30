@@ -14,7 +14,7 @@ import { EducationCV } from "./dependants/cv/EducationCV";
 import { CoverLetterCV } from "./dependants/cv/CoverLetterCV";
 import { VolunteerCV } from "./dependants/cv/VolunteerCV";
 import {TemporaryDrawer} from './common/Drawer'
-import {StepperHorizontal} from "./dependants/Stepper"
+import {StartOnBoarding} from './dependants/onBoarding/StartOnBoarding'
 
 export {
   AddOpportunity,
@@ -34,6 +34,5 @@ export {
   CoverLetterCV,
   VolunteerCV,
   TemporaryDrawer,
-  StepperHorizontal
-
+  StartOnBoarding
 };

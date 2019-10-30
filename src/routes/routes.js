@@ -14,7 +14,6 @@ export const AppRoutes = props => {
 
   const {firstLogin} = {userProfile};
 
-  console.log(firstLogin);
 
   useEffect(() => {
     if (loginStatus) setRedirectToLogin(false);

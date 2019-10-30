@@ -151,10 +151,10 @@ class API {
   };
 
 
-  getProfileEmployer = async(auth) =>{
+  getUserProfile = async(auth) =>{
     let accessToken = localStorage.getItem("accessToken");
     return await axiosInstance
-      .get('/employer/getProfile', {
+      .get('/user/getProfile', {
         headers: {
           authorization: `Bearer ${accessToken}`,
         }
