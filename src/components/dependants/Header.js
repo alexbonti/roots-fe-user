@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     paddingRight: 2, // keep right padding when drawer closed
     backgroundColor: "#2C2C29",
+    height: "10vh",
   },
   avatar: {
     margin: 10,
@@ -157,22 +158,20 @@ export const Header = () => {
   let content = (
     <ThemeProvider theme={theme}>
       <AppBar className={classes.toolbar}>
-        <Grid container alignItems="center" justify="space-around" style={{padding: "1vh"}} >
-          <Grid container item xs={10} justify="flex-start" alignItems="center" >
-            <Grid style={{marginRight: "2vw"}}>
-              <Avatar>D</Avatar>
-            </Grid>
-            <Grid>
-              <Typography color="inherit" gutterBottom={true} variant="subtitle1" display="block">
-                DEAKIN <br />
-                CREATE
-              </Typography>
-            </Grid>
-          </Grid>
+        <Grid container alignItems="flex-end" justify="space-between" style={{padding: "2vh 0"}}>
           
-          <Grid item xs={2}>
+          <Grid item align="center"xs={2}>
+            <Avatar>A</Avatar>
+          </Grid>
+         
+          <Grid item   align="center"xs={2}>
+            <Avatar>R</Avatar>
+          </Grid>
+
+          <Grid item align="center"xs={2}>
             {menu}
           </Grid>
+          
         </Grid>
       </AppBar>
     </ThemeProvider>

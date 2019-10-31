@@ -4,7 +4,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { LoginContext, UserContext } from "contexts";
-import { Login, Register, Home2, RegistrationConfirmation, OnBoarding } from "views";
+import { Login, Register, Home, RegistrationConfirmation, OnBoarding } from "views";
 import { Layout } from "../layout";
 
 export const AppRoutes = props => {
@@ -62,7 +62,7 @@ export const AppRoutes = props => {
             redirectToLogin ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
             ) : (
-              <Home2 {...props} />
+              <Home {...props} />
             )
           }
         />

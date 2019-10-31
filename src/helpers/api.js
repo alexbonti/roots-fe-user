@@ -10,7 +10,7 @@ class API {
   loginEmployer = async (data, setAccessToken) => {
     return await axios({
       method: "post",
-      url: "http://localhost:8031/api/employer/login",
+      url: "http://localhost:8031/api/user/login",
       data,
     })
       .then(response => {
@@ -98,17 +98,13 @@ class API {
   getOpportunity = async (accessToken) => {
     accessToken = localStorage.getItem("accessToken");
     return await axiosInstance
-      .get("/employer/viewjobsposted", {
-        headers: {
-          authorization: "Bearer " + accessToken,
-        }
-      })
+      .get("/jobs/viewOpportunities")
       .then(response => {
-        return { response: response.data.data.jobsData, status: true };
+        return { response: response.data.data.opportunityData};
       })
       .catch(error => {
         console.log(error);
-        return { status: false };
+        return { error };
       });
   };
 
@@ -210,11 +206,11 @@ class API {
       });
   };
 
-  updateCompanyDetails = async (data, auth) => {
+  updateWorkExp = async (data) => {
     let accessToken = localStorage.getItem("accessToken");
-
+    console.log(data)
     return await axiosInstance
-      .put("/employer/updatecompany", data, {
+      .put("/user/workExperienceUserExtended", data, {
         headers: {
           "authorization": `bearer ${accessToken}`,
         },
@@ -226,6 +222,41 @@ class API {
         return { "error": error };
       });
   };
+
+  updateUserPreferences = async (data) => {
+    let accessToken = localStorage.getItem("accessToken");
+
+    return await axiosInstance
+      .put("/user/preferrencesUserExtended", data, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
+  };
+
+  updateUserProfile = async (data) => {
+    let accessToken = localStorage.getItem("accessToken");
+
+    return await axiosInstance
+      .put("/user/updateProfile", data, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
+  };
+  
 
 
   updateShortList = async (array) => {

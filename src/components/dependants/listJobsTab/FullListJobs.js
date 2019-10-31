@@ -2,7 +2,6 @@ import React from "react";
 import {  createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid} from "@material-ui/core/";
-import {CurtainIndustrySelection} from "components";
 
 
 
@@ -18,7 +17,8 @@ const theme = createMuiTheme({
   },
 });
 
-export const IndustrySelection = () => {
+export const FullListJobs
+ = () => {
 
   return (
     <>
@@ -28,7 +28,6 @@ export const IndustrySelection = () => {
             <Typography variant="body1">Which industry are you interested in ?</Typography>
           </Grid>
           <Grid item xs={10}>
-            <CurtainIndustrySelection />
           </Grid>
         </Grid>
       </ThemeProvider>

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Tabs, Tab, Box } from "@material-ui/core/";
 import {NoExperience, GotExperience} from "components";
 import PropTypes from "prop-types";
+import {OnBoardingContext} from 'contexts';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,6 +49,7 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "4vh 0",
+    width: "37vw"
   },
 }));
 
@@ -67,6 +69,7 @@ export const StartOnBoarding = props => {
   const classes = useStyles();
   const [isStarted, setIsStarted] = useState(false);
   const [value, setValue] = React.useState(0);
+  const {userHasExperience, setUserHasExperience} = useContext(OnBoardingContext);
 
   //   const changeStep = () => {
   //     setIsStart(true);
@@ -88,10 +91,10 @@ export const StartOnBoarding = props => {
   const tabsRender = isStarted ? (
     <Grid item container justify="center">
       <TabPanel value={value} index={0}>
-        <NoExperience />
+        <GotExperience />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <GotExperience />
+        <NoExperience />
       </TabPanel>
     </Grid>
   ) : (
@@ -139,11 +142,17 @@ export const StartOnBoarding = props => {
                 label="Yes, I have"
                 {...a11yProps(0)}
                 className={classes.buttons}
+                onClick={()=>{setUserHasExperience(true);}}
+                style={{borderRadius: "15px 0  0 15px"}}
               />
               <Tab
                 label="No, I'm new"
                 {...a11yProps(1)}
                 className={classes.buttons}
+                onClick={() => {setUserHasExperience(false);}}
+                style={{borderRadius: "0px 15px 15px 0"}}
+
+              
               />
             </Tabs>
           </Grid>

@@ -1,55 +1,44 @@
 import React, { useEffect, useState, useContext } from "react";
+import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { AppBar, Tabs, Tab, Typography, Box, Grid } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
-import {
-  AppBar,
-  Tabs,
-  Tab,
-  Typography,
-  Box,
-  Grid,
-  Container
-} from "@material-ui/core/";
-import { HomeContext, LoginContext } from "contexts";
-import {
-  AddOpportunity,
-  ListOpportunity,
-  MyCompany,
-  EditMyCompany
-} from "../../../components/index";
+import {FullListJobs} from "components";
+import {LoginContext} from "contexts"
+
 import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
-import SingleJob from "../../../components/dependants/SingleJob";
-import { ListOfCandidatesOfASingleJob } from "components/dependants/ListOfCandidatesOfASingleJob";
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     flexGrow: 1,
-    padding: "0"
+    // padding: "3vh 0 0 0",
   },
-  icon: {
-    margin: theme.spacing(0)
+  tabs: {
+    height: "100%", 
+    boxShadow: "none"
+    
   },
-  iconHover: {
-    margin: theme.spacing(0),
-    "&:hover": {
-      color: "red"
-    }
-  },
-  topSpace: {
-    display: "flex",
-    height: "15vh",
-    backgroundColor: "white",
-    fontSize: 30,
-    padding: "10px 0",
-    fontWeight: "bolder",
-    margin: 0,
-    width: "100vw",
-    maxWidth: "none"
+
+  tab: {
+    height: "85%",
+    alignSelf: "flex-end",
+    border: "1px solid #f0f0f0"
   }
 }));
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#087B94" },
+    secondary: { main: "#C74197" },
+    terziary: { main: "#2B2B28" },
+    // accent: { main: "#FFD922" },
+    // error: { main: "#D0011B" },
+    // contrastThreshold: 3,
+    // tonalOffset: 0.2,
+  },
+});
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,114 +60,67 @@ function TabPanel(props) {
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
+  value: PropTypes.any.isRequired,
 };
 
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`
+    "aria-controls": `full-width-tabpanel-${index}`,
   };
 }
 
+
+
+
 export const Home = () => {
   const classes = useStyles();
-  const [value, setValue] = useState(0);
-  const [dataJobs, setDataJobs] = useState("");
-  const [dataJobsDraft, setDataJobsDraft] = useState("");
-  const {
-    addOpportunity,
-    jobView,
-    setTabNumber,
-    isListCanditatesOfAJob,
-    isEditMyCompany,
-    mainTitle,
-    setMainTitle
-  } = useContext(HomeContext);
-  const { loginStatus } = useContext(LoginContext);
+  const [value, setValue] = React.useState(0);
+  const {loginStatus} = useContext(LoginContext);
 
   const handleChange = (event, newValue) => {
-    // main title tab
-    newValue === 1
-      ? setMainTitle("Canditates")
-      : newValue === 2
-      ? setMainTitle("Company Profile")
-      : setMainTitle(
-          "Let's create an opportunity and start making a difference"
-        );
-
-    setTabNumber(newValue);
     setValue(newValue);
   };
 
-  const handleChangeIndex = index => setValue(index);
+  const handleChangeIndex = index => {
+    setValue(index);
+  };
+
 
   useEffect(() => {
+
     const triggerAPI = async () => {
       const oppResponse = await API.getOpportunity();
-      const oppDraftResponse = await API.getOpportunityDraft();
-      if (oppResponse.status && oppDraftResponse.status) {
-        setDataJobs(oppResponse.response);
-        setDataJobsDraft(oppDraftResponse.response);
-      }
+      console.log(oppResponse);
+      // const oppDraftResponse = await API.getOpportunityDraft();
+      // if (oppResponse.status && oppDraftResponse.status) {
+      //   setDataJobs(oppResponse.response);
+      //   setDataJobsDraft(oppDraftResponse.response);
+      // }
     };
     if (loginStatus) {
       triggerAPI();
     }
-    // if (loginStatus) {
-    //   API.getOpportunity(setDataJobs);
-    //   API.getOpportunityDraft(setDataJobsDraft);
-    // }
   }, [loginStatus]);
 
-  const theme = createMuiTheme({
-    palette: {
-      primary: { main: "#087B94", light: "#FFD922" },
-      secondary: { main: "#FFD922" },
-      terziary: { main: "#2B2B28" },
-      accent: { main: "#FFD922" },
-      error: { main: "#D0011B" },
-      // Used by `getContrastText()` to maximize the contrast between the background and
-      // the text.
-      contrastThreshold: 3,
-      // Used to shift a color's luminance by approximately
-      // two indexes within its tonal palette.
-      // E.g., shift from Red 500 to Red 300 or Red 700.
-      tonalOffset: 0.2
-    }
-  });
-
-  const list = !addOpportunity ? (
-    dataJobs !== "" && dataJobsDraft !== "" ? (
-      <ListOpportunity data={dataJobs} data2={dataJobsDraft} />
-    ) : (
-      "loading"
-    )
-  ) : (
-    <AddOpportunity />
-  );
 
 
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
-        <Container className={classes.topSpace}>
-          <Grid container justify="center" alignItems="center">
-            <Grid item>{mainTitle} </Grid>
-          </Grid>
-        </Container>
-        <AppBar position="static" color="primary">
+        <AppBar position="static" color="default" style={{height: "13vh", }}>
           <Tabs
             value={value}
             onChange={handleChange}
-            indicatorColor="secondary"
-            textColor="inherit"
+            indicatorColor="primary"
+            textColor="primary"
             variant="fullWidth"
+            className={classes.tabs}
             aria-label="full width tabs example"
           >
-            <Tab label="Your Opportunity" {...a11yProps(0)} />
-            <Tab label="Candidates" {...a11yProps(1)} />
-            <Tab label="My Company" {...a11yProps(2)} />
+            <Tab label="Search" {...a11yProps(0)} className={classes.tab} />
+            <Tab label="News" {...a11yProps(1)} className={classes.tab}/>
+            <Tab label="Resources" {...a11yProps(2)} className={classes.tab}/>
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -187,17 +129,13 @@ export const Home = () => {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <Grid container className={classes.root} spacing={2}>
-              <Grid item xs={12}>
-                {jobView ? <SingleJob /> : list}
-              </Grid>
-            </Grid>
+            <FullListJobs />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            {isListCanditatesOfAJob ? <ListOfCandidatesOfASingleJob /> : list}
+            Item Two
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            {isEditMyCompany ? <EditMyCompany /> : <MyCompany />}
+            Item Three
           </TabPanel>
         </SwipeableViews>
       </div>

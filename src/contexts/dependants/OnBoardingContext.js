@@ -7,6 +7,7 @@ export const OnBoardingProvider = props => {
   const [activeStep, setActiveStep] = useState(0);
   const [isStart, setIsStart] = useState(false)
   const [isUpdated, setIsUpdated] = useState(false);
+  const [userHasExperience, setUserHasExperience] = useState(false);
   const [location, setLocation] = useState("");
   const [positionTitle, setPositionTitle] = useState("")
   const [companyName, setCompanyName] = useState("")
@@ -40,7 +41,9 @@ export const OnBoardingProvider = props => {
         industryField,
         setIndustryField,
         avatarPictureURL,
-        setAvatarPictureURL
+        setAvatarPictureURL,
+        userHasExperience,
+        setUserHasExperience
       }}
     >
       {children}

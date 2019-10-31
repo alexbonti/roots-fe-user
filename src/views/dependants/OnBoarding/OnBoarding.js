@@ -11,13 +11,17 @@ import {
 } from "@material-ui/core/";
 import { UserContext, LoginContext, OnBoardingContext } from "contexts";
 import { API } from "helpers";
-import { StartOnBoarding, IndustrySelection, AvatarPictureUpload } from "components";
+import {
+  StartOnBoarding,
+  IndustrySelection,
+  AvatarPictureUpload,
+  EndOnBoarding,
+} from "components";
 import { withRouter } from "react-router-dom";
-
 
 const useStyles = makeStyles(theme => ({
   topper: {
-    height: "10vh",
+    height: "5vh",
     backgroundColor: "white",
   },
   secondTopper: {
@@ -87,6 +91,7 @@ const OnBoarding = props => {
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+    console.log(activeStep);
   };
 
   const handleBack = () => {
@@ -124,8 +129,10 @@ const OnBoarding = props => {
         return industryContent;
       case 2:
         return <AvatarPictureUpload />;
+      case 3:
+        return <EndOnBoarding />;
       default:
-        return "EndOnBoarding";
+        return "Sorry wrong page!";
     }
   }
   //-------------------content------------------------------------
@@ -158,8 +165,8 @@ const OnBoarding = props => {
     </>
   );
 
-  return (
-    <>
+  const mainContent =
+    activeStep > 2  ? <EndOnBoarding/ > : (
       <ThemeProvider theme={theme}>
         <Grid container className={classes.topper} alignItems="flex-end">
           <Button
@@ -173,55 +180,49 @@ const OnBoarding = props => {
 
         <Grid
           container
+          item
+          xs={11}
           justify="center"
           alignItems="center"
-          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "22vh" }}
+          style={{ height: "15vh" }}
         >
-          <Grid
-            container
-            item
-            xs={11}
-            justify="center"
-            alignItems="center"
-            style={{ height: "15vh" }}
-          >
-            <Typography variant="h6">
-              Welcome, {userProfile.first_name}. <br />
-              Let's get your profile ready.
-            </Typography>
-          </Grid>
-          <Grid
+          <Typography variant="h6">
+            Welcome, {userProfile.first_name}. <br />
+            Let's get your profile ready.
+          </Typography>
+        </Grid>
+        <Grid
+          style={{
+            backgroundColor: "rgb(234, 244, 246,1 )",
+            height: "5vh",
+            width: "100vw",
+          }}
+        >
+          <Stepper
+            activeStep={activeStep}
+            alternativeLabel
             style={{
-              backgroundColor: "rgb(234, 244, 246,1 )",
-              height: "5vh",
-              width: "100vw",
+              backgroundColor: "transparent",
+              padding: "unset",
             }}
           >
-            <Stepper
-              activeStep={activeStep}
-              alternativeLabel
-              style={{
-                backgroundColor: "transparent",
-                padding: "unset",
-              }}
-            >
-              <Step color="secondary">
-                <StepLabel></StepLabel>
-              </Step>
-              <Step>
-                <StepLabel></StepLabel>
-              </Step>
-              <Step>
-                <StepLabel></StepLabel>
-              </Step>
-            </Stepper>
-          </Grid>
-          {getStepContent(activeStep)}
+            <Step color="secondary">
+              <StepLabel></StepLabel>
+            </Step>
+            <Step>
+              <StepLabel></StepLabel>
+            </Step>
+            <Step>
+              <StepLabel></StepLabel>
+            </Step>
+          </Stepper>
         </Grid>
+        {getStepContent(activeStep)}
       </ThemeProvider>
-    </>
-  );
+    ) 
+
+
+  return <>{mainContent}</>;
 };
 
 export default withRouter(OnBoarding);
-

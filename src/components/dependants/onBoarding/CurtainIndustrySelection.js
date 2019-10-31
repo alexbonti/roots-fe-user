@@ -41,12 +41,14 @@ export const CurtainIndustrySelection = () => {
   const classes = useStyles();
   const [chipData, setChipData] = useState(jobs);
   const [accumulator, setAccumulator] = useState([]);
-  const { setActiveStep, setIndustryField } = useContext(OnBoardingContext);
+  const { activeStep, setActiveStep, industryField, setIndustryField } = useContext(OnBoardingContext);
+  console.log(activeStep);
 
   const handleNext = () => {
+    console.log(industryField, activeStep);
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+    console.log(industryField, activeStep);
     setIndustryField(accumulator);
-    console.log(accumulator);
   };
 
   const handleDelete = chipToDelete => () => {

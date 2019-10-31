@@ -3,9 +3,8 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Button } from "@material-ui/core/";
 import MyDropzone from "../DropDrag";
-import { OnBoardingContext } from "contexts";
+import { OnBoardingContext, LoginContext, UserContext } from "contexts";
 import { API } from "helpers";
-import { classes } from "istanbul-lib-coverage";
 
 const useStyles = makeStyles(theme => ({
   topper: {
@@ -43,17 +42,105 @@ const theme = createMuiTheme({
 export const AvatarPictureUpload = () => {
   const classes = useStyles();
 
-  const { avatarPictureURL, setActiveStep } = useContext(OnBoardingContext);
+  const {
+    activeStep,
+    setActiveStep,
+    setIsUpdated,
+    positionTitle,
+    location,
+    companyName,
+    startDate,
+    endDate,
+    industryField,
+    avatarPictureURL,
+    userHasExperience
+  } = useContext(OnBoardingContext);
 
+  const { loginStatus } = useContext(LoginContext);
+  const { userProfile } = useContext(UserContext);
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
+  console.log(activeStep);
+
+  const sendOnBoardingDetails = async () => {
+    if (loginStatus) {
+      let workExpData;
+      
+      if(startDate && endDate !== ""){
+        workExpData = {
+          workExperience: {
+            positionTitle,
+            companyName,
+            startDate: new Date(startDate).toISOString(),
+            endDate: new Date(endDate).toISOString(),
+            description: "sda",
+          },
+        };
+      }
+
+      let userPreferencesData = {
+        avatar: avatarPictureURL,
+        preferredLocation: location,
+        skills: ["string"],
+        preferredIndustry: industryField,
+      };
+
+      let updateFirstLoginData = {
+        first_name: userProfile.first_name,
+        last_name: userProfile.last_name,
+        firstLogin: false,
+      };
+
+      if (userHasExperience) {
+        console.log('here');
+        const workExpApiData = await API.updateWorkExp(workExpData);
+        console.log("workExpApiData", workExpApiData);
+
+        const userPreferencesApiData = await API.updateUserPreferences(
+          userPreferencesData
+        );
+        console.log("userPreferencesApiData", userPreferencesApiData);
+
+        const userProfileApiData = await API.updateUserProfile(
+          updateFirstLoginData
+        );
+        console.log("userProfileApiData", userProfileApiData);
+        //TODO handle the change of tab in case there's am errpr from BE!
+        handleNext();
+      } else {
+        const userPreferencesApiData = await API.updateUserPreferences(
+          userPreferencesData
+        );
+        console.log("userPreferencesApiData", userPreferencesApiData);
+        const userProfileApiData = await API.updateUserProfile(
+          updateFirstLoginData
+        );
+        console.log("userProfileApiData", userProfileApiData);
+        //TODO handle the change of tab in case there's am errpr from BE!
+        handleNext();
+      }
+
+      console.log(activeStep);
+
+      setIsUpdated(false);
+    }
+    setIsUpdated(true);
+  };
+
   const confirmButton =
     avatarPictureURL !== "" ? (
       <Grid item xs={8}>
-        <Button fullWidth variant="contained" className={classes.buttons} onClick={handleNext}>
+        <Button
+          fullWidth
+          variant="contained"
+          className={classes.buttons}
+          onClick={() => {
+            sendOnBoardingDetails();
+          }}
+        >
           Confirm
         </Button>
       </Grid>
