@@ -17,8 +17,9 @@ import { TemporaryDrawer } from "./common/Drawer";
 import { StartOnBoarding } from "./dependants/onBoarding/StartOnBoarding";
 import { NoExperience } from "./dependants/onBoarding/NoExperience";
 import { GotExperience } from "./dependants/onBoarding/GotExperience";
-import {CurtainIndustrySelection} from "./dependants/onBoarding/CurtainIndustrySelection"
-import {IndustrySelection} from "./dependants/onBoarding/IndustrySelection"
+import {CurtainIndustrySelection} from "./dependants/onBoarding/CurtainIndustrySelection";
+import {IndustrySelection} from "./dependants/onBoarding/IndustrySelection";
+import {AvatarPictureUpload} from "./dependants/onBoarding/AvatarPictureUpload";
 
 export {
   AddOpportunity,
@@ -42,5 +43,6 @@ export {
   NoExperience,
   GotExperience,
   IndustrySelection,
-  CurtainIndustrySelection
+  CurtainIndustrySelection,
+  AvatarPictureUpload,
 };

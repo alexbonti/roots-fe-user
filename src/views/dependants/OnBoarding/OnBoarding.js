@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-// import PropTypes from "views/dependants/OnBoarding/prop-types";
-// import SwipeableViews from "views/dependants/OnBoarding/react-swipeable-views";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import {
@@ -13,7 +11,9 @@ import {
 } from "@material-ui/core/";
 import { UserContext, LoginContext, OnBoardingContext } from "contexts";
 import { API } from "helpers";
-import { StartOnBoarding, IndustrySelection } from "components";
+import { StartOnBoarding, IndustrySelection, AvatarPictureUpload } from "components";
+import { withRouter } from "react-router-dom";
+
 
 const useStyles = makeStyles(theme => ({
   topper: {
@@ -65,7 +65,7 @@ function getStepContent(stepIndex) {
   }
 }
 
-export const OnBoarding = props => {
+const OnBoarding = props => {
   const classes = useStyles();
   const { activeStep, setActiveStep, isStart } = useContext(OnBoardingContext);
   const steps = getSteps();
@@ -121,30 +121,42 @@ export const OnBoarding = props => {
       case 0:
         return startContent;
       case 1:
-        return <IndustrySelection />;
+        return industryContent;
       case 2:
-        return "avatar picture appload";
+        return <AvatarPictureUpload />;
       default:
-        return "Unknown stepIndex";
+        return "EndOnBoarding";
     }
   }
   //-------------------content------------------------------------
 
   const startContent = (
     <>
-    <StartOnBoarding />
-    <Grid
-      container
-      style={{ backgroundColor: "white", height: "5vh" }}
-      justify="center"
-      alignItems="flex-end"
-    >
-      {buttonStepper}
-    </Grid>
+      <StartOnBoarding />
+      <Grid
+        container
+        style={{ backgroundColor: "white", height: "7vh" }}
+        justify="center"
+        alignItems="flex-end"
+      >
+        {buttonStepper}
+      </Grid>
     </>
   );
 
-   
+  const industryContent = (
+    <>
+      <IndustrySelection />
+      {/* <Grid
+        container
+        style={{ backgroundColor: "white", height: "10vh", padding: "1vh" }}
+        justify="center"
+        alignItems="flex-end"
+      >
+        {buttonStepper}
+      </Grid> */}
+    </>
+  );
 
   return (
     <>
@@ -173,7 +185,7 @@ export const OnBoarding = props => {
             alignItems="center"
             style={{ height: "15vh" }}
           >
-            <Typography variant="h5">
+            <Typography variant="h6">
               Welcome, {userProfile.first_name}. <br />
               Let's get your profile ready.
             </Typography>
@@ -210,3 +222,6 @@ export const OnBoarding = props => {
     </>
   );
 };
+
+export default withRouter(OnBoarding);
+

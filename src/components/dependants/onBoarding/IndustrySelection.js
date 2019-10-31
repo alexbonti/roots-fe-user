@@ -90,9 +90,9 @@ export const IndustrySelection = props => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Grid container justify="center">
-          <Grid item>
-            <Typography>Which industry are you interested in ?</Typography>
+        <Grid container justify="center" style={{backgroundColor: "white", padding: "4vh 0" }} >
+          <Grid item >
+            <Typography variant="body1">Which industry are you interested in ?</Typography>
           </Grid>
           <Grid item xs={10}>
             <CurtainIndustrySelection />

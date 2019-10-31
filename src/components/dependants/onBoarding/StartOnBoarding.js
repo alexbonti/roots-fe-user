@@ -105,7 +105,7 @@ export const StartOnBoarding = props => {
 
       <Grid item>
         <Typography variant="body1" align="center">
-          You can always complete it later
+          You can always complete it <a href="#">later</a> 
         </Typography>
       </Grid>
     </Grid>

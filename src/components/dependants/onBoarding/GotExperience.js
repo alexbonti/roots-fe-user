@@ -65,7 +65,7 @@ export const GotExperience = () => {
           <Grid item xs={10}>
             <Typography>
               Great! <br />
-              Where do you want to get your first job?
+              What was your recent position?
             </Typography>
           </Grid>
           <Grid item xs={10}>
@@ -82,7 +82,7 @@ export const GotExperience = () => {
               }}
             />{" "}
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={10} >
             <TextField
               className={classes.textField}
               required
@@ -96,7 +96,7 @@ export const GotExperience = () => {
               }}
             />{" "}
           </Grid>
-          <Grid container item justify="space-evenly" xs={10}>
+          <Grid container item justify="space-evenly" xs={10} style={{padding: "2vh 0"}}>
             <Grid item xs={6}>
               <TextField
                 id="date"
@@ -127,6 +127,12 @@ export const GotExperience = () => {
                 }}
               />
             </Grid>
+          </Grid>
+
+          <Grid item xs={10} style={{padding: "4vh 0 0 0"}}>
+            <Typography>
+              Where do you want to get your first job?
+            </Typography>
           </Grid>
           <Grid item xs={10}>
             <div>

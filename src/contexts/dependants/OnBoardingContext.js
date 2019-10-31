@@ -12,6 +12,9 @@ export const OnBoardingProvider = props => {
   const [companyName, setCompanyName] = useState("")
   const [startDate, setStartDate] = useState("")
   const [endDate, setEndDate] = useState("")
+  const [industryField, setIndustryField] = useState([])
+  const [avatarPictureURL, setAvatarPictureURL] = useState("");
+
   
   const { children } = props;
 
@@ -33,7 +36,11 @@ export const OnBoardingProvider = props => {
         startDate,
         setStartDate,
         endDate,
-        setEndDate  
+        setEndDate,
+        industryField,
+        setIndustryField,
+        avatarPictureURL,
+        setAvatarPictureURL
       }}
     >
       {children}
