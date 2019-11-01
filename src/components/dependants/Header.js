@@ -17,6 +17,7 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import API from "../../helpers/api";
 import { TemporaryDrawer } from "../index";
+import { UserContext } from "contexts/index";
 
 // import { AccessToken } from "contexts/helpers/index";
 
@@ -26,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     paddingRight: 2, // keep right padding when drawer closed
     backgroundColor: "#2C2C29",
-    height: "10vh",
+    height: "9vh",
   },
   avatar: {
     margin: 10,
@@ -82,13 +83,8 @@ const useStyles = makeStyles(theme => ({
       width: theme.spacing(9),
     },
   },
-  container: {
-    paddingTop: theme.spacing(5),
-    paddingBottom: theme.spacing(4),
-    paddingLeft: theme.spacing(6),
-  },
+
   paper: {
-    padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
@@ -137,6 +133,7 @@ export const Header = () => {
     loginStatus,
     accessToken,
   } = useContext(LoginContext);
+  const { avatarProfile } = useContext(UserContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -154,24 +151,32 @@ export const Header = () => {
     logOut(accessToken);
   };
 
+  let firstLetter = "";
   let menu = !loginStatus ? "" : <TemporaryDrawer />;
+
+  let avatarSrc = avatarProfile !== "" ? avatarProfile : "A";
+
+  if (avatarProfile !== "") {
+    firstLetter = "";
+  } else {
+    firstLetter = "A";
+  }
+
   let content = (
     <ThemeProvider theme={theme}>
       <AppBar className={classes.toolbar}>
-        <Grid container alignItems="flex-end" justify="space-between" style={{padding: "2vh 0"}}>
-          
-          <Grid item align="center"xs={2}>
-            <Avatar>A</Avatar>
-          </Grid>
-         
-          <Grid item   align="center"xs={2}>
-            <Avatar>R</Avatar>
+        <Grid container alignItems="flex-end" justify="space-between">
+          <Grid item align="center" xs={2}>
+            <Avatar src={avatarProfile}>{firstLetter}</Avatar>
           </Grid>
 
-          <Grid item align="center"xs={2}>
+          <Grid item align="center" xs={2}>
+            <Avatar>C</Avatar>
+          </Grid>
+
+          <Grid item align="center" xs={2}>
             {menu}
           </Grid>
-          
         </Grid>
       </AppBar>
     </ThemeProvider>

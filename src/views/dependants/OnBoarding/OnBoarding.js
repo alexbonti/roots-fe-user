@@ -21,12 +21,12 @@ import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   topper: {
-    height: "5vh",
+    height: "6vh",
     backgroundColor: "white",
   },
   secondTopper: {
     backgroundColor: "rgb(234, 244, 246,1 )",
-    height: "22vh",
+    height: "20vh",
   },
   title: {
     height: "10vh",

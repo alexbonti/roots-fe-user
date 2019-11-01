@@ -84,6 +84,8 @@ class API {
       .catch(error => console.log(error));
   };
 
+  
+
   createMyCompany = async (data, accessToken ) => {
     return await axiosInstance
       .post("/employer/createcompany", data, {
@@ -108,25 +110,7 @@ class API {
       });
   };
 
-  getOpportunityDraft = async accessToken => {
-     accessToken = localStorage.getItem("accessToken");
-    return axiosInstance
-      .get("jobs/getOpportunityDraft", {
-        headers: {
-          authorization: `Bearer ${accessToken}`,
-        }
-      })
-      .then(response => {
-        return {
-          response: response.data.data.opportunityData,
-          status: true,
-        };
-      })
-      .catch(error => {
-        console.log(error);
-        return { status: false };
-      });
-  };
+
 
   getApplicantsData = async (data,accessToken) => {
     accessToken = localStorage.getItem("accessToken");
@@ -157,6 +141,22 @@ class API {
       })
       .then(response => {
         return {"response": response.data.data.customerData}
+      })
+      .catch(error => {
+        return {"error": error}
+      })
+  }
+
+  getUserProfileExt= async(auth) =>{
+    let accessToken = localStorage.getItem("accessToken");
+    return await axiosInstance
+      .get('/user/getUserExtended', {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        }
+      })
+      .then(response => {
+        return {"response": response.data.data.extendedCustomerData}
       })
       .catch(error => {
         return {"error": error}
@@ -274,6 +274,29 @@ class API {
         return { "error": error };
       });
   }
+  userSaveJob = data => {
+    let accessToken = localStorage.getItem("accessToken");
+    axiosInstance
+      .put("/user/saveJob", data, {
+        headers: {
+          authorization: "Bearer " + accessToken,
+        },
+      } )
+      .then(response => response)
+      .catch(error => console.log(error));
+  };
+
+  userApplyJob = data => {
+    let accessToken = localStorage.getItem("accessToken");
+    axiosInstance
+      .post("/user/applyjob", data, {
+        headers: {
+          authorization: "Bearer " + accessToken,
+        },
+      } )
+      .then(response => response)
+      .catch(error => console.log(error));
+  };
 
 }
   

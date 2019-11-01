@@ -8,23 +8,27 @@ import {LoginContext} from "contexts"
 
 import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
+import { UserContext } from "contexts/index";
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     flexGrow: 1,
+    padding: 0
     // padding: "3vh 0 0 0",
   },
   tabs: {
     height: "100%", 
-    boxShadow: "none"
+    boxShadow: "none",
+    padding: 0
     
   },
 
   tab: {
-    height: "85%",
+    height: "100%",
     alignSelf: "flex-end",
-    border: "1px solid #f0f0f0"
+    border: "1px solid #f0f0f0",
+    borderTop: "none"
   }
 }));
 
@@ -77,6 +81,10 @@ export const Home = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const {loginStatus} = useContext(LoginContext);
+  const {avatarProfile, setAvatarProfile} = useContext(UserContext);
+  const [oppData, setOppData] = useState("");
+  const [profileData, setProfileData] = useState("");
+  const [profileExData, setProfileExData] = useState("");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -91,12 +99,16 @@ export const Home = () => {
 
     const triggerAPI = async () => {
       const oppResponse = await API.getOpportunity();
-      console.log(oppResponse);
-      // const oppDraftResponse = await API.getOpportunityDraft();
-      // if (oppResponse.status && oppDraftResponse.status) {
-      //   setDataJobs(oppResponse.response);
-      //   setDataJobsDraft(oppDraftResponse.response);
-      // }
+      setOppData(oppResponse.response);
+      console.log("oppData", oppResponse);
+      const profileResponse = await API.getUserProfile();
+      setProfileData(profileResponse);
+      console.log("profileData", profileResponse);
+      const profileExtData = await API.getUserProfileExt();
+      setProfileExData(profileExtData);
+      console.log("profileExData", profileExtData);
+      setAvatarProfile(profileExtData.response.avatar);
+      console.log(avatarProfile)
     };
     if (loginStatus) {
       triggerAPI();
@@ -108,7 +120,7 @@ export const Home = () => {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
-        <AppBar position="static" color="default" style={{height: "13vh", }}>
+        <AppBar position="static" color="default" style={{height: "12vh"}}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -117,6 +129,7 @@ export const Home = () => {
             variant="fullWidth"
             className={classes.tabs}
             aria-label="full width tabs example"
+            style={{marginTop: 0}}
           >
             <Tab label="Search" {...a11yProps(0)} className={classes.tab} />
             <Tab label="News" {...a11yProps(1)} className={classes.tab}/>
@@ -129,7 +142,7 @@ export const Home = () => {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <FullListJobs />
+            <FullListJobs data={oppData}/>
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             Item Two

@@ -6,6 +6,7 @@ export const UserProvider = props => {
 
   const [userProfile, setUserProfile] = useState({});
   const [isUpdated, setIsUpdated] = useState(false);
+  const [avatarProfile, setAvatarProfile] = useState("");
   const { children } = props;
 
   return (
@@ -14,7 +15,9 @@ export const UserProvider = props => {
         userProfile,
         setUserProfile,
         isUpdated,
-        setIsUpdated
+        setIsUpdated,
+        avatarProfile,
+        setAvatarProfile
       }}
     >
       {children}

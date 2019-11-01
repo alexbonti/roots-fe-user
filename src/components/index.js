@@ -24,8 +24,8 @@ import {EndOnBoarding} from "./dependants/onBoarding/EndOnBoarding";
 // import {CoverLetterAndResume.js} from "./dependants/listJobsTab/EndOnBoarding";
 // import {EndApplication} from "./dependants/listJobsTab/EndApplication";
 import {FullListJobs} from "./dependants/listJobsTab/FullListJobs";
-// import {JobFullView} from "./dependants/listJobsTab/JobFullView";
-// import {JobSmallCard} from "./dependants/listJobsTab/JobSmallCard";
+import {JobFullView} from "./dependants/listJobsTab/JobFullView";
+import {JobSmallCard} from "./dependants/listJobsTab/JobSmallCard";
 
 
 export {
@@ -56,6 +56,6 @@ export {
 //   CoverLetterAndResume,
 // EndApplication,
   FullListJobs,
-// JobFullView,
-// JobSmallCard
+  JobFullView,
+  JobSmallCard
 };
