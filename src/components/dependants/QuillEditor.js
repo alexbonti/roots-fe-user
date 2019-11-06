@@ -23,16 +23,12 @@ const modules = {
 };
 
 export const TextEditor = (props) => {
-  const { setDescription, setDescriptionOpportunity } = useContext(TextEditorContext);
+  const { setCoverLetter } = useContext(TextEditorContext);
   const [nodeRedData] = useState("");
 
   const handleTextEditorChange = value => {
-    console.log(props.data)
-    if(props.data === "opportunity"){
-      return setDescriptionOpportunity(value);
-    }
-    else {
-      return setDescription(value);
+    if(props.data === "coverletter"){
+      return setCoverLetter(value);
     }
   };
 

@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core/";
 import { StarRate, StarBorder, Star } from "@material-ui/icons/";
 import { HomeContext } from "contexts";
+import { Spinner } from "components"
 
 const theme = createMuiTheme({
   palette: {
@@ -89,7 +90,11 @@ export const JobSmallCard = props => {
       {/* <JobFullView /> */}
     </ThemeProvider>
   ) : (
-    "loading"
+    <Grid container alignItems="center" justify="center" style={{height: "60vh"}}>
+      <Grid item >
+        <Spinner />
+      </Grid>
+    </Grid>
   );
   return <>{content}</>;
 };

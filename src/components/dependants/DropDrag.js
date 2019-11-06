@@ -2,26 +2,35 @@ import React, { useEffect, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import { API } from "helpers/index";
 import { Grid, Button} from "@material-ui/core/";
-import { MyCompanyContext } from "../../contexts/";
-import { OnBoardingContext } from "contexts/index";
+import { OnBoardingContext, HomeContext } from "contexts/index";
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import DescriptionIcon from '@material-ui/icons/Description';
+import {ProgressBar} from '../common/ProgressBar'
 
-export default function Accept() {
+export default function Accept(props) {
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: "image/jpeg, image/png",
   });
 
   const {avatarPictureURL, setAvatarPictureURL} = useContext(OnBoardingContext);
+  
+  const {setProgressBar} = useContext(HomeContext)
 
-  // const acceptedFilesItems = acceptedFiles.map(file => (
-  //   <li key={file.path}>
-  //     {file.path} - {file.size} bytes
-  //   </li>
-  // ));
+  let logo;
+
+  if(props.data === "photo"){
+    logo = avatarPictureURL === "" ? <AddAPhotoIcon fontSize="large"/> : <img src={avatarPictureURL} />;
+
+  }
+  else if(props.data === "file"){
+    logo = < DescriptionIcon fontSize="large" />;
+  }
+
+  
 
   useEffect(() => {
-    if (acceptedFiles.length > 0) {
+    if (acceptedFiles.length > 0 && props.data === 'photo') {
       const uploadImageImported = async data => {
         let file = new FormData();
         file.append("imageFile", data[0]);
@@ -29,13 +38,23 @@ export default function Accept() {
         setAvatarPictureURL(imageData.response.data.data.imageFileURL.thumbnail);
       };
       uploadImageImported(acceptedFiles);
+    }else if(acceptedFiles.length > 0 && props.data === 'file'){
+      const upLoadFile = async data => {
+        let file = new FormData();
+        file.append("documentFile", data[0]);
+        const fileData = await API.upLoadFile(file);
+        console.log(fileData);
+       
+      };
+      upLoadFile(acceptedFiles);
     }
   }, [acceptedFiles, setAvatarPictureURL]);
 
 
-
-  let logo = avatarPictureURL === "" ? <AddAPhotoIcon fontSize="large"/> : <img src={avatarPictureURL} />;
-
+  if(avatarPictureURL === "" && acceptedFiles.length > 0){
+    setProgressBar(true);
+    console.log("true progress bar")
+  }
 
   return (
     <>

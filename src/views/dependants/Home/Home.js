@@ -9,7 +9,7 @@ import {LoginContext} from "contexts"
 import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
 import { UserContext } from "contexts/index";
-
+import {Spinner} from "../../../components/common/Spinner"
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
@@ -108,7 +108,7 @@ export const Home = () => {
       setProfileExData(profileExtData);
       console.log("profileExData", profileExtData);
       setAvatarProfile(profileExtData.response.avatar);
-      console.log(avatarProfile)
+      console.log(avatarProfile);
     };
     if (loginStatus) {
       triggerAPI();
@@ -152,6 +152,7 @@ export const Home = () => {
           </TabPanel>
         </SwipeableViews>
       </div>
+      
     </ThemeProvider>
   );
 };

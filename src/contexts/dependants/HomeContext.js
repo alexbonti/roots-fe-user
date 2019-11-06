@@ -6,6 +6,8 @@ export const HomeProvider = props => {
   
   const [isUpdated, setIsUpdated] = useState(false);
   const [isFullView, setIsFullView] = useState(false);
+  const [progressBar, setProgressBar] = useState(false);
+  const [userWantsToApply, setUserWantsToApply] = useState(false);
   const [jobId, setJobId] = useState("");
 
   const { children } = props;
@@ -17,7 +19,10 @@ export const HomeProvider = props => {
         isUpdated,
         setIsUpdated,
         jobId,
-        setJobId
+        setJobId,
+        userWantsToApply,
+        setUserWantsToApply,
+        progressBar, setProgressBar
       }}
     >
       {children}

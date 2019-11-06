@@ -4,6 +4,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid } from "@material-ui/core/";
 import { JobSmallCard, JobFullView } from "components";
 import {HomeContext} from "contexts";
+import {Spinner } from "../../common/Spinner"
 
 const theme = createMuiTheme({
   palette: {
@@ -68,7 +69,11 @@ export const FullListJobs = props => {
       </Grid>{" "}
     </>
   ) : (
-    "loading"
+    <Grid container alignItems="center" justify="center" style={{height: "60vh"}}>
+      <Grid item >
+        <Spinner />
+      </Grid>
+    </Grid>
   );
 
   let content = isFullView ? <JobFullView data={singleJobData}/> : listOfJobs;

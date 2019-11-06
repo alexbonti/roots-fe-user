@@ -5,7 +5,7 @@ import { Typography, Grid, Button } from "@material-ui/core/";
 import { HomeContext, LoginContext } from "contexts";
 import ReactHtmlParser from "react-html-parser";
 import { API } from "helpers";
-import { notify } from "components";
+import { notify, Spinner, CoverLetterAndResume } from "components";
 
 const useStyles = makeStyles(theme => ({
   topper: {
@@ -50,7 +50,9 @@ const theme = createMuiTheme({
 
 export const JobFullView = props => {
   const classes = useStyles();
-  const { setIsFullView } = useContext(HomeContext);
+  const { setIsFullView, userWantsToApply, setUserWantsToApply } = useContext(
+    HomeContext
+  );
   const { loginStatus } = useContext(LoginContext);
 
   const {
@@ -77,14 +79,16 @@ export const JobFullView = props => {
   };
 
   const applyJob = async () => {
-    let data = {
-      jobId: _id,
-    };
-    if (loginStatus) {
-      const saveJobResData = await API.userApplyJob(data);
-      console.log(saveJobResData);
-      notify("Congratulation your application has been sent");
-    }
+    // let data = {
+    //   jobId: _id,
+    // };
+    // if (loginStatus) {
+    //   const saveJobResData = await API.userApplyJob(data);
+    //   console.log(saveJobResData);
+    //   notify("Congratulation your application has been sent");
+    // }
+
+    setUserWantsToApply(true);
   };
 
   let content = Array.isArray(props.data) ? (
@@ -122,9 +126,7 @@ export const JobFullView = props => {
         <Typography variant="body1">{employmentType}</Typography>
       </Grid>
       <Grid container style={{ padding: "3vh 2vw", backgroundColor: "white" }}>
-        <Grid>
-          {ReactHtmlParser(description)}
-        </Grid>
+        <Grid>{ReactHtmlParser(description)}</Grid>
         <Grid
           container
           item
@@ -157,7 +159,23 @@ export const JobFullView = props => {
       </Grid>
     </ThemeProvider>
   ) : (
-    "loding"
+    <Grid
+      container
+      alignItems="center"
+      justify="center"
+      style={{ height: "60vh" }}
+    >
+      <Grid item>
+        <Spinner />
+      </Grid>
+    </Grid>
   );
-  return <>{content}</>;
+
+  const applicationForm = userWantsToApply ? (
+    <CoverLetterAndResume data={_id} />
+  ) : (
+    content
+  );
+
+  return <>{applicationForm}</>;
 };

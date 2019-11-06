@@ -178,6 +178,21 @@ class API {
       });
   };
 
+  upLoadFile = async data => {
+    return await axiosInstance
+      .post("upload/uploadDocument", data, {
+        headers: {
+          "Content-Type": "multipart/form-data; boundary='boundary'",
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
+  };
+
   getAddress = async input => {
     const app_id = "TUbNW3GcKxN51q3zZJB0";
     const app_code = "SOaMBDA1FYyc8mAtg7STgg";
