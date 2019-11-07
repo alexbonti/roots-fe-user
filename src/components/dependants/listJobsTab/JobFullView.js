@@ -49,6 +49,7 @@ const theme = createMuiTheme({
 });
 
 export const JobFullView = props => {
+  console.log("jfwdata",props.data)
   const classes = useStyles();
   const { setIsFullView, userWantsToApply, setUserWantsToApply } = useContext(
     HomeContext
@@ -65,7 +66,7 @@ export const JobFullView = props => {
     startDate,
     endDate,
     _id,
-  } = props.data[0];
+  } = props.data;
 
   const saveJob = async () => {
     let data = {
@@ -79,81 +80,106 @@ export const JobFullView = props => {
   };
 
   const applyJob = async () => {
-    // let data = {
-    //   jobId: _id,
-    // };
-    // if (loginStatus) {
-    //   const saveJobResData = await API.userApplyJob(data);
-    //   console.log(saveJobResData);
-    //   notify("Congratulation your application has been sent");
-    // }
-
     setUserWantsToApply(true);
   };
 
-  let content = Array.isArray(props.data) ? (
+  
+  let content = props.hasOwnProperty("data") ? (
     <ThemeProvider theme={theme}>
-      <Grid
-        container
-        alignItems="center"
-        style={{ padding: "3vh 2vw", backgroundColor: "#f9f9f9" }}
-      >
+      <Grid container justify="center">
         <Grid
-          onClick={() => {
-            setIsFullView(false);
+          container
+          alignItems="center"
+          style={{
+            padding: "3vh 1vw", backgroundColor: "#f8f8f8"
           }}
         >
-          {"<"} Back to the list
+          <Grid
+            onClick={() => {
+              setIsFullView(false);
+            }}
+          >
+            {"<"} Back to the list
+          </Grid>
         </Grid>
-      </Grid>
 
-      <Grid style={{ padding: "3vh 2vw", backgroundColor: "white" }}>
-        <Typography variant="h6">{positionTitle}</Typography>
-        <Typography variant="body1">{company}</Typography>
-        <Typography variant="subtitle1">
-          {startDate.substring(0, 10)} - {endDate.substring(0, 10)}
-        </Typography>
-      </Grid>
+        <Grid
+          style={{
+            padding: "2vh 0",
+          }}
+          container
+          justify="center"
+          item
+          xs={12}
+          lg={12}
+          md={12}
+        >
+          <Grid item xs={11} lg={8} md={8}>
+            <Typography variant="h6">{positionTitle}</Typography>
+            <Typography variant="body1">{company}</Typography>
+            <Typography variant="subtitle1">
+              {startDate.substring(0, 10)} - {endDate.substring(0, 10)}
+            </Typography>
+          </Grid>
+        </Grid>
 
-      <Grid
-        style={{
-          padding: "3vh 2vw",
-          backgroundColor: "rgba(8, 124, 149, 0.1)",
-        }}
-      >
-        <Typography variant="body1">{location}</Typography>
-        <Typography variant="body1">{industryField}</Typography>
-        <Typography variant="body1">{employmentType}</Typography>
-      </Grid>
-      <Grid container style={{ padding: "3vh 2vw", backgroundColor: "white" }}>
-        <Grid>{ReactHtmlParser(description)}</Grid>
         <Grid
           container
           item
-          justify="space-evenly"
-          style={{ padding: "3vh 2vw" }}
+          xs={12}
+          lg={12}
+          md={12}
+          justify="center"
+          style={{
+            padding: "2vh 0",
+            backgroundColor: "rgba(8, 124, 149, 0.1)",
+          }}
         >
-          <Grid item xs={4}>
-            <Button
-              fullWidth
-              className={classes.alternativeButton}
-              onClick={() => {
-                saveJob();
-              }}
-            >
-              Save
-            </Button>
+          <Grid item xs={11} lg={8} md={8}>
+            <Typography variant="body1">{location}</Typography>
+            <Typography variant="body1">{industryField}</Typography>
+            <Typography variant="body1">{employmentType}</Typography>
           </Grid>
-          <Grid item xs={4}>
-            <Button
-              fullWidth
-              className={classes.buttons}
-              onClick={() => {
-                applyJob();
-              }}
-            >
-              Apply
-            </Button>
+        </Grid>
+        <Grid
+          container
+          item
+          xs={12}
+          lg={12}
+          md={12}
+          justify="center"
+        >
+          <Grid item xs={11} lg={8} md={8}>
+            {ReactHtmlParser(description)}
+          </Grid>
+          <Grid
+            container
+            item
+            justify="space-evenly"
+            // style={{ padding: "3vh 2vw" }}
+          >
+            <Grid item xs={4} md={2} lg={2}>
+              <Button
+                fullWidth
+                className={classes.alternativeButton}
+                onClick={() => {
+                  saveJob();
+                }}
+              >
+                Save
+              </Button>
+            </Grid>
+            <Grid item xs={4} md={2} lg={2}>
+              <Button
+                fullWidth
+                className={classes.buttons}
+                onClick={() => {
+                  applyJob();
+                }}
+              >
+                Apply
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

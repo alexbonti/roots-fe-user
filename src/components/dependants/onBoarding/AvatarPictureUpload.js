@@ -162,7 +162,7 @@ export const AvatarPictureUpload = () => {
             <Typography variant="body1">Add your profile photo</Typography>
           </Grid>
           <Grid item xs={10}>
-            <MyDropzone />
+            <MyDropzone data={"photo"}/>
           </Grid>
           {confirmButton}
           <Grid item>

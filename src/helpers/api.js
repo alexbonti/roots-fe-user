@@ -271,6 +271,25 @@ class API {
         return { "error": error };
       });
   };
+
+  updateUserResumeAndCoverLetter = async (data) => {
+    let accessToken = localStorage.getItem("accessToken");
+
+    return await axiosInstance
+      .put("/user/uploadNewResumeAndCoverLetter", data, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
+  };
+
+
   
 
 

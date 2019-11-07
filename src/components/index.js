@@ -22,11 +22,14 @@ import {IndustrySelection} from "./dependants/onBoarding/IndustrySelection";
 import {AvatarPictureUpload} from "./dependants/onBoarding/AvatarPictureUpload";
 import {EndOnBoarding} from "./dependants/onBoarding/EndOnBoarding";
 import {CoverLetterAndResume} from "./dependants/listJobsTab/CoverLetterAndResume";
-// import {EndApplication} from "./dependants/listJobsTab/EndApplication";
+import {EndApplication} from "./dependants/listJobsTab/EndApplication";
 import {FullListJobs} from "./dependants/listJobsTab/FullListJobs";
 import {JobFullView} from "./dependants/listJobsTab/JobFullView";
 import {JobSmallCard} from "./dependants/listJobsTab/JobSmallCard";
 import {Spinner} from './common/Spinner';
+import {FullListResources} from './dependants/resourcesTab/FullListResources'
+import {ResourceFullView} from './dependants/resourcesTab/ResourceFullView'
+import {ResourceSmallCard} from './dependants/resourcesTab/ResourceSmallCard'
 
 
 export {
@@ -55,10 +58,13 @@ export {
   EndOnBoarding,
   AvatarPictureUpload,
   CoverLetterAndResume,
-// EndApplication,
+  EndApplication,
   FullListJobs,
   JobFullView,
   JobSmallCard,
   Spinner,
+  FullListResources,
+ResourceFullView,
+ResourceSmallCard
   
 };

@@ -25,7 +25,6 @@ const modules = {
 export const TextEditor = (props) => {
   const { setCoverLetter } = useContext(TextEditorContext);
   const [nodeRedData] = useState("");
-
   const handleTextEditorChange = value => {
     if(props.data === "coverletter"){
       return setCoverLetter(value);
@@ -35,10 +34,9 @@ export const TextEditor = (props) => {
 
 
   return (
-    <Grid container direction="row" justify="center" alignItems="center">
-      <Grid item xs={12}  >
+    <Grid container direction="row" justify="center" alignItems="center" style={{backgroundColor: "white" }}>
+      <Grid item xs={12} style={{backgroundColor: "white" }} >
         <ReactQuill
-          style={{height: "30vh", marginBottom: "2rem" }}
           onChange={handleTextEditorChange}
           modules={{
             toolbar: modules.toolbar

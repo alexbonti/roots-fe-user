@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { Line, Circle } from "rc-progress";
 
 export class ProgressBar extends Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       percent: 0,
@@ -37,15 +37,11 @@ export class ProgressBar extends Component {
 
   render() {
     const { percent } = this.state;
-    let content = this.props.data === "line" ? (<Circle strokeWidth="2" percent={percent} strokeColor="#087b94"/>) : "";
- 
-    return (
-     <>
 
-      {content}
-     </>
-       
- 
+    return (
+      <>
+        <Line strokeWidth="2" percent={percent} strokeColor="#087b94" />
+      </>
     );
   }
 }

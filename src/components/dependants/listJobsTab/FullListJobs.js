@@ -23,7 +23,7 @@ export const FullListJobs = props => {
   const {isFullView, jobId} = useContext(HomeContext);
 
 
-  let singleJobData;
+  // let singleJobData;
 
   const findSingleJobData = (id) => {
     if(Array.isArray(props.data)){
@@ -33,13 +33,13 @@ export const FullListJobs = props => {
     }
   };
 
-  if(isFullView){
-    singleJobData = findSingleJobData(jobId)
-  }
+  // if(isFullView){
+  //   singleJobData = findSingleJobData(jobId);
+  // }
 
-  if(isFullView){
-    singleJobData = findSingleJobData(jobId)
-  }
+  let singleJobData = isFullView ? findSingleJobData(jobId) : [];
+
+
 
   let listOfJobs = props.hasOwnProperty("data") ? (
     <>
@@ -76,7 +76,7 @@ export const FullListJobs = props => {
     </Grid>
   );
 
-  let content = isFullView ? <JobFullView data={singleJobData}/> : listOfJobs;
+  let content = (isFullView && props.hasOwnProperty("data") && singleJobData !== undefined)  ? <JobFullView data={singleJobData[0]}/> : listOfJobs;
   return (
     <>
       <ThemeProvider theme={theme}>{content}</ThemeProvider>

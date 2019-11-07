@@ -3,13 +3,13 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab, Typography, Box, Grid } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
-import {FullListJobs} from "components";
+import {FullListJobs, FullListResources, Spinner} from "components";
 import {LoginContext} from "contexts"
 
 import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
 import { UserContext } from "contexts/index";
-import {Spinner} from "../../../components/common/Spinner"
+
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
@@ -145,10 +145,10 @@ export const Home = () => {
             <FullListJobs data={oppData}/>
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            Item Two
+            NEWS
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            Item Three
+          <FullListResources />
           </TabPanel>
         </SwipeableViews>
       </div>
