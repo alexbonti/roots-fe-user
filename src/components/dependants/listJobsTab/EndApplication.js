@@ -29,8 +29,8 @@ const theme = createMuiTheme({
 
 
 export const EndApplication = (props) => {
-  const {userProfile} = useContext(UserContext);
-  const {setIsFullView} = useContext(HomeContext)
+  const {userName} = useContext(UserContext);
+  const {setIsFullView} = useContext(HomeContext);
   const classes = useStyles();
   return (
     <>
@@ -47,7 +47,7 @@ export const EndApplication = (props) => {
         >
           <Grid item xs={8}>
             <Typography variant="h6">
-              Congratulation, {userProfile.first_name}. <br /> Your application has been sent successfully.<br/>
+              Congratulation, {userName}. <br /> Your application has been sent successfully.<br/>
               Good Luck
             </Typography>
           </Grid>

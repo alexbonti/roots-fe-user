@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => ({
     paddingRight: 2, // keep right padding when drawer closed
     backgroundColor: "#2C2C29",
     height: "9vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   },
   avatar: {
     margin: 10,
@@ -55,8 +58,6 @@ const useStyles = makeStyles(theme => ({
   },
   toolbarIcon: {
     display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
     padding: "0 8px",
     ...theme.mixins.toolbar,
   },
@@ -133,7 +134,8 @@ export const Header = () => {
     loginStatus,
     accessToken,
   } = useContext(LoginContext);
-  const { avatarProfile } = useContext(UserContext);
+  const { avatarProfile} = useContext(UserContext);
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -165,13 +167,13 @@ export const Header = () => {
   let content = (
     <ThemeProvider theme={theme}>
       <AppBar className={classes.toolbar}>
-        <Grid container alignItems="flex-end" justify="space-between">
+        <Grid container  justify="space-between">
           <Grid item align="center" xs={2}>
-            <Avatar src={avatarProfile}>{firstLetter}</Avatar>
+            <Link to="/profile"><Avatar src={avatarProfile}>{firstLetter}</Avatar></Link>
           </Grid>
 
           <Grid item align="center" xs={2}>
-            <Avatar>C</Avatar>
+            <Link to="/"><Avatar>C</Avatar></Link>
           </Grid>
 
           <Grid item align="center" xs={2}>

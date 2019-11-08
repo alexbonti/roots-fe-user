@@ -4,7 +4,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { LoginContext, UserContext } from "contexts";
-import { Login, Register, Home, RegistrationConfirmation, OnBoarding } from "views";
+import { Login, Register, Home, RegistrationConfirmation, OnBoarding, Profile } from "views";
 import { Layout } from "../layout";
 
 export const AppRoutes = props => {
@@ -69,12 +69,36 @@ export const AppRoutes = props => {
         <Route
           exact
           path="/registerSuccess"
-          render={() => <RegistrationConfirmation {...props} />}
+          render={() =>
+            redirectToLogin ? (
+              <Redirect to={{ pathname: "/login" }} {...props} />
+            ) : (
+              <RegistrationConfirmation {...props} />
+            )
+          }
         />
+      
         <Route
           exact
           path="/onboarding"
-          render={() => <OnBoarding {...props} />}
+          render={() => 
+            redirectToLogin ? (
+              <Redirect to={{ pathname: "/login" }} {...props} />
+            ) : (
+              <OnBoarding {...props} />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/profile"
+          render={() => 
+            redirectToLogin ? (
+              <Redirect to={{ pathname: "/login" }} {...props} />
+            ) : (
+              <Profile {...props} />
+            )
+          }
         />
       </Layout>
     </Switch>
