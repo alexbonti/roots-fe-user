@@ -5,7 +5,6 @@ import { Grid, Button } from "@material-ui/core/";
 import { OnBoardingContext, HomeContext, UserContext } from "contexts/index";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import DescriptionIcon from "@material-ui/icons/Description";
-import { ProgressBar } from "../common/ProgressBar";
 
 export default function Accept(props) {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();

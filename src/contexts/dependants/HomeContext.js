@@ -6,8 +6,10 @@ export const HomeProvider = props => {
   
   const [isUpdated, setIsUpdated] = useState(false);
   const [isFullView, setIsFullView] = useState(false);
+  const [isFullViewResource, setIsFullViewResource] = useState(false);
   const [progressBar, setProgressBar] = useState(false);
   const [userWantsToApply, setUserWantsToApply] = useState(false);
+  const [dataToBeSentResources, setDataToBeSentResources] = useState({});
   const [jobId, setJobId] = useState("");
 
   const { children } = props;
@@ -22,7 +24,12 @@ export const HomeProvider = props => {
         setJobId,
         userWantsToApply,
         setUserWantsToApply,
-        progressBar, setProgressBar
+        progressBar,
+        setProgressBar,
+        isFullViewResource,
+        setIsFullViewResource,
+        dataToBeSentResources,
+        setDataToBeSentResources
       }}
     >
       {children}

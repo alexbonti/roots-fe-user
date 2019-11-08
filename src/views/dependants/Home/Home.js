@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
-import { AppBar, Tabs, Tab, Typography, Box, Grid } from "@material-ui/core/";
+import { AppBar, Tabs, Tab, Typography, Box } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import {FullListJobs, FullListResources, Spinner} from "components";
@@ -37,10 +37,6 @@ const theme = createMuiTheme({
     primary: { main: "#087B94" },
     secondary: { main: "#C74197" },
     terziary: { main: "#2B2B28" },
-    // accent: { main: "#FFD922" },
-    // error: { main: "#D0011B" },
-    // contrastThreshold: 3,
-    // tonalOffset: 0.2,
   },
 });
 
