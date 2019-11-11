@@ -149,7 +149,7 @@ export const Login = () => {
           alignItems="flex-start"
           className={classes.body}
         >
-          <Grid className={classes.loginBox} item xs={10}>
+          <Grid className={classes.loginBox} item xs={10} md={5}>
             <form noValidate>
               <TextField
                 margin="normal"
@@ -180,11 +180,12 @@ export const Login = () => {
             container
             item
             xs={12}
-            justify="space-between"
+            md={8}
+            justify="center"
             alignItems="center"
             style={{ padding: "3vh 5vw" }}
           >
-            <Grid item xs={12} style={{ paddingBottom: "3vh" }}>
+            <Grid item xs={12} md={4}style={{ paddingBottom: "3vh" }}>
               <Button
                 fullWidth
                 variant="contained"
@@ -194,12 +195,12 @@ export const Login = () => {
                 Login
               </Button>
             </Grid>
-            <Grid item xs={12} style={{ paddingBottom: "3vh" }}>
+            <Grid item xs={12} md={10} style={{ paddingBottom: "3vh" }}>
               <Typography align="center" variant="caption" display="block">
                 Or
               </Typography>
             </Grid>
-            <Grid item xs={12} style={{ paddingBottom: "5vh" }}>
+            <Grid item xs={12} md={4} style={{ paddingBottom: "5vh" }}>
               <Button
                 fullWidth
                 variant="contained"
@@ -228,7 +229,7 @@ export const Login = () => {
                   </ListItem>
                   <Divider className={classes.divider}/>
                   <ListItem component="a" >
-                    <ListItemText secondary="Copyright"  />
+                    <ListItemText secondary="Copyright"   />
                   </ListItem>
                   <ListItem component="a">
                     <ListItemText secondary="Disclaimner"  />

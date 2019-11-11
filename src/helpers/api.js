@@ -65,37 +65,12 @@ class API {
       .catch(error => console.log(error));
   };
 
-  postOpportunity = data => {
-    let accessToken = localStorage.getItem("accessToken");
-    axiosInstance
-      .post("/jobs/opportunities", data, {
-        headers: {
-          authorization: "Bearer " + accessToken,
-        },
-      } )
-      .then(response => response)
-      .catch(error => console.log(error));
-  };
+  
 
-  postOpportunityDraft = data => {
-    axiosInstance
-      .post("/jobs/opportunityDraft", data, config)
-      .then(response => response)
-      .catch(error => console.log(error));
-  };
+
 
   
 
-  createMyCompany = async (data, accessToken ) => {
-    return await axiosInstance
-      .post("/employer/createcompany", data, {
-        headers: {
-          authorization: "Bearer " + accessToken,
-        },
-      })
-      .then(response => {return response})
-      .catch(error => console.log(error));
-  };
 
   getOpportunity = async (accessToken) => {
     accessToken = localStorage.getItem("accessToken");
@@ -112,23 +87,6 @@ class API {
 
 
 
-  getApplicantsData = async (data,accessToken) => {
-    accessToken = localStorage.getItem("accessToken");
-    return axiosInstance
-      .post(
-        "employer/viewjobapplicants",
-        data,
-        {
-          headers: {
-            authorization: `Bearer ${accessToken}`,
-          }
-        }
-      )
-      .then(response => {
-        return ({"response": response.data.data});
-      })
-      .catch(error => console.log(error));
-  };
 
 
   getUserProfile = async(auth) =>{

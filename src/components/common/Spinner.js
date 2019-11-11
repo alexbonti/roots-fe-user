@@ -1,9 +1,11 @@
 import React from 'react'
+import {Grid } from "@material-ui/core/";
 const { PropTypes } = React;
 const TIMER = 150; // Milliseconds between moving the next block
 const TRANSITION = 0.5; // Seconds to actually move one block
 const DEF_SIZE = 60; // Pixels height/width
 const GUTTER = 5; // Spacing in percentage between tiles
+
 const initialState = {
   positions: {
     1: "alpha",
@@ -152,7 +154,14 @@ export  class Spinner extends React.Component {
       size: 150,
     };
 
-    return <Loader {...data} />;
+    return (
+      <Grid container justify="center" alignItems="center" style={{height: "50vh"}}>
+        <Grid item>
+          <Loader {...data} />
+        </Grid>
+      </Grid>
+    );
+      
   }
 }
 

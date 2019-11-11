@@ -19,7 +19,7 @@ export const ResourceSmallCard = props => {
   const styleOpen = { padding: "2vh 1vw", height: "100%" };
   const styleClosed = {
     padding: "2vh 1vw",
-    height: "40vh",
+    height: "50vh",
     overflow: "hidden",
   };
 

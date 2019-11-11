@@ -48,7 +48,7 @@ export const TemporaryDrawer = () => {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        {["My profile", "Saved opportunities", "Applied opportunities", "Search settings"].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -58,16 +58,7 @@ export const TemporaryDrawer = () => {
         ))}
       </List>
       <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      
     </div>
   );
 

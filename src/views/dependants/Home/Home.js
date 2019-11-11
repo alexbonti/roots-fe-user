@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { FullListJobs, FullListResources, Spinner } from "components";
 import { LoginContext } from "contexts";
+import { withRouter } from "react-router-dom";
 
 import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
@@ -69,7 +70,7 @@ function a11yProps(index) {
   };
 }
 
-export const Home = () => {
+const Home = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const { loginStatus } = useContext(LoginContext);
@@ -154,3 +155,6 @@ export const Home = () => {
     </ThemeProvider>
   );
 };
+
+
+export default withRouter(Home);

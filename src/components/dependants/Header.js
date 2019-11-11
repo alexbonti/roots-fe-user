@@ -3,15 +3,10 @@ import clsx from "clsx";
 import { Link } from "react-router-dom";
 import {
   AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
   Avatar,
-  Button,
   Grid,
 } from "@material-ui/core";
 import { LoginContext } from "contexts";
-
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
@@ -118,9 +113,6 @@ const theme = createMuiTheme({
     accent: { main: "#f5f5f5" },
     error: { main: "#D0011B" },
     contrastThreshold: 3,
-    // Used to shift a color's luminance by approximately
-    // two indexes within its tonal palette.
-    // E.g., shift from Red 500 to Red 300 or Red 700.
     tonalOffset: 0.2,
   },
 });
@@ -169,7 +161,7 @@ export const Header = () => {
       <AppBar className={classes.toolbar}>
         <Grid container  justify="space-between">
           <Grid item align="center" xs={2}>
-            <Link to="/profile"><Avatar src={avatarProfile}>{firstLetter}</Avatar></Link>
+            <Link to="/profile" state={"test"}><Avatar src={avatarProfile}>{firstLetter}</Avatar></Link>
           </Grid>
 
           <Grid item align="center" xs={2}>

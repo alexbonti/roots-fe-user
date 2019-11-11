@@ -54,7 +54,7 @@ export const CoverLetterAndResume = props => {
   const { setUserWantsToApply, progressBar, setProgressBar } = useContext(
     HomeContext
   );
-  const {fileURL} = useContext(UserContext)
+  const {fileURL} = useContext(UserContext);
   const {coverLetter} = useContext(TextEditorContext);
   const { loginStatus } = useContext(LoginContext);
   const [hasApplied, setHasApplied] = useState(false);
