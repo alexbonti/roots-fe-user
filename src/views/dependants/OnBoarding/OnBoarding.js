@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import {
@@ -56,25 +56,13 @@ function getSteps() {
   return ["", "", ""];
 }
 
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      return "Select campaign settings...";
-    case 1:
-      return "What is an ad group anyways?";
-    case 2:
-      return "This is the bit I really care about!";
-    default:
-      return "Unknown stepIndex";
-  }
-}
 
 const OnBoarding = props => {
   const classes = useStyles();
   const { activeStep, setActiveStep, isStart } = useContext(OnBoardingContext);
   const steps = getSteps();
   const { loginStatus, accessToken } = useContext(LoginContext);
-  const { userProfile, setUserProfile, isUpdated, setIsUpdated } = useContext(
+  const { userProfile, setUserProfile } = useContext(
     UserContext
   );
 
@@ -83,7 +71,6 @@ const OnBoarding = props => {
       const triggerAPI = async () => {
         const profileData = await API.getUserProfile(accessToken);
         setUserProfile(profileData.response);
-        console.log("context profile", userProfile);
       };
       triggerAPI(accessToken);
     }
@@ -98,9 +85,7 @@ const OnBoarding = props => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+ 
 
   // ---------------------button stepper------------------------
 
@@ -154,14 +139,6 @@ const OnBoarding = props => {
   const industryContent = (
     <>
       <IndustrySelection />
-      {/* <Grid
-        container
-        style={{ backgroundColor: "white", height: "10vh", padding: "1vh" }}
-        justify="center"
-        alignItems="flex-end"
-      >
-        {buttonStepper}
-      </Grid> */}
     </>
   );
 

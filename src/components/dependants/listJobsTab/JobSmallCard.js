@@ -7,9 +7,9 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@material-ui/core/";
-import { StarRate, StarBorder, Star } from "@material-ui/icons/";
+import { StarRate, StarBorder } from "@material-ui/icons/";
 import { HomeContext } from "contexts";
-import { Spinner } from "components"
+import { Spinner } from "components";
 
 const theme = createMuiTheme({
   palette: {
@@ -23,44 +23,48 @@ const theme = createMuiTheme({
   },
 });
 
+
+
 export const JobSmallCard = props => {
   const { data } = props.data;
-  const { setIsFullView, setJobId} = useContext(HomeContext);
+  const { setIsFullView, setJobId } = useContext(HomeContext);
+
+  const openFullView = (id) => {
+    setIsFullView(true);
+    setJobId(id);
+  };
 
   let content = Array.isArray(data) ? (
     <ThemeProvider theme={theme}>
       {data.map(job => {
         const {
-          seniority,
           publishDate,
           positionTitle,
           location,
-          industryField,
           employmentType,
-          description,
           company,
-          _id
+          _id,
         } = job;
         return (
-          <Grid key={_id} container alignItems="center" style={{ padding: 10 }} >
-            <Grid onClick={()=>{
-                return (setIsFullView(true), setJobId(_id));
-            }}>
-            <Grid style={{ padding: "1vh 0" }}>
-              <Typography variant="h6">{positionTitle}</Typography>
-              <Typography variant="subtitle2">
-                {company} on {publishDate.substring(0, 10)}
-              </Typography>
-            </Grid>
-            <Grid style={{ padding: "1vh 0" }}>
-              <Typography variant="body1">
-                {employmentType} / {location}
-              </Typography>
-              <Typography variamt="body1">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna...
-              </Typography>
-            </Grid>
+          <Grid key={_id} container alignItems="center" style={{ padding: 10 }}>
+            <Grid
+              onClick={() => {openFullView(_id);}}
+            >
+              <Grid style={{ padding: "1vh 0" }}>
+                <Typography variant="h6">{positionTitle}</Typography>
+                <Typography variant="subtitle2">
+                  {company} on {publishDate.substring(0, 10)}
+                </Typography>
+              </Grid>
+              <Grid style={{ padding: "1vh 0" }}>
+                <Typography variant="body1">
+                  {employmentType} / {location}
+                </Typography>
+                <Typography variamt="body1">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna...
+                </Typography>
+              </Grid>
             </Grid>
             <Grid
               container
@@ -90,8 +94,13 @@ export const JobSmallCard = props => {
       {/* <JobFullView /> */}
     </ThemeProvider>
   ) : (
-    <Grid container alignItems="center" justify="center" style={{height: "60vh"}}>
-      <Grid item >
+    <Grid
+      container
+      alignItems="center"
+      justify="center"
+      style={{ height: "60vh" }}
+    >
+      <Grid item>
         <Spinner />
       </Grid>
     </Grid>

@@ -56,7 +56,7 @@ export const FullListJobs = props => {
             style={{ paddingRight: 10 }}
           >
             {" "}
-            <a href="#">Sort</a>{" "}
+            <a href="http://toseomewher.com">Sort</a>{" "}
           </Typography>
         </Grid>
         <Grid item xs={12}></Grid>

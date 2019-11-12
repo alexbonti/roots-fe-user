@@ -73,7 +73,7 @@ const RegistrationConfirmation = ({ ...props }) => {
   const classes = useStyles();
   const [code, setCode] = useState("");
   const [isVerified, setIsVerified] = useState(false);
-  const { setLoginStatus, setAccessToken } = useContext(LoginContext);
+  const { setLoginStatus } = useContext(LoginContext);
   const { userProfile, setUserProfile } = useContext(UserContext);
   const [hasGotRights] = useState(
     props.location.state &&

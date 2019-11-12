@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "date-fns";
-import { Typography, Grid, TextField, Button } from "@material-ui/core/";
+import { Grid, TextField, Button } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -9,7 +9,6 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { TextEditor } from "components";
-import {TextContext} from 'contexts'
 import { TextEditorContext } from "contexts/index";
 
 const useStyles = makeStyles(() => ({
@@ -23,7 +22,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const EditExperience = props => {
-    console.log(props.data)
+  console.log(props.data)
 
   const classes = useStyles();
   const [selectedStartDate, setSelectedStartDate] = React.useState(
@@ -36,9 +35,6 @@ export const EditExperience = props => {
 
   const {
     companyName,
-    description,
-    endDate,
-    startDate,
     positionTitle,
   } = props.data.experience;
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import {Grid } from "@material-ui/core/";
-const { PropTypes } = React;
 const TIMER = 150; // Milliseconds between moving the next block
 const TRANSITION = 0.5; // Seconds to actually move one block
 const DEF_SIZE = 60; // Pixels height/width
@@ -44,40 +43,44 @@ class Loader extends React.Component {
     const VAR1 = SIZE + GUTTER + "% ";
     const VAR2 = 2 * SIZE + 2 * GUTTER + "% ";
     switch (position) {
-      case 1:
-        return "inset(" + VAR1 + VAR2 + VAR1 + VAR0 + " round 5%)";
-      case 2:
-        return "inset(" + VAR0 + VAR2 + VAR2 + VAR0 + " round 5%)";
-      case 3:
-        return "inset(" + VAR0 + VAR1 + VAR2 + VAR1 + " round 5%)";
-      case 4:
-        return "inset(" + VAR1 + VAR1 + VAR1 + VAR1 + " round 5%)";
-      case 5:
-        return "inset(" + VAR2 + VAR1 + VAR0 + VAR1 + " round 5%)";
-      case 6:
-        return "inset(" + VAR2 + VAR0 + VAR0 + VAR2 + " round 5%)";
-      case 7:
-        return "inset(" + VAR1 + VAR0 + VAR1 + VAR2 + " round 5%)";
+    case 1:
+      return "inset(" + VAR1 + VAR2 + VAR1 + VAR0 + " round 5%)";
+    case 2:
+      return "inset(" + VAR0 + VAR2 + VAR2 + VAR0 + " round 5%)";
+    case 3:
+      return "inset(" + VAR0 + VAR1 + VAR2 + VAR1 + " round 5%)";
+    case 4:
+      return "inset(" + VAR1 + VAR1 + VAR1 + VAR1 + " round 5%)";
+    case 5:
+      return "inset(" + VAR2 + VAR1 + VAR0 + VAR1 + " round 5%)";
+    case 6:
+      return "inset(" + VAR2 + VAR0 + VAR0 + VAR2 + " round 5%)";
+    case 7:
+      return "inset(" + VAR1 + VAR0 + VAR1 + VAR2 + " round 5%)";
+    default:
+      return null
     }
   }
   tileIndexToMove() {
     switch (this.state.stateNumber) {
-      case 0:
-        return 7;
-      case 1:
-        return 6;
-      case 2:
-        return 5;
-      case 3:
-        return 4;
-      case 4:
-        return 3;
-      case 5:
-        return 2;
-      case 6:
-        return 1;
-      case 7:
-        return 4;
+    case 0:
+      return 7;
+    case 1:
+      return 6;
+    case 2:
+      return 5;
+    case 3:
+      return 4;
+    case 4:
+      return 3;
+    case 5:
+      return 2;
+    case 6:
+      return 1;
+    case 7:
+      return 4;
+    default:
+      return null
     }
   }
   positionForTile(radioCommand) {
@@ -165,4 +168,3 @@ export  class Spinner extends React.Component {
   }
 }
 
-// ReactDOM.render(<Container />, document.getElementById("content"));

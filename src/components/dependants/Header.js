@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import clsx from "clsx";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -7,10 +6,9 @@ import {
   Grid,
 } from "@material-ui/core";
 import { LoginContext } from "contexts";
-import ExitToApp from "@material-ui/icons/ExitToApp";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import API from "../../helpers/api";
+//import API from "../../helpers/api";
 import { TemporaryDrawer } from "../index";
 import { UserContext } from "contexts/index";
 
@@ -119,36 +117,28 @@ const theme = createMuiTheme({
 
 export const Header = () => {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
   const {
-    setAccessToken,
-    setLoginStatus,
     loginStatus,
-    accessToken,
   } = useContext(LoginContext);
   const { avatarProfile} = useContext(UserContext);
 
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+ 
+  // const logout = () => {
+  //   const logOut = async auth => {
+  //     const putLogout = await API.logout(auth);
+  //     window.localStorage.clear();
+  //     setLoginStatus(false);
+  //     setAccessToken("");
+  //     console.log(putLogout);
+  //   };
 
-  const logout = () => {
-    const logOut = async auth => {
-      const putLogout = await API.logout(auth);
-      window.localStorage.clear();
-      setLoginStatus(false);
-      setAccessToken("");
-      console.log(putLogout);
-    };
-
-    logOut(accessToken);
-  };
+  //   logOut(accessToken);
+  // };
 
   let firstLetter = "";
   let menu = !loginStatus ? "" : <TemporaryDrawer />;
 
-  let avatarSrc = avatarProfile !== "" ? avatarProfile : "A";
 
   if (avatarProfile !== "") {
     firstLetter = "";

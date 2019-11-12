@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {  useEffect, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import { API } from "helpers/index";
-import { Grid, Button } from "@material-ui/core/";
+import { Grid } from "@material-ui/core/";
 import { OnBoardingContext, HomeContext, UserContext } from "contexts/index";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -22,7 +22,7 @@ export default function Accept(props) {
       avatarPictureURL === "" ? (
         <AddAPhotoIcon fontSize="large" />
       ) : (
-        <img src={avatarPictureURL} />
+        <img src={avatarPictureURL} alt=" avatar" />
       );
   } else if (props.data === "file") {
     logo = <DescriptionIcon fontSize="large" />;
@@ -57,7 +57,7 @@ export default function Accept(props) {
       };
       upLoadFile(acceptedFiles);
     }
-  }, [acceptedFiles, setAvatarPictureURL]);
+  }, [acceptedFiles, setAvatarPictureURL, setFileURL, setProgressBar, avatarPictureURL, props.data]);
 
   
 

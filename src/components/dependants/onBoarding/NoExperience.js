@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Typography, Grid, Button, TextField } from "@material-ui/core/";
+import { Typography, Grid, TextField } from "@material-ui/core/";
 import { OnBoardingContext } from "contexts/index";
 import { API } from "helpers";
 

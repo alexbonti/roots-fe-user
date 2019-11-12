@@ -1,10 +1,7 @@
-import { AccessToken } from "contexts/helpers";
 import axios from "axios";
 import { axiosInstance } from "helpers";
 
-let config = {
-  headers: { authorization: "Bearer " + AccessToken },
-};
+
 
 class API {
   loginEmployer = async (data, setAccessToken) => {

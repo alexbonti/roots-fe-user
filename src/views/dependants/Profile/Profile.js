@@ -9,23 +9,19 @@ import {
   Spinner,
   Education,
   Experience,
-  Volunteer,
   AddNewExperience,
-  EditProfile,
 } from "components";
 import MyDropZone from "../../../components/dependants/DropDrag";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
-import { fileURLToPath } from "url";
 
-const Profile = props => {
+const Profile = () => {
   const { loginStatus } = useContext(LoginContext);
   const {
     setUserName,
     setUserLastName,
     setUserEmail,
     setUserProfile,
-    avatarProfile,
     setAvatarProfile,
     userName,
     userLastName,
@@ -51,9 +47,8 @@ const Profile = props => {
     if (loginStatus) {
       triggerAPI();
     }
-  }, [loginStatus]);
+  }, [loginStatus, setUserLastName, setUserName, setUserEmail, setAvatarProfile, setUserProfile  ]);
 
-  console.log("userProfile ====>", userProfile);
 
   const openAddMode = field => {
     setField(field);

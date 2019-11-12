@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, {useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Button } from "@material-ui/core/";
@@ -167,7 +167,7 @@ export const AvatarPictureUpload = () => {
           {confirmButton}
           <Grid item>
             <Typography variant="body2">
-              You can always do it <a href="#">later</a>
+              You can always do it <a href="http:test">later</a>
             </Typography>
           </Grid>
         </Grid>

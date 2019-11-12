@@ -4,19 +4,6 @@ import { LayoutContext, LayoutProvider } from "./common/LayoutContext";
 import { HomeContext, HomeProvider } from "./dependants/HomeContext";
 import { UserContext, UserProvider } from "./dependants/UserContext";
 import {
-  EditOpportunityContext,
-  EditOpportunityProvider,
-} from "./dependants/EditOpportunityContext";
-import {
-  MyCompanyContext,
-  MyCompanyProvider,
-} from "./dependants/MyCompanyContext";
-import {
-  CandidateContext,
-  CandidateProvider,
-} from "./dependants/CandidateContext";
-
-import {
   TextEditorContext,
   TextEditorProvider,
 } from "./dependants/TextEditorContext";
@@ -33,12 +20,6 @@ export {
   LayoutProvider,
   HomeContext,
   HomeProvider,
-  EditOpportunityContext,
-  EditOpportunityProvider,
-  MyCompanyContext,
-  MyCompanyProvider,
-  CandidateContext,
-  CandidateProvider,
   TextEditorContext,
   TextEditorProvider,
   UserContext,
@@ -55,15 +36,7 @@ export const ContextManager = props => {
         <UserProvider>
           <OnBoardingProvider>
             <HomeProvider>
-              <EditOpportunityProvider>
-                <MyCompanyProvider>
-                  <CandidateProvider>
-                    <EditOpportunityProvider>
-                      <TextEditorProvider>{children}</TextEditorProvider>
-                    </EditOpportunityProvider>
-                  </CandidateProvider>
-                </MyCompanyProvider>
-              </EditOpportunityProvider>
+              <TextEditorProvider>{children}</TextEditorProvider>
             </HomeProvider>
           </OnBoardingProvider>
         </UserProvider>

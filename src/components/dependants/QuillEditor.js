@@ -9,39 +9,41 @@ import { TextEditorContext } from "contexts/index";
 const modules = {
   toolbar: [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold","underline"],
+    ["bold", "underline"],
     ["blockquote"],
-    [
-      { list: "bullet" },
-    ],
-    [{ color: [] }]
-  ]
+    [{ list: "bullet" }],
+    [{ color: [] }],
+  ],
 };
 
-export const TextEditor = (props) => {
+export const TextEditor = props => {
   const { setCoverLetter, setWorkExperience } = useContext(TextEditorContext);
   const [nodeRedData] = useState("");
 
   const handleTextEditorChange = value => {
-
     switch (props.data) {
-      case "coverletter":
-        return setCoverLetter(value);
-      case "editWorkExperience":
-        return setWorkExperience(value);
+    case "coverletter":
+      return setCoverLetter(value);
+    case "editWorkExperience":
+      return setWorkExperience(value);
+    default:
+      return null;
     }
-
   };
 
-
-
   return (
-    <Grid container direction="row" justify="center" alignItems="center" style={{backgroundColor: "white" }}>
-      <Grid item xs={12} style={{backgroundColor: "white" }} >
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="center"
+      style={{ backgroundColor: "white" }}
+    >
+      <Grid item xs={12} style={{ backgroundColor: "white" }}>
         <ReactQuill
           onChange={handleTextEditorChange}
           modules={{
-            toolbar: modules.toolbar
+            toolbar: modules.toolbar,
           }}
           theme="snow"
           placeholder="Description ..."

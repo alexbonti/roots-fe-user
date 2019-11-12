@@ -3,16 +3,14 @@
  ***/
 import React, { useContext, useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { LoginContext, UserContext } from "contexts";
+import { LoginContext } from "contexts";
 import { Login, Register, Home, RegistrationConfirmation, OnBoarding, Profile } from "views";
 import { Layout } from "../layout";
 
 export const AppRoutes = props => {
   const { loginStatus } = useContext(LoginContext);
-  const {userProfile} = useContext(UserContext)
   const [redirectToLogin, setRedirectToLogin] = useState(false);
 
-  const {firstLogin} = {userProfile};
 
 
   useEffect(() => {

@@ -1,11 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import {
   TextField,
   makeStyles,
   Typography,
   Button,
-  Box,
   Grid,
   createMuiTheme,
 } from "@material-ui/core";
@@ -47,7 +46,6 @@ const theme = createMuiTheme({
 const Register = props => {
   // const { setLoginStatus } = React.useContex(LoginContext);
   const classes = useStyles();
-  const [pageHeading] = useState("Register");
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -71,7 +69,7 @@ const Register = props => {
 
     const triggerAPI = async () => {
       const registerData = await API.registerUser(data);
-      console.log(registerData)
+      console.log(registerData);
       setAccessToken(registerData.response.accessToken);
       setEmailVerified(registerData.response.userDetails.emailVerified);
       setUserDetails(registerData.response.userDetails);

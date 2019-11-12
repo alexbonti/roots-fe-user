@@ -5,7 +5,6 @@ import { UserContext } from "contexts/index";
 import {  EditEducation} from "components/index";
 
 export const Education = props => {
-  console.log(props.data);
   const { isEditMode, setIsEditMode } = useContext(UserContext);
   const { degree, major, endDate, startDate, school } = props.data.education;
 

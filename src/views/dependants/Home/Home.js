@@ -3,7 +3,7 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab, Typography, Box } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
-import { FullListJobs, FullListResources, Spinner } from "components";
+import { FullListJobs, FullListResources } from "components";
 import { LoginContext } from "contexts";
 import { withRouter } from "react-router-dom";
 
@@ -78,14 +78,9 @@ const Home = () => {
     setUserName,
     setUserLastName,
     setUserEmail,
-    setUserProfile,
-    avatarProfile,
     setAvatarProfile,
   } = useContext(UserContext);
   const [oppData, setOppData] = useState("");
-  const [profileData, setProfileData] = useState("");
-  const [profileExData, setProfileExData] = useState("");
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -98,24 +93,22 @@ const Home = () => {
     const triggerAPI = async () => {
       const oppResponse = await API.getOpportunity();
       setOppData(oppResponse.response);
-      console.log("oppData", oppResponse);
       const profileResponse = await API.getUserProfile();
-      setProfileData(profileResponse);
       setUserName(profileResponse.response.first_name);
       setUserLastName(profileResponse.response.last_name);
       setUserEmail(profileResponse.response.emailId);
-      console.log("profileData", profileResponse);
       const profileExtData = await API.getUserProfileExt();
-      setProfileExData(profileExtData);
-      setUserProfile(profileData.response);
-      console.log("profileExData", profileExtData);
       setAvatarProfile(profileExtData.response.avatar);
-      console.log(avatarProfile);
     };
     if (loginStatus) {
       triggerAPI();
     }
-  }, [loginStatus]);
+  }, [loginStatus, 
+    setOppData,
+    setUserName,
+    setUserLastName,
+    setUserEmail,
+    setAvatarProfile]);
 
   return (
     <ThemeProvider theme={theme}>

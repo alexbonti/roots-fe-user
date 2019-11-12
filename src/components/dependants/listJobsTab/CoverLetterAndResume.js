@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Button } from "@material-ui/core/";
@@ -51,7 +51,7 @@ const theme = createMuiTheme({
 
 export const CoverLetterAndResume = props => {
   const classes = useStyles();
-  const { setUserWantsToApply, progressBar, setProgressBar } = useContext(
+  const { setUserWantsToApply, progressBar } = useContext(
     HomeContext
   );
   const {fileURL} = useContext(UserContext);
