@@ -9,16 +9,12 @@ import { TextEditorContext } from "contexts/index";
 const modules = {
   toolbar: [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike"],
+    ["bold","underline"],
     ["blockquote"],
     [
-      { list: "ordered" },
       { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" }
     ],
-    [{ align: [] }],
-    [{ color: [] }, { background: [] }]
+    [{ color: [] }]
   ]
 };
 

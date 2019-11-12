@@ -37,6 +37,7 @@ import { Experience } from "./dependants/profile/Experience";
 import { Education } from "./dependants/profile/Education";
 import { Volunteer } from "./dependants/profile/Volunteer";
 import { AddNewExperience } from "./dependants/profile/AddNewExperience";
+import { EditProfile } from "./dependants/profile/EditProfile";
 
 export {
   AddOpportunity,
@@ -78,5 +79,6 @@ export {
   Experience,
   Education,
   Volunteer,
-  AddNewExperience
+  AddNewExperience,
+  EditProfile,
 };

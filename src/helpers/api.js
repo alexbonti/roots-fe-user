@@ -195,6 +195,22 @@ class API {
         return { "error": error };
       });
   };
+  updateEducationExp = async (data) => {
+    let accessToken = localStorage.getItem("accessToken");
+    console.log(data)
+    return await axiosInstance
+      .put("/user/educationUserExtended", data, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
+  };
 
   updateUserPreferences = async (data) => {
     let accessToken = localStorage.getItem("accessToken");
