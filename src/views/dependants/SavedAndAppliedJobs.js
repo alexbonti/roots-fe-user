@@ -3,11 +3,13 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab, Typography, Box } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
-import { FullListJobs, FullListResources } from "components";
-import { LoginContext, UserContext, HomeContext } from "contexts";
+import { FullListSavedJobs } from "components";
+import { LoginContext } from "contexts";
 import { withRouter } from "react-router-dom";
-import API from "../../../helpers/api";
+
+import API from "../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
+import { UserContext } from "contexts/index";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -68,19 +70,19 @@ function a11yProps(index) {
   };
 }
 
-const Home = () => {
+const SavedAndAppliedJobs = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [listSavedJobs, setListSavedJobs] = useState("");
   const { loginStatus } = useContext(LoginContext);
-  const {setIsUpdated} = useContext(HomeContext);
   const {
     setUserName,
     setUserLastName,
     setUserEmail,
     setAvatarProfile,
   } = useContext(UserContext);
-  const [oppData, setOppData] = useState("");
+  const [, setOppData] = useState("");
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -99,19 +101,24 @@ const Home = () => {
       setUserEmail(profileResponse.response.emailId);
       const profileExtData = await API.getUserProfileExt();
       setAvatarProfile(profileExtData.response.avatar);
-      setListSavedJobs(profileExtData.response.savedJobs);
+      let listId = profileExtData.response.savedJobs;
+      let listSavedJobs = listId.map(id => {
+        let savedJob = (oppResponse.response.filter(data => data._id === id));
+        return savedJob[0];
+        
+      });
+      setListSavedJobs(listSavedJobs);
+      
     };
     if (loginStatus) {
       triggerAPI();
-      setIsUpdated(false);
     }
   }, [loginStatus, 
     setOppData,
     setUserName,
     setUserLastName,
     setUserEmail,
-    setAvatarProfile,
-    setIsUpdated]);
+    setAvatarProfile]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -127,9 +134,8 @@ const Home = () => {
             aria-label="full width tabs example"
             style={{ marginTop: 0 }}
           >
-            <Tab label="Search" {...a11yProps(0)} className={classes.tab} />
-            <Tab label="News" {...a11yProps(1)} className={classes.tab} />
-            <Tab label="Resources" {...a11yProps(2)} className={classes.tab} />
+            <Tab label="Saved Opportunities" {...a11yProps(0)} className={classes.tab} />
+            <Tab label="Applied Opportunity" {...a11yProps(1)} className={classes.tab} />
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -138,13 +144,10 @@ const Home = () => {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <FullListJobs data={oppData} savedJobs={listSavedJobs} />
+            <FullListSavedJobs data={listSavedJobs} />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            NEWS
-          </TabPanel>
-          <TabPanel value={value} index={2} dir={theme.direction}>
-            <FullListResources />
+            LIST APPLIED JOBS
           </TabPanel>
         </SwipeableViews>
       </div>
@@ -153,4 +156,4 @@ const Home = () => {
 };
 
 
-export default withRouter(Home);
+export default withRouter(SavedAndAppliedJobs);

@@ -105,7 +105,7 @@ export const Login = () => {
       emailId,
       password,
     };
-    const otp = await API.loginEmployer(data, setAccessToken);
+    const otp = await API.loginUser(data, setAccessToken);
     if (!otp) {
       notify("Email or Password are wrong");
     }

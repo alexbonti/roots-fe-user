@@ -4,7 +4,7 @@ import { axiosInstance } from "helpers";
 
 
 class API {
-  loginEmployer = async (data, setAccessToken) => {
+  loginUser = async (data, setAccessToken) => {
     return await axios({
       method: "post",
       url: "http://localhost:8031/api/user/login",
@@ -12,7 +12,7 @@ class API {
     })
       .then(response => {
         setAccessToken(response.data.data.accessToken);
-        return response.data.data.employerDetails;
+        return response.data.data;
       })
       .catch(error => {
         console.log(error);
@@ -21,18 +21,22 @@ class API {
   };
 
 
-  logout = async (accessToken) => {
-    accessToken = localStorage.getItem("accessToken");
+  logout = async () => {
+    let accessToken = localStorage.getItem("accessToken");
+    // window.localStorage.setItem("accessToken", "")
+
+    console.log(accessToken)
     return await axiosInstance
-    .put("/employer/logout",{}, {
+    .put("/user/logout",{}, {
       headers: {
         authorization: "Bearer " + accessToken,
       }
     })
     .then(response => {
+      window.localStorage.setItem("accessToken", "")
       return {"response": response}
     })
-    .catch(error => window.localStorage.clear)
+    .catch(error =>  {return {"error": error}})
   }
 
   registerUser = async data => {
@@ -192,6 +196,39 @@ class API {
         return { "error": error };
       });
   };
+
+  editWorkExperience = async (data) => {
+    let accessToken = localStorage.getItem("accessToken");
+    return await axiosInstance
+      .put("/user/editWorkExperience", data, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
+  };
+  editEduExperience = async (data) => {
+    let accessToken = localStorage.getItem("accessToken");
+    return await axiosInstance
+      .put("/user/editEducation", data, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
+  };
+
+
   updateEducationExp = async (data) => {
     let accessToken = localStorage.getItem("accessToken");
     console.log(data)
@@ -283,6 +320,32 @@ class API {
     let accessToken = localStorage.getItem("accessToken");
     axiosInstance
       .put("/user/saveJob", data, {
+        headers: {
+          authorization: "Bearer " + accessToken,
+        },
+      } )
+      .then(response => response)
+      .catch(error => console.log(error));
+  };
+
+  userUnsaveJob = data => {
+    let accessToken = localStorage.getItem("accessToken");
+    axiosInstance
+      .put("/user/unSaveJob", data, {
+        headers: {
+          authorization: "Bearer " + accessToken,
+        },
+      } )
+      .then(response => response)
+      .catch(error => console.log(error));
+  };
+
+
+
+  userGetSavedJob = data => {
+    let accessToken = localStorage.getItem("accessToken");
+    axiosInstance
+      .get("/user/getSavedJobs", data, {
         headers: {
           authorization: "Bearer " + accessToken,
         },

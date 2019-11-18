@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useContext} from "react";
+import {Link} from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
@@ -7,9 +8,14 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
+import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
+import SearchIcon from "@material-ui/icons/Search";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Icon from "@material-ui/core/Icon";
+import {API} from 'helpers';
+import {LoginContext} from 'contexts';
 
 const useStyles = makeStyles({
   list: {
@@ -18,6 +24,7 @@ const useStyles = makeStyles({
   fullList: {
     width: "auto",
   },
+  backgroundColor: "green",
 });
 
 export const TemporaryDrawer = () => {
@@ -28,6 +35,7 @@ export const TemporaryDrawer = () => {
     bottom: false,
     right: false,
   });
+  const {setLoginStatus} = useContext(LoginContext);
 
   const toggleDrawer = (side, open) => event => {
     if (
@@ -40,6 +48,12 @@ export const TemporaryDrawer = () => {
     setState({ ...state, [side]: open });
   };
 
+
+  const logout = () => {
+    API.logout();
+    setLoginStatus(false);
+  }
+
   const sideList = side => (
     <div
       className={classes.list}
@@ -48,27 +62,49 @@ export const TemporaryDrawer = () => {
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
-        {["My profile", "Saved opportunities", "Applied opportunities", "Search settings"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem button={true} >
+          <ListItemIcon>
+            <AssignmentIndIcon />
+          </ListItemIcon>
+          <Link style={{textDecoration: "none", color: "inherit"}} to="/profile" ><ListItemText primary="My Profile" /></Link>
+        </ListItem>
+
+        <ListItem button>
+          <ListItemIcon>
+            <StarBorderIcon />
+          </ListItemIcon>
+          <Link style={{textDecoration: "none", color: "inherit"}} to="/jobs" ><ListItemText primary="Saved Opportunities" /></Link>
+        </ListItem>
+
+        <ListItem button>
+          <ListItemIcon>
+            <DoneOutlineIcon />
+          </ListItemIcon>
+          <ListItemText primary="Applied Opportunities" />
+        </ListItem>
+
+        <ListItem button>
+          <ListItemIcon>
+            <SearchIcon />
+          </ListItemIcon>
+          <ListItemText primary="Search Settings" />
+        </ListItem>
+        <Divider />
+        <ListItem button={true} onClick={() => logout()}>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary="Log out" />
+        </ListItem>
       </List>
-      <Divider />
-      
     </div>
   );
-
-
 
   return (
     <div>
       <Button onClick={toggleDrawer("right", true)}>
         {" "}
-        <Icon style={{color: "#FFFFFF"}}>list</Icon>
+        <Icon style={{ color: "#FFFFFF" }}>list</Icon>
       </Button>
       <Drawer
         anchor="right"

@@ -21,7 +21,7 @@ export const TextEditor = props => {
   const [nodeRedData] = useState("");
 
   const handleTextEditorChange = value => {
-    switch (props.data) {
+    switch (props.data.content) {
     case "coverletter":
       return setCoverLetter(value);
     case "editWorkExperience":
@@ -30,6 +30,7 @@ export const TextEditor = props => {
       return null;
     }
   };
+
 
   return (
     <Grid
@@ -47,6 +48,7 @@ export const TextEditor = props => {
           }}
           theme="snow"
           placeholder="Description ..."
+          defaultValue={(props.data.defaultValue)}
         />
         <div className="textEditorContent">
           <div>{ReactHtmlParser(nodeRedData)}</div>

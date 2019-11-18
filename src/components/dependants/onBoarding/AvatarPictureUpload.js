@@ -6,6 +6,10 @@ import MyDropzone from "../DropDrag";
 import { OnBoardingContext, LoginContext, UserContext } from "contexts";
 import { API } from "helpers";
 
+
+//TODO add type controls check on files uploading
+
+
 const useStyles = makeStyles(theme => ({
   topper: {
     height: "10vh",

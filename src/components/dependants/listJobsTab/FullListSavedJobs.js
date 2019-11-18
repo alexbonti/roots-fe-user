@@ -18,33 +18,28 @@ const theme = createMuiTheme({
   },
 });
 
-export const FullListJobs = props => {
+export const FullListSavedJobs = props => {
 
   const {isFullView, jobId} = useContext(HomeContext);
-
-
-  // let singleJobData;
+  console.log(props);
 
   const findSingleJobData = (id) => {
     if(Array.isArray(props.data)){
       let selectedJob = props.data.filter(jobs =>
         jobs._id === id );
-
       return selectedJob[0];
     }
   };
 
 
+
   let singleJobData = isFullView ? findSingleJobData(jobId) : [];
+
 
 
   let listOfJobs = props.hasOwnProperty("data") ? (
     <>
-      <Grid container style={{ padding: "5vh 2vw", backgroundColor: "rgba(8, 124, 149, 0.1)"}}>
-        <Typography variant="h6">
-          We found {props.data.length} opportunity
-        </Typography>
-      </Grid>
+
       <Grid container style={{ backgroundColor: "#F9F9F9" }}>
         <Grid item xs={12}>
           <Typography
@@ -73,7 +68,7 @@ export const FullListJobs = props => {
     </Grid>
   );
 
-  let content = (isFullView && props.hasOwnProperty("data") && singleJobData !== undefined)  ? <JobFullView data={singleJobData} /> : listOfJobs;
+  let content = (isFullView && props.hasOwnProperty("data") && singleJobData !== undefined)  ? <JobFullView data={singleJobData}/> : listOfJobs;
   return (
     <>
       <ThemeProvider theme={theme}>{content}</ThemeProvider>

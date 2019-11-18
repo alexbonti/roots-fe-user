@@ -155,7 +155,7 @@ export const Header = () => {
           </Grid>
 
           <Grid item align="center" xs={2}>
-            <Link to="/"><Avatar>C</Avatar></Link>
+            <Link to="/"><Avatar src="https://i.pinimg.com/originals/2d/0f/50/2d0f50e8e4f6b233c7cf70b4bd36f89c.png"></Avatar></Link>
           </Grid>
 
           <Grid item align="center" xs={2}>

@@ -3,17 +3,9 @@ import { withRouter } from "react-router-dom";
 import { Typography, Grid } from "@material-ui/core/";
 import { API } from "helpers";
 import { UserContext, LoginContext } from "contexts";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import {
-  Spinner,
-  Education,
-  Experience,
-  AddNewExperience,
-} from "components";
+import { Spinner, Education, Experience, AddNewExperience } from "components";
 import MyDropZone from "../../../components/dependants/DropDrag";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 
 const Profile = () => {
   const { loginStatus } = useContext(LoginContext);
@@ -22,19 +14,21 @@ const Profile = () => {
     setUserLastName,
     setUserEmail,
     setUserProfile,
+    avatarProfile,
     setAvatarProfile,
     userName,
     userLastName,
     userEmail,
     userProfile,
-    isEditMode,
-    setIsEditMode,
     isAddMode,
     setIsAddMode,
+    setIsUpdated
+
   } = useContext(UserContext);
   const [field, setField] = useState("");
 
   useEffect(() => {
+
     const triggerAPI = async () => {
       const profileResponse = await API.getUserProfile();
       setUserName(profileResponse.response.first_name);
@@ -44,10 +38,21 @@ const Profile = () => {
       setUserProfile(profileExtData.response);
       setAvatarProfile(profileExtData.response.avatar);
     };
+
     if (loginStatus) {
       triggerAPI();
     }
-  }, [loginStatus, setUserLastName, setUserName, setUserEmail, setAvatarProfile, setUserProfile  ]);
+
+    setIsUpdated(false);
+  }, [
+    loginStatus,
+    setUserLastName,
+    setUserName,
+    setUserEmail,
+    setAvatarProfile,
+    setUserProfile,
+    setIsUpdated
+  ]);
 
 
   const openAddMode = field => {
@@ -55,24 +60,15 @@ const Profile = () => {
     setIsAddMode(true);
   };
 
+//------------EXPERIENCE--------------------------------
   const experience =
     typeof userProfile === "object" &&
     Array.isArray(userProfile.workExperience) ? (
         userProfile.workExperience.map((experience, index) => {
-          return (
-            <Experience
-              key={index}
-              data={{
-                experience,
-                index,
-                listExperiences: userProfile.workExperience,
-              }}
-            />
-          );
-        })
-      ) : (
-        <Spinner />
-      );
+          return <Experience key={index} data={experience} />;
+        }) ) : (<Spinner />);
+
+//------------EDUCATION--------------------------------
 
   const education =
     typeof userProfile === "object" && Array.isArray(userProfile.education) ? (
@@ -80,9 +76,7 @@ const Profile = () => {
         return (
           <Education
             key={index}
-            data={{
-              education,
-            }}
+            data={education}
           />
         );
       })
@@ -90,39 +84,21 @@ const Profile = () => {
       <Spinner />
     );
 
-  const editBar = isEditMode ? (
-    <Grid
-      item
-      container
-      justify="space-between"
-      xs={12}
-      style={{
-        backgroundColor: "rgba(255, 129, 0, 0.21)",
-        height: "8vh",
-        padding: "2vh",
-      }}
-    >
-      <Grid item>
-        <Typography variant="h6">Edit</Typography>
-      </Grid>
-      <Grid item>
-        <CancelPresentationIcon onClick={() => setIsEditMode(false)} />
-      </Grid>
+  const editAvatar = (
+    <Grid item xs={3} >
+      <MyDropZone data={"photo"} size={"small"}/>
     </Grid>
-  ) : (
-    ""
   );
 
   const content =
     userProfile !== undefined && userProfile !== null ? (
       <>
         <Grid container justify="space-between" style={{ padding: "3vh" }}>
-          <Grid item xs={5}>
-            {/*<img src={avatarProfile}></img>*/}
-            <MyDropZone data={"photo"} />
-            <Fab aria-label="add" style={{position: "relative", top: "-2rem"}} size="small">
-              <AddIcon />
-            </Fab>
+          <Grid item container justify="flex-start" alignItems="baseline" xs={5}>
+            <Grid item xs={9}>
+              <img src={avatarProfile} alt="avatar" style={{borderRadius: "50%"}}></img>
+            </Grid>
+            {editAvatar}
           </Grid>
           <Grid container item xs={5} alignItems="center">
             <Grid>
@@ -161,7 +137,6 @@ const Profile = () => {
               <AddBoxIcon onClick={() => openAddMode("work")} />
             </Grid>
           </Grid>
-          {editBar}
         </Grid>
         <Grid container>{experience}</Grid>
         <Grid container>
@@ -183,7 +158,6 @@ const Profile = () => {
               <AddBoxIcon onClick={() => openAddMode("education")} />
             </Grid>
           </Grid>
-          {editBar}
         </Grid>
         <Grid container>{education}</Grid>
       </>

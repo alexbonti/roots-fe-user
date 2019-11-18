@@ -49,7 +49,7 @@ const theme = createMuiTheme({
 });
 
 export const JobFullView = props => {
-  console.log("jfwdata",props.data)
+  console.log(props)
   const classes = useStyles();
   const { setIsFullView, userWantsToApply, setUserWantsToApply } = useContext(
     HomeContext
@@ -63,8 +63,6 @@ export const JobFullView = props => {
     employmentType,
     description,
     company,
-    startDate,
-    endDate,
     _id,
   } = props.data;
 
@@ -118,7 +116,7 @@ export const JobFullView = props => {
             <Typography variant="h6">{positionTitle}</Typography>
             <Typography variant="body1">{company}</Typography>
             <Typography variant="subtitle1">
-              {startDate.substring(0, 10)} - {endDate.substring(0, 10)}
+              {/* {startDate.substring(0, 10)} - {endDate.substring(0, 10)} */}
             </Typography>
           </Grid>
         </Grid>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import {
@@ -10,6 +10,7 @@ import {
 import { StarRate, StarBorder } from "@material-ui/icons/";
 import { HomeContext } from "contexts";
 import { Spinner } from "components";
+import {API} from 'helpers';
 
 const theme = createMuiTheme({
   palette: {
@@ -27,12 +28,14 @@ const theme = createMuiTheme({
 
 export const JobSmallCard = props => {
   const { data } = props.data;
+  const {savedJobs} = props.data;
   const { setIsFullView, setJobId } = useContext(HomeContext);
-
+  
   const openFullView = (id) => {
     setIsFullView(true);
     setJobId(id);
   };
+  const [isSaved, setIsSaved] = useState("");
 
   let content = Array.isArray(data) ? (
     <ThemeProvider theme={theme}>
@@ -43,8 +46,20 @@ export const JobSmallCard = props => {
           location,
           employmentType,
           company,
+          endDate,
           _id,
         } = job;
+        
+        console.log(savedJobs)
+        // savedJobs.include(_id) ? setIsSaved(true) : setIsSaved(false)
+
+        const toogleSave = () => {
+          isSaved ? API.userUnsaveJob({"jobId": _id}) : API.userSaveJob({"jobId": _id});
+          setIsSaved(!isSaved);
+        };
+        
+        
+        let endDateNew = endDate.substring(0,10);
         return (
           <Grid key={_id} container alignItems="center" style={{ padding: 10 }}>
             <Grid
@@ -53,7 +68,7 @@ export const JobSmallCard = props => {
               <Grid style={{ padding: "1vh 0" }}>
                 <Typography variant="h6">{positionTitle}</Typography>
                 <Typography variant="subtitle2">
-                  {company} on {publishDate.substring(0, 10)}
+                  {company} on {publishDate.substring(0,10)}
                 </Typography>
               </Grid>
               <Grid style={{ padding: "1vh 0" }}>
@@ -73,15 +88,23 @@ export const JobSmallCard = props => {
               style={{ padding: "1vh 0" }}
             >
               <FormControlLabel
+                style={{marginRight: "0"}}
                 control={
                   <Checkbox
                     icon={<StarBorder />}
                     checkedIcon={<StarRate />}
-                    value="checkedH"
+                    checked={isSaved}
+                    onClick={()=> {toogleSave();}}
+
                   />
                 }
               />
               <Typography align="left">Save</Typography>
+              <Grid item container justify="flex-end">
+                <Grid item xs={10}>
+                  <Typography align="right" variant="subtitle1" style={{color: "rgb(157, 157, 157)"}}>Expires on {endDateNew}</Typography>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid
               item

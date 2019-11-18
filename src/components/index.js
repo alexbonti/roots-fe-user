@@ -9,6 +9,7 @@ import { NoExperience } from "./dependants/onBoarding/NoExperience";
 import { GotExperience } from "./dependants/onBoarding/GotExperience";
 import { CurtainIndustrySelection } from "./dependants/onBoarding/CurtainIndustrySelection";
 import {FullListJobs} from  "./dependants/listJobsTab/FullListJobs";
+import {FullListSavedJobs} from  "./dependants/listJobsTab/FullListSavedJobs";
 import {JobFullView} from  "./dependants/listJobsTab/JobFullView";
 import {JobSmallCard} from  "./dependants/listJobsTab/JobSmallCard";
 import { IndustrySelection } from "./dependants/onBoarding/IndustrySelection";
@@ -49,6 +50,7 @@ export {
   EndApplication,
   Spinner,
   FullListResources,
+  FullListSavedJobs,
   ResourceFullView,
   ResourceSmallCard,
   EditEducation,

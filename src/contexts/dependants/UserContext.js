@@ -11,7 +11,7 @@ export const UserProvider = props => {
   const [isUpdated, setIsUpdated] = useState(false);
   const [avatarProfile, setAvatarProfile] = useState("");
   const [fileURL, setFileURL] = useState("");
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState({status: false, id:""});
   const [isAddMode, setIsAddMode] = useState(false);
   const { children } = props;
 
