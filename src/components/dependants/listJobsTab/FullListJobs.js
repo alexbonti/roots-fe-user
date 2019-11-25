@@ -1,10 +1,28 @@
-import React, { useContext } from "react";
-import { createMuiTheme } from "@material-ui/core/styles";
+import React, { useContext, useState } from "react";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Typography, Grid } from "@material-ui/core/";
+import { Button, Typography, Grid, TextField } from "@material-ui/core/";
 import { JobSmallCard, JobFullView } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
+import CloseIcon from "@material-ui/icons/Close";
+import SettingsIcon from "@material-ui/icons/Settings";
+import { classes } from "istanbul-lib-coverage";
+
+const useStyles = makeStyles(theme => ({
+  rootMain: {
+    backgroundColor: "white",
+    padding: "5vh 0",
+  },
+  buttons: {
+    color: "white",
+    border: "1px solid #087b94",
+    backgroundColor: "#087b94 !important",
+    margin: "1vh 0",
+    borderRadius: "25px",
+    padding: "2vh 3vw",
+  },
+}));
 
 const theme = createMuiTheme({
   palette: {
@@ -19,7 +37,9 @@ const theme = createMuiTheme({
 });
 
 export const FullListJobs = props => {
+  const classes = useStyles();
   const { isFullView, jobId, listSavedJobs } = useContext(HomeContext);
+  const [searchSettingTab, setSearchSettingTab] = useState(false);
 
   const findSingleJobData = id => {
     if (Array.isArray(props.data) && listSavedJobs !== "") {
@@ -33,32 +53,99 @@ export const FullListJobs = props => {
 
   let singleJobData = isFullView ? findSingleJobData(jobId) : "";
 
-  let listOfJobs = Array.isArray(props.data) ? (
+  let searchTab = searchSettingTab ? (
     <>
       <Grid
         container
+        justify="center"
+        style={{ backgroundColor: "rgba(8, 124, 149, 0.1)", padding: "1vh 0" }}
+      >
+        <Grid item xs={11} align="right">
+          <CloseIcon onClick={() => setSearchSettingTab(false)} />
+        </Grid>
+        <Grid item xs={10}>
+          <TextField
+            //className={classes.textField}
+            fullWidth
+            id="standard"
+            label="Keyword"
+            placeholder="keyword"
+            margin="normal"
+            // onChange={event => {
+            //   setPositionTitle(event.target.value);
+            //}}
+          />{" "}
+        </Grid>
+        <Grid item xs={10}>
+          <TextField
+            //className={classes.textField}
+            fullWidth
+            id="standard"
+            label="Location"
+            placeholder="Location"
+            margin="normal"
+            // onChange={event => {
+            //   setPositionTitle(event.target.value);
+            //}}
+          />{" "}
+        </Grid>
+        <Grid item xs={10}>
+          <TextField
+            //className={classes.textField}
+            fullWidth
+            id="standard"
+            label="Position type"
+            placeholder="Position type"
+            margin="normal"
+            // onChange={event => {
+            //   setPositionTitle(event.target.value);
+            //}}
+          />{" "}
+        </Grid>
+        <Grid item xs={6}>
+          <Button fullWidth className={classes.buttons}>
+            Search
+          </Button>
+        </Grid>
+      </Grid>
+    </>
+  ) : (
+    <>
+      <Grid
+        container
+        alignItems="flex-start"
         style={{
-          padding: "5vh 2vw",
+          padding: "2vh 2vw",
+          paddingBottom: "5vh",
           backgroundColor: "rgba(8, 124, 149, 0.1)",
         }}
       >
-        <Typography variant="h6">
-          We found {props.data.length} opportunity
-        </Typography>
-      </Grid>
-      <Grid container style={{ backgroundColor: "#F9F9F9" }}>
-        <Grid item xs={12}>
-          <Typography
-            variant="body1"
-            align="right"
-            style={{ paddingRight: 10 }}
-          >
-            {" "}
-            <a href="http://toseomewher.com">Sort</a>{" "}
+        <Grid container item >
+          <Grid item xs={11}>
+            <Typography
+              align="right"
+              variant="body1"
+              onClick={() => setSearchSettingTab(true)}
+            >
+              Filter
+            </Typography>
+          </Grid>
+          <Grid item xs={1} align="center">
+            <SettingsIcon style={{ color: "rgba(0, 0, 0, 0.71)" }} />
+          </Grid>
+        </Grid>
+        <Grid item>
+          <Typography variant="h6">
+            We found {props.data.length} opportunity
           </Typography>
         </Grid>
-        <Grid item xs={12}></Grid>
       </Grid>
+    </>
+  );
+
+  let listOfJobs = Array.isArray(props.data) ? (
+    <>
+      {searchTab}
       <Grid container style={{ backgroundColor: "white" }}>
         <Grid item xs={12}>
           {props.data.map(job => {
@@ -70,7 +157,6 @@ export const FullListJobs = props => {
               ""
             );
           })}
-          );
         </Grid>
 
         <Grid item xs={12}></Grid>
