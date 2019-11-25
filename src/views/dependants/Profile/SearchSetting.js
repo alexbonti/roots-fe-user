@@ -73,7 +73,7 @@ function a11yProps(index) {
   };
 }
 
-const SavedAndAppliedJobs = () => {
+const SearchSettings = () => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [listSavedJobs, setListSavedJobs] = useState("");
@@ -161,4 +161,4 @@ const SavedAndAppliedJobs = () => {
 };
 
 
-export default withRouter(SavedAndAppliedJobs);
+export default withRouter(SearchSettings);

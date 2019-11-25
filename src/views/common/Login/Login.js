@@ -25,7 +25,7 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import Image from "../../../helpers/img/header.png";
+import Image from "../../../helpers/img/rootsheader.gif";
 
 let theme = createMuiTheme({
   palette: {
@@ -44,9 +44,10 @@ const useStyles = makeStyles(theme => ({
   },
   body: {
     height: "65vh",
+    background: "rgba(237,237,237)"
   },
   header: {
-    height: "35vh",
+    height: "42vh",
     backgroundImage: `url(${Image})`,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",

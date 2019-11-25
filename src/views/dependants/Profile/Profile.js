@@ -100,20 +100,20 @@ const Profile = () => {
             </Grid>
             {editAvatar}
           </Grid>
-          <Grid container item xs={5} alignItems="center">
+          <Grid container item xs={6} alignItems="center">
             <Grid>
               <Typography variant="h6">
                 {userName} {userLastName}
               </Typography>
             </Grid>
-            <Grid container>
+            <Grid container justify="flex-start">
               <Grid>
-                <Typography variant="body1">
+                <Typography variant="subtitle1">
                   {userProfile.preferredLocation}
                 </Typography>
               </Grid>
-              <Grid>
-                <Typography variant="body1">{userEmail}</Typography>
+              <Grid item xs={5}>
+                <Typography variant="subtitle1" >{userEmail}</Typography>
               </Grid>
             </Grid>
           </Grid>

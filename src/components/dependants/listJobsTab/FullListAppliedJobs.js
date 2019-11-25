@@ -2,9 +2,12 @@ import React, { useContext } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid } from "@material-ui/core/";
-import { JobSmallCard, JobFullView } from "components";
+import { JobAppliedSmallCard, JobFullView } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
+
+
+// TODO change the full view accordingly because coming from this page
 
 const theme = createMuiTheme({
   palette: {
@@ -18,18 +21,18 @@ const theme = createMuiTheme({
   },
 });
 
-export const FullListSavedJobs = props => {
+export const FullListAppliedJobs = props => {
   const { isFullView, jobId } = useContext(HomeContext);
 
   const findSingleJobData = id => {
     if (Array.isArray(props.data)) {
-      let selectedJob = props.data.filter(jobs => jobs._id === id);
-      return selectedJob[0];
+      let selectedJob = props.data.filter(jobs => jobs.jobId._id === id);
+      console.log(selectedJob);
+      return selectedJob[0].jobId;
     }
   };
 
   let singleJobData = isFullView ? findSingleJobData(jobId) : [];
-
   let listOfJobs = Array.isArray(props.data) ? (
     <>
       <Grid container style={{ backgroundColor: "#F9F9F9" }}>
@@ -48,13 +51,7 @@ export const FullListSavedJobs = props => {
       <Grid container style={{ backgroundColor: "white" }}>
         <Grid item xs={12}>
           {props.data.map(job => {
-            let isSaved = props.savedJobs.includes(job._id);
-
-            return isSaved ? (
-              <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
-            ) : (
-              ""
-            );
+            return <JobAppliedSmallCard key={job._id} data={job} />;
           })}
         </Grid>
         <Grid item xs={12}></Grid>
@@ -73,6 +70,9 @@ export const FullListSavedJobs = props => {
     </Grid>
   );
 
+  console.log(isFullView,
+    props.hasOwnProperty("data"),
+    singleJobData)
   let content =
     isFullView &&
     props.hasOwnProperty("data") &&

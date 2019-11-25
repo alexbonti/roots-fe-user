@@ -11,6 +11,7 @@ export const HomeProvider = props => {
   const [userWantsToApply, setUserWantsToApply] = useState(false);
   const [dataToBeSentResources, setDataToBeSentResources] = useState({});
   const [jobId, setJobId] = useState("");
+  const [listSavedJobs, setListSavedJobs] = useState("");
 
   const { children } = props;
   return (
@@ -29,7 +30,9 @@ export const HomeProvider = props => {
         isFullViewResource,
         setIsFullViewResource,
         dataToBeSentResources,
-        setDataToBeSentResources
+        setDataToBeSentResources,
+        listSavedJobs,
+        setListSavedJobs
       }}
     >
       {children}

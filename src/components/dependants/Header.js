@@ -4,6 +4,7 @@ import {
   AppBar,
   Avatar,
   Grid,
+  Typography
 } from "@material-ui/core";
 import { LoginContext } from "contexts";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
@@ -11,6 +12,8 @@ import { ThemeProvider } from "@material-ui/styles";
 //import API from "../../helpers/api";
 import { TemporaryDrawer } from "../index";
 import { UserContext } from "contexts/index";
+//import Image from "../../../helpers/img/root-bg.jpg";
+
 
 // import { AccessToken } from "contexts/helpers/index";
 
@@ -137,7 +140,14 @@ export const Header = () => {
   // };
 
   let firstLetter = "";
-  let menu = !loginStatus ? "" : <TemporaryDrawer />;
+
+
+
+  let registerStatus = {
+    menu: !loginStatus ? "" : <TemporaryDrawer />,
+    avatar: !loginStatus ? "" : <Link to="/profile" state={"test"}><Avatar src={avatarProfile}>{firstLetter}</Avatar></Link>
+
+  };
 
 
   if (avatarProfile !== "") {
@@ -149,21 +159,23 @@ export const Header = () => {
   let content = (
     <ThemeProvider theme={theme}>
       <AppBar className={classes.toolbar}>
-        <Grid container  justify="space-between">
-          <Grid item align="center" xs={2}>
-            <Link to="/profile" state={"test"}><Avatar src={avatarProfile}>{firstLetter}</Avatar></Link>
+        <Grid container  justify="space-between" style={{paddingLeft: "5vw"}}>
+          <Grid item  >
+            {registerStatus.avatar}
           </Grid>
 
-          <Grid item align="center" xs={2}>
-            <Link to="/"><Avatar src="https://i.pinimg.com/originals/2d/0f/50/2d0f50e8e4f6b233c7cf70b4bd36f89c.png"></Avatar></Link>
+          <Grid item align="center" >
+            <Link to="/" style={{textDecoration: "none", color: "white"}}><Typography variant="h4">ROOTS</Typography></Link>
           </Grid>
 
-          <Grid item align="center" xs={2}>
-            {menu}
+          <Grid item align="center" >
+            {registerStatus.menu}
           </Grid>
         </Grid>
       </AppBar>
     </ThemeProvider>
   );
+  //<Avatar src={Image}></Avatar>
   return content;
 };
+

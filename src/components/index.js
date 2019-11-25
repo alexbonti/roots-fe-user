@@ -30,6 +30,12 @@ import { Education } from "./dependants/profile/Education";
 import { Volunteer } from "./dependants/profile/Volunteer";
 import { AddNewExperience } from "./dependants/profile/AddNewExperience";
 import { EditProfile } from "./dependants/profile/EditProfile";
+import {JobSavedSmallCard} from "./dependants/listJobsTab/JobSavedSmallCard";
+import {JobAppiedList} from "./dependants/listJobsTab/JobAppiedList";
+import {FullListAppliedJobs} from "./dependants/listJobsTab/FullListAppliedJobs";
+import {JobAppliedSmallCard} from "./dependants/listJobsTab/JobAppliedSmallCard";
+
+
 
 export {
   Notification,
@@ -64,5 +70,9 @@ export {
   EditProfile,
   FullListJobs,
   JobFullView,
-  JobSmallCard
+  JobSmallCard,
+  JobSavedSmallCard,
+  JobAppiedList,
+  FullListAppliedJobs,
+  JobAppliedSmallCard
 };

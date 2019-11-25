@@ -4,6 +4,8 @@ import { axiosInstance } from "helpers";
 
 
 class API {
+
+  
   loginUser = async (data, setAccessToken) => {
     return await axios({
       method: "post",
@@ -77,6 +79,22 @@ class API {
     accessToken = localStorage.getItem("accessToken");
     return await axiosInstance
       .get("/jobs/viewOpportunities")
+      .then(response => {
+        return { response: response.data.data.opportunityData};
+      })
+      .catch(error => {
+        console.log(error);
+        return { error };
+      });
+  };
+
+  getUserAppliedJobs = async () => {
+    let accessToken = localStorage.getItem("accessToken");
+    return await axiosInstance
+      .get("/user/viewjobs", {
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+      }})
       .then(response => {
         return { response: response.data.data.opportunityData};
       })
@@ -342,17 +360,19 @@ class API {
 
 
 
-  userGetSavedJob = data => {
+  userGetSavedJob = async (data) => {
     let accessToken = localStorage.getItem("accessToken");
-    axiosInstance
+   return await axiosInstance
       .get("/user/getSavedJobs", data, {
         headers: {
-          authorization: "Bearer " + accessToken,
+          authorization: `Bearer ${accessToken}`,
         },
       } )
-      .then(response => response)
-      .catch(error => console.log(error));
+      .then(response => {return {"response": response}})
+      .catch(error => {return {"error": error}})
   };
+
+
 
   userApplyJob = data => {
     let accessToken = localStorage.getItem("accessToken");

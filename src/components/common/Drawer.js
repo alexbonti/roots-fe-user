@@ -1,8 +1,8 @@
-import React, {useContext} from "react";
-import {Link} from 'react-router-dom';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
+import { Button, Grid, Typography, Avatar } from "@material-ui/core/";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
@@ -14,8 +14,9 @@ import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
 import SearchIcon from "@material-ui/icons/Search";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Icon from "@material-ui/core/Icon";
-import {API} from 'helpers';
-import {LoginContext} from 'contexts';
+import { API } from "helpers";
+import { LoginContext } from "contexts";
+import Image from "../../helpers/img/rootsheader.gif";
 
 const useStyles = makeStyles({
   list: {
@@ -24,7 +25,16 @@ const useStyles = makeStyles({
   fullList: {
     width: "auto",
   },
-  backgroundColor: "green",
+  item: {
+    "&:focus": {
+      backgroundColor: "white",
+    },
+  },
+  bigAvatar: {
+    margin: 10,
+    width: 60,
+    height: 60,
+  },
 });
 
 export const TemporaryDrawer = () => {
@@ -35,7 +45,7 @@ export const TemporaryDrawer = () => {
     bottom: false,
     right: false,
   });
-  const {setLoginStatus} = useContext(LoginContext);
+  const { setLoginStatus } = useContext(LoginContext);
 
   const toggleDrawer = (side, open) => event => {
     if (
@@ -48,11 +58,10 @@ export const TemporaryDrawer = () => {
     setState({ ...state, [side]: open });
   };
 
-
   const logout = () => {
     API.logout();
     setLoginStatus(false);
-  }
+  };
 
   const sideList = side => (
     <div
@@ -60,42 +69,100 @@ export const TemporaryDrawer = () => {
       role="presentation"
       onClick={toggleDrawer(side, false)}
       onKeyDown={toggleDrawer(side, false)}
+      style={{ height: "100%", backgroundColor: "white", width: "100%" }}
     >
-      <List>
-        <ListItem button={true} >
-          <ListItemIcon>
-            <AssignmentIndIcon />
-          </ListItemIcon>
-          <Link style={{textDecoration: "none", color: "inherit"}} to="/profile" ><ListItemText primary="My Profile" /></Link>
-        </ListItem>
+      <List style={{ height: "100%", paddingTop: "0" }}>
+        <Grid
+          container
+          justify="space-between"
+          alignItems="baseline"
+          direction="column"
+          style={{ height: "100%" }}
+        >
+          <Grid item>
+            <Grid
+              item
+              container
+              justify="center"
+              alignItems="center"
+              style={{
+                backgroundColor: "#065a6d",
+                backgroundImage:
+                  " linear-gradient(242deg, #065a6d 0%, #087b94 58%, #0e91b1 100%)",
+                height: "15vh",
+              }}
+            >
+              <Grid item container justify="space-evenly" alignItems="center">
+                <Grid>
+                  <Avatar variant="rounded" sizes="large" src={Image} className={classes.bigAvatar}/>
+                </Grid>
+                <Grid>
+                  <Typography variant="body1" style={{ color: "white" }}>
+                    Welcome,
+                  </Typography>
+                  <Typography variant="h6" style={{ color: "white" }}>
+                    Andrea Mele
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+            <ListItem button={true} className={classes.item}>
+              <ListItemIcon>
+                <AssignmentIndIcon style={{ color: "#065a6d" }} />
+              </ListItemIcon>
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/profile"
+              >
+                <ListItemText primary="My Profile" />
+              </Link>
+            </ListItem>
 
-        <ListItem button>
-          <ListItemIcon>
-            <StarBorderIcon />
-          </ListItemIcon>
-          <Link style={{textDecoration: "none", color: "inherit"}} to="/jobs" ><ListItemText primary="Saved Opportunities" /></Link>
-        </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <StarBorderIcon style={{ color: "#065a6d" }} />
+              </ListItemIcon>
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/jobs"
+              >
+                <ListItemText primary="Saved Opportunities" />
+              </Link>
+            </ListItem>
 
-        <ListItem button>
-          <ListItemIcon>
-            <DoneOutlineIcon />
-          </ListItemIcon>
-          <ListItemText primary="Applied Opportunities" />
-        </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <DoneOutlineIcon style={{ color: "#065a6d" }} />
+              </ListItemIcon>
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/jobs"
+              >
+                <ListItemText primary="Applied Opportunities" />
+              </Link>
+            </ListItem>
 
-        <ListItem button>
-          <ListItemIcon>
-            <SearchIcon />
-          </ListItemIcon>
-          <ListItemText primary="Search Settings" />
-        </ListItem>
-        <Divider />
-        <ListItem button={true} onClick={() => logout()}>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary="Log out" />
-        </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <SearchIcon style={{ color: "#065a6d" }} />
+              </ListItemIcon>
+              <ListItemText primary="Search Settings" />
+            </ListItem>
+            <Divider />
+          </Grid>
+          <Grid item>
+            <ListItem
+              button={true}
+              onClick={() => logout()}
+              style={{ bottom: "0", position: "relative" }}
+            >
+              <ListItemIcon>
+                <ExitToAppIcon style={{ color: "#065a6d" }} />
+              </ListItemIcon>
+              <ListItemText primary="Log out" />
+            </ListItem>
+          </Grid>
+        </Grid>
       </List>
     </div>
   );

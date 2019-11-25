@@ -79,6 +79,7 @@ export default function Accept(props) {
       : { border: "1px dashed #d0d0d0", backgroundColor: "white" };
 
   let upLoadedFile = fileURL !== "" ? <DescriptionIcon fontSize="small" /> : "";
+  
 
   return (
     <>

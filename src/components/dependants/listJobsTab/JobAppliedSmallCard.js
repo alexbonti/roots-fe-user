@@ -1,17 +1,12 @@
-import React, { useState, useContext} from "react";
+import React, {useContext,} from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import {
   Typography,
   Grid,
-  Checkbox,
-  FormControlLabel,
 } from "@material-ui/core/";
-import { StarRate, StarBorder } from "@material-ui/icons/";
 import { HomeContext } from "contexts";
 import { Spinner } from "components";
-import { API } from "helpers";
-
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#087B94" },
@@ -24,45 +19,28 @@ const theme = createMuiTheme({
   },
 });
 
-export const JobSmallCard = props => {
-  const { setIsFullView, setJobId, setIsUpdated } = useContext(HomeContext);
-  const [savedJobs, setSavedJobs] = useState(props.savedStatus);
-  const saveText = savedJobs ? "Saved" : "Save";
+export const JobAppliedSmallCard = props => {
+  const { setIsFullView, setJobId} = useContext(HomeContext);
+
+
+ 
   const openFullView = id => {
     setIsFullView(true);
     setJobId(id);
   };
-  
+
+  console.log(props);
   const {
     _id,
     company,
     employmentType,
-    endDate,
     location,
     positionTitle,
-    publishDate,
-  } = props.data;
-  
-  
-  const toogleSave = (_id) => {
-    if (savedJobs) {
-      API.userUnsaveJob({ "jobId": _id });
-      setSavedJobs(false);
-      setIsUpdated(true);
-      console.log(props,  "here");
-    } else {
-      API.userSaveJob({ "jobId": _id });
-      setSavedJobs(true);
-      setIsUpdated(true);
-      console.log(props);
+    startDate,
+  } = props.data.jobId;
+  const { appliedDate, applicationStatus } = props.data;
 
-    }
-  };
-
- 
-
-  let endDateNew = endDate.substring(0, 10); 
-
+  let startDateNew = startDate.substring(0, 10);
 
   return props.data !== undefined && props.data !== null ? (
     <>
@@ -77,34 +55,16 @@ export const JobSmallCard = props => {
             <Grid style={{ padding: "1vh 0" }}>
               <Typography variant="h6">{positionTitle}</Typography>
               <Typography variant="subtitle2">
-                {company} on {publishDate.substring(0, 10)}
+                {company} on {startDateNew}
               </Typography>
             </Grid>
             <Grid style={{ padding: "1vh 0" }}>
               <Typography variant="body1">
                 {employmentType} / {location}
               </Typography>
-              <Typography variamt="body1">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna...
-              </Typography>
             </Grid>
           </Grid>
           <Grid container alignItems="center" item style={{ padding: "1vh 0" }}>
-            <FormControlLabel
-              style={{ marginRight: "0" }}
-              control={
-                <Checkbox
-                  icon={<StarBorder />}
-                  checkedIcon={<StarRate />}
-                  checked={savedJobs}
-                  onClick={() => {
-                    toogleSave(_id);
-                  }}
-                />
-              }
-            />
-            <Typography align="left">{saveText}</Typography>
             <Grid item container justify="flex-end">
               <Grid item xs={10}>
                 <Typography
@@ -112,7 +72,14 @@ export const JobSmallCard = props => {
                   variant="subtitle1"
                   style={{ color: "rgb(157, 157, 157)" }}
                 >
-                  Expires on {endDateNew}
+                  Applied on {appliedDate.substring(0, 10)}
+                </Typography>
+                <Typography
+                  align="right"
+                  variant="subtitle1"
+                  style={{ color: "rgb(157, 157, 157)" }}
+                >
+                  Status: {applicationStatus}
                 </Typography>
               </Grid>
             </Grid>

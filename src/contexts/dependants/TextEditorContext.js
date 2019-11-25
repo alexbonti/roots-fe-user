@@ -4,7 +4,7 @@ export const TextEditorContext = createContext();
 
 export const TextEditorProvider = props => {
 const [coverLetter, setCoverLetter] = useState("");
-const [workExperience, setWorkExperience] = useState("");
+const [workExperience, setWorkExperience] = useState(" ");
 
   const { children } = props;
   return (

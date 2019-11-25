@@ -4,14 +4,20 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { LoginContext } from "contexts";
-import { Login, Register, Home, RegistrationConfirmation, OnBoarding, Profile, SavedAndAppliedJobs } from "views";
+import {
+  Login,
+  Register,
+  Home,
+  RegistrationConfirmation,
+  OnBoarding,
+  Profile,
+  SavedAndAppliedJobs,
+} from "views";
 import { Layout } from "../layout";
 
 export const AppRoutes = props => {
   const { loginStatus } = useContext(LoginContext);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
-
-
 
   useEffect(() => {
     if (loginStatus) setRedirectToLogin(false);
@@ -67,19 +73,13 @@ export const AppRoutes = props => {
         <Route
           exact
           path="/registerSuccess"
-          render={() =>
-            redirectToLogin ? (
-              <Redirect to={{ pathname: "/login" }} {...props} />
-            ) : (
-              <RegistrationConfirmation {...props} />
-            )
-          }
+          render={() => <RegistrationConfirmation {...props} />}
         />
-      
+
         <Route
           exact
           path="/onboarding"
-          render={() => 
+          render={() =>
             redirectToLogin ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
             ) : (
@@ -90,7 +90,7 @@ export const AppRoutes = props => {
         <Route
           exact
           path="/profile"
-          render={() => 
+          render={() =>
             redirectToLogin ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
             ) : (
@@ -101,7 +101,7 @@ export const AppRoutes = props => {
         <Route
           exact
           path="/jobs"
-          render={() => 
+          render={() =>
             redirectToLogin ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
             ) : (

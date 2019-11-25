@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   tab: {
     height: "100%",
     alignSelf: "flex-end",
-    border: "1px solid #f0f0f0",
+    //border: "1px solid #f0f0f0",
     borderTop: "none",
   },
 }));
@@ -71,9 +71,8 @@ function a11yProps(index) {
 const Home = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [listSavedJobs, setListSavedJobs] = useState("");
   const { loginStatus } = useContext(LoginContext);
-  const {setIsUpdated} = useContext(HomeContext);
+  const {setIsUpdated, listSavedJobs, setListSavedJobs} = useContext(HomeContext);
   const {
     setUserName,
     setUserLastName,
@@ -111,6 +110,7 @@ const Home = () => {
     setUserLastName,
     setUserEmail,
     setAvatarProfile,
+    setListSavedJobs,
     setIsUpdated]);
 
   return (

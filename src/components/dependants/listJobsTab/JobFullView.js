@@ -81,6 +81,8 @@ export const JobFullView = props => {
     setUserWantsToApply(true);
   };
 
+
+
   
   let content = props.hasOwnProperty("data") ? (
     <ThemeProvider theme={theme}>
