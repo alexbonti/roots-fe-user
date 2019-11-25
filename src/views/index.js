@@ -7,6 +7,7 @@ import  Home  from "./dependants/Home/Home";
 import OnBoarding  from "./dependants/OnBoarding/OnBoarding";
 import Profile from "./dependants/Profile/Profile";
 import SavedAndAppliedJobs from './dependants/SavedAndAppliedJobs';
+import SearchSettings from './dependants/Profile/SearchSettings';
 
 import RegistrationConfirmation from "./common/Register/RegistrationConfirmation";
-export { Login, Register, Home, RegistrationConfirmation,OnBoarding, Profile, SavedAndAppliedJobs };
+export { Login, Register, Home, RegistrationConfirmation,OnBoarding, Profile, SavedAndAppliedJobs,SearchSettings };

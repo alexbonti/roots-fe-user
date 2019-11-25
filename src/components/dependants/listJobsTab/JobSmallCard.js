@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import {
@@ -32,7 +32,7 @@ export const JobSmallCard = props => {
     setIsFullView(true);
     setJobId(id);
   };
-  
+
   const {
     _id,
     company,
@@ -42,27 +42,22 @@ export const JobSmallCard = props => {
     positionTitle,
     publishDate,
   } = props.data;
-  
-  
-  const toogleSave = (_id) => {
+
+  const toogleSave = _id => {
     if (savedJobs) {
       API.userUnsaveJob({ "jobId": _id });
       setSavedJobs(false);
       setIsUpdated(true);
-      console.log(props,  "here");
+      console.log(props, "here");
     } else {
       API.userSaveJob({ "jobId": _id });
       setSavedJobs(true);
       setIsUpdated(true);
       console.log(props);
-
     }
   };
 
- 
-
-  let endDateNew = endDate.substring(0, 10); 
-
+  let endDateNew = endDate.substring(0, 10);
 
   return props.data !== undefined && props.data !== null ? (
     <>

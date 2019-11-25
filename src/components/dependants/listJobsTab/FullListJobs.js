@@ -20,7 +20,6 @@ const theme = createMuiTheme({
 
 export const FullListJobs = props => {
   const { isFullView, jobId, listSavedJobs } = useContext(HomeContext);
-  console.log(props);
 
   const findSingleJobData = id => {
     if (Array.isArray(props.data) && listSavedJobs !== "") {

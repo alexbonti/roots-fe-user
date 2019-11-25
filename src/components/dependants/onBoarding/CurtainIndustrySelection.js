@@ -75,9 +75,8 @@ export const CurtainIndustrySelection = () => {
   let content = Array.isArray(accumulator)
     ? accumulator.map(chip => {
       return (
-        <Grid key={chip.key} item>
+        <Grid key={chip.label} item>
           <Chip
-            key={chip.key}
             label={chip.label}
             color="secondary"
             onDelete={handleDelete(chip)}

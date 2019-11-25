@@ -12,6 +12,7 @@ import {
   OnBoarding,
   Profile,
   SavedAndAppliedJobs,
+  SearchSettings
 } from "views";
 import { Layout } from "../layout";
 
@@ -106,6 +107,17 @@ export const AppRoutes = props => {
               <Redirect to={{ pathname: "/login" }} {...props} />
             ) : (
               <SavedAndAppliedJobs {...props} />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/search"
+          render={() =>
+            redirectToLogin ? (
+              <Redirect to={{ pathname: "/login" }} {...props} />
+            ) : (
+              <SearchSettings {...props} />
             )
           }
         />

@@ -146,7 +146,12 @@ export const TemporaryDrawer = () => {
               <ListItemIcon>
                 <SearchIcon style={{ color: "#065a6d" }} />
               </ListItemIcon>
-              <ListItemText primary="Search Settings" />
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/search"
+              >
+                <ListItemText primary="Search Settings" />
+              </Link>
             </ListItem>
             <Divider />
           </Grid>
