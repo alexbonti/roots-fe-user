@@ -7,6 +7,9 @@ import ReactHtmlParser from "react-html-parser";
 import { API } from "helpers";
 import { notify, Spinner, CoverLetterAndResume } from "components";
 
+
+
+
 const useStyles = makeStyles(theme => ({
   topper: {
     height: "10vh",
@@ -47,6 +50,20 @@ const theme = createMuiTheme({
     tonalOffset: 0.2,
   },
 });
+  
+
+export const ScrollToTopControlller = () => {
+  // this assumes that current router state is accessed via hook
+  // but it does not matter, pathname and search (or that ever) may come from props, context, etc.
+  
+  // just run the effect on pathname and/or search change
+  
+  
+  // renders nothing, since nothing is needed
+  return null;
+};
+
+
 
 export const JobFullView = props => {
   console.log(props)
@@ -66,6 +83,11 @@ export const JobFullView = props => {
     _id,
   } = props.data;
 
+  React.useEffect(() => {
+    window.scroll(0,0)
+    
+  }, [props]);
+
   const saveJob = async () => {
     let data = {
       jobId: _id,
@@ -80,6 +102,9 @@ export const JobFullView = props => {
   const applyJob = async () => {
     setUserWantsToApply(true);
   };
+
+
+ 
 
 
 

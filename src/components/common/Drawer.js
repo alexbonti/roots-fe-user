@@ -15,7 +15,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Icon from "@material-ui/core/Icon";
 import { API } from "helpers";
-import { LoginContext } from "contexts";
+import { LoginContext, UserContext } from "contexts";
 import Image from "../../helpers/img/rootsheader.gif";
 
 const useStyles = makeStyles({
@@ -46,6 +46,7 @@ export const TemporaryDrawer = () => {
     right: false,
   });
   const { setLoginStatus } = useContext(LoginContext);
+  const { userName, userLastName } = useContext(UserContext);
 
   const toggleDrawer = (side, open) => event => {
     if (
@@ -101,7 +102,7 @@ export const TemporaryDrawer = () => {
                     Welcome,
                   </Typography>
                   <Typography variant="h6" style={{ color: "white" }}>
-                    Andrea Mele
+                    {userName} {userLastName}
                   </Typography>
                 </Grid>
               </Grid>

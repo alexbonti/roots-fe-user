@@ -2,13 +2,15 @@ import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import { Typography, Grid } from "@material-ui/core/";
 import { API } from "helpers";
-import { UserContext, LoginContext } from "contexts";
+import { UserContext, LoginContext, HomeContext } from "contexts";
 import { Spinner, Education, Experience, AddNewExperience } from "components";
 import MyDropZone from "../../../components/dependants/DropDrag";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 
 const Profile = () => {
   const { loginStatus } = useContext(LoginContext);
+  const { setIsFullView } = useContext(HomeContext);
+
   const {
     setUserName,
     setUserLastName,
@@ -28,7 +30,7 @@ const Profile = () => {
   const [field, setField] = useState("");
 
   useEffect(() => {
-
+    setIsFullView(false);
     const triggerAPI = async () => {
       const profileResponse = await API.getUserProfile();
       setUserName(profileResponse.response.first_name);

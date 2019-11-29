@@ -64,7 +64,7 @@ const Register = props => {
       first_name: firstName,
       last_name: lastName,
       emailId,
-      password,
+      password
     };
 
     const triggerAPI = async () => {
@@ -94,6 +94,7 @@ const Register = props => {
       return notify("Please fill in all the details.");
     }
     let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     let emailPatternTest = emailPattern.test(emailId);
     if (!emailPatternTest) {
       notify("Email not in proper format");

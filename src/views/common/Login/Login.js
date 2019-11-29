@@ -230,13 +230,13 @@ export const Login = () => {
                   </ListItem>
                   <Divider className={classes.divider}/>
                   <ListItem component="a" >
-                    <ListItemText secondary="Copyright"   />
+                    <ListItemText style={{fontSize:".8rem"}}>Copyright</ListItemText>
                   </ListItem>
-                  <ListItem component="a">
-                    <ListItemText secondary="Disclaimner"  />
+                  <ListItem component="a" >
+                    <ListItemText style={{fontSize:".8rem"}}>Disclaimner</ListItemText>
                   </ListItem>
-                  <ListItem component="a">
-                    <ListItemText secondary="Privacy"  />
+                  <ListItem component="a" >
+                    <ListItemText style={{fontSize:".8rem"}}>Privacy</ListItemText>
                   </ListItem>
                 </List>
                 <List component="nav">
@@ -244,11 +244,11 @@ export const Login = () => {
                     <ListItemText primary="Help" />
                   </ListItem>
                   <Divider className={classes.divider}/>
-                  <ListItem component="a">
-                    <ListItemText secondary="FAQ"  />
+                  <ListItem component="a" >
+                    <ListItemText style={{fontSize:".8rem"}}>FAQ</ListItemText>
                   </ListItem>
-                  <ListItem component="a">
-                    <ListItemText secondary="Contact" />
+                  <ListItem component="a" >
+                    <ListItemText style={{fontSize:".8rem"}}>Contact</ListItemText>
                   </ListItem>
                 </List>
               </Grid>
@@ -262,21 +262,21 @@ export const Login = () => {
               >
                 <List component="nav"  >
                   <ListItem component="a" >
-                    <ListItemText primary="Follow Us" className={classes.footer}/>
+                    <ListItemText className={classes.footer}>Follow Us</ListItemText>
                   </ListItem>
                   <Divider className={classes.divider}/>
                   <ListItem component="a">
-                    <ListItemIcon secondary="Copyright">
+                    <ListItemIcon >
                       <FacebookIcon color="primary"/> 
                     </ListItemIcon>
-                    <ListItemIcon secondary="Copyright">
+                    <ListItemIcon >
                       <InstagramIcon color="primary"/>
                     </ListItemIcon>
                   </ListItem>
                 </List>
               </Grid>
             </Grid>
-            <Typography variant="body2"  align="left" className={classes.creator}>
+            <Typography variant="body2"  align="center" className={classes.creator}>
               Developed by Deakin Launchpad
             </Typography>
           </Grid>

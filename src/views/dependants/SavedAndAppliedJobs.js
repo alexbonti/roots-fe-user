@@ -4,7 +4,7 @@ import { AppBar, Tabs, Tab, Typography, Box } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { FullListSavedJobs, FullListAppliedJobs } from "components";
-import { LoginContext } from "contexts";
+import { LoginContext, HomeContext } from "contexts";
 import { withRouter } from "react-router-dom";
 
 import API from "../../helpers/api";
@@ -79,6 +79,7 @@ const SavedAndAppliedJobs = () => {
   const [listSavedJobs, setListSavedJobs] = useState("");
   const [appliedJobs, setAppliedJobs] = useState("");
   const { loginStatus } = useContext(LoginContext);
+  const { setIsFullView } = useContext(HomeContext);
   const {
     setUserName,
     setUserLastName,
@@ -89,14 +90,17 @@ const SavedAndAppliedJobs = () => {
   const [oppData, setOppData] = useState("");
 
   const handleChange = (event, newValue) => {
+    setIsFullView(false);
     setValue(newValue);
   };
 
   const handleChangeIndex = index => {
+    setIsFullView(false);
     setValue(index);
   };
 
   useEffect(() => {
+    setIsFullView(false);
     const triggerAPI = async () => {
       const oppResponse = await API.getOpportunity();
       setOppData(oppResponse.response);

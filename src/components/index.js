@@ -34,6 +34,7 @@ import {JobSavedSmallCard} from "./dependants/listJobsTab/JobSavedSmallCard";
 import {JobAppiedList} from "./dependants/listJobsTab/JobAppiedList";
 import {FullListAppliedJobs} from "./dependants/listJobsTab/FullListAppliedJobs";
 import {JobAppliedSmallCard} from "./dependants/listJobsTab/JobAppliedSmallCard";
+import {GoogleMaps} from "./dependants/MapsInput";
 
 
 
@@ -74,5 +75,6 @@ export {
   JobSavedSmallCard,
   JobAppiedList,
   FullListAppliedJobs,
-  JobAppliedSmallCard
+  JobAppliedSmallCard,
+  GoogleMaps
 };

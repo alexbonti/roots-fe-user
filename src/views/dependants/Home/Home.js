@@ -72,7 +72,7 @@ const Home = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const { loginStatus } = useContext(LoginContext);
-  const {setIsUpdated, listSavedJobs, setListSavedJobs} = useContext(HomeContext);
+  const {setIsUpdated, listSavedJobs, setListSavedJobs, setIsFullView} = useContext(HomeContext);
   const {
     setUserName,
     setUserLastName,
@@ -90,6 +90,7 @@ const Home = () => {
 
   useEffect(() => {
     const triggerAPI = async () => {
+      setIsFullView(false)
       const oppResponse = await API.getOpportunity();
       setOppData(oppResponse.response);
       const profileResponse = await API.getUserProfile();

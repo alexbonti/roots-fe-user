@@ -36,11 +36,13 @@ export const NoExperience = () => {
   const [inputPosition, setInputPosition] = useState("");
   const [positionSuggestions, setPositionSuggestions] = useState("");
   const { setLocation, setIsStart } = useContext(OnBoardingContext);
+  const [lat, setLat] = useState("");
+  const [long, setLong] = useState("");
 
   const autoFill = async event => {
     setInputPosition(event.target.value);
     let suggestions = await API.getAddress(inputPosition);
-    setPositionSuggestions(suggestions);
+    setPositionSuggestions(suggestions.suggestions);
   };
 
   const setSuggestions = event => {
@@ -49,6 +51,12 @@ export const NoExperience = () => {
     setLocation(event.target.innerText);
     setPositionSuggestions("");
     setIsStart(true);
+  };
+
+  const getLongLat = async input => {
+    const data = await API.getLatLong(input.locationId);
+    setLat(data.response.latitude);
+    setLong(data.response.longitude);
   };
 
   return (
@@ -89,10 +97,11 @@ export const NoExperience = () => {
                           onClick={event => {
                             event.preventDefault();
                             setSuggestions(event);
+                            getLongLat(suggestion);
                           }}
                         >
-                          {suggestion.address.country},{" "}
-                          {suggestion.address.city}, {suggestion.address.state}
+                          {suggestion.label}
+                          
                         </div>
                       );
                     })}

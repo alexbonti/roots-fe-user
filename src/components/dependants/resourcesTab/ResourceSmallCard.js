@@ -36,7 +36,6 @@ export const ResourceSmallCard = props => {
         <Grid container item xs={11} lg={8} md={11} style={{ padding: "2vh 0" }}>
           <Grid item xs={10}>
             <Typography variant="h6" onClick={()=> {openFullview(tile.title, tile.content);}}>{tile.title}</Typography>
-
           </Grid>
           <Grid item xs={10} lg={8} md={11}>
             <Typography variant="body1">
@@ -63,7 +62,7 @@ export const ResourceSmallCard = props => {
       backgroundColor: "rgba(8, 124, 149, 0.1)",
     }}
   >
-    <Grid item xs={11} style={{ padding: "2vh 1vw" }}>
+    <Grid item xs={11} lg={8}style={{ padding: "2vh 1vw" }}>
       <Typography variant="h6"> {category} </Typography>
     </Grid>
   </Grid>

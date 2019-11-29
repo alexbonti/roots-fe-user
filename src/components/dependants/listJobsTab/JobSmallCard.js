@@ -11,7 +11,7 @@ import { StarRate, StarBorder } from "@material-ui/icons/";
 import { HomeContext } from "contexts";
 import { Spinner } from "components";
 import { API } from "helpers";
-
+import ReactHtmlParser from "react-html-parser";
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#087B94" },
@@ -41,6 +41,7 @@ export const JobSmallCard = props => {
     location,
     positionTitle,
     publishDate,
+    description
   } = props.data;
 
   const toogleSave = _id => {
@@ -56,6 +57,10 @@ export const JobSmallCard = props => {
       console.log(props);
     }
   };
+  React.useEffect(() => {
+    window.scroll(0,0)
+    
+  }, [props]);
 
   let endDateNew = endDate.substring(0, 10);
 
@@ -63,10 +68,13 @@ export const JobSmallCard = props => {
     <>
       {" "}
       <ThemeProvider theme={theme}>
-        <Grid key={_id} container alignItems="center" style={{ padding: 10 }}>
+        <Grid key={_id} container justify="center"alignItems="center">
           <Grid
+            item
+            xs={12}
             onClick={() => {
-              openFullView(_id);
+              window.scroll(0,0);
+              openFullView(_id); 
             }}
           >
             <Grid style={{ padding: "1vh 0" }}>
@@ -79,13 +87,10 @@ export const JobSmallCard = props => {
               <Typography variant="body1">
                 {employmentType} / {location}
               </Typography>
-              <Typography variamt="body1">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna...
-              </Typography>
+              {ReactHtmlParser(description.substring(0,50))} click to see more...
             </Grid>
           </Grid>
-          <Grid container alignItems="center" item style={{ padding: "1vh 0" }}>
+          <Grid container alignItems="center" item xs={12}style={{ padding: "1vh 0" }}>
             <FormControlLabel
               style={{ marginRight: "0" }}
               control={
