@@ -51,9 +51,9 @@ export const TextEditor = props => {
           placeholder="Description ..."
           defaultValue={(props.data.defaultValue)}
         />
-        <div className="textEditorContent">
-          <div>{ReactHtmlParser(nodeRedData)}</div>
-        </div>
+        <Grid container justify="center"  className="textEditorContent">
+          <Grid item xs={11}>{ReactHtmlParser(nodeRedData)}</Grid>
+        </Grid>
       </Grid>
     </Grid>
   );

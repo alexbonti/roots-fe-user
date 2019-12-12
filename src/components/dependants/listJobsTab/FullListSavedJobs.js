@@ -30,23 +30,14 @@ export const FullListSavedJobs = props => {
 
   let singleJobData = isFullView ? findSingleJobData(jobId) : [];
 
+  console.log(props.savedJobs)
+  let introMessage = props.savedJobs.length < 1 ? <Grid item xs={11}><Typography variant="h6" align="center">No saved jobs at the moment</Typography></Grid> : "";
   let listOfJobs = Array.isArray(props.data) ? (
     <>
-      <Grid container style={{ backgroundColor: "#F9F9F9" }}>
-        <Grid item xs={12}>
-          <Typography
-            variant="body1"
-            align="right"
-            style={{ paddingRight: 10 }}
-          >
-            {" "}
-            <a href="http://toseomewher.com">Sort</a>{" "}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}></Grid>
-      </Grid>
-      <Grid container style={{ backgroundColor: "white" }}>
-        <Grid item xs={12}>
+      
+      <Grid container style={{ backgroundColor: "white" }} justify="center">
+        {introMessage}
+        <Grid item xs={11}>
           {props.data.map(job => {
             let isSaved = props.savedJobs.includes(job._id);
 
@@ -57,7 +48,6 @@ export const FullListSavedJobs = props => {
             );
           })}
         </Grid>
-        <Grid item xs={12}></Grid>
       </Grid>{" "}
     </>
   ) : (

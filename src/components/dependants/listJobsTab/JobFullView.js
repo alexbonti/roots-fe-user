@@ -66,7 +66,7 @@ export const ScrollToTopControlller = () => {
 
 
 export const JobFullView = props => {
-  console.log(props)
+  console.log(props);
   const classes = useStyles();
   const { setIsFullView, userWantsToApply, setUserWantsToApply } = useContext(
     HomeContext
@@ -104,11 +104,36 @@ export const JobFullView = props => {
   };
 
 
- 
+  const buttonSection = props.comesFromAppiedList ? "" : (<Grid
+    container
+    item
+    justify="space-evenly"
+    // style={{ padding: "3vh 2vw" }}
+  >
+    <Grid item xs={4} md={2} lg={2}>
+      <Button
+        fullWidth
+        className={classes.alternativeButton}
+        onClick={() => {
+          saveJob();
+        }}
+      >
+        Save
+      </Button>
+    </Grid>
+    <Grid item xs={4} md={2} lg={2}>
+      <Button
+        fullWidth
+        className={classes.buttons}
+        onClick={() => {
+          applyJob();
+        }}
+      >
+        Apply
+      </Button>
+    </Grid>
+  </Grid>);
 
-
-
-  
   let content = props.hasOwnProperty("data") ? (
     <ThemeProvider theme={theme}>
       <Grid container justify="center">
@@ -177,35 +202,7 @@ export const JobFullView = props => {
           <Grid item xs={11} lg={8} md={8}>
             {ReactHtmlParser(description)}
           </Grid>
-          <Grid
-            container
-            item
-            justify="space-evenly"
-            // style={{ padding: "3vh 2vw" }}
-          >
-            <Grid item xs={4} md={2} lg={2}>
-              <Button
-                fullWidth
-                className={classes.alternativeButton}
-                onClick={() => {
-                  saveJob();
-                }}
-              >
-                Save
-              </Button>
-            </Grid>
-            <Grid item xs={4} md={2} lg={2}>
-              <Button
-                fullWidth
-                className={classes.buttons}
-                onClick={() => {
-                  applyJob();
-                }}
-              >
-                Apply
-              </Button>
-            </Grid>
-          </Grid>
+          {buttonSection}
         </Grid>
       </Grid>
     </ThemeProvider>

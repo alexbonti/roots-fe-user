@@ -7,10 +7,10 @@ import {
   Grid,
   Button,
 } from "@material-ui/core/";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { OnBoardingContext } from "contexts";
+import { OnBoardingContext, HomeContext } from "contexts";
 import Slider from "@material-ui/core/Slider";
 import { API } from "helpers";
+import {notify} from 'components';
 
 const useStyles = makeStyles(theme => ({
   rootMain: {
@@ -37,7 +37,7 @@ export const GoogleMaps = props => {
   const { setLocation, setIsStart } = useContext(OnBoardingContext);
   const [lat, setLat] = useState("");
   const [long, setLong] = useState("");
-  const [distance, setDistance] = useState(0);
+  const [distance, setDistance] = useState(1);
   const [dataSetFilteredByLocation, setDataSetFilteredByLocation] = useState(
     ""
   );
@@ -48,6 +48,9 @@ export const GoogleMaps = props => {
   );
   const [keyword, setKeyword] = useState("");
   const [seniorityFilter, setSeniorityFilter] = useState("");
+  const { filteredData, setFilteredData, isFilteredOn, setIsFilterOn } = useContext(
+    HomeContext
+  );
 
   const autoFill = async event => {
     setInputPosition(event.target.value);
@@ -101,6 +104,8 @@ export const GoogleMaps = props => {
     return marks.findIndex(mark => mark.value === value) + 1;
   }
 
+  const buttonStatus = inputPosition !== "" ? false : true;
+
   const filter = () => {
     const data = {
       long,
@@ -109,37 +114,65 @@ export const GoogleMaps = props => {
     };
 
     const filterLocation = async () => {
+
       const dataLocation = await API.searchByLocation(data);
       setDataSetFilteredByLocation(dataLocation.response);
-
-      if (dataLocation.response !== "" && keyword !== "") {
-        if (
-          dataLocation.response !== "" &&
-          filterByKeyword(dataLocation.response) !== "no matching keyword"
-        ) {
-          return filterBySeniority(filterByKeyword(dataLocation.response));
-        } else {
-          return filterByKeyword(dataLocation.response);
+      
+      if(dataLocation.response.length > 0){
+        
+        setFilteredData(dataLocation.response);
+        setIsFilterOn(true);
+        if(keyword !== ""){
+          filterByKeyword(dataLocation.response);
+        }else if(seniorityFilter !== ""){
+          filterBySeniority(dataLocation.response);
         }
+      }else{
+        notify("No Results");
+        setIsFilterOn(true);
       }
+
+
+      // if (dataLocation.response !== [] && keyword !== "") {
+      //   if (
+      //     dataLocation.response !== [] &&
+      //     filterByKeyword(dataLocation.response) !== "no matching keyword"
+      //   ) {
+          
+      //     return filterBySeniority(filterByKeyword(dataLocation.response))
+      //   } else {
+      //     (filterByKeyword(dataLocation.response));
+      
+      //     return filterByKeyword(dataLocation.response);
+      //   }
+      // }
     };
 
     const filterByKeyword = dataSet => {
+      console.log(keyword);
       let dataSetFilteredByKeyword = [];
       dataSet.map(data => {
-        return data.positionTitle.includes(keyword) ||
-          data.description.includes(keyword)
-          ? dataSetFilteredByKeyword.push(data)
-          : console.log("No results");
+        if(data.positionTitle.includes(keyword) ||
+        data.description.includes(keyword)){
+          dataSetFilteredByKeyword.push(data);
+        }else{
+          setFilteredData([]);
+          return notify("No Results");
+        } 
       });
-      return dataSetFilteredByKeyword.length > 0
-        ? dataSetFilteredByKeyword
-        : "no matching keyword";
+
+      if (dataSetFilteredByKeyword.length > 0) {
+        
+        setFilteredData(dataSetFilteredByKeyword);
+        setIsFilterOn(true);
+      } else {
+        return notify("No Results");
+      }
     };
 
     const filterBySeniority = dataSet => {
       let dataSetFilteredBySeniority = [];
-
+      console.log(dataSet);
       dataSet.map(data => {
         console.log(seniorityFilter);
         console.log(data.seniority.includes(seniorityFilter));
@@ -148,6 +181,9 @@ export const GoogleMaps = props => {
           : console.log("No results");
       });
 
+      if(dataSetFilteredBySeniority < 1){notify("No Results");}
+      setFilteredData(dataSetFilteredBySeniority);
+      setIsFilterOn(true);
       return console.log(dataSetFilteredBySeniority);
     };
 
@@ -199,12 +235,12 @@ export const GoogleMaps = props => {
       </div>
       <Grid style={{ paddingTop: "5vh" }}>
         <Slider
-          defaultValue={0}
+          defaultValue={1}
           getAriaValueText={valuetext}
           aria-labelledby="discrete-slider"
           step={2}
           marks
-          min={0}
+          min={1}
           max={50}
           valueLabelDisplay="on"
         />
@@ -227,7 +263,7 @@ export const GoogleMaps = props => {
         onChange={e => setSeniorityFilter(e.target.value)}
       >
         {seniorityOption.map(option => (
-          <MenuItem key={Math.random()} value={option.label} >
+          <MenuItem key={Math.random()} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
@@ -251,6 +287,7 @@ export const GoogleMaps = props => {
         <Grid item xs={6} lg={6} md={6}>
           <Button
             fullWidth
+            disabled={buttonStatus}
             className={classes.buttons}
             onClick={() => {
               filter();
@@ -297,4 +334,8 @@ const jobs = [
   { key: 28, label: "Work From Home & Self Employed" },
 ];
 
-const seniorityOption = [{label:"Senior"}, {label:"Mid-Level"}, {label:"Junior"}];
+const seniorityOption = [
+  { label: "Senior" },
+  { label: "Mid-Level" },
+  { label: "Junior" },
+];

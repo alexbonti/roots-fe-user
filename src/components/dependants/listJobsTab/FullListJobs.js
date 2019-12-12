@@ -1,15 +1,13 @@
 import React, { useContext, useState } from "react";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Button, Typography, Grid, TextField } from "@material-ui/core/";
+import {  Typography, Grid } from "@material-ui/core/";
 import { JobSmallCard, JobFullView, GoogleMaps } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
 import CloseIcon from "@material-ui/icons/Close";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ReplayIcon from "@material-ui/icons/Replay";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { API } from "helpers/index";
 
 const useStyles = makeStyles(theme => ({
   rootMain: {
@@ -24,6 +22,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "25px",
     padding: "2vh 3vw",
   },
+  
 }));
 
 const theme = createMuiTheme({
@@ -40,10 +39,14 @@ const theme = createMuiTheme({
 
 export const FullListJobs = props => {
   const classes = useStyles();
-  const { isFullView, jobId, listSavedJobs } = useContext(HomeContext);
+  const { isFullView, jobId, listSavedJobs, filteredData, isFilterOn, setIsFilterOn } = useContext(HomeContext);
   const [searchSettingTab, setSearchSettingTab] = useState(false);
-  const [isFilterOn, setIsFilterOn] = useState(false);
-  const [dataAll, setDataAll] = useState([]);
+
+
+  const opportunityString = props.data.length > 1 ? "opportunities" : "opportunity";
+  const filteredString = filteredData > 1 ? "opportunities" : "opportunity";
+
+  const filteredResultString = isFilterOn ? filteredString : opportunityString;
 
   const findSingleJobData = id => {
     if (Array.isArray(props.data) && listSavedJobs !== "") {
@@ -57,18 +60,7 @@ export const FullListJobs = props => {
 
   let singleJobData = isFullView ? findSingleJobData(jobId) : "";
 
-  const searchByTitle = async string => {
-
-
-    let resultArray = [];
-    props.data.filter(data =>
-      data._id.includes(string) ? resultArray.push(data) : ""
-    );
-    setDataAll(resultArray);
-    setIsFilterOn(true);
-    setSearchSettingTab(false);
-    return resultArray;
-  };
+  console.log(filteredData);
 
   let searchTab = searchSettingTab ? (
     <>
@@ -113,7 +105,7 @@ export const FullListJobs = props => {
         </Grid>
         <Grid item xs={11} lg={8} md={10}>
           <Typography variant="h6">
-            We found {props.data.length} opportunity
+            We found {props.data.length} {filteredResultString}
           </Typography>
         </Grid>
       </Grid>
@@ -123,8 +115,8 @@ export const FullListJobs = props => {
   let listOfJobs = Array.isArray(props.data) ? (
     <>
       {searchTab}
-      <Grid container justify="center"style={{ backgroundColor: "white" }}>
-        <Grid item xs={11} md={10} lg={8}>
+      <Grid container justify="center" >
+        <Grid item xs={12} md={10} lg={8} >
           {props.data.map(job => {
             let isSaved = listSavedJobs.includes(job._id);
 
@@ -150,7 +142,7 @@ export const FullListJobs = props => {
     </Grid>
   );
 
-  let content =
+  let contentNotFiltered =
     isFullView &&
     props.hasOwnProperty("data") &&
     singleJobData !== undefined ? (
@@ -162,14 +154,20 @@ export const FullListJobs = props => {
       listOfJobs
     );
 
-  let filderedResult = (
+    
+  
+
+  
+
+  let filderedResult =  filteredData != [] ? (
     <>
       {searchTab}
+      
       <Grid container style={{ backgroundColor: "white" }}>
         <Grid item xs={11} md={10} lg={10}>
-          {dataAll.map(job => {
+          
+          {filteredData.map(job => {
             let isSaved = listSavedJobs.includes(job._id);
-            console.log("in");
             return listSavedJobs !== "" ? (
               <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
             ) : (
@@ -179,16 +177,28 @@ export const FullListJobs = props => {
         </Grid>
       </Grid>{" "}
     </>
-  );
+  ) : <Grid>No results</Grid>;
 
-  if (isFilterOn) {
-    console.log(dataAll);
-    return (listOfJobs = filderedResult);
-  }
+
+  let  contentFiltered =
+    isFullView &&
+    props.hasOwnProperty("data") &&
+    singleJobData !== undefined ? (
+      <JobFullView
+        data={singleJobData.data}
+        savedStatus={singleJobData.savedStatus}
+      />
+    ) : (
+      filderedResult
+    );
+
+
+
+  const results = isFilterOn ? contentFiltered : contentNotFiltered;
 
   return (
     <>
-      <ThemeProvider theme={theme}>{content}</ThemeProvider>
+      <ThemeProvider theme={theme}>{results}</ThemeProvider>
     </>
   );
 };

@@ -6,7 +6,6 @@ import { JobAppliedSmallCard, JobFullView } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
 
-
 // TODO change the full view accordingly because coming from this page
 
 const theme = createMuiTheme({
@@ -27,34 +26,30 @@ export const FullListAppliedJobs = props => {
   const findSingleJobData = id => {
     if (Array.isArray(props.data)) {
       let selectedJob = props.data.filter(jobs => jobs.jobId._id === id);
-      console.log(selectedJob);
       return selectedJob[0].jobId;
     }
   };
 
   let singleJobData = isFullView ? findSingleJobData(jobId) : [];
+  let introMessage =
+    props.data < 1 ? (
+      <Grid item xs={11}>
+        <Typography variant="h6" align="center">
+          No jobs applications at the moment
+        </Typography>
+      </Grid>
+    ) : (
+      ""
+    );
   let listOfJobs = Array.isArray(props.data) ? (
     <>
-      <Grid container style={{ backgroundColor: "#F9F9F9" }}>
-        <Grid item xs={12}>
-          <Typography
-            variant="body1"
-            align="right"
-            style={{ paddingRight: 10 }}
-          >
-            {" "}
-            <a href="http://toseomewher.com">Sort</a>{" "}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}></Grid>
-      </Grid>
+      {introMessage}
       <Grid container style={{ backgroundColor: "white" }}>
         <Grid item xs={12}>
           {props.data.map(job => {
             return <JobAppliedSmallCard key={job._id} data={job} />;
           })}
         </Grid>
-        <Grid item xs={12}></Grid>
       </Grid>{" "}
     </>
   ) : (
@@ -70,14 +65,11 @@ export const FullListAppliedJobs = props => {
     </Grid>
   );
 
-  console.log(isFullView,
-    props.hasOwnProperty("data"),
-    singleJobData)
   let content =
     isFullView &&
     props.hasOwnProperty("data") &&
     singleJobData !== undefined ? (
-      <JobFullView data={singleJobData} />
+      <JobFullView data={singleJobData} comesFromAppiedList={true} />
     ) : (
       listOfJobs
     );

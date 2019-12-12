@@ -28,7 +28,8 @@ class API {
   loginUser = async (data, setAccessToken) => {
     return await axios({
       method: "post",
-      url: "http://localhost:8031/api/user/login",
+     // url: "http://10.140.91.224:8031/api/user/login",
+      url: "http://localhost/api/user/login",
       data,
     })
       .then(response => {

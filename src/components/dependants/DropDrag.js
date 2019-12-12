@@ -28,7 +28,7 @@ export default function Accept(props) {
   } else if (props.data === "file") {
     logo = <DescriptionIcon fontSize="large" />;
   }else if(props.size === "small"){
-    logo = <AddAPhotoIcon fontSize="large" />
+    logo = <AddAPhotoIcon fontSize="large" />;
   }
 
 

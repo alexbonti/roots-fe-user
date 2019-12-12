@@ -12,6 +12,8 @@ export const HomeProvider = props => {
   const [dataToBeSentResources, setDataToBeSentResources] = useState({});
   const [jobId, setJobId] = useState("");
   const [listSavedJobs, setListSavedJobs] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [isFilterOn, setIsFilterOn] = useState(false);
 
   const { children } = props;
   return (
@@ -32,7 +34,12 @@ export const HomeProvider = props => {
         dataToBeSentResources,
         setDataToBeSentResources,
         listSavedJobs,
-        setListSavedJobs
+        setListSavedJobs,
+        filteredData, 
+        setFilteredData,
+        isFilterOn, 
+        setIsFilterOn
+
       }}
     >
       {children}

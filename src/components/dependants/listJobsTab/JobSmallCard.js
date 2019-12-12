@@ -12,6 +12,10 @@ import { HomeContext } from "contexts";
 import { Spinner } from "components";
 import { API } from "helpers";
 import ReactHtmlParser from "react-html-parser";
+import { classes } from "istanbul-lib-coverage";
+
+
+
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#087B94" },
@@ -22,12 +26,16 @@ const theme = createMuiTheme({
     contrastThreshold: 3,
     tonalOffset: 0.2,
   },
+ 
+
 });
 
 export const JobSmallCard = props => {
   const { setIsFullView, setJobId, setIsUpdated } = useContext(HomeContext);
   const [savedJobs, setSavedJobs] = useState(props.savedStatus);
   const saveText = savedJobs ? "Saved" : "Save";
+
+  
   const openFullView = id => {
     setIsFullView(true);
     setJobId(id);
@@ -68,10 +76,10 @@ export const JobSmallCard = props => {
     <>
       {" "}
       <ThemeProvider theme={theme}>
-        <Grid key={_id} container justify="center"alignItems="center">
+        <Grid container justify="center"alignItems="center" >
           <Grid
             item
-            xs={12}
+            xs={11}
             onClick={() => {
               window.scroll(0,0);
               openFullView(_id); 
@@ -90,7 +98,7 @@ export const JobSmallCard = props => {
               {ReactHtmlParser(description.substring(0,50))} click to see more...
             </Grid>
           </Grid>
-          <Grid container alignItems="center" item xs={12}style={{ padding: "1vh 0" }}>
+          <Grid container alignItems="center" item xs={11}style={{ padding: "1vh 0" }}>
             <FormControlLabel
               style={{ marginRight: "0" }}
               control={
