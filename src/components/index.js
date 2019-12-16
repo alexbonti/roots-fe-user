@@ -8,10 +8,10 @@ import { StartOnBoarding } from "./dependants/onBoarding/StartOnBoarding";
 import { NoExperience } from "./dependants/onBoarding/NoExperience";
 import { GotExperience } from "./dependants/onBoarding/GotExperience";
 import { CurtainIndustrySelection } from "./dependants/onBoarding/CurtainIndustrySelection";
-import {FullListJobs} from  "./dependants/listJobsTab/FullListJobs";
-import {FullListSavedJobs} from  "./dependants/listJobsTab/FullListSavedJobs";
-import {JobFullView} from  "./dependants/listJobsTab/JobFullView";
-import {JobSmallCard} from  "./dependants/listJobsTab/JobSmallCard";
+import { FullListJobs } from "./dependants/listJobsTab/FullListJobs";
+import { FullListSavedJobs } from "./dependants/listJobsTab/FullListSavedJobs";
+import { JobFullView } from "./dependants/listJobsTab/JobFullView";
+import { JobSmallCard } from "./dependants/listJobsTab/JobSmallCard";
 import { IndustrySelection } from "./dependants/onBoarding/IndustrySelection";
 import { AvatarPictureUpload } from "./dependants/onBoarding/AvatarPictureUpload";
 import { EndOnBoarding } from "./dependants/onBoarding/EndOnBoarding";
@@ -30,13 +30,16 @@ import { Education } from "./dependants/profile/Education";
 import { Volunteer } from "./dependants/profile/Volunteer";
 import { AddNewExperience } from "./dependants/profile/AddNewExperience";
 import { EditProfile } from "./dependants/profile/EditProfile";
-import {JobSavedSmallCard} from "./dependants/listJobsTab/JobSavedSmallCard";
-import {JobAppiedList} from "./dependants/listJobsTab/JobAppiedList";
-import {FullListAppliedJobs} from "./dependants/listJobsTab/FullListAppliedJobs";
-import {JobAppliedSmallCard} from "./dependants/listJobsTab/JobAppliedSmallCard";
-import {GoogleMaps} from "./dependants/MapsInput";
+import { JobSavedSmallCard } from "./dependants/listJobsTab/JobSavedSmallCard";
+import { JobAppiedList } from "./dependants/listJobsTab/JobAppiedList";
+import { FullListAppliedJobs } from "./dependants/listJobsTab/FullListAppliedJobs";
+import { JobAppliedSmallCard } from "./dependants/listJobsTab/JobAppliedSmallCard";
+import { LargeNewsCard } from "./dependants/newsTab/LargeNewsCard";
+import { ListNews } from "./dependants/newsTab/ListNews";
+import { NewsCard } from "./dependants/newsTab/NewsCard";
+import { NewsFullView } from "./dependants/newsTab/NewsFullView";
 
-
+import { GoogleMaps } from "./dependants/MapsInput";
 
 export {
   Notification,
@@ -76,5 +79,9 @@ export {
   JobAppiedList,
   FullListAppliedJobs,
   JobAppliedSmallCard,
-  GoogleMaps
+  GoogleMaps,
+  LargeNewsCard,
+  ListNews,
+  NewsCard,
+  NewsFullView,
 };

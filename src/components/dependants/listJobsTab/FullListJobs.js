@@ -60,7 +60,6 @@ export const FullListJobs = props => {
 
   let singleJobData = isFullView ? findSingleJobData(jobId) : "";
 
-  console.log(filteredData);
 
   let searchTab = searchSettingTab ? (
     <>

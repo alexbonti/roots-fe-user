@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing(1),
+    //padding: theme.spacing(1),
     textAlign: "center",
     color: theme.palette.text.secondary,
   },
@@ -118,12 +118,12 @@ const Register = props => {
     <>
       <ThemeProvider theme={theme}>
         <Header />
-        <Grid style={{ height: "7vh" }} />
+        <Grid />
         <Grid
           container
           justify="center"
           alignItems="center"
-          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "22vh" }}
+          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "20vh" }}
         >
           <Grid item xs={10}>
             <Typography variant="h5">Let's Start</Typography>

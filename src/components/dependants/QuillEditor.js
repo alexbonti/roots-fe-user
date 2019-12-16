@@ -10,7 +10,6 @@ const modules = {
   toolbar: [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     ["bold", "underline"],
-    ["blockquote"],
     [{ list: "bullet" }],
     [{ color: [] }],
   ],

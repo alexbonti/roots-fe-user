@@ -74,14 +74,11 @@ export const CoverLetterAndResume = props => {
     if (loginStatus) {
       console.log(dataCVCL);
       const sendCVCL = await API.updateUserResumeAndCoverLetter(dataCVCL);
-      console.log(sendCVCL);
+      console.log(sendCVCL.response);
       const saveJobResData = await API.userApplyJob(data);
-      console.log(saveJobResData);
-      if (saveJobResData !== undefined ){
-        notify("Congratulation your application has been sent");
-        setUserWantsToApply(true);
-        setHasApplied(true);
-      }
+      notify("Congratulation your application has been sent");
+      setUserWantsToApply(true);
+      setHasApplied(true);
     }
 
   };

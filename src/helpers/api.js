@@ -1,5 +1,5 @@
 import axios from "axios";
-import { axiosInstance } from "helpers";
+import { axiosInstance, axiosInstanceNews } from "helpers";
 import {notify} from 'components';
 
 
@@ -28,8 +28,8 @@ class API {
   loginUser = async (data, setAccessToken) => {
     return await axios({
       method: "post",
-     // url: "http://10.140.91.224:8031/api/user/login",
-      url: "http://localhost/api/user/login",
+      url: "http://localhost:8031/api/user/login",
+      //url: "http://localhost:8031/api/user/login",
       data,
     })
       .then(response => {
@@ -425,11 +425,21 @@ class API {
         },
       })
       .then(response => {
-        console.log(response)
         return response})
       .catch(error => {
         console.log(error)
         errorHelper(error)});
+  };
+
+  getNews = async data => {
+    return await axiosInstanceNews
+      .post("/news/getNews", data)
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return { "error": error };
+      });
   };
 }
 

@@ -3,7 +3,7 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab, Typography, Box } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
-import { FullListJobs, FullListResources } from "components";
+import { FullListJobs, FullListResources,ListNews } from "components";
 import { LoginContext, UserContext, HomeContext } from "contexts";
 import { withRouter } from "react-router-dom";
 import API from "../../../helpers/api";
@@ -142,7 +142,7 @@ const Home = () => {
             <FullListJobs data={oppData} savedJobs={listSavedJobs} />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            NEWS
+            <ListNews />
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
             <FullListResources />

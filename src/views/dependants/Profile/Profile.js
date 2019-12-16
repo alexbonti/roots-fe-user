@@ -204,7 +204,7 @@ const Profile = () => {
                 </Typography>
               </Grid>
               <Grid item xs={5}>
-                <Typography variant="subtitle1">{userEmail}</Typography>
+                <Typography variant="caption">{userEmail}</Typography>
               </Grid>
             </Grid>
           </Grid>

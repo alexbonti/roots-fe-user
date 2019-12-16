@@ -76,7 +76,7 @@ export const NoExperience = () => {
                 id="standard-required"
                 label="Location"
                 value={inputPosition}
-                placeholder="Employement Type"
+                placeholder="Location"
                 className={classes.textField}
                 margin="normal"
                 fullWidth
