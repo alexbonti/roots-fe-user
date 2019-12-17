@@ -50,20 +50,26 @@ export const EditEducation = props => {
 
   const UpdateEducation = () => {
     const callAPI = async () => {
-      let data = {
-        "educationId": _id,
-        "school": newSchool,
-        "major": newMajor,
-        "startDate": selectedStartDate,
-        "endDate": selectedEndDate,
-        "degree": newDegree,
-      };
 
-      const eduExpData = await API.editEduExperience(data);
-      notify(" Work Experience edited successfully");
-      console.log("eduExpData", eduExpData.response);
-      setIsEditModeOn(false);
-      setDataToSendToComp(data)
+      if(newSchool === "" || newMajor === "" || newDegree === ""){
+        return notify("fields can not be empty");
+      }else{
+        let data = {
+          "educationId": _id,
+          "school": newSchool,
+          "major": newMajor,
+          "startDate": selectedStartDate,
+          "endDate": selectedEndDate,
+          "degree": newDegree,
+        };
+  
+        const eduExpData = await API.editEduExperience(data);
+        notify(" Education Experience edited successfully");
+        console.log("eduExpData", eduExpData.response);
+        setIsEditModeOn(false);
+        setDataToSendToComp(data);
+
+      }
     };
 
     callAPI();

@@ -20,7 +20,7 @@ export const TextEditor = props => {
   const [nodeRedData] = useState("");
   const handleTextEditorChange = value => {
     
-    switch (props.data) {
+    switch (props.data.content) {
     case "coverletter":
       return (
         setCoverLetter(value));

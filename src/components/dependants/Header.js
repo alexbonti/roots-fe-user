@@ -139,22 +139,14 @@ export const Header = () => {
   //   logOut(accessToken);
   // };
 
-  let firstLetter = "";
 
 
 
   let registerStatus = {
     menu: !loginStatus ? "" : <TemporaryDrawer />,
-    avatar: !loginStatus ? "" : <Link to="/profile" state={"test"}><Avatar src={avatarProfile}>{firstLetter}</Avatar></Link>
-
+    avatar: !loginStatus ? "" : <Link to="/profile" state={"test"}><Avatar src={avatarProfile}></Avatar></Link>
   };
 
-
-  if (avatarProfile !== "") {
-    firstLetter = "";
-  } else {
-    firstLetter = "A";
-  }
 
   let content = (
     <ThemeProvider theme={theme}>

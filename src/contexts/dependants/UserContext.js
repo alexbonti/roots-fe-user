@@ -13,7 +13,7 @@ export const UserProvider = props => {
   const [fileURL, setFileURL] = useState("");
   const [isEditMode, setIsEditMode] = useState({status: false, id:""});
   const [isAddMode, setIsAddMode] = useState(false);
-  const [skills, setSkills] = useState("skills");
+  const [skills, setSkills] = useState([]);
   const { children } = props;
 
   return (

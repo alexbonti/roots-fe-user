@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import {  Typography, Grid } from "@material-ui/core/";
 import { JobSmallCard, JobFullView, GoogleMaps } from "components";
@@ -8,22 +8,6 @@ import { Spinner } from "../../common/Spinner";
 import CloseIcon from "@material-ui/icons/Close";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ReplayIcon from "@material-ui/icons/Replay";
-
-const useStyles = makeStyles(theme => ({
-  rootMain: {
-    backgroundColor: "white",
-    padding: "5vh 0",
-  },
-  buttons: {
-    color: "white",
-    border: "1px solid #087b94",
-    backgroundColor: "#087b94 !important",
-    margin: "1vh 0",
-    borderRadius: "25px",
-    padding: "2vh 3vw",
-  },
-  
-}));
 
 const theme = createMuiTheme({
   palette: {
@@ -38,7 +22,6 @@ const theme = createMuiTheme({
 });
 
 export const FullListJobs = props => {
-  const classes = useStyles();
   const { isFullView, jobId, listSavedJobs, filteredData, isFilterOn, setIsFilterOn } = useContext(HomeContext);
   const [searchSettingTab, setSearchSettingTab] = useState(false);
 
@@ -158,7 +141,7 @@ export const FullListJobs = props => {
 
   
 
-  let filderedResult =  filteredData != [] ? (
+  let filderedResult =  filteredData !== [] ? (
     <>
       {searchTab}
       

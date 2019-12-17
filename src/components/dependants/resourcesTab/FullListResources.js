@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { ResourceSmallCard, ResourceFullView } from "components";
 import { HomeContext } from "contexts";
-import { dumbData } from "../../../helpers/dumbData";
-
-
+import { API } from "helpers";
+import { Spinner } from "components/index";
 
 const theme = createMuiTheme({
   palette: {
@@ -15,13 +14,42 @@ const theme = createMuiTheme({
   },
 });
 export const FullListResources = () => {
+  const [resourceArray, setResourceArray] = useState([]);
+
+  useEffect(() => {
+    let accumulator = resourceArray;
+    const categories = ["LEGAL ADVICE", "PROGRAMS", "ORGANIZATIONS"];
+    const triggerAPI = async categorie => {
+      let data = {
+        "category": categorie,
+        "numberOfRecords": 10,
+      };
+
+      const allNewsData = await API.getNews(data);
+      if(allNewsData.response.data.data.data.length > 0){
+        accumulator.push({
+          categorie,
+          data: allNewsData.response.data.data.data,
+        });
+      }
+      setResourceArray(accumulator);
+    };
+
+    categories.forEach(categorie => triggerAPI(categorie));
+  }, [resourceArray]);
+
+ 
   const { isFullViewResource, dataToBeSentResources } = useContext(HomeContext);
 
-  let list = dumbData.map((dataCategory, i) => {
-    return <ResourceSmallCard key={i} data={dataCategory} />;
-  });
+  let list =
+    resourceArray.length > 0 && resourceArray !== undefined ? (
+      resourceArray.map((dataCategory, i) => {
+        return <ResourceSmallCard key={i}  data={dataCategory} />;
+      })
+    ) : (
+      <Spinner />
+    );
 
-  
   let content = isFullViewResource ? (
     <ResourceFullView data={dataToBeSentResources} />
   ) : (

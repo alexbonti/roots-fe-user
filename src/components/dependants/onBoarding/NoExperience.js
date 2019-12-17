@@ -36,8 +36,8 @@ export const NoExperience = () => {
   const [inputPosition, setInputPosition] = useState("");
   const [positionSuggestions, setPositionSuggestions] = useState("");
   const { setLocation, setIsStart } = useContext(OnBoardingContext);
-  const [lat, setLat] = useState("");
-  const [long, setLong] = useState("");
+  const [, setLat] = useState("");
+  const [, setLong] = useState("");
 
   const autoFill = async event => {
     setInputPosition(event.target.value);

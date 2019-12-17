@@ -50,6 +50,7 @@ export const EditExperience = props => {
   };
 
   const UpdateSingleUserWorkExp = () => {
+    console.log("description", description,"workExperience", workExperience );
     const callAPI = async () => {
       let data;
       if (workExperience === "") {

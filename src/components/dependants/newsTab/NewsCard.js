@@ -1,12 +1,21 @@
 import React from "react";
-import { Typography, Grid, Button } from "@material-ui/core/";
+import { Typography, Grid } from "@material-ui/core/";
 import { Spinner } from "components";
 import ReactHtmlParser from "react-html-parser";
+import {HomeContext} from "contexts";
 
 export const NewsCard = props => {
+  const {setDetailsNews, setIsFullViewNews} = React.useContext(HomeContext);
+
+
+  const openFullNews = () => {
+    setDetailsNews(props.data);
+    setIsFullViewNews(true);
+  }
+
   return props.data !== undefined ? (
     <>
-      <Grid container style={{minHeight: "165px"}}>
+      <Grid container style={{minHeight: "165px"}} onClick={()=> openFullNews()}>
         <Grid item xs={4}>
           <img
             src={props.data.imageURL}

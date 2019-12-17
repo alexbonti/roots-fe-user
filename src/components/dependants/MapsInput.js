@@ -38,17 +38,13 @@ export const GoogleMaps = props => {
   const [lat, setLat] = useState("");
   const [long, setLong] = useState("");
   const [distance, setDistance] = useState(1);
-  const [dataSetFilteredByLocation, setDataSetFilteredByLocation] = useState(
+  const [, setDataSetFilteredByLocation] = useState(
     ""
   );
-  const [dataSetFilteredByKeyword, setDataSetFilteredByKeyword] = useState("");
-
-  const [dataSetFilteredBySeniority, setDataSetFilteredBySeniority] = useState(
-    ""
-  );
+ 
   const [keyword, setKeyword] = useState("");
   const [seniorityFilter, setSeniorityFilter] = useState("");
-  const { filteredData, setFilteredData, isFilteredOn, setIsFilterOn } = useContext(
+  const {  setFilteredData, setIsFilterOn } = useContext(
     HomeContext
   );
 
@@ -76,33 +72,14 @@ export const GoogleMaps = props => {
     return null;
   }
 
-  const marks = [
-    {
-      value: 2,
-      label: "2km",
-    },
-    {
-      value: 5,
-      label: "5km",
-    },
-    {
-      value: 10,
-      label: "10km",
-    },
-    {
-      value: 50,
-      label: "50km",
-    },
-  ];
+  
 
   function valuetext(value) {
     setDistance(value * 1000);
     return `${value}`;
   }
 
-  function valueLabelFormat(value) {
-    return marks.findIndex(mark => mark.value === value) + 1;
-  }
+  
 
   const buttonStatus = inputPosition !== "" ? false : true;
 
@@ -149,12 +126,12 @@ export const GoogleMaps = props => {
     };
 
     const filterByKeyword = dataSet => {
-      console.log(keyword);
+      
       let dataSetFilteredByKeyword = [];
       dataSet.map(data => {
         if(data.positionTitle.includes(keyword) ||
         data.description.includes(keyword)){
-          dataSetFilteredByKeyword.push(data);
+          return dataSetFilteredByKeyword.push(data);
         }else{
           setFilteredData([]);
           return notify("No Results");
@@ -302,37 +279,37 @@ export const GoogleMaps = props => {
 };
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const jobs = [
-  { key: 0, label: "Accounting" },
-  { key: 1, label: "Administration & Office Support" },
-  { key: 2, label: "Agriculture, Horticulture, Animal & Fishing" },
-  { key: 3, label: "Banking, Superannuation & Finance" },
-  { key: 4, label: "Construction" },
-  { key: 5, label: "Customer Service & Call Centre" },
-  { key: 6, label: "Design & Architecture" },
-  { key: 7, label: "Editorial, Media & Creative Arts" },
-  { key: 8, label: "Education, Training & Childcare" },
-  { key: 9, label: "Engineering" },
-  { key: 10, label: "Executive Management & Consulting" },
-  { key: 11, label: "Government, Emergency Services & Defence" },
-  { key: 12, label: "Healthcare & Medical" },
-  { key: 13, label: "Hospitality, Tourism & Food Services" },
-  { key: 14, label: "Human Resources (HR) & Recruitment" },
-  { key: 15, label: "Information Technology (IT)" },
-  { key: 16, label: "Insurance" },
-  { key: 17, label: "Legal" },
-  { key: 18, label: "Manufacturing, Production & Operations" },
-  { key: 19, label: "Marketing & Advertising" },
-  { key: 20, label: "Mining & Energy" },
-  { key: 21, label: "Property & Real Estate" },
-  { key: 22, label: "Retail" },
-  { key: 23, label: "Sales" },
-  { key: 24, label: "Science, Technology & Environment" },
-  { key: 25, label: "Social Work & Community Services" },
-  { key: 26, label: "Trades & Services" },
-  { key: 27, label: "Transport & Logistics" },
-  { key: 28, label: "Work From Home & Self Employed" },
-];
+// const jobs = [
+//   { key: 0, label: "Accounting" },
+//   { key: 1, label: "Administration & Office Support" },
+//   { key: 2, label: "Agriculture, Horticulture, Animal & Fishing" },
+//   { key: 3, label: "Banking, Superannuation & Finance" },
+//   { key: 4, label: "Construction" },
+//   { key: 5, label: "Customer Service & Call Centre" },
+//   { key: 6, label: "Design & Architecture" },
+//   { key: 7, label: "Editorial, Media & Creative Arts" },
+//   { key: 8, label: "Education, Training & Childcare" },
+//   { key: 9, label: "Engineering" },
+//   { key: 10, label: "Executive Management & Consulting" },
+//   { key: 11, label: "Government, Emergency Services & Defence" },
+//   { key: 12, label: "Healthcare & Medical" },
+//   { key: 13, label: "Hospitality, Tourism & Food Services" },
+//   { key: 14, label: "Human Resources (HR) & Recruitment" },
+//   { key: 15, label: "Information Technology (IT)" },
+//   { key: 16, label: "Insurance" },
+//   { key: 17, label: "Legal" },
+//   { key: 18, label: "Manufacturing, Production & Operations" },
+//   { key: 19, label: "Marketing & Advertising" },
+//   { key: 20, label: "Mining & Energy" },
+//   { key: 21, label: "Property & Real Estate" },
+//   { key: 22, label: "Retail" },
+//   { key: 23, label: "Sales" },
+//   { key: 24, label: "Science, Technology & Environment" },
+//   { key: 25, label: "Social Work & Community Services" },
+//   { key: 26, label: "Trades & Services" },
+//   { key: 27, label: "Transport & Logistics" },
+//   { key: 28, label: "Work From Home & Self Employed" },
+// ];
 
 const seniorityOption = [
   { label: "Senior" },

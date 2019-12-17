@@ -139,7 +139,7 @@ class API {
       });
   };
 
-  getUserProfileExt = async auth => {
+  getUserProfileExt = async () => {
     let accessToken = localStorage.getItem("accessToken");
     return await axiosInstance
       .get("/user/getUserExtended", {
@@ -274,7 +274,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error);
       });
   };
   editEduExperience = async data => {
@@ -289,7 +289,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        return errorHelper(error);
       });
   };
 
@@ -306,7 +306,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error);
       });
   };
 
@@ -323,7 +323,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error);
       });
   };
 
@@ -340,7 +340,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(errorHelper);
       });
   };
 
@@ -357,7 +357,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error);
       });
   };
 

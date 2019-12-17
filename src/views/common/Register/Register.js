@@ -123,7 +123,7 @@ const Register = props => {
           container
           justify="center"
           alignItems="center"
-          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "20vh" }}
+          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "25vh" }}
         >
           <Grid item xs={10}>
             <Typography variant="h5">Let's Start</Typography>

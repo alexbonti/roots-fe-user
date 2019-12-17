@@ -127,7 +127,9 @@ const SavedAndAppliedJobs = () => {
     setUserLastName,
     setUserEmail,
     setIsUpdated,
-    setAvatarProfile]);
+    setAvatarProfile,
+    setIsFullView
+  ]);
 
   return (
     <ThemeProvider theme={theme}>

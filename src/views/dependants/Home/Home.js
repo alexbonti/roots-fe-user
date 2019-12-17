@@ -112,6 +112,7 @@ const Home = () => {
     setUserEmail,
     setAvatarProfile,
     setListSavedJobs,
+    setIsFullView,
     setIsUpdated]);
 
   return (

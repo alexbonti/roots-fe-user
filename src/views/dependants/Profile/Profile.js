@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
-import { Typography, Grid, Chip, Button } from "@material-ui/core/";
+import { Typography, Grid, Chip, Button, TextField } from "@material-ui/core/";
 import { API } from "helpers";
 import { UserContext, LoginContext, HomeContext } from "contexts";
 import { Spinner, Education, Experience, AddNewExperience } from "components";
 import MyDropZone from "../../../components/dependants/DropDrag";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import ChipInput from "material-ui-chip-input";
+import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 
 const Profile = () => {
   const { loginStatus } = useContext(LoginContext);
@@ -26,12 +26,13 @@ const Profile = () => {
     isAddMode,
     setIsAddMode,
     setIsUpdated,
+    isUpdated,
     setSkills,
     skills,
   } = useContext(UserContext);
   const [field, setField] = useState("");
   const [data, setData] = useState("");
-  const [chipValue, setChipValue] = useState([]);
+  const [chipValue, setChipValue] = useState();
   const [isEditSkills, setIsEditSkills] = useState(false);
 
   useEffect(() => {
@@ -60,7 +61,9 @@ const Profile = () => {
     setUserEmail,
     setAvatarProfile,
     setUserProfile,
-    setIsUpdated,
+    isUpdated,
+    setIsFullView,
+    setSkills,
   ]);
 
   const openAddMode = field => {
@@ -71,6 +74,12 @@ const Profile = () => {
     setField(field);
     setIsAddMode(true);
   };
+
+  const buttonIcon = isEditSkills ? (
+    <CancelPresentationIcon onClick={() => openAddMode("edit skills")} />
+  ) : (
+    <AddBoxIcon onClick={() => openAddMode("edit skills")} />
+  );
 
   //------------EXPERIENCE--------------------------------
   const experience =
@@ -102,30 +111,24 @@ const Profile = () => {
 
   //---------------Skills--------------------------------
   const editSkills = isEditSkills ? (
-
-    <Grid container item xs={10} justify="space-evenly" alignItems="flex-end">
+    <Grid
+      container
+      item
+      xs={10}
+      justify="space-evenly"
+      alignItems="flex-end"
+      style={{ padding: "2vh 0" }}
+      value={chipValue}
+    >
       <Grid item>
-        <ChipInput
-          label="Add your skills"
-          fullWidth
-          onAdd={e => {
-            if (e.length > 0) {
-              console.log(e);
-              addChip(e);
-            }
-          }}
-          onDelete={chip => {
-            if (chip) {
-              delete chip[0];
-            }
-          }}
-        />
+        <TextField onChange={e => setChipValue(e.target.value)} />
       </Grid>
       <Grid item>
         <Button
           variant="contained"
           fullWidth
           onClick={() => addChip(chipValue)}
+          style={{ backgroundColor: "rgba(255, 129, 0, 0.21)" }}
         >
           Add
         </Button>
@@ -138,38 +141,45 @@ const Profile = () => {
     let newArray = [];
     skills.map(data => {
       if (data !== chip) {
-        newArray.push(data);
-      }
+        return newArray.push(data);
+      }else{return newArray;}
     });
-    if (Array.isArray(newArray) && newArray.length > 0) {
+    if (Array.isArray(newArray)) {
       console.log(newArray);
       API.updateUserPreferences({
         avatar: data.avatar,
-        preferredLocation: data.preferredLocation,
+        preferredLocation: userProfile.preferredLocation,
         skills: newArray,
-        preferredIndustry: data.preferredIndustry,
-        resumeURL: data.resumeURL,
-        coverLetter: data.coverLetter,
+        preferredIndustry: userProfile.preferredIndustry,
+        resumeURL: "",
+        coverLetter: "",
       });
       setSkills(newArray);
     }
   };
 
   const addChip = chip => {
-    console.log(chip);
-    if (Array.isArray(skills) && skills.length > 0) {
-      setSkills(skills.push(chip));
+    if(skills === null ){
+      setSkills([]);
+    }
+    if (Array.isArray(skills) && chip !== undefined)  {
+      let newSkills = skills;
+      if (!newSkills.includes(chip)) {
+        newSkills.push(chip);
+      }
+
       API.updateUserPreferences({
         avatar: data.avatar,
-        preferredLocation: data.preferredLocation,
+        preferredLocation: userProfile.preferredLocation,
         skills,
-        preferredIndustry: data.preferredIndustry,
-        resumeURL: data.resumeURL,
-        coverLetter: data.coverLetter,
+        preferredIndustry: userProfile.preferredIndustry,
+        resumeURL: "",
+        coverLetter: "",
       });
-      console.log(skills);
-    }
 
+      setSkills(newSkills);
+      setChipValue("");
+    }
   };
   const content =
     userProfile !== undefined && userProfile !== null ? (
@@ -258,7 +268,9 @@ const Profile = () => {
             justify="space-between"
             xs={12}
             style={{
-              backgroundColor: "rgba(8, 124, 149, 0.1)",
+              backgroundColor: isEditSkills
+                ? "rgba(255, 129, 0, 0.21)"
+                : "rgba(8, 124, 149, 0.1)",
               height: "8vh",
               padding: "2vh",
             }}
@@ -266,18 +278,12 @@ const Profile = () => {
             <Grid item>
               <Typography variant="h5">Skills</Typography>
             </Grid>
-            <Grid item>
-              <AddBoxIcon onClick={() => openAddMode("edit skills")} />
-            </Grid>
+            <Grid item>{buttonIcon}</Grid>
           </Grid>
         </Grid>
-        <Grid
-          container
-          justify="center"
-          style={{ padding: "1vh 0" }}
-          spacing={1}
-        >
+        <Grid container style={{ padding: "2vh 1vw" }} spacing={1}>
           {editSkills}
+
           {Array.isArray(skills)
             ? skills.map(skill => {
                 return (

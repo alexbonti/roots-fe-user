@@ -7,9 +7,6 @@ import ReactHtmlParser from "react-html-parser";
 import { API } from "helpers";
 import { notify, Spinner, CoverLetterAndResume } from "components";
 
-
-
-
 const useStyles = makeStyles(theme => ({
   topper: {
     height: "10vh",
@@ -50,20 +47,16 @@ const theme = createMuiTheme({
     tonalOffset: 0.2,
   },
 });
-  
 
 export const ScrollToTopControlller = () => {
   // this assumes that current router state is accessed via hook
   // but it does not matter, pathname and search (or that ever) may come from props, context, etc.
-  
+
   // just run the effect on pathname and/or search change
-  
-  
+
   // renders nothing, since nothing is needed
   return null;
 };
-
-
 
 export const JobFullView = props => {
   console.log(props);
@@ -99,55 +92,55 @@ export const JobFullView = props => {
     setUserWantsToApply(true);
   };
 
-
   React.useEffect(() => {
     const callAPI = async () => {
       const dataAppliedJobs = await API.getUserAppliedJobs();
-      dataAppliedJobs.response.map( job => {
-        if(job.jobId._id === _id){
-          setButtonApplyStatus(true);
-        }
+      dataAppliedJobs.response.map(job => {
+        return job.jobId._id === _id
+          ? setButtonApplyStatus(true)
+          : setButtonApplyStatus(false);
       });
     };
 
     callAPI();
-    
-  }, [setButtonApplyStatus]);
-
+  }, [setButtonApplyStatus, _id]);
 
   const buttonText = buttoApplyStatus ? "Applied" : "Apply";
 
-
-  const buttonSection = props.comesFromAppiedList ? "" : (<Grid
-    container
-    item
-    justify="space-evenly"
-    // style={{ padding: "3vh 2vw" }}
-  >
-    <Grid item xs={4} md={2} lg={2}>
-      <Button
-        fullWidth
-        className={classes.alternativeButton}
-        onClick={() => {
-          saveJob();
-        }}
-      >
-        Save
-      </Button>
+  const buttonSection = props.comesFromAppiedList ? (
+    ""
+  ) : (
+    <Grid
+      container
+      item
+      justify="space-evenly"
+      // style={{ padding: "3vh 2vw" }}
+    >
+      <Grid item xs={4} md={2} lg={2}>
+        <Button
+          fullWidth
+          className={classes.alternativeButton}
+          onClick={() => {
+            saveJob();
+          }}
+        >
+          Save
+        </Button>
+      </Grid>
+      <Grid item xs={4} md={2} lg={2}>
+        <Button
+          fullWidth
+          disabled={buttoApplyStatus}
+          className={classes.buttons}
+          onClick={() => {
+            applyJob();
+          }}
+        >
+          {buttonText}
+        </Button>
+      </Grid>
     </Grid>
-    <Grid item xs={4} md={2} lg={2}>
-      <Button
-        fullWidth
-        disabled={buttoApplyStatus}
-        className={classes.buttons}
-        onClick={() => {
-          applyJob();
-        }}
-      >
-        {buttonText}
-      </Button>
-    </Grid>
-  </Grid>);
+  );
 
   let content = props.hasOwnProperty("data") ? (
     <ThemeProvider theme={theme}>
@@ -156,7 +149,8 @@ export const JobFullView = props => {
           container
           alignItems="center"
           style={{
-            padding: "3vh 1vw", backgroundColor: "#f8f8f8"
+            padding: "3vh 1vw",
+            backgroundColor: "#f8f8f8",
           }}
         >
           <Grid
@@ -206,14 +200,7 @@ export const JobFullView = props => {
             <Typography variant="body1">{employmentType}</Typography>
           </Grid>
         </Grid>
-        <Grid
-          container
-          item
-          xs={12}
-          lg={12}
-          md={12}
-          justify="center"
-        >
+        <Grid container item xs={12} lg={12} md={12} justify="center">
           <Grid item xs={11} lg={8} md={8}>
             {ReactHtmlParser(description)}
           </Grid>

@@ -56,21 +56,31 @@ function getSteps() {
   return ["", "", ""];
 }
 
-
 const OnBoarding = props => {
+  console.log(props);
   const classes = useStyles();
   const { activeStep, setActiveStep, isStart } = useContext(OnBoardingContext);
   const steps = getSteps();
   const { loginStatus, accessToken } = useContext(LoginContext);
-  const { userProfile, setUserProfile } = useContext(
+  const { userProfile, setUserProfile, setAvatarProfile } = useContext(
     UserContext
   );
 
   useEffect(() => {
     if (loginStatus) {
       const triggerAPI = async () => {
+        const data = {
+          avatar:
+            "https://s3.au-syd.cloud-object-storage.appdomain.cloud/refugee-bucket/image/profilePicture/thumb/Thumb_Profile_yQ6CgIxdtPwm.png",
+          preferredLocation: "",
+          skills: [],
+          preferredIndustry: [],
+          resumeURL: "",
+          coverLetter: "",
+        };
         const profileData = await API.getUserProfile(accessToken);
         setUserProfile(profileData.response);
+        await API.updateUserPreferences(data);
       };
       triggerAPI(accessToken);
     }
@@ -84,8 +94,6 @@ const OnBoarding = props => {
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
-
- 
 
   // ---------------------button stepper------------------------
 
@@ -143,7 +151,9 @@ const OnBoarding = props => {
   );
 
   const mainContent =
-    activeStep > 2  ? <EndOnBoarding/ > : (
+    activeStep > 2 ? (
+      <EndOnBoarding />
+    ) : (
       <ThemeProvider theme={theme}>
         <Grid container className={classes.topper} alignItems="flex-end">
           <Button
@@ -196,8 +206,7 @@ const OnBoarding = props => {
         </Grid>
         {getStepContent(activeStep)}
       </ThemeProvider>
-    ) 
-
+    );
 
   return <>{mainContent}</>;
 };
