@@ -4,6 +4,7 @@ import {
   AppBar,
   Avatar,
   Grid,
+  Typography
 } from "@material-ui/core";
 import { LoginContext } from "contexts";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
@@ -11,6 +12,8 @@ import { ThemeProvider } from "@material-ui/styles";
 //import API from "../../helpers/api";
 import { TemporaryDrawer } from "../index";
 import { UserContext } from "contexts/index";
+//import Image from "../../../helpers/img/root-bg.jpg";
+
 
 // import { AccessToken } from "contexts/helpers/index";
 
@@ -136,34 +139,35 @@ export const Header = () => {
   //   logOut(accessToken);
   // };
 
-  let firstLetter = "";
-  let menu = !loginStatus ? "" : <TemporaryDrawer />;
 
 
-  if (avatarProfile !== "") {
-    firstLetter = "";
-  } else {
-    firstLetter = "A";
-  }
+
+  let registerStatus = {
+    menu: !loginStatus ? "" : <TemporaryDrawer />,
+    avatar: !loginStatus ? "" : <Link to="/profile" state={"test"}><Avatar src={avatarProfile}></Avatar></Link>
+  };
+
 
   let content = (
     <ThemeProvider theme={theme}>
       <AppBar className={classes.toolbar}>
-        <Grid container  justify="space-between">
-          <Grid item align="center" xs={2}>
-            <Link to="/profile" state={"test"}><Avatar src={avatarProfile}>{firstLetter}</Avatar></Link>
+        <Grid container  justify="space-between" style={{paddingLeft: "5vw"}}>
+          <Grid item  >
+            {registerStatus.avatar}
           </Grid>
 
-          <Grid item align="center" xs={2}>
-            <Link to="/"><Avatar>C</Avatar></Link>
+          <Grid item align="center" >
+            <Link to="/" style={{textDecoration: "none", color: "white"}}><Typography variant="h4">ROOTS</Typography></Link>
           </Grid>
 
-          <Grid item align="center" xs={2}>
-            {menu}
+          <Grid item align="center" >
+            {registerStatus.menu}
           </Grid>
         </Grid>
       </AppBar>
     </ThemeProvider>
   );
+  //<Avatar src={Image}></Avatar>
   return content;
 };
+

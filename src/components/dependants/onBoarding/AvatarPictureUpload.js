@@ -6,6 +6,10 @@ import MyDropzone from "../DropDrag";
 import { OnBoardingContext, LoginContext, UserContext } from "contexts";
 import { API } from "helpers";
 
+
+//TODO add type controls check on files uploading
+
+
 const useStyles = makeStyles(theme => ({
   topper: {
     height: "10vh",
@@ -84,7 +88,7 @@ export const AvatarPictureUpload = () => {
       let userPreferencesData = {
         avatar: avatarPictureURL,
         preferredLocation: location,
-        skills: ["string"],
+        skills: [],
         preferredIndustry: industryField,
       };
 
@@ -95,7 +99,7 @@ export const AvatarPictureUpload = () => {
       };
 
       if (userHasExperience) {
-        console.log('here');
+        
         const workExpApiData = await API.updateWorkExp(workExpData);
         console.log("workExpApiData", workExpApiData);
 
@@ -108,7 +112,7 @@ export const AvatarPictureUpload = () => {
           updateFirstLoginData
         );
         console.log("userProfileApiData", userProfileApiData);
-        //TODO handle the change of tab in case there's am errpr from BE!
+        //TODO handle the change of tab in case there's an error from BE!
         handleNext();
       } else {
         const userPreferencesApiData = await API.updateUserPreferences(
@@ -119,7 +123,7 @@ export const AvatarPictureUpload = () => {
           updateFirstLoginData
         );
         console.log("userProfileApiData", userProfileApiData);
-        //TODO handle the change of tab in case there's am errpr from BE!
+        //TODO handle the change of tab in case there's an error from BE!
         handleNext();
       }
 

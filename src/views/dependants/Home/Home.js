@@ -3,13 +3,11 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab, Typography, Box } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
-import { FullListJobs, FullListResources } from "components";
-import { LoginContext } from "contexts";
+import { FullListJobs, FullListResources,ListNews } from "components";
+import { LoginContext, UserContext, HomeContext } from "contexts";
 import { withRouter } from "react-router-dom";
-
 import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
-import { UserContext } from "contexts/index";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   tab: {
     height: "100%",
     alignSelf: "flex-end",
-    border: "1px solid #f0f0f0",
+    //border: "1px solid #f0f0f0",
     borderTop: "none",
   },
 }));
@@ -74,6 +72,7 @@ const Home = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const { loginStatus } = useContext(LoginContext);
+  const {setIsUpdated, listSavedJobs, setListSavedJobs, setIsFullView} = useContext(HomeContext);
   const {
     setUserName,
     setUserLastName,
@@ -91,6 +90,7 @@ const Home = () => {
 
   useEffect(() => {
     const triggerAPI = async () => {
+      setIsFullView(false)
       const oppResponse = await API.getOpportunity();
       setOppData(oppResponse.response);
       const profileResponse = await API.getUserProfile();
@@ -99,16 +99,21 @@ const Home = () => {
       setUserEmail(profileResponse.response.emailId);
       const profileExtData = await API.getUserProfileExt();
       setAvatarProfile(profileExtData.response.avatar);
+      setListSavedJobs(profileExtData.response.savedJobs);
     };
     if (loginStatus) {
       triggerAPI();
+      setIsUpdated(false);
     }
   }, [loginStatus, 
     setOppData,
     setUserName,
     setUserLastName,
     setUserEmail,
-    setAvatarProfile]);
+    setAvatarProfile,
+    setListSavedJobs,
+    setIsFullView,
+    setIsUpdated]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -135,10 +140,10 @@ const Home = () => {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <FullListJobs data={oppData} />
+            <FullListJobs data={oppData} savedJobs={listSavedJobs} />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            NEWS
+            <ListNews />
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
             <FullListResources />

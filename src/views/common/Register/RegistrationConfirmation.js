@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
   registerBox: {
     width: "100%", // Fix IE 11 issue.
-    height: "50vh",
+    height: "87vh",
     marginTop: theme.spacing(2),
     backgroundColor: "azure",
   },
@@ -35,14 +35,6 @@ const useStyles = makeStyles(theme => ({
   developMessage: {
     position: "absolute",
     bottom: "1vh",
-  },
-  blockTop: {
-    color: "black",
-    fontSize: "20px",
-    height: "20vh",
-    backgroundColor: "rgba(8, 123, 148, 0.08)",
-    margin: "30px 0",
-    maxWidth: "100%",
   },
   text: {
     fontFamily: "Lato, Helvetica, Arial, sans-serif",
@@ -101,38 +93,38 @@ const RegistrationConfirmation = ({ ...props }) => {
   }, [isVerified, setLoginStatus]);
 
   const sendCode = async () => {
-    console.log(userDetails)
     const verificationStatus = await API.sendOTP(
       { "OTPCode": code },
       accessToken
     );
     if (verificationStatus === 200) {
-      setUserProfile(userDetails);
       window.localStorage.setItem("accessToken", accessToken);
       setIsVerified(true);
+      setUserProfile(userDetails);
+      
     }
   };
 
-  const content = isVerified ? (
-    <ThemeProvider theme={theme}>
-      <Grid
-        container
-        className={classes.registerBox}
-        alignItems="center"
-        justify="center"
-      >
-        <Grid item xs={10} className={classes.text}>
-          Your account has been verified
-        </Grid>
-        <Grid item xs={10} container justify="center">
-          <Grid item xs={6}>
-            <Button fullWidth className={classes.buttons}>
-              <Link to="/onboarding" user={userProfile}>Home</Link>
-            </Button>
-          </Grid>
+  const content = isVerified ? (<ThemeProvider theme={theme}>
+    <Grid
+      container
+      className={classes.registerBox}
+      alignItems="center"
+      justify="center"
+    >
+      <Grid item xs={10} className={classes.text}>
+        Your account has been verified
+      </Grid>
+      <Grid item xs={10} container justify="center">
+        <Grid item xs={6}>
+          <Button fullWidth className={classes.buttons}>
+            <Link to="/onboarding" user={userProfile} style={{textDecoration: "none", color: "white"}}>Home</Link>
+          </Button>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </Grid>
+  </ThemeProvider>
+    
   ) : (
     <ThemeProvider theme={theme}>
       <Grid

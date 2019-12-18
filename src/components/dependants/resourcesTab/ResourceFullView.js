@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Typography, Grid } from "@material-ui/core/";
-import ShareIcon from "@material-ui/icons/Share";
 import { HomeContext } from "contexts/index";
 import { Spinner } from "components";
+import ReactHtmlParser from "react-html-parser";
 
 export const ResourceFullView = props => {
   const { setIsFullViewResource } = useContext(HomeContext);
@@ -37,15 +37,13 @@ export const ResourceFullView = props => {
             padding: "2vh 0",
           }}
         >
-          <Grid item xs={10} md={10} lg={10}>
+          <Grid item xs={11} md={10} lg={10}>
             <Typography variant="h6">{props.data.title}</Typography>
           </Grid>
-          <Grid item xs={2} md={1} lg={1}>
-            <ShareIcon />
-          </Grid>
+         
         </Grid>
         <Grid item xs={11} md={8} lg={8}>
-          <Typography variant="body1">{props.data.content}</Typography>
+          {ReactHtmlParser(props.data.content)}
         </Grid>
       </Grid>
     </>

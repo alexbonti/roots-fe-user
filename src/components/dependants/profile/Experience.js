@@ -1,46 +1,58 @@
-import React, {useContext} from "react";
+import React, { useState } from "react";
 import { Typography, Grid } from "@material-ui/core/";
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import ReactHtmlParser from "react-html-parser";
-import { UserContext } from "contexts/index";
 import { EditExperience } from "components/index";
+import {Spinner} from 'components';
 
 export const Experience = props => {
-
-  const {isEditMode, setIsEditMode} = useContext(UserContext);
+  const [isEditModeOn, setIsEditModeOn] = useState(false);
   const {
     companyName,
     description,
     endDate,
     startDate,
     positionTitle,
-  } = props.data.experience;
+  } = props.data;
 
-  
 
-  let content = isEditMode ? <EditExperience data={props.data}/> : ( <>
-    <Grid container justify="center" style={{ padding: "2vh" }}>
-      <Grid item container justify="space-between">
-        <Grid item>
-          <Typography variant="h6">{positionTitle}</Typography>
+
+  let newTimeS = typeof(startDate) === 'object' ? (`${startDate.getMonth()} - ${startDate.getFullYear()}`) : startDate.substring(0,10);
+  let newTimeE = typeof(endDate) === 'object' ? (`${endDate.getMonth()} - ${endDate.getFullYear()}`) : endDate.substring(0,10);
+
+
+  let content = props.data !== null && props.data !== undefined ? (
+    <>
+      <Grid container justify="center" style={{ padding: "2vh" }}>
+        <Grid item container justify="space-between">
+          <Grid item>
+            <Typography variant="h6">{positionTitle}</Typography>
+          </Grid>
+          <Grid item>
+            <EditOutlinedIcon
+              onClick={() => {
+                setIsEditModeOn(true);
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid item>
-          <EditOutlinedIcon onClick={() => {setIsEditMode(true);}}/>
+        <Grid container style={{ padding: "2vh 0" }}>
+          <Grid item xs={12}>
+            <Typography variant="body1">{companyName}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1">
+              {newTimeS} {" || "}
+              {newTimeE}
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container style={{ padding: "2vh 0" }}>
         <Grid item xs={12}>
-          <Typography variant="body1">{companyName}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">{startDate.substring(0, 10)} {" || "}{endDate.substring(0, 10)}</Typography>
+          {ReactHtmlParser(description)}{" "}
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-        {ReactHtmlParser(description)}{" "}
-      </Grid>
-    </Grid>
-  </>);
+    </>
+  ) : <Spinner />;
 
-  return content;
+  return isEditModeOn ? <EditExperience data={props.data} /> : content;
 };

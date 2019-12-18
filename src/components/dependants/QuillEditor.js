@@ -10,26 +10,27 @@ const modules = {
   toolbar: [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     ["bold", "underline"],
-    ["blockquote"],
     [{ list: "bullet" }],
     [{ color: [] }],
   ],
 };
 
 export const TextEditor = props => {
-  const { setCoverLetter, setWorkExperience } = useContext(TextEditorContext);
+  const {coverletter, setCoverLetter, setWorkExperience } = useContext(TextEditorContext);
   const [nodeRedData] = useState("");
-
   const handleTextEditorChange = value => {
-    switch (props.data) {
+    
+    switch (props.data.content) {
     case "coverletter":
-      return setCoverLetter(value);
+      return (
+        setCoverLetter(value));
     case "editWorkExperience":
       return setWorkExperience(value);
     default:
       return null;
     }
   };
+
 
   return (
     <Grid
@@ -47,10 +48,11 @@ export const TextEditor = props => {
           }}
           theme="snow"
           placeholder="Description ..."
+          defaultValue={(props.data.defaultValue)}
         />
-        <div className="textEditorContent">
-          <div>{ReactHtmlParser(nodeRedData)}</div>
-        </div>
+        <Grid container justify="center"  className="textEditorContent">
+          <Grid item xs={11}>{ReactHtmlParser(nodeRedData)}</Grid>
+        </Grid>
       </Grid>
     </Grid>
   );

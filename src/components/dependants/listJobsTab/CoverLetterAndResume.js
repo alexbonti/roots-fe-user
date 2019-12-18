@@ -61,8 +61,6 @@ export const CoverLetterAndResume = props => {
 
 
 
-
-
   const applyJob = async () => {
     let data = {
       jobId: props.data,
@@ -74,16 +72,16 @@ export const CoverLetterAndResume = props => {
     };
 
     if (loginStatus) {
+      console.log(dataCVCL);
       const sendCVCL = await API.updateUserResumeAndCoverLetter(dataCVCL);
-      console.log(sendCVCL);
+      console.log(sendCVCL.response);
       const saveJobResData = await API.userApplyJob(data);
       console.log(saveJobResData);
       notify("Congratulation your application has been sent");
+      setUserWantsToApply(true);
+      setHasApplied(true);
     }
 
-    //todo add error handling
-    setUserWantsToApply(true);
-    setHasApplied(true);
   };
 
 

@@ -1,40 +1,42 @@
 import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
-import { Typography, Grid } from "@material-ui/core/";
+import { Typography, Grid, Chip, Button, TextField } from "@material-ui/core/";
 import { API } from "helpers";
-import { UserContext, LoginContext } from "contexts";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import {
-  Spinner,
-  Education,
-  Experience,
-  AddNewExperience,
-} from "components";
+import { UserContext, LoginContext, HomeContext } from "contexts";
+import { Spinner, Education, Experience, AddNewExperience } from "components";
 import MyDropZone from "../../../components/dependants/DropDrag";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 
 const Profile = () => {
   const { loginStatus } = useContext(LoginContext);
+  const { setIsFullView } = useContext(HomeContext);
+
   const {
     setUserName,
     setUserLastName,
     setUserEmail,
     setUserProfile,
+    avatarProfile,
     setAvatarProfile,
     userName,
     userLastName,
     userEmail,
     userProfile,
-    isEditMode,
-    setIsEditMode,
     isAddMode,
     setIsAddMode,
+    setIsUpdated,
+    isUpdated,
+    setSkills,
+    skills,
   } = useContext(UserContext);
   const [field, setField] = useState("");
+  const [data, setData] = useState("");
+  const [chipValue, setChipValue] = useState();
+  const [isEditSkills, setIsEditSkills] = useState(false);
 
   useEffect(() => {
+    setIsFullView(false);
     const triggerAPI = async () => {
       const profileResponse = await API.getUserProfile();
       setUserName(profileResponse.response.first_name);
@@ -43,101 +45,176 @@ const Profile = () => {
       const profileExtData = await API.getUserProfileExt();
       setUserProfile(profileExtData.response);
       setAvatarProfile(profileExtData.response.avatar);
+      setSkills(profileExtData.response.skills);
+      setData(profileExtData.response);
     };
+
     if (loginStatus) {
       triggerAPI();
     }
-  }, [loginStatus, setUserLastName, setUserName, setUserEmail, setAvatarProfile, setUserProfile  ]);
 
+    setIsUpdated(false);
+  }, [
+    loginStatus,
+    setUserLastName,
+    setUserName,
+    setUserEmail,
+    setAvatarProfile,
+    setUserProfile,
+    isUpdated,
+    setIsFullView,
+    setSkills,
+  ]);
 
   const openAddMode = field => {
+    if (field === "edit skills") {
+      setIsEditSkills(!editSkills);
+      return null;
+    }
     setField(field);
     setIsAddMode(true);
   };
 
+  const buttonIcon = isEditSkills ? (
+    <CancelPresentationIcon onClick={() => openAddMode("edit skills")} />
+  ) : (
+    <AddBoxIcon onClick={() => openAddMode("edit skills")} />
+  );
+
+  //------------EXPERIENCE--------------------------------
   const experience =
     typeof userProfile === "object" &&
     Array.isArray(userProfile.workExperience) ? (
-        userProfile.workExperience.map((experience, index) => {
-          return (
-            <Experience
-              key={index}
-              data={{
-                experience,
-                index,
-                listExperiences: userProfile.workExperience,
-              }}
-            />
-          );
-        })
-      ) : (
-        <Spinner />
-      );
-
-  const education =
-    typeof userProfile === "object" && Array.isArray(userProfile.education) ? (
-      userProfile.education.map((education, index) => {
-        return (
-          <Education
-            key={index}
-            data={{
-              education,
-            }}
-          />
-        );
+      userProfile.workExperience.map((experience, index) => {
+        return <Experience key={index} data={experience} />;
       })
     ) : (
       <Spinner />
     );
 
-  const editBar = isEditMode ? (
+  //------------EDUCATION--------------------------------
+
+  const education =
+    typeof userProfile === "object" && Array.isArray(userProfile.education) ? (
+      userProfile.education.map((education, index) => {
+        return <Education key={index} data={education} />;
+      })
+    ) : (
+      <Spinner />
+    );
+
+  const editAvatar = (
+    <Grid item xs={3}>
+      <MyDropZone data={"photo"} size={"small"} />
+    </Grid>
+  );
+
+  //---------------Skills--------------------------------
+  const editSkills = isEditSkills ? (
     <Grid
-      item
       container
-      justify="space-between"
-      xs={12}
-      style={{
-        backgroundColor: "rgba(255, 129, 0, 0.21)",
-        height: "8vh",
-        padding: "2vh",
-      }}
+      item
+      xs={10}
+      justify="space-evenly"
+      alignItems="flex-end"
+      style={{ padding: "2vh 0" }}
+      value={chipValue}
     >
       <Grid item>
-        <Typography variant="h6">Edit</Typography>
+        <TextField onChange={e => setChipValue(e.target.value)} />
       </Grid>
       <Grid item>
-        <CancelPresentationIcon onClick={() => setIsEditMode(false)} />
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={() => addChip(chipValue)}
+          style={{ backgroundColor: "rgba(255, 129, 0, 0.21)" }}
+        >
+          Add
+        </Button>
       </Grid>
     </Grid>
   ) : (
     ""
   );
+  const deleteChip = chip => {
+    let newArray = [];
+    skills.map(data => {
+      if (data !== chip) {
+        return newArray.push(data);
+      }else{return newArray;}
+    });
+    if (Array.isArray(newArray)) {
+      console.log(newArray);
+      API.updateUserPreferences({
+        avatar: data.avatar,
+        preferredLocation: userProfile.preferredLocation,
+        skills: newArray,
+        preferredIndustry: userProfile.preferredIndustry,
+        resumeURL: "",
+        coverLetter: "",
+      });
+      setSkills(newArray);
+    }
+  };
 
+  const addChip = chip => {
+    if(skills === null ){
+      setSkills([]);
+    }
+    if (Array.isArray(skills) && chip !== undefined)  {
+      let newSkills = skills;
+      if (!newSkills.includes(chip)) {
+        newSkills.push(chip);
+      }
+
+      API.updateUserPreferences({
+        avatar: data.avatar,
+        preferredLocation: userProfile.preferredLocation,
+        skills,
+        preferredIndustry: userProfile.preferredIndustry,
+        resumeURL: "",
+        coverLetter: "",
+      });
+
+      setSkills(newSkills);
+      setChipValue("");
+    }
+  };
   const content =
     userProfile !== undefined && userProfile !== null ? (
       <>
         <Grid container justify="space-between" style={{ padding: "3vh" }}>
-          <Grid item xs={5}>
-            {/*<img src={avatarProfile}></img>*/}
-            <MyDropZone data={"photo"} />
-            <Fab aria-label="add" style={{position: "relative", top: "-2rem"}} size="small">
-              <AddIcon />
-            </Fab>
+          <Grid
+            item
+            container
+            justify="flex-start"
+            alignItems="baseline"
+            xs={5}
+          >
+            <Grid item xs={9}>
+              <img
+                src={avatarProfile}
+                alt="avatar"
+                style={{ borderRadius: "50%" }}
+              ></img>
+            </Grid>
+            {editAvatar}
           </Grid>
-          <Grid container item xs={5} alignItems="center">
+          <Grid container item xs={6} alignItems="center">
             <Grid>
               <Typography variant="h6">
                 {userName} {userLastName}
               </Typography>
             </Grid>
-            <Grid container>
+            <Grid container justify="flex-start">
               <Grid>
-                <Typography variant="body1">
+                <Typography variant="subtitle1">
                   {userProfile.preferredLocation}
                 </Typography>
               </Grid>
-              <Grid>
-                <Typography variant="body1">{userEmail}</Typography>
+              <Grid item xs={5}>
+                <Typography variant="caption">{userEmail}</Typography>
               </Grid>
             </Grid>
           </Grid>
@@ -161,7 +238,6 @@ const Profile = () => {
               <AddBoxIcon onClick={() => openAddMode("work")} />
             </Grid>
           </Grid>
-          {editBar}
         </Grid>
         <Grid container>{experience}</Grid>
         <Grid container>
@@ -183,9 +259,48 @@ const Profile = () => {
               <AddBoxIcon onClick={() => openAddMode("education")} />
             </Grid>
           </Grid>
-          {editBar}
         </Grid>
         <Grid container>{education}</Grid>
+        <Grid container>
+          <Grid
+            item
+            container
+            justify="space-between"
+            xs={12}
+            style={{
+              backgroundColor: isEditSkills
+                ? "rgba(255, 129, 0, 0.21)"
+                : "rgba(8, 124, 149, 0.1)",
+              height: "8vh",
+              padding: "2vh",
+            }}
+          >
+            <Grid item>
+              <Typography variant="h5">Skills</Typography>
+            </Grid>
+            <Grid item>{buttonIcon}</Grid>
+          </Grid>
+        </Grid>
+        <Grid container style={{ padding: "2vh 1vw" }} spacing={1}>
+          {editSkills}
+
+          {Array.isArray(skills)
+            ? skills.map(skill => {
+                return (
+                  <Grid item key={Math.random()}>
+                    <Chip
+                      onDelete={() => deleteChip(skill)}
+                      label={skill}
+                      style={{
+                        backgroundColor: "rgba(8, 124, 149, 0.1)",
+                        color: "Black",
+                      }}
+                    />
+                  </Grid>
+                );
+              })
+            : ""}
+        </Grid>
       </>
     ) : (
       <Spinner />

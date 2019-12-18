@@ -1,16 +1,17 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import { Typography, Grid } from "@material-ui/core/";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import { UserContext } from "contexts/index";
 import {  EditEducation} from "components/index";
 
 export const Education = props => {
-  const { isEditMode, setIsEditMode } = useContext(UserContext);
-  const { degree, major, endDate, startDate, school } = props.data.education;
+  const { degree, major, endDate, startDate, school } = props.data;
+  const [isEditModeOn, setIsEditModeOn] = useState(false);
 
-  let content = isEditMode ? (
-    <EditEducation data={props.data} />
-  ) : (
+  let newTimeS = typeof(startDate) === 'object' ? (`${startDate.getMonth()} - ${startDate.getFullYear()}`) : startDate.substring(0,10);
+  let newTimeE = typeof(endDate) === 'object' ? (`${endDate.getMonth()} - ${endDate.getFullYear()}`) : endDate.substring(0,10);
+
+  let content = 
+    (
     <>
       <Grid container justify="center" style={{ padding: "2vh" }}>
         <Grid item container justify="space-between">
@@ -20,7 +21,7 @@ export const Education = props => {
           <Grid item>
             <EditOutlinedIcon
               onClick={() => {
-                setIsEditMode(true);
+                setIsEditModeOn(true);
               }}
             />
           </Grid>
@@ -31,8 +32,8 @@ export const Education = props => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1">
-              {startDate.substring(0, 10)} {" || "}
-              {endDate.substring(0, 10)}
+              {newTimeS} {" || "}
+              {newTimeE}
             </Typography>
           </Grid>
         </Grid>
@@ -40,8 +41,7 @@ export const Education = props => {
           <Typography variant="body1">{degree}</Typography>
         </Grid>
       </Grid>
-    </>
-  );
+    </>);
 
-  return content;
+  return isEditModeOn ? <EditEducation data={props.data} /> : content;
 };

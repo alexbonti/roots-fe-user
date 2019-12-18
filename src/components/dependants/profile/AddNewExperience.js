@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
 export const AddNewExperience = props => {
   const classes = useStyles();
   const { workExperience } = useContext(TextEditorContext);
-  const { setIsAddMode } = useContext(UserContext);
+  const { setIsAddMode, setIsUpdated } = useContext(UserContext);
   const [selectedStartDate, setSelectedStartDate] = React.useState(
     new Date("2019-08-18T21:11:54")
   );
@@ -47,6 +47,8 @@ export const AddNewExperience = props => {
     setSelectedEndDate(date);
   };
 
+
+
   const UpdateSingleUserExp = async field => {
     if (field === "work") {
       console.log(newPositionName, workExperience, newCompanyName);
@@ -60,6 +62,8 @@ export const AddNewExperience = props => {
         },
       };
       const workExpApiData = await API.updateWorkExp(data);
+      setIsUpdated(true);
+      setIsAddMode(false);
       notify("New Work Experience added succesfully");
       console.log("workExpApiData", workExpApiData);
     } else if (field === "education") {
@@ -73,10 +77,14 @@ export const AddNewExperience = props => {
         },
       };
       const educationExpData = await API.updateEducationExp(data);
+      setIsUpdated(true);
+      setIsAddMode(false);
       notify("New Education Experience added succesfully");
       console.log("educationExpData", educationExpData);
     }
   };
+
+
 
   const content =
     props.data === "work" ? (
@@ -288,7 +296,7 @@ export const AddNewExperience = props => {
                 UpdateSingleUserExp("education");
               }}
             >
-              Add new experience
+              Add new Education details
             </Button>
           </Grid>
         </Grid>

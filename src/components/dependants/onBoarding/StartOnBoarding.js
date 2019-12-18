@@ -68,7 +68,7 @@ const theme = createMuiTheme({
 export const StartOnBoarding = props => {
   const classes = useStyles();
   const [isStarted, setIsStarted] = useState(false);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(false);
   const {setUserHasExperience } = useContext(
     OnBoardingContext
   );
@@ -96,22 +96,7 @@ export const StartOnBoarding = props => {
         <NoExperience />
       </TabPanel>
     </Grid>
-  ) : (
-    <Grid item xs={10} container spacing={2} justify="center">
-      <Grid item container justify="center">
-        <Typography variant="body1" align="center">
-          {" "}
-          Or
-        </Typography>
-      </Grid>
-
-      <Grid item>
-        <Typography variant="body1" align="center">
-          You can always complete it <a href="http://linktosomething">later</a>
-        </Typography>
-      </Grid>
-    </Grid>
-  );
+  ) : ""
 
   return (
     <>

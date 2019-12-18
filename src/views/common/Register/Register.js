@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing(1),
+    //padding: theme.spacing(1),
     textAlign: "center",
     color: theme.palette.text.secondary,
   },
@@ -64,7 +64,7 @@ const Register = props => {
       first_name: firstName,
       last_name: lastName,
       emailId,
-      password,
+      password
     };
 
     const triggerAPI = async () => {
@@ -94,6 +94,7 @@ const Register = props => {
       return notify("Please fill in all the details.");
     }
     let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     let emailPatternTest = emailPattern.test(emailId);
     if (!emailPatternTest) {
       notify("Email not in proper format");
@@ -117,12 +118,12 @@ const Register = props => {
     <>
       <ThemeProvider theme={theme}>
         <Header />
-        <Grid style={{ height: "7vh" }} />
+        <Grid />
         <Grid
           container
           justify="center"
           alignItems="center"
-          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "22vh" }}
+          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "25vh" }}
         >
           <Grid item xs={10}>
             <Typography variant="h5">Let's Start</Typography>

@@ -11,6 +11,11 @@ export const HomeProvider = props => {
   const [userWantsToApply, setUserWantsToApply] = useState(false);
   const [dataToBeSentResources, setDataToBeSentResources] = useState({});
   const [jobId, setJobId] = useState("");
+  const [listSavedJobs, setListSavedJobs] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [isFilterOn, setIsFilterOn] = useState(false);
+  const [isFullViewNews, setIsFullViewNews] = useState(false);
+  const [detailsNews, setDetailsNews] = useState("");
 
   const { children } = props;
   return (
@@ -29,7 +34,18 @@ export const HomeProvider = props => {
         isFullViewResource,
         setIsFullViewResource,
         dataToBeSentResources,
-        setDataToBeSentResources
+        setDataToBeSentResources,
+        listSavedJobs,
+        setListSavedJobs,
+        filteredData, 
+        setFilteredData,
+        isFilterOn, 
+        setIsFilterOn,
+        detailsNews, 
+        setDetailsNews,
+        isFullViewNews, 
+        setIsFullViewNews
+
       }}
     >
       {children}
