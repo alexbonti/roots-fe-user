@@ -26,20 +26,16 @@ const errorHelper = (error, variant) => {
 }
 class API {
   loginUser = async (data, setAccessToken) => {
-    return await axios({
-      method: "post",
-      url: "http://localhost:8031/api/user/login",
-      //url: "http://localhost:8031/api/user/login",
-      data,
-    })
-      .then(response => {
+    return await axiosInstance
+    .post("/user/login",data)
+    .then(response => {
         setAccessToken(response.data.data.accessToken);
         return response.data.data;
-      })
-      .catch(error => {
-        console.log(error);
-        return false;
-      });
+    })
+    .catch(error => {
+      console.log(error);
+      return false;
+    });
   };
 
   logout = async () => {
