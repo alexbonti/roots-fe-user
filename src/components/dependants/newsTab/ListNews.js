@@ -12,7 +12,7 @@ export const ListNews = () => {
   useEffect(() => {
     const triggerAPI = async () => {
       let data = {
-        "category": "LEGAL ADVICE",
+        "category": "ROOTS",
         "numberOfRecords": 10,
       };
       const allNewsData = await API.getNews(data);
