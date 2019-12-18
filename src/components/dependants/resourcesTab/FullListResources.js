@@ -26,7 +26,7 @@ export const FullListResources = () => {
       };
 
       const allNewsData = await API.getNews(data);
-      if(allNewsData.response.data.data.data.length > 0){
+      if(allNewsData && allNewsData.response.data.data.data.length > 0){
         accumulator.push({
           categorie,
           data: allNewsData.response.data.data.data,

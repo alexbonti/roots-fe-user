@@ -16,7 +16,10 @@ export const ListNews = () => {
         "numberOfRecords": 10,
       };
       const allNewsData = await API.getNews(data);
-      setNewsArray(allNewsData.response.data.data.data);
+      console.log(allNewsData);
+      if(allNewsData){
+        setNewsArray(allNewsData.response.data.data.data);
+      }
     };
 
     triggerAPI();

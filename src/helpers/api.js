@@ -438,7 +438,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        return errorHelper(error);
       });
   };
 }
