@@ -68,7 +68,8 @@ function a11yProps(index) {
   };
 }
 
-const Home = () => {
+const Home = (props) => {
+  console.log(props)
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const { loginStatus } = useContext(LoginContext);

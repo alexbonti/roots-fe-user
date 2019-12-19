@@ -71,7 +71,7 @@ const OnBoarding = props => {
       const triggerAPI = async () => {
         const data = {
           avatar:
-            "https://s3.au-syd.cloud-object-storage.appdomain.cloud/refugee-bucket/image/profilePicture/thumb/Thumb_Profile_yQ6CgIxdtPwm.png",
+            "string",
           preferredLocation: "",
           skills: [],
           preferredIndustry: [],

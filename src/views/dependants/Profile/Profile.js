@@ -7,11 +7,13 @@ import { Spinner, Education, Experience, AddNewExperience } from "components";
 import MyDropZone from "../../../components/dependants/DropDrag";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
+import FallBackAvatar from "../../../helpers/img/man.svg";
 
-const Profile = () => {
+
+const Profile = (props) => {
   const { loginStatus } = useContext(LoginContext);
   const { setIsFullView } = useContext(HomeContext);
-
+  console.log(props);
   const {
     setUserName,
     setUserLastName,
@@ -181,6 +183,13 @@ const Profile = () => {
       setChipValue("");
     }
   };
+
+  const ImageAvatar =
+  avatarProfile === "" ||
+  avatarProfile === undefined ||
+  avatarProfile === "string"
+    ? FallBackAvatar
+    : avatarProfile;
   const content =
     userProfile !== undefined && userProfile !== null ? (
       <>
@@ -194,7 +203,7 @@ const Profile = () => {
           >
             <Grid item xs={9}>
               <img
-                src={avatarProfile}
+                src={ImageAvatar}
                 alt="avatar"
                 style={{ borderRadius: "50%" }}
               ></img>
