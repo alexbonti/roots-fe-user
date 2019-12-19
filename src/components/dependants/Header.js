@@ -1,19 +1,13 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import {
-  AppBar,
-  Avatar,
-  Grid,
-  Typography
-} from "@material-ui/core";
+import { AppBar, Avatar, Grid, Typography } from "@material-ui/core";
 import { LoginContext } from "contexts";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 //import API from "../../helpers/api";
 import { TemporaryDrawer } from "../index";
 import { UserContext } from "contexts/index";
-//import Image from "../../../helpers/img/root-bg.jpg";
-
+import FallBackAvatar from "../../helpers/img/man.svg";
 
 // import { AccessToken } from "contexts/helpers/index";
 
@@ -26,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     height: "9vh",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   avatar: {
     margin: 10,
@@ -120,13 +114,9 @@ const theme = createMuiTheme({
 
 export const Header = () => {
   const classes = useStyles();
-  const {
-    loginStatus,
-  } = useContext(LoginContext);
-  const { avatarProfile} = useContext(UserContext);
+  const { loginStatus } = useContext(LoginContext);
+  const { avatarProfile } = useContext(UserContext);
 
-
- 
   // const logout = () => {
   //   const logOut = async auth => {
   //     const putLogout = await API.logout(auth);
@@ -139,28 +129,37 @@ export const Header = () => {
   //   logOut(accessToken);
   // };
 
-
-
-
+  const ImageAvatar =
+    avatarProfile === "" ||
+    avatarProfile === undefined ||
+    avatarProfile === "string"
+      ? FallBackAvatar
+      : avatarProfile;
+  console.log(ImageAvatar);
   let registerStatus = {
     menu: !loginStatus ? "" : <TemporaryDrawer />,
-    avatar: !loginStatus ? "" : <Link to="/profile" state={"test"}><Avatar src={avatarProfile}></Avatar></Link>
+    avatar: !loginStatus ? (
+      ""
+    ) : (
+      <Link to="/profile" state={"test"}>
+        <Avatar src={ImageAvatar}></Avatar>
+      </Link>
+    ),
   };
-
 
   let content = (
     <ThemeProvider theme={theme}>
       <AppBar className={classes.toolbar}>
-        <Grid container  justify="space-between" style={{paddingLeft: "5vw"}}>
-          <Grid item  >
-            {registerStatus.avatar}
+        <Grid container justify="space-between" style={{ paddingLeft: "5vw" }}>
+          <Grid item>{registerStatus.avatar}</Grid>
+
+          <Grid item align="center">
+            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+              <Typography variant="h4">ROOTS</Typography>
+            </Link>
           </Grid>
 
-          <Grid item align="center" >
-            <Link to="/" style={{textDecoration: "none", color: "white"}}><Typography variant="h4">ROOTS</Typography></Link>
-          </Grid>
-
-          <Grid item align="center" >
+          <Grid item align="center">
             {registerStatus.menu}
           </Grid>
         </Grid>
@@ -170,4 +169,3 @@ export const Header = () => {
   //<Avatar src={Image}></Avatar>
   return content;
 };
-

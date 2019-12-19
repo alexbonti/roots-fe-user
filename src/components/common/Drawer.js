@@ -46,7 +46,7 @@ export const TemporaryDrawer = () => {
     right: false,
   });
   const { setLoginStatus } = useContext(LoginContext);
-  const { userName, userLastName } = useContext(UserContext);
+  const { userName, userLastName, userProfile } = useContext(UserContext);
 
   const toggleDrawer = (side, open) => event => {
     if (
@@ -112,6 +112,7 @@ export const TemporaryDrawer = () => {
                 <AssignmentIndIcon style={{ color: "#065a6d" }} />
               </ListItemIcon>
               <Link
+                user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/profile"
               >
@@ -124,6 +125,7 @@ export const TemporaryDrawer = () => {
                 <StarBorderIcon style={{ color: "#065a6d" }} />
               </ListItemIcon>
               <Link
+                user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/jobs"
               >
@@ -136,6 +138,7 @@ export const TemporaryDrawer = () => {
                 <DoneOutlineIcon style={{ color: "#065a6d" }} />
               </ListItemIcon>
               <Link
+                user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/jobs"
               >
@@ -148,6 +151,7 @@ export const TemporaryDrawer = () => {
                 <SearchIcon style={{ color: "#065a6d" }} />
               </ListItemIcon>
               <Link
+                user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/search"
               >

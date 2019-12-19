@@ -11,6 +11,7 @@ import {
 import { ThemeProvider } from "@material-ui/styles";
 import { API } from "helpers/index";
 import { LoginContext, UserContext } from "../../../contexts";
+import Image from "../../../helpers/img/RootLogo.svg";
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -100,8 +101,21 @@ const RegistrationConfirmation = ({ ...props }) => {
     if (verificationStatus === 200) {
       window.localStorage.setItem("accessToken", accessToken);
       setIsVerified(true);
+      API.updateUserPreferences(
+        {
+          "avatar": "string",
+          "preferredLocation": "",
+          "skills": [
+            
+          ],
+          "preferredIndustry": [
+            
+          ],
+          "resumeURL": "",
+          "coverLetter": ""
+        }
+      );
       setUserProfile(userDetails);
-      
     }
   };
 
