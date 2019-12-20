@@ -11,6 +11,8 @@ export const UserProvider = props => {
   const [isUpdated, setIsUpdated] = useState(false);
   const [avatarProfile, setAvatarProfile] = useState("");
   const [fileURL, setFileURL] = useState("");
+  const [coverLetterUrl, setCoverLetterUrl] = useState("");
+
   const [isEditMode, setIsEditMode] = useState({status: false, id:""});
   const [isAddMode, setIsAddMode] = useState(false);
   const [skills, setSkills] = useState([]);
@@ -38,7 +40,9 @@ export const UserProvider = props => {
         isAddMode,
         setIsAddMode,
         skills, 
-        setSkills
+        setSkills,
+        coverLetterUrl, 
+        setCoverLetterUrl
       }}
     >
       {children}

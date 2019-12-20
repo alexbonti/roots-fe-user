@@ -30,7 +30,7 @@ const theme = createMuiTheme({
 
 export const EndApplication = (props) => {
   const {userName} = useContext(UserContext);
-  const {setIsFullView} = useContext(HomeContext);
+  const {setIsFullView, setUserWantsToApply} = useContext(HomeContext);
   const classes = useStyles();
   return (
     <>
@@ -57,7 +57,9 @@ export const EndApplication = (props) => {
               variant="contained"
               color="primary"
               className={classes.buttons}
-              onClick={()=> setIsFullView(false)}
+              onClick={()=> {
+                setUserWantsToApply(false);
+                setIsFullView(false);}}
             >
               <Link to="/" style={{textDecoration: "none", color: "white"}}> Search Opportunities </Link>
             </Button>

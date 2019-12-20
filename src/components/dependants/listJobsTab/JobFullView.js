@@ -65,7 +65,7 @@ export const JobFullView = props => {
     HomeContext
   );
   const { loginStatus } = useContext(LoginContext);
-  const [buttoApplyStatus, setButtonApplyStatus] = React.useState(false);
+  const [buttonApplyStatus, setButtonApplyStatus] = React.useState(false);
 
   const {
     positionTitle,
@@ -96,16 +96,18 @@ export const JobFullView = props => {
     const callAPI = async () => {
       const dataAppliedJobs = await API.getUserAppliedJobs();
       dataAppliedJobs.response.map(job => {
-        return job.jobId._id === _id
-          ? setButtonApplyStatus(true)
-          : setButtonApplyStatus(false);
+        if(job.jobId._id === _id) {
+          return setButtonApplyStatus(true);
+        }else{
+          return null;
+        }
       });
     };
 
     callAPI();
   }, [setButtonApplyStatus, _id]);
 
-  const buttonText = buttoApplyStatus ? "Applied" : "Apply";
+  const buttonText = buttonApplyStatus ? "Applied" : "Apply";
 
   const buttonSection = props.comesFromAppiedList ? (
     ""
@@ -130,7 +132,7 @@ export const JobFullView = props => {
       <Grid item xs={4} md={2} lg={2}>
         <Button
           fullWidth
-          disabled={buttoApplyStatus}
+          disabled={buttonApplyStatus}
           className={classes.buttons}
           onClick={() => {
             applyJob();

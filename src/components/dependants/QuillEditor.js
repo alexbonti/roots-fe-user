@@ -16,11 +16,10 @@ const modules = {
 };
 
 export const TextEditor = props => {
-  const {coverletter, setCoverLetter, setWorkExperience } = useContext(TextEditorContext);
+  const { setCoverLetter, setWorkExperience } = useContext(TextEditorContext);
   const [nodeRedData] = useState("");
   const handleTextEditorChange = value => {
-    
-    switch (props.data.content) {
+    switch (props.data) {
     case "coverletter":
       return (
         setCoverLetter(value));

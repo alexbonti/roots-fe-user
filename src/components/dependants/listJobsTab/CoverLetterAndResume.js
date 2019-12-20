@@ -2,9 +2,14 @@ import React, { useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Button } from "@material-ui/core/";
-import { HomeContext, LoginContext, UserContext, TextEditorContext } from "contexts";
+import {
+  HomeContext,
+  LoginContext,
+  UserContext,
+  TextEditorContext,
+} from "contexts";
 import { API } from "helpers";
-import { notify, TextEditor, EndApplication} from "components";
+import { notify, TextEditor, EndApplication } from "components";
 import MyDropzone from "../DropDrag";
 import { ProgressBar } from "../../common/ProgressBar";
 
@@ -51,15 +56,11 @@ const theme = createMuiTheme({
 
 export const CoverLetterAndResume = props => {
   const classes = useStyles();
-  const { setUserWantsToApply, progressBar } = useContext(
-    HomeContext
-  );
-  const {fileURL} = useContext(UserContext);
-  const {coverLetter} = useContext(TextEditorContext);
+  const { setUserWantsToApply, progressBar } = useContext(HomeContext);
+  const { fileURL, coverLetterUrl } = useContext(UserContext);
+  const { coverLetter } = useContext(TextEditorContext);
   const { loginStatus } = useContext(LoginContext);
   const [hasApplied, setHasApplied] = useState(false);
-
-
 
   const applyJob = async () => {
     let data = {
@@ -68,7 +69,7 @@ export const CoverLetterAndResume = props => {
 
     let dataCVCL = {
       resumeURL: fileURL,
-      coverLetter: coverLetter,
+      coverLetter: coverLetterUrl !== "" ? coverLetterUrl : coverLetter
     };
 
     if (loginStatus) {
@@ -81,70 +82,108 @@ export const CoverLetterAndResume = props => {
       setUserWantsToApply(true);
       setHasApplied(true);
     }
-
   };
-
-
 
   let progressBarComponent = progressBar ? <ProgressBar /> : "";
 
-  let content = hasApplied ? <EndApplication /> : (<ThemeProvider theme={theme}>
-    <Grid
-      container
-      alignItems="center"
-      style={{ padding: "3vh 1vw", backgroundColor: "#f8f8f8" }}
-    >
+  let content = hasApplied ? (
+    <EndApplication />
+  ) : (
+    <ThemeProvider theme={theme}>
       <Grid
-        onClick={() => {
-          setUserWantsToApply(false);
-        }}
+        container
+        alignItems="center"
+        style={{ padding: "3vh 1vw", backgroundColor: "#f8f8f8" }}
       >
-        {"<"} Back
-      </Grid>
-    </Grid>
-
-    <Grid
-      container
-      style={{
-        backgroundColor: "rgba(8, 124, 149, 0.1)",
-      }}
-      justify="center"
-      alignItems="center"
-    >
-      <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
-        <Typography variant="h5">
-          Great, Let's apply for this job
-        </Typography>
-      </Grid>
-    </Grid>
-
-    <Grid container justify="center" style={{ padding: "7vh 0" }}>
-      <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
-        <Typography variant="h6">Please, write your coverletter</Typography>
+        <Grid
+          onClick={() => {
+            setUserWantsToApply(false);
+          }}
+        >
+          {"<"} Back
+        </Grid>
       </Grid>
 
-      <Grid item xs={11} md={8} lg={8}>
-        <TextEditor data="coverletter" />
+      <Grid
+        container
+        style={{
+          backgroundColor: "rgba(8, 124, 149, 0.1)",
+        }}
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+          <Typography variant="h5">Great, Let's apply for this job</Typography>
+        </Grid>
       </Grid>
-    </Grid>
-    <Grid container justify="center" style={{ padding: "2vh" }}>
-      <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+
+      <Grid container justify="center" style={{ padding: "3vh 0" }}>
+        <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+          <Typography variant="h6">Please, write your coverletter</Typography>
+        </Grid>
+
+
+        <Grid item xs={11} md={8} lg={8}>
+          <TextEditor data="coverletter" />
+        </Grid>
+
+        <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+          <Typography variant="h6">Or attach your documents</Typography>
+        </Grid>
+        <Grid item xs={11} container justify="center">
+          <Grid
+            item
+            container
+            xs={5}
+            justify="center"
+            alignItems="center"
+            style={{ padding: "2vh 0" }}
+          >
+            <Grid item xs={11}>
+              <Typography variant="body1" align="center">Cover Letter</Typography>{" "}
+            </Grid>
+            <Grid item xs={11}>
+              <MyDropzone data={"coverletter"} size="small"  />
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            container
+            xs={4}
+            justify="center"
+            style={{ padding: "2vh 0" }}
+          >
+            <Grid item xs={11}>
+              <Typography variant="body1" align="center">Resume</Typography>{" "}
+            </Grid>
+            <Grid item xs={11}>
+              <MyDropzone data={"file"} size="small" />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid container justify="center" style={{ padding: "2vh 0" }}>
+        {/* <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
         <Typography variant="subtitle1">Attach your resume</Typography>
+      </Grid> */}
+        <Grid item xs={11} md={10} lg={10} style={{ padding: "2vh 0" }}>
+          {progressBarComponent}
+        </Grid>
+        <Grid item xs={11} md={3} lg={3} style={{ padding: "1vh 0" }}>
+          <Button
+            className={classes.buttons}
+            fullWidth
+            onClick={() => {
+              applyJob();
+            }}
+          >
+            Apply
+          </Button>
+        </Grid>
       </Grid>
-      <MyDropzone data={"file"} />
-      <Grid item xs={11} md={10} lg={10} style={{ padding: "2vh 0" }}>
-        {progressBarComponent}
-      </Grid>
-      <Grid item xs={11} md={3} lg={3} style={{ padding: "1vh 0" }}>
-        <Button className={classes.buttons}fullWidth onClick={()=> {applyJob();}}>Apply</Button>
-      </Grid>
-
-    </Grid>
-  </ThemeProvider>);
-
-  return (
-    <>
-      {content}
-    </>
+    </ThemeProvider>
   );
+
+  return <>{content}</>;
 };
