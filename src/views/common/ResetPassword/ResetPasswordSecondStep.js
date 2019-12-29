@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import {
   TextField,
@@ -10,6 +10,7 @@ import {
 import { Header, notify } from "components";
 import { ThemeProvider } from "@material-ui/styles";
 import { API } from "helpers";
+import { LoginContext } from "contexts";
 
 /*------------------------------------------------*/
 
@@ -27,21 +28,41 @@ const theme = createMuiTheme({
 
 /*------------------------------------------------*/
 
-const ResetPassword = () => {
+const ResetPasswordSecondStep = () => {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [OTPCode, setOTPCode] = useState("");
   const [emailId, setEmailId] = useState("");
-  const [emailErrorField, setEmailErrorField] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  const { setAccessToken } = useContext(LoginContext);
+
+  const [passwordErrorField, setPasswordErrorField] = useState(false);
+  const [otpErrorField, setOtpErrorField] = useState(false);
+  const [emailErrorField, setEmailErrorField] = useState(false);
 
   const sendResetPasswordEmail = () => {
     const data = {
+      password,
       emailId,
+      OTPCode,
+    };
+
+    const loginData = {
+      emailId,
+      password,
     };
 
     const triggerAPI = async () => {
-      const response = await API.resetPasswordFirstStep(data);
+      const response = await API.resetPasswordSecondStep(data);
       if (response) {
-        console.log(response);
-        setRedirect(true);
+        notify("Password successfully changed");
+        const loginDataResponse = await API.loginUser(
+          loginData,
+          setAccessToken
+        );
+        if (loginDataResponse) {
+          setRedirect(true);
+        }
       } else {
         console.log("error");
       }
@@ -50,11 +71,24 @@ const ResetPassword = () => {
   };
 
   const validationCheck = () => {
+    if (OTPCode.length < 0 || OTPCode === "") {
+      setOtpErrorField(true);
+      return notify("OTP field can not be empty");
+    } else {
+      setOtpErrorField(false);
+    }
+
     if (emailId.length < 0 || emailId === "") {
       setEmailErrorField(true);
       return notify("email field can not be empty");
     } else {
       setEmailErrorField(false);
+    }
+    if (password.length < 0 || confirmPassword.length < 0) {
+      setPasswordErrorField(true);
+      return notify("Password field can not be empty");
+    } else {
+      setPasswordErrorField(false);
     }
 
     let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -67,6 +101,14 @@ const ResetPassword = () => {
       setEmailErrorField(false);
     }
 
+    if (password !== confirmPassword) {
+      setPasswordErrorField(true);
+      setPassword("");
+      setConfirmPassword("");
+      return notify("Passwords don't match.");
+    } else {
+      setPasswordErrorField(false);
+    }
     if (emailPatternTest) {
       return sendResetPasswordEmail();
     }
@@ -74,7 +116,7 @@ const ResetPassword = () => {
   return redirect ? (
     <Redirect
       to={{
-        pathname: "/ResetPasswordSecondStep",
+        pathname: "/",
       }}
     />
   ) : (
@@ -98,11 +140,23 @@ const ResetPassword = () => {
               fontSize: "20px",
             }}
           >
-            Send an email to reset your password
+            Reset your password
           </Typography>
         </Grid>
       </Grid>
       <Grid container justify="center">
+        <Grid item xs={10}>
+          <TextField
+            error={otpErrorField}
+            margin="normal"
+            required
+            fullWidth
+            name="otp"
+            label="OTP code"
+            id="otp"
+            onChange={e => setOTPCode(e.target.value)}
+          />
+        </Grid>
         <Grid item xs={10}>
           <TextField
             error={emailErrorField}
@@ -114,6 +168,34 @@ const ResetPassword = () => {
             type="email"
             id="email"
             onChange={e => setEmailId(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={10}>
+          <TextField
+            error={passwordErrorField}
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="New Password"
+            type="password"
+            id="password"
+            onChange={e => setPassword(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={10}>
+          <TextField
+            error={passwordErrorField}
+            margin="normal"
+            required
+            fullWidth
+            name="confirm password"
+            label="Confirm Password"
+            type="password"
+            id="confirmPassword"
+            onChange={e => {
+              setConfirmPassword(e.target.value);
+            }}
           />
         </Grid>
         <Grid item xs={10} style={{ padding: " 7vh 0" }}>
@@ -137,4 +219,4 @@ const ResetPassword = () => {
   );
 };
 
-export default withRouter(ResetPassword);
+export default withRouter(ResetPasswordSecondStep);

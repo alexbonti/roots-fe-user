@@ -9,6 +9,8 @@ import Profile from "./dependants/Profile/Profile";
 import SavedAndAppliedJobs from "./dependants/SavedAndAppliedJobs";
 import SearchSettings from "./dependants/Profile/SearchSettings";
 import ResetPassword from "./common/ResetPassword/ResetPassword";
+import ResetPasswordSecondStep from "./common/ResetPassword/ResetPasswordSecondStep";
+
 
 import RegistrationConfirmation from "./common/Register/RegistrationConfirmation";
 export {
@@ -21,4 +23,5 @@ export {
   SavedAndAppliedJobs,
   SearchSettings,
   ResetPassword,
+  ResetPasswordSecondStep
 };

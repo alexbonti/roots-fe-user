@@ -13,10 +13,9 @@ import {
   Profile,
   SavedAndAppliedJobs,
   SearchSettings,
-  ResetPassowrd
 } from "views";
 import { Layout } from "../layout";
-import { ResetPassword } from "views/index";
+import { ResetPassword,  ResetPasswordSecondStep} from "views/index";
 
 export const AppRoutes = props => {
   const { loginStatus } = useContext(LoginContext);
@@ -43,6 +42,12 @@ export const AppRoutes = props => {
         exact
         path="/ResetPassword"
         render={() => <ResetPassword  {...props} />
+        }
+      />
+      <Route
+        exact
+        path="/ResetPasswordSecondStep"
+        render={() => <ResetPasswordSecondStep  {...props} />
         }
       />
       <Route

@@ -452,6 +452,17 @@ class API {
         return errorHelper(error);
       });
   };
+  resetPasswordSecondStep = async data => {
+    return await axiosInstance
+      .post("/user/resetPassword", data)
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        console.log(error)
+        return errorHelper(error);
+      });
+  };
 }
 
 const instance = new API();
