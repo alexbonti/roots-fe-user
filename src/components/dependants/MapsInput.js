@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const GoogleMaps = props => {
+export const FilterOpportunity = props => {
   const classes = useStyles();
 
   let dataArray = props.data;

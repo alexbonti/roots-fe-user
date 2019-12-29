@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: "55px"
   },
 }));
 
@@ -41,13 +42,16 @@ export const CurtainIndustrySelection = () => {
   const classes = useStyles();
   const [chipData, setChipData] = useState(jobs);
   const [accumulator, setAccumulator] = useState([]);
-  const { activeStep, setActiveStep, industryField, setIndustryField } = useContext(OnBoardingContext);
+  const {
+    activeStep,
+    setActiveStep,
+    industryField,
+    setIndustryField,
+  } = useContext(OnBoardingContext);
   console.log(activeStep);
 
   const handleNext = () => {
-    console.log(industryField, activeStep);
     setActiveStep(prevActiveStep => prevActiveStep + 1);
-    console.log(industryField, activeStep);
     setIndustryField(accumulator);
   };
 
@@ -72,65 +76,82 @@ export const CurtainIndustrySelection = () => {
     });
   };
 
-  let content = Array.isArray(accumulator)
-    ? accumulator.map(chip => {
-      return (
-        <Grid key={chip.label} item>
-          <Chip
-            label={chip.label}
-            color="secondary"
-            onDelete={handleDelete(chip)}
-          />
-        </Grid>
-      );
-    })
-    : "";
+  let content = Array.isArray(accumulator) ? (
+    <Grid
+      container
+      spacing={1}
+      style={{ minHeight: "65px", padding: "19px 0" }}
+    >
+      {accumulator.map(chip => {
+        return (
+          <Grid key={chip.label + Math.random()} item xs={4}>
+            <Chip
+              label={chip.label}
+              color="secondary"
+              onDelete={handleDelete(chip)}
+              style={{ width: "28vw", margin: "1vw" }}
+            />
+          </Grid>
+        );
+      })}
+    </Grid>
+  ) : (
+    ""
+  );
 
   return (
     <>
       <ThemeProvider theme={theme}>
         <Autocomplete
           multiple
+          id="tags-outlined"
           options={jobs}
           getOptionLabel={option => option.label}
-          style={{ width: "100%" }}
+          filterSelectedOptions
           renderInput={params => (
-            <TextField {...params} placeholder="Industry Fields" fullWidth />
+            <TextField
+              {...params}
+              label="Industry"
+              fullWidth
+            />
           )}
         />
-        <Grid
-          container
-          spacing={1}
-          style={{ padding: "3vh", backgroundColor: "white" }}
-        >
-          <Grid item xs={12}>
-            <Typography variant="body1" align="center">
+        <Grid container>
+          {content}
+          <Grid item xs={11} style={{ paddingBottom: "19px " }}>
+            <Typography
+              style={{
+                fonstSize: "16px",
+                fontFamily: `"Arial", "Helvetica", sans-serif`,
+                fontWeight: "bold",
+              }}
+              align="left"
+            >
               Or select it from them the list
             </Typography>
           </Grid>
-          {content}
         </Grid>
 
-        <Grid
-          container
-          justify="center"
-          spacing={1}
-          style={{ padding: "3vh", backgroundColor: "white" }}
-        >
+        <Grid container justify="center" spacing={1}>
           {chipData.map(chip => {
             return (
-              <Grid key={chip.key} item>
+              <Grid item xs={4} key={chip.key}>
                 <Chip
                   key={chip.key}
                   label={chip.label}
                   onClick={handleAdd(chip)}
+                  style={{
+                    width: "28vw",
+                    margin: "1vw",
+                    backgroundColor: "rgba(199, 66, 152,.18)",
+                  }}
                 />
               </Grid>
             );
           })}
         </Grid>
 
-        <Grid>
+        <Grid style={{ paddingTop: "45px" }}>
           <Button
             fullWidth
             variant="contained"
@@ -138,7 +159,7 @@ export const CurtainIndustrySelection = () => {
             className={classes.buttons}
             onClick={handleNext}
           >
-            Next
+            Continue
           </Button>
         </Grid>
       </ThemeProvider>
@@ -177,5 +198,3 @@ const jobs = [
   { key: 27, label: "Transport & Logistics" },
   { key: 28, label: "Work From Home & Self Employed" },
 ];
-
-

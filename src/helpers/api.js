@@ -90,7 +90,7 @@ class API {
       .then(response => {
         return response.status;
       })
-      .catch(error => console.log(error));
+      .catch(error => errorHelper(error))
   };
 
   getOpportunity = async accessToken => {
@@ -101,8 +101,7 @@ class API {
         return { response: response.data.data.opportunityData };
       })
       .catch(error => {
-        console.log(error);
-        return { error };
+        errorHelper(error);
       });
   };
 
@@ -118,8 +117,7 @@ class API {
         return { response: response.data.data.opportunityData };
       })
       .catch(error => {
-        console.log(error);
-        return { error };
+        errorHelper(error)
       });
   };
 
@@ -135,7 +133,7 @@ class API {
         return { "response": response.data.data.customerData };
       })
       .catch(error => {
-        return { "error": error };
+        return errorHelper(error)
       });
   };
 
@@ -151,7 +149,7 @@ class API {
         return { "response": response.data.data.extendedCustomerData };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error)
       });
   };
 
@@ -166,7 +164,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error)
       });
   };
 
@@ -181,7 +179,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error)
       });
   };
 
@@ -193,7 +191,7 @@ class API {
       url: ` http://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=${app_id}&app_code=${app_code}&query=${input}`,
     })
       .then(response => response.data)
-      .catch(error => console.log(error));
+      .catch(error => errorHelper(error));
   };
 
   getLatLong = async input => {
@@ -209,7 +207,7 @@ class API {
             response.data.response.view[0].result[0].location.displayPosition,
         };
       })
-      .catch(error => console.log(error));
+      .catch(error => errorHelper(error));
   };
 
   searchByLocation = async data => {
@@ -226,7 +224,7 @@ class API {
       .then(response => {
         return { "response": response.data.data.opportunityData };
       })
-      .catch(error => error);
+      .catch(error => errorHelper(error));
   };
 
   getCompanyDetails = async auth => {
@@ -241,7 +239,7 @@ class API {
         return { "response": response.data.data.companyData };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error)
       });
   };
 
@@ -258,7 +256,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error)
       });
   };
 
@@ -373,7 +371,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error)
       });
   };
   userSaveJob = data => {
@@ -397,7 +395,7 @@ class API {
         },
       })
       .then(response => response)
-      .catch(error => console.log(error));
+      .catch(error => errorHelper(error))
   };
 
   userGetSavedJob = async data => {
@@ -412,7 +410,7 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        return { "error": error };
+        errorHelper(error)
       });
   };
 

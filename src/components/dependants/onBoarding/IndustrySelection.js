@@ -1,10 +1,8 @@
 import React from "react";
-import {  createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Typography, Grid} from "@material-ui/core/";
-import {CurtainIndustrySelection} from "components";
-
-
+import { Typography, Grid } from "@material-ui/core/";
+import { CurtainIndustrySelection } from "components";
 
 const theme = createMuiTheme({
   palette: {
@@ -19,13 +17,24 @@ const theme = createMuiTheme({
 });
 
 export const IndustrySelection = () => {
-
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Grid container justify="center" style={{backgroundColor: "white", padding: "4vh 0" }} >
-          <Grid item >
-            <Typography variant="body1">Which industry are you interested in ?</Typography>
+        <Grid
+          container
+          justify="center"
+          style={{ backgroundColor: "white", padding: "4vh 0" }}
+        >
+          <Grid item xs={10} style={{paddingBottom: "17px"}}>
+            <Typography
+              style={{
+                fonstSize: "16px",
+                fontFamily: `"Arial", "Helvetica", sans-serif`,
+                fontWeight: "bold",
+              }}
+            >
+              Which industry are you interested in ?
+            </Typography>
           </Grid>
           <Grid item xs={10}>
             <CurtainIndustrySelection />

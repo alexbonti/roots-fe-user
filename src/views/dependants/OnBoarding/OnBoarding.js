@@ -37,6 +37,7 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: "55px"
   },
   backButton: {
     fontSize: "10px",
@@ -103,7 +104,7 @@ const OnBoarding = props => {
   // ---------------------button stepper------------------------
 
   const buttonStepper = isStart ? (
-    <Grid item xs={8}>
+    <Grid item xs={11}>
       <Button
         fullWidth
         variant="contained"
@@ -174,7 +175,7 @@ const OnBoarding = props => {
           alignItems="center"
           style={{ height: "15vh", backgroundColor: "rgb(234, 244, 246)" }}
         >
-          <Grid item xs={9}>
+          <Grid item xs={11}>
             <Typography variant="h6">
               Welcome, {userProfile.first_name}. <br />
               Let's get your profile ready.

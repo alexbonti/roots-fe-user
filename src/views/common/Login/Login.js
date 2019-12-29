@@ -80,12 +80,17 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
+    height: "55px",
+    boxShadow: "none"
   },
   buttonRegister: {
     color: "#087b94",
     borderRadius: "25px",
-    border: "1px solid #087b94",
+    border: "2px solid #087b94",
     backgroundColor: "white",
+    height: "55px",
+    boxShadow: "none"
+
   },
   developMessage: {},
   inputText: {
@@ -212,12 +217,12 @@ export const Login = () => {
                 Login
               </Button>
             </Grid>
-            <Grid item xs={12}  style={{ padding: "2vh" }}>
-              <Typography align="center" variant="caption" display="block">
-                Or
+            <Grid item xs={12}  style={{ paddingTop: "2vh" }}>
+              <Typography align="center"  display="block" style={{fontFailmily: `"Arial Rounded MT", sans-serif`, fontSize: "16px", fontWeight: "bold", color: "#007D97"}}>
+                or
               </Typography>
             </Grid>
-            <Grid item xs={10} sm={8} style={{ paddingBottom: "3vh" }}>
+            <Grid item xs={10} sm={8} style={{paddingTop: "2vh" , paddingBottom: "51.3px" }}>
               <Button
                 fullWidth
                 variant="contained"
@@ -225,7 +230,7 @@ export const Login = () => {
                 component={Link}
                 to="/register"
               >
-                Register
+                SIGN UP
               </Button>
             </Grid>
           </Grid>

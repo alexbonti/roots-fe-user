@@ -24,14 +24,15 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
-    margin: "1vh 0",
+    fontSize: "8px"
   },
   alternativeButton: {
     color: "#087b94 !important",
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "white",
-    margin: "1vh 0",
+    fontSize: "8px"
+
   },
 }));
 
@@ -48,15 +49,6 @@ const theme = createMuiTheme({
   },
 });
 
-export const ScrollToTopControlller = () => {
-  // this assumes that current router state is accessed via hook
-  // but it does not matter, pathname and search (or that ever) may come from props, context, etc.
-
-  // just run the effect on pathname and/or search change
-
-  // renders nothing, since nothing is needed
-  return null;
-};
 
 export const JobFullView = props => {
   console.log(props);
@@ -74,6 +66,8 @@ export const JobFullView = props => {
     employmentType,
     description,
     company,
+    startDate,
+    endDate,
     _id,
   } = props.data;
 
@@ -116,7 +110,6 @@ export const JobFullView = props => {
       container
       item
       justify="space-evenly"
-      // style={{ padding: "3vh 2vw" }}
     >
       <Grid item xs={4} md={2} lg={2}>
         <Button
@@ -159,6 +152,7 @@ export const JobFullView = props => {
             onClick={() => {
               setIsFullView(false);
             }}
+            style={{fontSize: "12px",  fontFamily: "Arial Unicode MS"}}
           >
             {"<"} Back to the list
           </Grid>
@@ -176,10 +170,10 @@ export const JobFullView = props => {
           md={12}
         >
           <Grid item xs={11} lg={8} md={8}>
-            <Typography variant="h6">{positionTitle}</Typography>
-            <Typography variant="body1">{company}</Typography>
-            <Typography variant="subtitle1">
-              {/* {startDate.substring(0, 10)} - {endDate.substring(0, 10)} */}
+            <Typography style={{fontFamily: `"Arial Rounded MT", sans-serif`, fontSize: " 21px", fontWeight: "bold"}}>{positionTitle}</Typography>
+            <Typography  style={{fontFamily: `"Helvetica", sans-serif`, fontSize: " 14px"}}>{company}</Typography>
+            <Typography  style={{fontFamily: `"Helvetica", sans-serif`, fontSize: " 14px"}}>
+             {startDate.substring(0, 10)} 
             </Typography>
           </Grid>
         </Grid>
@@ -192,18 +186,19 @@ export const JobFullView = props => {
           md={12}
           justify="center"
           style={{
-            padding: "2vh 0",
+            padding: "16px 0",
             backgroundColor: "rgba(8, 124, 149, 0.1)",
           }}
         >
           <Grid item xs={11} lg={8} md={8}>
-            <Typography variant="body1">{location}</Typography>
-            <Typography variant="body1">{industryField}</Typography>
-            <Typography variant="body1">{employmentType}</Typography>
+            <Typography style={{fontFamily: `"SofiaProRegular","Helvetica" sans-serif`, fontSize: " 12.2px"}}>{location}</Typography>
+            <Typography style={{fontFamily: `"SofiaProRegular","Helvetica" sans-serif`, fontSize: " 12.2px"}}>{industryField}</Typography>
+            <Typography style={{fontFamily: `"SofiaProRegular","Helvetica" sans-serif`, fontSize: " 12.2px"}}>{employmentType}</Typography>
+            <Typography style={{fontFamily: `"SofiaProRegular","Helvetica" sans-serif`, fontSize: " 12.2px"}}>Expires on {endDate.substring(0,10)}</Typography>
           </Grid>
         </Grid>
-        <Grid container item xs={12} lg={12} md={12} justify="center">
-          <Grid item xs={11} lg={8} md={8}>
+        <Grid container item xs={12} lg={12} md={12} justify="center" >
+          <Grid item xs={11} lg={8} md={8} style={{paddingTop: "23px", paddingBottom: "57px", fontSize: "12px", fontFaily: `"Arial Unicode MS", sans-serif`}}>
             {ReactHtmlParser(description)}
           </Grid>
           {buttonSection}

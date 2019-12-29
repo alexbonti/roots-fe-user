@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import {  Typography, Grid } from "@material-ui/core/";
-import { JobSmallCard, JobFullView, GoogleMaps } from "components";
+import { JobSmallCard, JobFullView, FilterOpportunity } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
 import CloseIcon from "@material-ui/icons/Close";
@@ -54,7 +54,7 @@ export const FullListJobs = props => {
         <Grid item xs={11} align="right">
           <CloseIcon onClick={() => setSearchSettingTab(false)} />
         </Grid>
-        <GoogleMaps data={props.data} />
+        <FilterOpportunity data={props.data} />
       </Grid>
     </>
   ) : (

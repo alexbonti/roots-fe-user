@@ -27,7 +27,9 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
-    margin: "4vh 0"
+    margin: "4vh 0",
+    height: "55px",
+    boxShadow: "none",
   },
 }));
 
@@ -142,16 +144,17 @@ const Register = props => {
     <>
       <ThemeProvider theme={theme}>
         <Header />
-        <Grid />
+        <Grid style={{height: "9vh"}}/>
         <Grid
           container
           justify="center"
           alignItems="center"
-          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "25vh" }}
+          style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "15vh" }}
         >
           <Grid item xs={10}>
-            <Typography variant="h5">Let's Start</Typography>
+            <Typography style={{fontSize: `"Arial Rounded MT", sans-serif`, fontSize: "21px", fontWeight: "bold"}}>Let's start</Typography>
           </Grid>
+   
         </Grid>
         <Grid container justify="space-evenly" alignItems="center">
           <Grid item xs={10}>
@@ -216,7 +219,7 @@ const Register = props => {
               />
             </form>
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={10} style={{paddingTop: "5vh"}}>
             <Button
               fullWidth
               variant="contained"
@@ -224,7 +227,7 @@ const Register = props => {
               onClick={validationCheck}
               className={classes.buttons}
             >
-              Register
+              SIGN UP
             </Button>
           </Grid>
         </Grid>

@@ -20,32 +20,18 @@ const useStyles = makeStyles(theme => ({
   },
   registerBox: {
     width: "100%", // Fix IE 11 issue.
-    height: "87vh",
-    marginTop: theme.spacing(2),
-    backgroundColor: "azure",
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+
   buttons: {
-    marginTop: theme.spacing(1),
-    borderRadius: "1rem",
+    borderRadius: "25px",
     backgroundColor: "#087B94",
     color: "white",
-  },
-  developMessage: {
-    position: "absolute",
-    bottom: "1vh",
+    height: "55px",
   },
   text: {
-    fontFamily: "Lato, Helvetica, Arial, sans-serif",
-    fontSize: "large",
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  containerButton: {
-    lineHeight: "5rem",
-    textAlign: "center",
+    fontFamily: "Arial Round, Helvetica, Arial, sans-serif",
+    fontSize: "18px",
+    fontWeight: "bold",
   },
 }));
 
@@ -76,7 +62,6 @@ const RegistrationConfirmation = ({ ...props }) => {
       : false
   );
 
-
   let accessToken =
     props.location.state && props.location.state.hasOwnProperty("accessToken")
       ? props.location.state.accessToken
@@ -101,45 +86,19 @@ const RegistrationConfirmation = ({ ...props }) => {
     if (verificationStatus === 200) {
       window.localStorage.setItem("accessToken", accessToken);
       setIsVerified(true);
-      API.updateUserPreferences(
-        {
-          "avatar": "string",
-          "preferredLocation": "",
-          "skills": [
-            
-          ],
-          "preferredIndustry": [
-            
-          ],
-          "resumeURL": "",
-          "coverLetter": ""
-        }
-      );
+      API.updateUserPreferences({
+        "avatar": "string",
+        "preferredLocation": "",
+        "skills": [],
+        "preferredIndustry": [],
+        "resumeURL": "",
+        "coverLetter": "",
+      });
       setUserProfile(userDetails);
     }
   };
 
-  const content = isVerified ? (<ThemeProvider theme={theme}>
-    <Grid
-      container
-      className={classes.registerBox}
-      alignItems="center"
-      justify="center"
-    >
-      <Grid item xs={10} className={classes.text}>
-        Your account has been verified
-      </Grid>
-      <Grid item xs={10} container justify="center">
-        <Grid item xs={6}>
-          <Button component={Link} user={userProfile}  to="/onboarding"  fullWidth className={classes.buttons}>
-            Home
-          </Button>
-        </Grid>
-      </Grid>
-    </Grid>
-  </ThemeProvider>
-    
-  ) : (
+  const content = isVerified ? (
     <ThemeProvider theme={theme}>
       <Grid
         container
@@ -147,23 +106,34 @@ const RegistrationConfirmation = ({ ...props }) => {
         alignItems="center"
         justify="center"
       >
-        <Grid
-          item
-          xs={10}
-          container
-          justify="space-between"
-          alignItems="center"
-          spacing={3}
-          direction="column"
-          className={classes.text}
-        >
-          A verification code has been sent to:
-          <Typography variant="h5" color="secondary">
-            {props.location.state.emailId}
-          </Typography>
+        <Grid item xs={10} className={classes.text} style={{paddingTop: "5vh", textAlign:"center"}}>
+          Your account has been verified
         </Grid>
-        <Grid item xs={10} container alignItems="center" justify="center">
-          <Grid item xs={6}>
+        <Grid item xs={10} container justify="center">
+          <Grid item xs={10} style={{paddingTop: "5vh"}}>
+            <Button
+              component={Link}
+              user={userProfile}
+              to="/onboarding"
+              fullWidth
+              className={classes.buttons}
+            >
+              Home
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
+  ) : (
+    <ThemeProvider theme={theme}>
+      <Grid container className={classes.registerBox} justify="center">
+        <Grid item xs={11} container  style={{paddingTop: "5vh"}}>
+            <Typography className={classes.text}>
+              A verification code has been sent to: <br />{props.location.state.emailId}
+            </Typography>
+        </Grid>
+        <Grid item xs={10} container justify="center">
+          <Grid item xs={9}>
             <TextField
               margin="normal"
               required
@@ -174,7 +144,7 @@ const RegistrationConfirmation = ({ ...props }) => {
               onChange={e => setCode(e.target.value)}
             ></TextField>
           </Grid>
-          <Grid item xs={10} className={classes.containerButton}>
+          <Grid item xs={10} style={{paddingTop: "5vh"}}>
             <Button
               fullWidth
               className={classes.buttons}
@@ -187,6 +157,8 @@ const RegistrationConfirmation = ({ ...props }) => {
           </Grid>
         </Grid>
       </Grid>
+
+    
     </ThemeProvider>
   );
 

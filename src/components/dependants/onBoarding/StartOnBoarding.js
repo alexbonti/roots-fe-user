@@ -187,17 +187,16 @@ export const StartOnBoarding = props => {
           container
           justify="center"
           className={classes.rootMain}
-          spacing={2}
         >
-          <Grid item xs={11} container justify="flex-start">
-            <Typography variant="body1">
+          <Grid item xs={11} container justify="flex-start"  style={{paddingBottom: "14px"}}>
+            <Typography style={{fonstSize: "16px", fontFamily: `"Arial", "Helvetica", sans-serif`, fontWeight: "bold"}}>
               {" "}
               First of all,
               <br />
               have you got experience before ?
             </Typography>
           </Grid>
-          <Grid container item xs={12} justify="center">
+          <Grid container item xs={12} justify="center" style={{paddingBottom: "63px"}}>
             <Tabs
               value={value}
               onChange={handleChange}

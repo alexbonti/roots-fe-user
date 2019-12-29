@@ -118,7 +118,7 @@ const Home = (props) => {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
-        <AppBar position="static" color="default" style={{ height: "12vh" }}>
+        <AppBar position="static" color="default" >
           <Tabs
             value={value}
             onChange={handleChange}
@@ -127,7 +127,7 @@ const Home = (props) => {
             variant="fullWidth"
             className={classes.tabs}
             aria-label="full width tabs example"
-            style={{ marginTop: 0 }}
+            style={{ marginTop: 0, height: "58px"}}
           >
             <Tab label="Search" {...a11yProps(0)} className={classes.tab} />
             <Tab label="News" {...a11yProps(1)} className={classes.tab} />
