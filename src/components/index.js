@@ -38,6 +38,7 @@ import { LargeNewsCard } from "./dependants/newsTab/LargeNewsCard";
 import { ListNews } from "./dependants/newsTab/ListNews";
 import { NewsCard } from "./dependants/newsTab/NewsCard";
 import { NewsFullView } from "./dependants/newsTab/NewsFullView";
+import {MenuHamburger} from "../helpers/MenuHamburger";
 
 import { GoogleMaps } from "./dependants/MapsInput";
 
@@ -84,4 +85,5 @@ export {
   ListNews,
   NewsCard,
   NewsFullView,
+  MenuHamburger
 };

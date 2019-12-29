@@ -23,14 +23,15 @@ export const FullListSavedJobs = props => {
 
   const findSingleJobData = id => {
     if (Array.isArray(props.data)) {
-      let selectedJob = props.data.filter(jobs => jobs._id === id);
+      let selectedJob = props.data.filter(job => job._id === id);
       return selectedJob[0];
     }
   };
 
+  console.log(props, jobId);
+
   let singleJobData = isFullView ? findSingleJobData(jobId) : [];
 
-  console.log(props.savedJobs)
   let introMessage = props.savedJobs.length < 1 ? <Grid item xs={11}><Typography variant="h6" align="center">No saved jobs at the moment</Typography></Grid> : "";
   let listOfJobs = Array.isArray(props.data) ? (
     <>

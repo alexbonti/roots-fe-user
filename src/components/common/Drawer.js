@@ -16,7 +16,8 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Icon from "@material-ui/core/Icon";
 import { API } from "helpers";
 import { LoginContext, UserContext } from "contexts";
-import Image from "../../helpers/img/rootsheader.gif";
+import { MenuHamburger } from "helpers/MenuHamburger";
+//import Image from "../../helpers/img/rootsheader.gif";
 
 const useStyles = makeStyles({
   list: {
@@ -95,7 +96,7 @@ export const TemporaryDrawer = () => {
             >
               <Grid item container justify="space-evenly" alignItems="center">
                 <Grid>
-                  <Avatar variant="rounded" sizes="large" src={Image} className={classes.bigAvatar}/>
+                  <Avatar variant="rounded" sizes="large" className={classes.bigAvatar}>R</Avatar>
                 </Grid>
                 <Grid>
                   <Typography variant="body1" style={{ color: "white" }}>
@@ -181,7 +182,7 @@ export const TemporaryDrawer = () => {
     <div>
       <Button onClick={toggleDrawer("right", true)}>
         {" "}
-        <Icon style={{ color: "#FFFFFF" }}>list</Icon>
+        <MenuHamburger />
       </Button>
       <Drawer
         anchor="right"

@@ -441,6 +441,17 @@ class API {
         return errorHelper(error);
       });
   };
+
+  resetPasswordFirstStep = async data => {
+    return await axiosInstance
+      .post("/user/forgotPassword", data)
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        return errorHelper(error);
+      });
+  };
 }
 
 const instance = new API();

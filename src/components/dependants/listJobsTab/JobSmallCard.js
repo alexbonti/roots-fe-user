@@ -80,7 +80,6 @@ export const JobSmallCard = props => {
             item
             xs={11}
             onClick={() => {
-              window.scroll(0,0);
               openFullView(_id); 
             }}
           >

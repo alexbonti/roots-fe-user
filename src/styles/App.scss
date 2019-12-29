@@ -1,7 +1,6 @@
 .App {
   text-align: center;
   background-color: white !important;
-
 }
 
 
@@ -49,12 +48,33 @@
   padding: 0 !important;
 }
 
+.PrivateTabIndicator-root-685, .PrivateTabIndicator-root-695  {
+  background-color: transparent !important;
+}
+
 .MuiTab-textColorPrimary.Mui-selected {
   color: white !important;
   background-color: #087B94;
 }
 
+// .MuiStepIcon-root.MuiStepIcon-active {
+//   color: 
+// }
 
+.MuiStepConnector-alternativeLabel {
+    top: 12px;
+    left: calc(-56% + 21px) !important;
+    right: calc(45% + 18px) !important;
+    position: absolute;
+}
+
+.MuiStepIcon-root.MuiStepIcon-active{
+  color: #C74298 !important;
+}
+
+.MuiStepIcon-root {
+  color: #9B9B9B !important;
+}
 
 
 main {

@@ -6,7 +6,7 @@ import { JobAppliedSmallCard, JobFullView } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
 
-// TODO change the full view accordingly because coming from this page
+// TODO change the full view accordingly coming from this page
 
 const theme = createMuiTheme({
   palette: {

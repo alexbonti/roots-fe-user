@@ -47,7 +47,7 @@ const theme = createMuiTheme({
 const SearchSettings = () => {
   const classes = useStyles();
   const { loginStatus } = useContext(LoginContext);
-  const { setAvatarProfile } = useContext(UserContext);
+  const { setAvatarProfile, coverLetterUrl } = useContext(UserContext);
   const [chipData, setChipData] = useState(jobs);
   const [accumulator, setAccumulator] = useState();
   const [userExp, setUserExp] = useState();
@@ -109,10 +109,10 @@ const SearchSettings = () => {
 
     const data = {
       avatar,
-      coverLetter: coverLetter === null ? " " : coverLetter,
-      preferredLocation: preferredLocation === null ? " " : preferredLocation,
+      coverLetter: coverLetter !== "" ?  coverLetter : coverLetterUrl,
+      preferredLocation,
       resumeUrl,
-      skills: skills === null ? [] : skills,
+      skills,
       preferredIndustry: accumulator,
     };
 

@@ -8,6 +8,8 @@ import { ThemeProvider } from "@material-ui/styles";
 import { TemporaryDrawer } from "../index";
 import { UserContext } from "contexts/index";
 import FallBackAvatar from "../../helpers/img/man.svg";
+import Logo from "../../helpers/img/favicon.svg";
+import { MenuHamburger } from "helpers";
 
 // import { AccessToken } from "contexts/helpers/index";
 
@@ -117,17 +119,6 @@ export const Header = () => {
   const { loginStatus } = useContext(LoginContext);
   const { avatarProfile } = useContext(UserContext);
 
-  // const logout = () => {
-  //   const logOut = async auth => {
-  //     const putLogout = await API.logout(auth);
-  //     window.localStorage.clear();
-  //     setLoginStatus(false);
-  //     setAccessToken("");
-  //     console.log(putLogout);
-  //   };
-
-  //   logOut(accessToken);
-  // };
 
   const ImageAvatar =
     avatarProfile === "" ||
@@ -135,7 +126,6 @@ export const Header = () => {
     avatarProfile === "string"
       ? FallBackAvatar
       : avatarProfile;
-  console.log(ImageAvatar);
   let registerStatus = {
     menu: !loginStatus ? "" : <TemporaryDrawer />,
     avatar: !loginStatus ? (
@@ -150,13 +140,28 @@ export const Header = () => {
   let content = (
     <ThemeProvider theme={theme}>
       <AppBar className={classes.toolbar}>
-        <Grid container justify="space-between" style={{ paddingLeft: "5vw" }}>
-          <Grid item>{registerStatus.avatar}</Grid>
+        <Grid container justify="space-between">
+          <Grid item style={{ paddingLeft: "2vw" }}>
+            {registerStatus.avatar}
+          </Grid>
 
-          <Grid item align="center">
-            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-              <Typography variant="h4">ROOTS</Typography>
-            </Link>
+          <Grid item xs={6} container justify="center" alignItems="center">
+            <Grid item xs={3} align="right" style={{margin: "0 -4px"}}>
+              <Avatar src={Logo} style={{transform: "scale(.8)"}} />
+            </Grid>
+            <Grid item xs={6}>
+              <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+                <Typography
+                  style={{
+                    fontSize: "20px",
+                    fontFamily: `"Arial", " Roboto", "Helvetica", sans-serif`,
+                    fontWeight: "bold",
+                  }}
+                >
+                  ROOTS
+                </Typography>
+              </Link>
+            </Grid>
           </Grid>
 
           <Grid item align="center">

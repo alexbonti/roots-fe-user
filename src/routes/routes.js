@@ -12,9 +12,11 @@ import {
   OnBoarding,
   Profile,
   SavedAndAppliedJobs,
-  SearchSettings
+  SearchSettings,
+  ResetPassowrd
 } from "views";
 import { Layout } from "../layout";
+import { ResetPassword } from "views/index";
 
 export const AppRoutes = props => {
   const { loginStatus } = useContext(LoginContext);
@@ -35,6 +37,12 @@ export const AppRoutes = props => {
           ) : (
             <Redirect to={{ pathname: "/home" }} {...props} />
           )
+        }
+      />
+      <Route
+        exact
+        path="/ResetPassword"
+        render={() => <ResetPassword  {...props} />
         }
       />
       <Route

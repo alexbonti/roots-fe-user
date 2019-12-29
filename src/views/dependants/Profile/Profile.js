@@ -8,11 +8,13 @@ import MyDropZone from "../../../components/dependants/DropDrag";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import FallBackAvatar from "../../../helpers/img/man.svg";
+import { TextEditorContext } from "contexts/index";
 
 
 const Profile = (props) => {
   const { loginStatus } = useContext(LoginContext);
   const { setIsFullView } = useContext(HomeContext);
+  const {coverLetter} = useContext(TextEditorContext);
   console.log(props);
   const {
     setUserName,
@@ -31,6 +33,9 @@ const Profile = (props) => {
     isUpdated,
     setSkills,
     skills,
+    fileURL,
+    coverLetterUrl
+    
   } = useContext(UserContext);
   const [field, setField] = useState("");
   const [data, setData] = useState("");
@@ -153,8 +158,8 @@ const Profile = (props) => {
         preferredLocation: userProfile.preferredLocation,
         skills: newArray,
         preferredIndustry: userProfile.preferredIndustry,
-        resumeURL: "",
-        coverLetter: "",
+        resumeURL: fileURL,
+        coverLetter: coverLetterUrl !== "" ? coverLetterUrl : coverLetter,
       });
       setSkills(newArray);
     }
@@ -175,8 +180,8 @@ const Profile = (props) => {
         preferredLocation: userProfile.preferredLocation,
         skills,
         preferredIndustry: userProfile.preferredIndustry,
-        resumeURL: "",
-        coverLetter: "",
+        resumeURL: fileURL,
+        coverLetter: coverLetterUrl !== "" ? coverLetterUrl : coverLetter,
       });
 
       setSkills(newSkills);

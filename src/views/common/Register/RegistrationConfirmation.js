@@ -11,7 +11,7 @@ import {
 import { ThemeProvider } from "@material-ui/styles";
 import { API } from "helpers/index";
 import { LoginContext, UserContext } from "../../../contexts";
-import Image from "../../../helpers/img/RootLogo.svg";
+//import Image from "../../../helpers/img/RootLogo.svg";
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -131,8 +131,8 @@ const RegistrationConfirmation = ({ ...props }) => {
       </Grid>
       <Grid item xs={10} container justify="center">
         <Grid item xs={6}>
-          <Button fullWidth className={classes.buttons}>
-            <Link to="/onboarding" user={userProfile} style={{textDecoration: "none", color: "white"}}>Home</Link>
+          <Button component={Link} user={userProfile}  to="/onboarding"  fullWidth className={classes.buttons}>
+            Home
           </Button>
         </Grid>
       </Grid>

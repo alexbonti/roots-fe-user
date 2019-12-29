@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import { API } from "helpers/index";
 import { Grid } from "@material-ui/core/";
-import { OnBoardingContext, HomeContext, UserContext } from "contexts/index";
+import { OnBoardingContext, HomeContext, UserContext, TextEditorContext } from "contexts/index";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import DescriptionIcon from "@material-ui/icons/Description";
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
@@ -11,9 +11,10 @@ export default function Accept(props) {
   const { avatarPictureURL, setAvatarPictureURL } = useContext(
     OnBoardingContext
   );
-  const { fileURL, setFileURL, setAvatarProfile, setIsUpdated, coverLetterUrl, setCoverLetterUrl } = useContext(
+  const { fileURL, setFileURL, setAvatarProfile, setIsUpdated,preferredIndustry,  skills, coverLetterUrl, setCoverLetterUrl } = useContext(
     UserContext
   );
+  const {coverLetter} = useContext(TextEditorContext);
   const { setProgressBar } = useContext(HomeContext);
 
 
@@ -43,9 +44,16 @@ export default function Accept(props) {
         let file = new FormData();
         file.append("imageFile", data[0]);
         const imageData = await API.uploadImage(file);
-        const profileData = await API.updateUserPreferences({
-          avatar: imageData.response.data.data.imageFileURL.thumbnail,
-        });
+        let dataUserExt = {
+          "avatar": imageData.response.data.data.imageFileURL.thumbnail,
+          "preferredLocation": "",
+          "coverLetter": coverLetter !== "" ? coverLetter : coverLetterUrl,
+          "skills": skills !== [] && skills !== null ? skills : [],
+          "preferredIndustry": preferredIndustry !== [] ? preferredIndustry : [],
+          "resumeURL": fileURL
+        };
+        const profileData = await API.updateUserPreferences(dataUserExt);
+        
         console.log(profileData);
         setAvatarPictureURL(
           imageData.response.data.data.imageFileURL.thumbnail
