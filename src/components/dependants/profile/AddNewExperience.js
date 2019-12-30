@@ -89,7 +89,7 @@ export const AddNewExperience = props => {
   const content =
     props.data === "work" ? (
       <>
-        <Grid container justify="center" style={{ padding: "2vh 0" }}>
+        <Grid container justify="center" style={{ overflow: "hidden" }}>
           <Grid
             item
             xs={12}

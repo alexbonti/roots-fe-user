@@ -21,7 +21,7 @@ import { MenuHamburger } from "helpers/MenuHamburger";
 
 const useStyles = makeStyles({
   list: {
-    width: 250,
+    width: "100% !important",
   },
   fullList: {
     width: "auto",
@@ -47,7 +47,7 @@ export const TemporaryDrawer = () => {
     right: false,
   });
   const { setLoginStatus } = useContext(LoginContext);
-  const { userName, userLastName, userProfile } = useContext(UserContext);
+  const {  userProfile } = useContext(UserContext);
 
   const toggleDrawer = (side, open) => event => {
     if (
@@ -67,19 +67,18 @@ export const TemporaryDrawer = () => {
 
   const sideList = side => (
     <div
-      className={classes.list}
       role="presentation"
       onClick={toggleDrawer(side, false)}
       onKeyDown={toggleDrawer(side, false)}
-      style={{ height: "100%", backgroundColor: "white", width: "100%" }}
+      style={{ height: "100%" }}
     >
-      <List style={{ height: "100%", paddingTop: "0" }}>
+      <List style={{ height: "100%", paddingTop: "8px", backgroundColor:"rgba(8, 124, 149, .1)" }}>
         <Grid
           container
           justify="space-between"
           alignItems="baseline"
           direction="column"
-          style={{ height: "100%" }}
+          style={{ height: "100%"}}
         >
           <Grid item>
             <Grid
@@ -88,92 +87,80 @@ export const TemporaryDrawer = () => {
               justify="center"
               alignItems="center"
               style={{
-                backgroundColor: "#065a6d",
-                backgroundImage:
-                  " linear-gradient(242deg, #065a6d 0%, #087b94 58%, #0e91b1 100%)",
-                height: "15vh",
+                backgroundColor: "rgba(8,124,149, 1)", height: "53px",
               }}
             >
-              <Grid item container justify="space-evenly" alignItems="center">
+              <Grid item container  alignItems="center" >
                 <Grid>
-                  <Avatar variant="rounded" sizes="large" className={classes.bigAvatar}>R</Avatar>
-                </Grid>
-                <Grid>
-                  <Typography variant="body1" style={{ color: "white" }}>
-                    Welcome,
-                  </Typography>
-                  <Typography variant="h6" style={{ color: "white" }}>
-                    {userName} {userLastName}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-            <ListItem button={true} className={classes.item}>
-              <ListItemIcon>
-                <AssignmentIndIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
-              <Link
+                <Link
                 user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/profile"
               >
-                <ListItemText primary="My Profile" />
+                  <Typography variant="body1" style={{ color: "rgb(243,243,243)", fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold", padding:"17px 10px 18px 33px "}}>
+                    My profile
+                  </Typography></Link>
+                </Grid>
+              </Grid>
+            </Grid>
+       
+
+            <ListItem button>
+            
+              <Link
+                user={userProfile}
+                style={{ textDecoration: "none", color: "inherit",  }}
+                to="/jobs"
+              >
+                <Typography style={{paddingLeft: "33.5px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Saved Opportunities</Typography>
               </Link>
             </ListItem>
 
             <ListItem button>
-              <ListItemIcon>
-                <StarBorderIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
               <Link
                 user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/jobs"
               >
-                <ListItemText primary="Saved Opportunities" />
+                <Typography style={{paddingLeft: "33.5px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Applied Opportunities</Typography>
               </Link>
             </ListItem>
 
             <ListItem button>
-              <ListItemIcon>
-                <DoneOutlineIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
-              <Link
-                user={userProfile}
-                style={{ textDecoration: "none", color: "inherit" }}
-                to="/jobs"
-              >
-                <ListItemText primary="Applied Opportunities" />
-              </Link>
-            </ListItem>
-
-            <ListItem button>
-              <ListItemIcon>
-                <SearchIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
               <Link
                 user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/search"
               >
-                <ListItemText primary="Search Settings" />
+                <Typography style={{paddingLeft: "33.5px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Search Settings</Typography>
               </Link>
             </ListItem>
-            <Divider />
-          </Grid>
-          <Grid item>
+            <Grid container justify="center" style={{paddingTop: "16px"}}>
+                <Grid item xs={9}>
+                    <Divider style={{border: "1px solid rgba(149, 154, 156, 1)"}} />
+                </Grid>
+            </Grid>
+            <Grid item>
             <ListItem
               button={true}
               onClick={() => logout()}
-              style={{ bottom: "0", position: "relative" }}
+              style={{paddingLeft: "0"}}
             >
-              <ListItemIcon>
-                <ExitToAppIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
-              <ListItemText primary="Log out" />
+  
+  <Typography style={{paddingLeft: "27px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Log out  {"    "}  > </Typography>
+            </ListItem>
+          </Grid>
+          </Grid>
+          <Grid item >
+            <ListItem
+           style={{paddingLeft: "102.5px", paddingBottom: "60px"}}
+            >
+  
+  <Typography style={{fontSize: "14px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Deakin Create</Typography>
             </ListItem>
           </Grid>
         </Grid>
+        
       </List>
     </div>
   );

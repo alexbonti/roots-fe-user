@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
     margin: "1vh 0",
     borderRadius: "25px",
     padding: "2vh 3vw",
+    heigth: "55px"
   },
 }));
 
@@ -37,13 +38,13 @@ export const FilterOpportunity = props => {
   const { setLocation, setIsStart } = useContext(OnBoardingContext);
   const [lat, setLat] = useState("");
   const [long, setLong] = useState("");
-  const [distance, setDistance] = useState(1);
+  const [distance, setDistance] = useState(40000);
   const [, setDataSetFilteredByLocation] = useState(
     ""
   );
  
   const [keyword, setKeyword] = useState("");
-  const [seniorityFilter, setSeniorityFilter] = useState("");
+  const [positionFilter, setPositionFilter] = useState("");
   const {  setFilteredData, setIsFilterOn } = useContext(
     HomeContext
   );
@@ -72,8 +73,6 @@ export const FilterOpportunity = props => {
     return null;
   }
 
-  
-
   function valuetext(value) {
     setDistance(value * 1000);
     return `${value}`;
@@ -87,7 +86,7 @@ export const FilterOpportunity = props => {
     const data = {
       long,
       lat,
-      distance,
+      distance
     };
 
     const filterLocation = async () => {
@@ -101,28 +100,13 @@ export const FilterOpportunity = props => {
         setIsFilterOn(true);
         if(keyword !== ""){
           filterByKeyword(dataLocation.response);
-        }else if(seniorityFilter !== ""){
+        }else if(positionFilter !== ""){
           filterBySeniority(dataLocation.response);
         }
       }else{
         notify("No Results");
         setIsFilterOn(true);
       }
-
-
-      // if (dataLocation.response !== [] && keyword !== "") {
-      //   if (
-      //     dataLocation.response !== [] &&
-      //     filterByKeyword(dataLocation.response) !== "no matching keyword"
-      //   ) {
-          
-      //     return filterBySeniority(filterByKeyword(dataLocation.response))
-      //   } else {
-      //     (filterByKeyword(dataLocation.response));
-      
-      //     return filterByKeyword(dataLocation.response);
-      //   }
-      // }
     };
 
     const filterByKeyword = dataSet => {
@@ -151,9 +135,9 @@ export const FilterOpportunity = props => {
       let dataSetFilteredBySeniority = [];
       console.log(dataSet);
       dataSet.map(data => {
-        console.log(seniorityFilter);
-        console.log(data.seniority.includes(seniorityFilter));
-        return data.seniority.includes(seniorityFilter)
+        console.log(positionFilter);
+        console.log(data.seniority.includes(positionFilter));
+        return data.seniority.includes(positionFilter)
           ? dataSetFilteredBySeniority.push(data)
           : console.log("No results");
       });
@@ -210,7 +194,7 @@ export const FilterOpportunity = props => {
         </div>
         <div />
       </div>
-      <Grid style={{ paddingTop: "5vh" }}>
+      {/* <Grid style={{ paddingTop: "5vh" }}>
         <Slider
           defaultValue={1}
           getAriaValueText={valuetext}
@@ -222,10 +206,10 @@ export const FilterOpportunity = props => {
           valueLabelDisplay="on"
         />
         <Typography id="discrete-slider">Distance (km)</Typography>
-      </Grid>
+      </Grid> */}
       <TextField
         id="free-solo-demo"
-        placeholder="Position Title"
+        placeholder="Keyword"
         margin="normal"
         fullWidth
         onChange={e => setKeyword(e.target.value)}
@@ -233,33 +217,17 @@ export const FilterOpportunity = props => {
       <TextField
         id="free-solo-demo2"
         select
-        value={seniorityFilter}
-        helperText="Please select Seniority Level"
+        helperText="Please select a Position Type"
         margin="normal"
         fullWidth
-        onChange={e => setSeniorityFilter(e.target.value)}
+        onChange={e => setPositionFilter(e.target.value)}
       >
-        {seniorityOption.map(option => (
+        {positionTypeOption.map(option => (
           <MenuItem key={Math.random()} value={option.label}>
             {option.label}
           </MenuItem>
         ))}
       </TextField>
-      {/* <Autocomplete
-        id="free-solo-3-demo"
-        options={["Senior", "Mid-Level", "Junior"]}
-        renderInput={params => (
-          <TextField
-            {...params}
-            placeholder="Seniority"
-            margin="normal"
-            //variant="outlined"
-            fullWidth
-            //InputProps={{ ...params.InputProps, type: "search" }}
-            onChange={(e)=> {setSeniorityFilter(e.target.value);}}
-          />
-        )}
-      /> */}
       <Grid item container justify="center" xs={11} lg={12} md={12}>
         <Grid item xs={6} lg={6} md={6}>
           <Button
@@ -278,41 +246,10 @@ export const FilterOpportunity = props => {
   );
 };
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-// const jobs = [
-//   { key: 0, label: "Accounting" },
-//   { key: 1, label: "Administration & Office Support" },
-//   { key: 2, label: "Agriculture, Horticulture, Animal & Fishing" },
-//   { key: 3, label: "Banking, Superannuation & Finance" },
-//   { key: 4, label: "Construction" },
-//   { key: 5, label: "Customer Service & Call Centre" },
-//   { key: 6, label: "Design & Architecture" },
-//   { key: 7, label: "Editorial, Media & Creative Arts" },
-//   { key: 8, label: "Education, Training & Childcare" },
-//   { key: 9, label: "Engineering" },
-//   { key: 10, label: "Executive Management & Consulting" },
-//   { key: 11, label: "Government, Emergency Services & Defence" },
-//   { key: 12, label: "Healthcare & Medical" },
-//   { key: 13, label: "Hospitality, Tourism & Food Services" },
-//   { key: 14, label: "Human Resources (HR) & Recruitment" },
-//   { key: 15, label: "Information Technology (IT)" },
-//   { key: 16, label: "Insurance" },
-//   { key: 17, label: "Legal" },
-//   { key: 18, label: "Manufacturing, Production & Operations" },
-//   { key: 19, label: "Marketing & Advertising" },
-//   { key: 20, label: "Mining & Energy" },
-//   { key: 21, label: "Property & Real Estate" },
-//   { key: 22, label: "Retail" },
-//   { key: 23, label: "Sales" },
-//   { key: 24, label: "Science, Technology & Environment" },
-//   { key: 25, label: "Social Work & Community Services" },
-//   { key: 26, label: "Trades & Services" },
-//   { key: 27, label: "Transport & Logistics" },
-//   { key: 28, label: "Work From Home & Self Employed" },
-// ];
 
-const seniorityOption = [
-  { label: "Senior" },
-  { label: "Mid-Level" },
-  { label: "Junior" },
+
+const positionTypeOption = [
+  { label: "Full-Time" },
+  { label: "Part-Time" },
+  { label: "Casual" },
 ];

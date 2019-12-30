@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: "55px"
   },
   alternativeButton: {
     color: "#087b94 !important",
@@ -92,10 +93,11 @@ export const CoverLetterAndResume = props => {
     <ThemeProvider theme={theme}>
       <Grid
         container
+        justify="center"
         alignItems="center"
-        style={{ padding: "3vh 1vw", backgroundColor: "#f8f8f8" }}
+        style={{ paddingTop: "19px", paddingBottom: "13px", backgroundColor: "#f8f8f8", fontSize: "12px", fontFamily: "Arial Unicode Ms" }}
       >
-        <Grid
+        <Grid item xs={11}
           onClick={() => {
             setUserWantsToApply(false);
           }}
@@ -112,8 +114,8 @@ export const CoverLetterAndResume = props => {
         justify="center"
         alignItems="center"
       >
-        <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
-          <Typography variant="h5">Great, Let's apply for this job</Typography>
+        <Grid item xs={11} md={8} lg={8}>
+          <Typography style={{lineHeight: "109px", fontSize: "21px", fontFamily: "Arial Rounded MT, Helvetica, sans-serif", fontWeight: "bold"}}>Great, Let's apply for this job</Typography>
         </Grid>
       </Grid>
 
@@ -178,7 +180,7 @@ export const CoverLetterAndResume = props => {
               applyJob();
             }}
           >
-            Apply
+            Easy apply
           </Button>
         </Grid>
       </Grid>

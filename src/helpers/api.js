@@ -26,12 +26,12 @@ const errorHelper = (error, variant) => {
 }
 class API {
   loginUser = async (data, setAccessToken) => {
-    return await axios({
-      method: "post",
-      url: "http://localhost:8031/api/user/login",
-      //url: "http://localhost:8031/api/user/login",
-      data,
-    })
+    return await axiosInstance
+    .post("/user/login", data, {})
+      // method: "post",
+      // //url: "http://localhost:8031/api/user/login",
+      // url: "http://localhost:8031/api/user/login",
+      // data,
       .then(response => {
         setAccessToken(response.data.data.accessToken);
         return response.data.data;
@@ -45,8 +45,6 @@ class API {
   logout = async () => {
     let accessToken = localStorage.getItem("accessToken");
     // window.localStorage.setItem("accessToken", "")
-
-    console.log(accessToken);
     return await axiosInstance
       .put(
         "/user/logout",
@@ -453,6 +451,22 @@ class API {
   resetPasswordSecondStep = async data => {
     return await axiosInstance
       .post("/user/resetPassword", data)
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        console.log(error)
+        return errorHelper(error);
+      });
+  };
+  resendOTP = async (accessToken) => {
+    console.log(accessToken)
+    return await axiosInstance
+      .put("/user/resendOTP",{}, {
+        headers: {
+          authorization: "Bearer " + accessToken,
+        },
+      })
       .then(response => {
         return { "response": response };
       })

@@ -9,9 +9,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import { API } from "helpers/index";
+import { API, } from "helpers/index";
 import { LoginContext, UserContext } from "../../../contexts";
-//import Image from "../../../helpers/img/RootLogo.svg";
+
+import {notify} from "components"
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -48,6 +49,7 @@ const theme = createMuiTheme({
   },
 });
 
+
 const RegistrationConfirmation = ({ ...props }) => {
   const classes = useStyles();
   const [code, setCode] = useState("");
@@ -78,6 +80,12 @@ const RegistrationConfirmation = ({ ...props }) => {
     }
   }, [isVerified, setLoginStatus]);
 
+  const resendOTP = async () => {
+    const resendOtpData = await API.resendOTP(accessToken)
+    if(resendOtpData){
+      notify("Otp code sent")
+    }
+  }
   const sendCode = async () => {
     const verificationStatus = await API.sendOTP(
       { "OTPCode": code },
@@ -97,6 +105,8 @@ const RegistrationConfirmation = ({ ...props }) => {
       setUserProfile(userDetails);
     }
   };
+
+ 
 
   const content = isVerified ? (
     <ThemeProvider theme={theme}>
@@ -153,6 +163,17 @@ const RegistrationConfirmation = ({ ...props }) => {
               }}
             >
               Send
+            </Button>
+          </Grid>
+          <Grid item xs={10} style={{paddingTop: "5vh"}}>
+            <Button
+              fullWidth
+              className={classes.buttons}
+              onClick={() => {
+                resendOTP();
+              }}
+            >
+              Resend OTP
             </Button>
           </Grid>
         </Grid>

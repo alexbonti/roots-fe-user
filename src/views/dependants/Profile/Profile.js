@@ -198,7 +198,8 @@ const Profile = (props) => {
   const content =
     userProfile !== undefined && userProfile !== null ? (
       <>
-        <Grid container justify="space-between" style={{ padding: "3vh" }}>
+      <Grid container style={{overflow: "hidden"}}>
+        <Grid container justify="space-between" style={{ padding: "3vh"}}>
           <Grid
             item
             container
@@ -314,6 +315,7 @@ const Profile = (props) => {
                 );
               })
             : ""}
+        </Grid>
         </Grid>
       </>
     ) : (

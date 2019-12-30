@@ -41,7 +41,7 @@
 }
 
 .MuiPaper-elevation4 {
-  box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 1px 0px rgba(0,0,0,0.11) !important;
+  box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1pxP 1px 0px rgba(0,0,0,0.11) !important;
 }
 
 .MuiBox-root {
@@ -51,6 +51,10 @@
 .PrivateTabIndicator-root-685, .PrivateTabIndicator-root-695, .PrivateTabIndicator-root-678  {
   background-color: transparent !important;
 }
+
+// .MuiDrawer-paperAnchorRight, .MuiDrawer-paper{
+//   width: "90vw ";
+// }
 
 .MuiTab-textColorPrimary.Mui-selected {
   color: white !important;

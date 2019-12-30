@@ -146,7 +146,7 @@ export const Header = () => {
           </Grid>
 
           <Grid item xs={6} container justify="center" alignItems="center">
-            <Grid item xs={3} align="right" style={{margin: "0 -4px"}}>
+            <Grid item xs={3} align="right" style={{margin: "0 -4px", marginLeft: "8vw"}}>
               <Avatar src={Logo} style={{transform: "scale(.8)"}} />
             </Grid>
             <Grid item xs={6}>
