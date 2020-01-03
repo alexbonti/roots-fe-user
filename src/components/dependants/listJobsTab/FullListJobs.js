@@ -1,13 +1,14 @@
 import React, { useContext, useState } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import {  Typography, Grid } from "@material-ui/core/";
+import { Typography, Grid } from "@material-ui/core/";
 import { JobSmallCard, JobFullView, FilterOpportunity } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
 import CloseIcon from "@material-ui/icons/Close";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import FilterListIcon from "../../../helpers/img/search.svg";
 import ReplayIcon from "@material-ui/icons/Replay";
+import PropTypes from "prop-types";
 
 const theme = createMuiTheme({
   palette: {
@@ -22,14 +23,38 @@ const theme = createMuiTheme({
 });
 
 export const FullListJobs = props => {
-  const { isFullView, jobId, listSavedJobs, filteredData, isFilterOn, setIsFilterOn } = useContext(HomeContext);
+  console.log(props);
+  const {
+    isFullView,
+    jobId,
+    listSavedJobs,
+    filteredData,
+    isFilterOn,
+    setIsFilterOn,
+  } = useContext(HomeContext);
   const [searchSettingTab, setSearchSettingTab] = useState(false);
 
-
-  const opportunityString = props.data.length > 1 ? "opportunities" : "opportunity";
+  const opportunityString =
+    props.data.length > 1 ? "opportunities" : "opportunity";
   const filteredString = filteredData > 1 ? "opportunities" : "opportunity";
 
   const filteredResultString = isFilterOn ? filteredString : opportunityString;
+
+  const newValues = [];
+
+  const value = Array.isArray(props.searchSetting)
+    ? props.searchSetting.map(industry => {
+        newValues.push(industry.label);
+        return newValues;
+      })
+    : [];
+
+  const filteredByIndustry =
+    Array.isArray(props.data) && value.length > 0
+      ? props.data.filter(job => {
+          return value[0].includes(job.industryField);
+        })
+      : props.data;
 
   const findSingleJobData = id => {
     if (Array.isArray(props.data) && listSavedJobs !== "") {
@@ -42,7 +67,6 @@ export const FullListJobs = props => {
   };
 
   let singleJobData = isFullView ? findSingleJobData(jobId) : "";
-
 
   let searchTab = searchSettingTab ? (
     <>
@@ -61,8 +85,8 @@ export const FullListJobs = props => {
     <>
       <Grid
         container
-        alignItems="flex-start"
-        justify="center"
+        alignItems="center"
+        justify="space-evenly"
         style={{
           padding: "2vh 0vw",
           paddingBottom: "5vh",
@@ -70,25 +94,25 @@ export const FullListJobs = props => {
         }}
       >
         {isFilterOn ? (
-          <Grid item xs={12} align="right" onClick={() => setIsFilterOn(false)}>
+          <Grid item xs={1} align="right" onClick={() => setIsFilterOn(false)}>
             <ReplayIcon style={{ color: "rgba(0, 0, 0, 0.71)" }} />
           </Grid>
         ) : (
           ""
         )}
+        
+        <Grid item xs={10} lg={8} md={10}>
+          <Typography variant="h6">
+            We found {filteredByIndustry.length} {filteredResultString}
+          </Typography>
+        </Grid>
         <Grid
           item
-          xs={11}
-          lg={8} md={10}
+          xs={1}
           align="right"
           onClick={() => setSearchSettingTab(true)}
         >
-          <FilterListIcon style={{ color: "rgba(0, 0, 0, 0.71)" }} />
-        </Grid>
-        <Grid item xs={11} lg={8} md={10}>
-          <Typography variant="h6">
-            We found {props.data.length} {filteredResultString}
-          </Typography>
+          <img src={FilterListIcon} alt="search-icon"style={{ color: "rgba(0, 0, 0, 0.71)" }} />
         </Grid>
       </Grid>
     </>
@@ -97,9 +121,9 @@ export const FullListJobs = props => {
   let listOfJobs = Array.isArray(props.data) ? (
     <>
       {searchTab}
-      <Grid container justify="center" >
-        <Grid item xs={12} md={10} lg={8} >
-          {props.data.map(job => {
+      <Grid container justify="center">
+        <Grid item xs={12} md={10} lg={8}>
+          {filteredByIndustry.map(job => {
             let isSaved = listSavedJobs.includes(job._id);
 
             return listSavedJobs !== "" ? (
@@ -136,33 +160,28 @@ export const FullListJobs = props => {
       listOfJobs
     );
 
-    
-  
+  let filderedResult =
+    filteredData !== [] ? (
+      <>
+        {searchTab}
+        <Grid container style={{ backgroundColor: "white" }}>
+          <Grid item xs={11} md={10} lg={10}>
+            {filteredData.map(job => {
+              let isSaved = listSavedJobs.includes(job._id);
+              return listSavedJobs !== "" ? (
+                <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
+              ) : (
+                ""
+              );
+            })}
+          </Grid>
+        </Grid>{" "}
+      </>
+    ) : (
+      <Grid>No results</Grid>
+    );
 
-  
-
-  let filderedResult =  filteredData !== [] ? (
-    <>
-      {searchTab}
-      
-      <Grid container style={{ backgroundColor: "white" }}>
-        <Grid item xs={11} md={10} lg={10}>
-          
-          {filteredData.map(job => {
-            let isSaved = listSavedJobs.includes(job._id);
-            return listSavedJobs !== "" ? (
-              <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
-            ) : (
-              ""
-            );
-          })}
-        </Grid>
-      </Grid>{" "}
-    </>
-  ) : <Grid>No results</Grid>;
-
-
-  let  contentFiltered =
+  let contentFiltered =
     isFullView &&
     props.hasOwnProperty("data") &&
     singleJobData !== undefined ? (
@@ -174,8 +193,6 @@ export const FullListJobs = props => {
       filderedResult
     );
 
-
-
   const results = isFilterOn ? contentFiltered : contentNotFiltered;
 
   return (
@@ -183,4 +200,10 @@ export const FullListJobs = props => {
       <ThemeProvider theme={theme}>{results}</ThemeProvider>
     </>
   );
+};
+
+FullListJobs.propTypes = {
+  data: PropTypes.array,
+  savedJobs: PropTypes.array,
+  searchSetting: PropTypes.array
 };

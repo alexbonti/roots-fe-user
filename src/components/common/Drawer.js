@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, {useState, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import { Button, Grid, Typography, Avatar } from "@material-ui/core/";
+import { Button, Grid, Typography } from "@material-ui/core/";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
@@ -13,7 +13,6 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
 import SearchIcon from "@material-ui/icons/Search";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Icon from "@material-ui/core/Icon";
 import { API } from "helpers";
 import { LoginContext, UserContext } from "contexts";
 import { MenuHamburger } from "helpers/MenuHamburger";
@@ -40,6 +39,7 @@ const useStyles = makeStyles({
 
 export const TemporaryDrawer = () => {
   const classes = useStyles();
+  const [isRedirect, setIsRedirect] = useState(false);
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -47,7 +47,7 @@ export const TemporaryDrawer = () => {
     right: false,
   });
   const { setLoginStatus } = useContext(LoginContext);
-  const {  userProfile } = useContext(UserContext);
+  const {  userProfile  }  =  useContext(UserContext);
 
   const toggleDrawer = (side, open) => event => {
     if (
@@ -60,9 +60,11 @@ export const TemporaryDrawer = () => {
     setState({ ...state, [side]: open });
   };
 
-  const logout = () => {
-    API.logout();
-    setLoginStatus(false);
+  const logout = async () => {
+    const logoutdata = await API.logout();
+    if(logoutdata){
+      setLoginStatus(false);
+    }
   };
 
   const sideList = side => (

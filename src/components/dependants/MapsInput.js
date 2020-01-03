@@ -1,18 +1,13 @@
 import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  TextField,
-  MenuItem,
-  Typography,
-  Grid,
-  Button,
-} from "@material-ui/core/";
+import { TextField, MenuItem, Grid, Button } from "@material-ui/core/";
 import { OnBoardingContext, HomeContext } from "contexts";
-import Slider from "@material-ui/core/Slider";
 import { API } from "helpers";
-import {notify} from 'components';
+import { notify } from "components";
+import { checkWord, checkEmpty } from "../../helpers/validation";
+import PropTypes  from "prop-types";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   rootMain: {
     backgroundColor: "white",
     padding: "5vh 0",
@@ -24,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     margin: "1vh 0",
     borderRadius: "25px",
     padding: "2vh 3vw",
-    heigth: "55px"
+    heigth: "55px",
   },
 }));
 
@@ -38,16 +33,15 @@ export const FilterOpportunity = props => {
   const { setLocation, setIsStart } = useContext(OnBoardingContext);
   const [lat, setLat] = useState("");
   const [long, setLong] = useState("");
-  const [distance, setDistance] = useState(40000);
-  const [, setDataSetFilteredByLocation] = useState(
-    ""
-  );
- 
+  const [distance, ] = useState(40000);
+  const [, setDataSetFilteredByLocation] = useState("");
+
   const [keyword, setKeyword] = useState("");
   const [positionFilter, setPositionFilter] = useState("");
-  const {  setFilteredData, setIsFilterOn } = useContext(
-    HomeContext
-  );
+  const { setFilteredData, setIsFilterOn } = useContext(HomeContext);
+
+  const [locationError, setLocationError] = useState(false);
+  const [keywordError, setKeywordError] = useState(false);
 
   const autoFill = async event => {
     setInputPosition(event.target.value);
@@ -73,57 +67,52 @@ export const FilterOpportunity = props => {
     return null;
   }
 
-  function valuetext(value) {
-    setDistance(value * 1000);
-    return `${value}`;
-  }
-
-  
-
-  const buttonStatus = inputPosition !== "" ? false : true;
 
   const filter = () => {
     const data = {
       long,
       lat,
-      distance
+      distance,
     };
 
     const filterLocation = async () => {
+      if (keyword !== "" && checkWord(keyword)) {
+        setKeywordError(true);
+        return notify("Keyword is too short");
+      }else{ setKeywordError(false);}
 
       const dataLocation = await API.searchByLocation(data);
       setDataSetFilteredByLocation(dataLocation.response);
-      
-      if(dataLocation.response.length > 0){
-        
+
+      if (dataLocation.response.length > 0) {
         setFilteredData(dataLocation.response);
         setIsFilterOn(true);
-        if(keyword !== ""){
+        if (keyword !== "") {
           filterByKeyword(dataLocation.response);
-        }else if(positionFilter !== ""){
+        } else if (positionFilter !== "") {
           filterBySeniority(dataLocation.response);
         }
-      }else{
+      } else {
         notify("No Results");
         setIsFilterOn(true);
       }
     };
 
     const filterByKeyword = dataSet => {
-      
       let dataSetFilteredByKeyword = [];
       dataSet.map(data => {
-        if(data.positionTitle.includes(keyword) ||
-        data.description.includes(keyword)){
+        if (
+          data.positionTitle.includes(keyword) ||
+          data.description.includes(keyword)
+        ) {
           return dataSetFilteredByKeyword.push(data);
-        }else{
+        } else {
           setFilteredData([]);
           return notify("No Results");
-        } 
+        }
       });
 
       if (dataSetFilteredByKeyword.length > 0) {
-        
         setFilteredData(dataSetFilteredByKeyword);
         setIsFilterOn(true);
       } else {
@@ -133,20 +122,26 @@ export const FilterOpportunity = props => {
 
     const filterBySeniority = dataSet => {
       let dataSetFilteredBySeniority = [];
-      console.log(dataSet);
       dataSet.map(data => {
-        console.log(positionFilter);
-        console.log(data.seniority.includes(positionFilter));
         return data.seniority.includes(positionFilter)
           ? dataSetFilteredBySeniority.push(data)
           : console.log("No results");
       });
 
-      if(dataSetFilteredBySeniority < 1){notify("No Results");}
+      if (dataSetFilteredBySeniority < 1) {
+        notify("No Results");
+      }
       setFilteredData(dataSetFilteredBySeniority);
       setIsFilterOn(true);
       return console.log(dataSetFilteredBySeniority);
     };
+
+    if (checkEmpty(inputPosition)) {
+      setLocationError(true);
+      return notify("Location  field can not be empty");
+    } else {
+      setLocationError(false);
+    }
 
     if (lat !== "" && long !== "") {
       filterLocation();
@@ -160,6 +155,7 @@ export const FilterOpportunity = props => {
           id="standard-required"
           label="Location"
           value={inputPosition}
+          error={locationError}
           placeholder="Employement Type"
           margin="normal"
           fullWidth
@@ -172,25 +168,25 @@ export const FilterOpportunity = props => {
           {positionSuggestions !== null &&
           positionSuggestions !== undefined &&
           positionSuggestions !== "" ? (
-            <div className={classes.suggestion}>
-              {positionSuggestions.map(suggestion => {
-                return (
-                  <div
-                    key={Math.random()}
-                    onClick={event => {
-                      event.preventDefault();
-                      setSuggestions(event);
-                      getLongLat(suggestion);
-                    }}
-                  >
-                    {suggestion.label}
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            ""
-          )}
+              <div className={classes.suggestion}>
+                {positionSuggestions.map(suggestion => {
+                  return (
+                    <div
+                      key={Math.random()}
+                      onClick={event => {
+                        event.preventDefault();
+                        setSuggestions(event);
+                        getLongLat(suggestion);
+                      }}
+                    >
+                      {suggestion.label}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              ""
+            )}
         </div>
         <div />
       </div>
@@ -211,16 +207,18 @@ export const FilterOpportunity = props => {
         id="free-solo-demo"
         placeholder="Keyword"
         margin="normal"
+        error={keywordError}
         fullWidth
         onChange={e => setKeyword(e.target.value)}
       />
       <TextField
         id="free-solo-demo2"
         select
-        helperText="Please select a Position Type"
         margin="normal"
         fullWidth
+        label="Position type"
         onChange={e => setPositionFilter(e.target.value)}
+        style={{marginTop: 0}}
       >
         {positionTypeOption.map(option => (
           <MenuItem key={Math.random()} value={option.label}>
@@ -232,7 +230,6 @@ export const FilterOpportunity = props => {
         <Grid item xs={6} lg={6} md={6}>
           <Button
             fullWidth
-            disabled={buttonStatus}
             className={classes.buttons}
             onClick={() => {
               filter();
@@ -246,10 +243,15 @@ export const FilterOpportunity = props => {
   );
 };
 
-
-
 const positionTypeOption = [
   { label: "Full-Time" },
   { label: "Part-Time" },
   { label: "Casual" },
+  { label: "Internship" }
 ];
+
+
+
+FilterOpportunity.propTypes = {
+  data: PropTypes.array,
+};

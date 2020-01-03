@@ -29,7 +29,7 @@ export const JobSmallCard = props => {
   const { setIsFullView, setJobId, setIsUpdated } = useContext(HomeContext);
   const [savedJobs, setSavedJobs] = useState(props.savedStatus);
   const saveText = savedJobs ? "Saved" : "Save";
-
+  
   const openFullView = id => {
     setIsFullView(true);
     setJobId(id);
@@ -76,8 +76,9 @@ export const JobSmallCard = props => {
             onClick={() => {
               openFullView(_id);
             }}
+            style={{maxHeight: "185px", overflow: "hidden"}}
           >
-            <Grid style={{ paddingTop: "22px" }}>
+            <Grid style={{ paddingTop: "22px"}}>
               <Typography
                 style={{
                   fontSize: "14px",
@@ -109,15 +110,17 @@ export const JobSmallCard = props => {
                 style={{
                   lineHeight: "17px",
                   letterSpacing: "-0.41px",
-                  fontSize: "12px",
+                  fontSize: "14px",
                   fontFamily: `"Arial Unicode MS", sans-serif`,
                 }}
               >
-                >{ReactHtmlParser(description.substring(0, 100))} click to see
-                more...
+                {ReactHtmlParser(description)}
               </div>
             </Grid>
           </Grid>
+          {/* <Grid item xs={11}>
+            <Typography align="left" style={{fontSize: "15px", fontFamily: "Helvetica"}}>...click to see more</Typography>
+          </Grid> */}
           <Grid
             container
             alignItems="center"

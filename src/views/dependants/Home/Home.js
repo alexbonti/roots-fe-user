@@ -79,7 +79,8 @@ const Home = (props) => {
     setUserEmail,
     setAvatarProfile,
   } = useContext(UserContext);
-  const [oppData, setOppData] = useState("");
+  const [searchSettings, setSearchSettings] = useState([]);
+  const [oppData, setOppData] = useState([]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -100,6 +101,7 @@ const Home = (props) => {
       const profileExtData = await API.getUserProfileExt();
       setAvatarProfile(profileExtData.response.avatar);
       setListSavedJobs(profileExtData.response.savedJobs);
+      setSearchSettings(profileExtData.response.preferredIndustry);
     };
     if (loginStatus) {
       triggerAPI();
@@ -140,7 +142,7 @@ const Home = (props) => {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <FullListJobs data={oppData} savedJobs={listSavedJobs} />
+            <FullListJobs data={oppData} savedJobs={listSavedJobs} searchSetting={searchSettings}/>
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             <ListNews />

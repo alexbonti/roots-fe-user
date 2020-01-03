@@ -9,10 +9,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import { API, } from "helpers/index";
+import { API } from "helpers/index";
 import { LoginContext, UserContext } from "../../../contexts";
 
-import {notify} from "components"
+import { notify } from "components";
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -49,13 +49,14 @@ const theme = createMuiTheme({
   },
 });
 
-
 const RegistrationConfirmation = ({ ...props }) => {
   const classes = useStyles();
   const [code, setCode] = useState("");
   const [isVerified, setIsVerified] = useState(false);
   const { setLoginStatus } = useContext(LoginContext);
   const { userProfile, setUserProfile } = useContext(UserContext);
+  const [isRedirect, setIsRedirect] = useState(false);
+
   const [hasGotRights] = useState(
     props.location.state &&
       props.location.state.hasOwnProperty("accessToken") &&
@@ -81,17 +82,17 @@ const RegistrationConfirmation = ({ ...props }) => {
   }, [isVerified, setLoginStatus]);
 
   const resendOTP = async () => {
-    const resendOtpData = await API.resendOTP(accessToken)
-    if(resendOtpData){
-      notify("Otp code sent")
+    const resendOtpData = await API.resendOTP(accessToken);
+    if (resendOtpData) {
+      notify("Otp code sent");
     }
-  }
+  };
   const sendCode = async () => {
     const verificationStatus = await API.sendOTP(
       { "OTPCode": code },
       accessToken
     );
-    if (verificationStatus === 200) {
+    if (verificationStatus) {
       window.localStorage.setItem("accessToken", accessToken);
       setIsVerified(true);
       API.updateUserPreferences({
@@ -103,44 +104,26 @@ const RegistrationConfirmation = ({ ...props }) => {
         "coverLetter": "",
       });
       setUserProfile(userDetails);
+      setLoginStatus(true);
+      setIsRedirect(true);
     }
   };
 
- 
-
-  const content = isVerified ? (
-    <ThemeProvider theme={theme}>
-      <Grid
-        container
-        className={classes.registerBox}
-        alignItems="center"
-        justify="center"
-      >
-        <Grid item xs={10} className={classes.text} style={{paddingTop: "5vh", textAlign:"center"}}>
-          Your account has been verified
-        </Grid>
-        <Grid item xs={10} container justify="center">
-          <Grid item xs={10} style={{paddingTop: "5vh"}}>
-            <Button
-              component={Link}
-              user={userProfile}
-              to="/onboarding"
-              fullWidth
-              className={classes.buttons}
-            >
-              Home
-            </Button>
-          </Grid>
-        </Grid>
-      </Grid>
-    </ThemeProvider>
+  const content = isRedirect ? (
+    <Redirect
+      to={{
+        pathname: "/registerEnd",
+        state: { userProfile },
+      }}
+    />
   ) : (
     <ThemeProvider theme={theme}>
       <Grid container className={classes.registerBox} justify="center">
-        <Grid item xs={11} container  style={{paddingTop: "5vh"}}>
-            <Typography className={classes.text}>
-              A verification code has been sent to: <br />{props.location.state.emailId}
-            </Typography>
+        <Grid item xs={11} container style={{ paddingTop: "5vh" }}>
+          <Typography className={classes.text}>
+            A verification code has been sent to: <br />
+            {props.location.state.emailId}
+          </Typography>
         </Grid>
         <Grid item xs={10} container justify="center">
           <Grid item xs={9}>
@@ -154,7 +137,7 @@ const RegistrationConfirmation = ({ ...props }) => {
               onChange={e => setCode(e.target.value)}
             ></TextField>
           </Grid>
-          <Grid item xs={10} style={{paddingTop: "5vh"}}>
+          <Grid item xs={10} style={{ paddingTop: "5vh" }}>
             <Button
               fullWidth
               className={classes.buttons}
@@ -165,7 +148,7 @@ const RegistrationConfirmation = ({ ...props }) => {
               Send
             </Button>
           </Grid>
-          <Grid item xs={10} style={{paddingTop: "5vh"}}>
+          <Grid item xs={10} style={{ paddingTop: "5vh" }}>
             <Button
               fullWidth
               className={classes.buttons}
@@ -178,8 +161,6 @@ const RegistrationConfirmation = ({ ...props }) => {
           </Grid>
         </Grid>
       </Grid>
-
-    
     </ThemeProvider>
   );
 

@@ -10,11 +10,10 @@ import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import FallBackAvatar from "../../../helpers/img/man.svg";
 import { TextEditorContext } from "contexts/index";
 
-
-const Profile = (props) => {
+const Profile = props => {
   const { loginStatus } = useContext(LoginContext);
   const { setIsFullView } = useContext(HomeContext);
-  const {coverLetter} = useContext(TextEditorContext);
+  const { coverLetter } = useContext(TextEditorContext);
   console.log(props);
   const {
     setUserName,
@@ -34,8 +33,8 @@ const Profile = (props) => {
     setSkills,
     skills,
     fileURL,
-    coverLetterUrl
-    
+    coverLetterUrl,
+    setPreferredIndustry
   } = useContext(UserContext);
   const [field, setField] = useState("");
   const [data, setData] = useState("");
@@ -54,6 +53,8 @@ const Profile = (props) => {
       setAvatarProfile(profileExtData.response.avatar);
       setSkills(profileExtData.response.skills);
       setData(profileExtData.response);
+      console.log(profileExtData);
+      setPreferredIndustry(profileExtData.response.preferredIndustry);
     };
 
     if (loginStatus) {
@@ -149,7 +150,9 @@ const Profile = (props) => {
     skills.map(data => {
       if (data !== chip) {
         return newArray.push(data);
-      }else{return newArray;}
+      } else {
+        return newArray;
+      }
     });
     if (Array.isArray(newArray)) {
       console.log(newArray);
@@ -166,10 +169,10 @@ const Profile = (props) => {
   };
 
   const addChip = chip => {
-    if(skills === null ){
+    if (skills === null) {
       setSkills([]);
     }
-    if (Array.isArray(skills) && chip !== undefined)  {
+    if (Array.isArray(skills) && chip !== undefined) {
       let newSkills = skills;
       if (!newSkills.includes(chip)) {
         newSkills.push(chip);
@@ -190,132 +193,136 @@ const Profile = (props) => {
   };
 
   const ImageAvatar =
-  avatarProfile === "" ||
-  avatarProfile === undefined ||
-  avatarProfile === "string"
-    ? FallBackAvatar
-    : avatarProfile;
+    avatarProfile === "" ||
+    avatarProfile === undefined ||
+    avatarProfile === "string"
+      ? FallBackAvatar
+      : avatarProfile;
   const content =
     userProfile !== undefined && userProfile !== null ? (
       <>
-      <Grid container style={{overflow: "hidden"}}>
-        <Grid container justify="space-between" style={{ padding: "3vh"}}>
-          <Grid
-            item
-            container
-            justify="flex-start"
-            alignItems="baseline"
-            xs={5}
-          >
-            <Grid item xs={9}>
-              <img
-                src={ImageAvatar}
-                alt="avatar"
-                style={{ borderRadius: "50%" }}
-              ></img>
+        <Grid container style={{ overflow: "hidden" }}>
+          <Grid container justify="space-between" style={{ padding: "3vh" }}>
+            <Grid
+              item
+              container
+              justify="flex-start"
+              alignItems="baseline"
+              xs={5}
+            >
+              <Grid item xs={9}>
+                <img
+                  src={ImageAvatar}
+                  alt="avatar"
+                  style={{
+                    borderRadius: "50%",
+                    height: "130px",
+                    width: "130px",
+                  }}
+                ></img>
+              </Grid>
+              {editAvatar}
             </Grid>
-            {editAvatar}
-          </Grid>
-          <Grid container item xs={6} alignItems="center">
-            <Grid>
-              <Typography variant="h6">
-                {userName} {userLastName}
-              </Typography>
-            </Grid>
-            <Grid container justify="flex-start">
+            <Grid container item xs={6} alignItems="center">
               <Grid>
-                <Typography variant="subtitle1">
-                  {userProfile.preferredLocation}
+                <Typography variant="h6">
+                  {userName} {userLastName}
                 </Typography>
               </Grid>
-              <Grid item xs={5}>
-                <Typography variant="caption">{userEmail}</Typography>
+              <Grid container justify="flex-start">
+                <Grid>
+                  <Typography variant="subtitle1">
+                    {userProfile.preferredLocation}
+                  </Typography>
+                </Grid>
+                <Grid item xs={5}>
+                  <Typography variant="caption">{userEmail}</Typography>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid container>
-          <Grid
-            item
-            container
-            justify="space-between"
-            xs={12}
-            style={{
-              backgroundColor: "rgba(8, 124, 149, 0.1)",
-              height: "8vh",
-              padding: "2vh",
-            }}
-          >
-            <Grid item>
-              <Typography variant="h5">Experience</Typography>
-            </Grid>
-            <Grid item>
-              <AddBoxIcon onClick={() => openAddMode("work")} />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid container>{experience}</Grid>
-        <Grid container>
-          <Grid
-            item
-            container
-            justify="space-between"
-            xs={12}
-            style={{
-              backgroundColor: "rgba(8, 124, 149, 0.1)",
-              height: "8vh",
-              padding: "2vh",
-            }}
-          >
-            <Grid item>
-              <Typography variant="h5">Education</Typography>
-            </Grid>
-            <Grid item>
-              <AddBoxIcon onClick={() => openAddMode("education")} />
+          <Grid container>
+            <Grid
+              item
+              container
+              justify="space-between"
+              xs={12}
+              style={{
+                backgroundColor: "rgba(8, 124, 149, 0.1)",
+                height: "8vh",
+                padding: "2vh",
+              }}
+            >
+              <Grid item>
+                <Typography variant="h5">Experience</Typography>
+              </Grid>
+              <Grid item>
+                <AddBoxIcon onClick={() => openAddMode("work")} />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid container>{education}</Grid>
-        <Grid container>
-          <Grid
-            item
-            container
-            justify="space-between"
-            xs={12}
-            style={{
-              backgroundColor: isEditSkills
-                ? "rgba(255, 129, 0, 0.21)"
-                : "rgba(8, 124, 149, 0.1)",
-              height: "8vh",
-              padding: "2vh",
-            }}
-          >
-            <Grid item>
-              <Typography variant="h5">Skills</Typography>
+          <Grid container>{experience}</Grid>
+          <Grid container>
+            <Grid
+              item
+              container
+              justify="space-between"
+              xs={12}
+              style={{
+                backgroundColor: "rgba(8, 124, 149, 0.1)",
+                height: "8vh",
+                padding: "2vh",
+              }}
+            >
+              <Grid item>
+                <Typography variant="h5">Education</Typography>
+              </Grid>
+              <Grid item>
+                <AddBoxIcon onClick={() => openAddMode("education")} />
+              </Grid>
             </Grid>
-            <Grid item>{buttonIcon}</Grid>
           </Grid>
-        </Grid>
-        <Grid container style={{ padding: "2vh 1vw" }} spacing={1}>
-          {editSkills}
+          <Grid container>{education}</Grid>
+          <Grid container>
+            <Grid
+              item
+              container
+              justify="space-between"
+              xs={12}
+              style={{
+                backgroundColor: isEditSkills
+                  ? "rgba(255, 129, 0, 0.21)"
+                  : "rgba(8, 124, 149, 0.1)",
+                height: "8vh",
+                padding: "2vh",
+              }}
+            >
+              <Grid item>
+                <Typography variant="h5">Skills</Typography>
+              </Grid>
+              <Grid item>{buttonIcon}</Grid>
+            </Grid>
+          </Grid>
+          <Grid container style={{ padding: "2vh 1vw" }} spacing={1}>
+            {editSkills}
 
-          {Array.isArray(skills)
-            ? skills.map(skill => {
-                return (
-                  <Grid item key={Math.random()}>
-                    <Chip
-                      onDelete={() => deleteChip(skill)}
-                      label={skill}
-                      style={{
-                        backgroundColor: "rgba(8, 124, 149, 0.1)",
-                        color: "Black",
-                      }}
-                    />
-                  </Grid>
-                );
-              })
-            : ""}
-        </Grid>
+            {Array.isArray(skills)
+              ? skills.map(skill => {
+                  return (
+                    <Grid item key={Math.random()}>
+                      <Chip
+                        onDelete={() => deleteChip(skill)}
+                        label={skill}
+                        style={{
+                          backgroundColor: "rgba(8, 124, 149, 0.1)",
+                          color: "Black",
+                        }}
+                      />
+                    </Grid>
+                  );
+                })
+              : ""}
+          </Grid>
         </Grid>
       </>
     ) : (

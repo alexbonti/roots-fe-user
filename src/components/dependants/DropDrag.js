@@ -11,7 +11,7 @@ export default function Accept(props) {
   const { avatarPictureURL, setAvatarPictureURL } = useContext(
     OnBoardingContext
   );
-  const { fileURL, setFileURL, setAvatarProfile, setIsUpdated,preferredIndustry,  skills, coverLetterUrl, setCoverLetterUrl } = useContext(
+  const { fileURL, setFileURL, setAvatarProfile, setIsUpdated, preferredIndustry,  skills, coverLetterUrl, setCoverLetterUrl } = useContext(
     UserContext
   );
   const {coverLetter} = useContext(TextEditorContext);
@@ -44,6 +44,7 @@ export default function Accept(props) {
         let file = new FormData();
         file.append("imageFile", data[0]);
         const imageData = await API.uploadImage(file);
+        console.log(preferredIndustry);
         let dataUserExt = {
           "avatar": imageData.response.data.data.imageFileURL.thumbnail,
           "preferredLocation": "",

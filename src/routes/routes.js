@@ -15,7 +15,7 @@ import {
   SearchSettings,
 } from "views";
 import { Layout } from "../layout";
-import { ResetPassword,  ResetPasswordSecondStep} from "views/index";
+import { ResetPassword,  ResetPasswordSecondStep, RegisterSuccess} from "views/index";
 
 export const AppRoutes = props => {
   const { loginStatus } = useContext(LoginContext);
@@ -84,10 +84,21 @@ export const AppRoutes = props => {
             )
           }
         />
+        
         <Route
           exact
           path="/registerSuccess"
           render={() => <RegistrationConfirmation {...props} />}
+        />
+
+        <Route
+          exact
+          path="/registerEnd"
+          render={() =>  redirectToLogin ? (
+            <Redirect to={{ pathname: "/login" }} {...props} />
+          ) : (
+            <RegisterSuccess {...props} />
+          )}
         />
 
         <Route

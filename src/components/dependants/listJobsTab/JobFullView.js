@@ -198,7 +198,7 @@ export const JobFullView = props => {
           </Grid>
         </Grid>
         <Grid container item xs={12} lg={12} md={12} justify="center" >
-          <Grid item xs={11} lg={8} md={8} style={{paddingTop: "23px", paddingBottom: "27px", fontSize: "12px", fontFaily: `"Arial Unicode MS", sans-serif`}}>
+          <Grid item xs={11} lg={8} md={8} style={{paddingTop: "23px", paddingBottom: "27px", fontSize: "14px", fontFaily: `"Arial Unicode MS", sans-serif`}}>
             {ReactHtmlParser(description)}
           </Grid>
           {buttonSection}
