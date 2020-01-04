@@ -103,17 +103,24 @@ const SavedAndAppliedJobs = () => {
     setIsFullView(false);
     const triggerAPI = async () => {
       const oppResponse = await API.getOpportunity();
-      setOppData(oppResponse.response);
+      if(oppResponse){
+        setOppData(oppResponse.response);
+      }
       const profileResponse = await API.getUserProfile();
-      setUserName(profileResponse.response.first_name);
-      setUserLastName(profileResponse.response.last_name);
-      setUserEmail(profileResponse.response.emailId);
+      if(profileResponse){
+        setUserName(profileResponse.response.first_name);
+        setUserLastName(profileResponse.response.last_name);
+        setUserEmail(profileResponse.response.emailId);
+      }
       const profileExtData = await API.getUserProfileExt();
-      setAvatarProfile(profileExtData.response.avatar);
-      setListSavedJobs(profileExtData.response.savedJobs);
+      if(profileExtData){
+        setAvatarProfile(profileExtData.response.avatar);
+        setListSavedJobs(profileExtData.response.savedJobs);
+      }
       const appliedOppData = await API.getUserAppliedJobs();
-      setAppliedJobs(appliedOppData.response);
-      console.log(appliedOppData);
+      if(appliedOppData){
+        setAppliedJobs(appliedOppData.response);
+      }
 
     };
     if (loginStatus) {

@@ -44,22 +44,23 @@ export default function Accept(props) {
         let file = new FormData();
         file.append("imageFile", data[0]);
         const imageData = await API.uploadImage(file);
-        console.log(preferredIndustry);
-        let dataUserExt = {
-          "avatar": imageData.response.data.data.imageFileURL.thumbnail,
-          "preferredLocation": "",
-          "coverLetter": coverLetter !== "" ? coverLetter : coverLetterUrl,
-          "skills": skills !== [] && skills !== null ? skills : [],
-          "preferredIndustry": preferredIndustry !== [] ? preferredIndustry : [],
-          "resumeURL": fileURL
-        };
-        const profileData = await API.updateUserPreferences(dataUserExt);
+       if(imageData){
+         let dataUserExt = {
+           "avatar": imageData.response.data.data.imageFileURL.thumbnail,
+           "preferredLocation": "",
+           "coverLetter": coverLetter !== "" ? coverLetter : coverLetterUrl,
+           "skills": skills !== [] && skills !== null ? skills : [],
+           "preferredIndustry": preferredIndustry !== [] ? preferredIndustry : [],
+           "resumeURL": fileURL
+         };
+         const profileData = await API.updateUserPreferences(dataUserExt);
+         setAvatarPictureURL(
+           imageData.response.data.data.imageFileURL.thumbnail
+         );
+         setAvatarProfile(imageData.response.data.data.imageFileURL.thumbnail);
+
+       }
         
-        console.log(profileData);
-        setAvatarPictureURL(
-          imageData.response.data.data.imageFileURL.thumbnail
-        );
-        setAvatarProfile(imageData.response.data.data.imageFileURL.thumbnail);
       };
       uploadImageImported(acceptedFiles);
     } else if (acceptedFiles.length > 0 && props.data === "file") {
@@ -70,14 +71,14 @@ export default function Accept(props) {
         let file = new FormData();
         file.append("documentFile", data[0]);
         const fileData = await API.upLoadFile(file);
-        setFileURL(fileData.response.data.data.documentFileUrl.original);
-
-        if (fileData) {
+        if(fileData){
+          setFileURL(fileData.response.data.data.documentFileUrl.original);
           setProgressBar(false);
         }
       };
       setIsUpdated(true);
       upLoadFile(acceptedFiles);
+
     }else if (acceptedFiles.length > 0 && props.data === "coverletter") {
       const upLoadFile = async data => {
         if (avatarPictureURL === "" && acceptedFiles.length > 0) {
@@ -86,11 +87,11 @@ export default function Accept(props) {
         let file = new FormData();
         file.append("documentFile", data[0]);
         const fileData = await API.upLoadFile(file);
-        setCoverLetterUrl(fileData.response.data.data.documentFileUrl.original);
-
-        if (fileData) {
+        if(fileData){
+          setCoverLetterUrl(fileData.response.data.data.documentFileUrl.original);
           setProgressBar(false);
         }
+        
       };
       setIsUpdated(true);
       upLoadFile(acceptedFiles);

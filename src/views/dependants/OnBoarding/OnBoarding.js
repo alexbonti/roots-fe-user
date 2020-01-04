@@ -83,7 +83,10 @@ const OnBoarding = props => {
           coverLetter: "",
         };
         const profileData = await API.getUserProfile(accessToken);
-        setUserProfile(profileData.response);
+        if(profileData){
+          setUserProfile(profileData.response);
+        }
+        
         await API.updateUserPreferences(data);
       };
       triggerAPI(accessToken);
