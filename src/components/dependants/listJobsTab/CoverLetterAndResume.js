@@ -126,7 +126,7 @@ export const CoverLetterAndResume = props => {
 
 
         <Grid item xs={11} md={8} lg={8}>
-          <TextEditor data="coverletter" />
+          <TextEditor data={{content: "coverletter"}} />
         </Grid>
 
         <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>

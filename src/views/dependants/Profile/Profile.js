@@ -1,6 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
-import { Typography, Grid, Chip, Button, TextField } from "@material-ui/core/";
+import { ThemeProvider } from "@material-ui/core/styles";
+
+import {
+  Typography,
+  Grid,
+  Chip,
+  Button,
+  TextField,
+  createMuiTheme,
+} from "@material-ui/core/";
 import { API } from "helpers";
 import { UserContext, LoginContext, HomeContext } from "contexts";
 import { Spinner, Education, Experience, AddNewExperience } from "components";
@@ -9,6 +18,18 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import FallBackAvatar from "../../../helpers/img/man.svg";
 import { TextEditorContext } from "contexts/index";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#087B94" },
+    secondary: { main: "#C74197" },
+    terziary: { main: "#2B2B28" },
+    accent: { main: "#FFD922" },
+    error: { main: "#D0011B" },
+    contrastThreshold: 3,
+    tonalOffset: 0.2,
+  },
+});
 
 const Profile = props => {
   const { loginStatus } = useContext(LoginContext);
@@ -34,7 +55,7 @@ const Profile = props => {
     skills,
     fileURL,
     coverLetterUrl,
-    setPreferredIndustry
+    setPreferredIndustry,
   } = useContext(UserContext);
   const [field, setField] = useState("");
   const [data, setData] = useState("");
@@ -45,16 +66,21 @@ const Profile = props => {
     setIsFullView(false);
     const triggerAPI = async () => {
       const profileResponse = await API.getUserProfile();
-      setUserName(profileResponse.response.first_name);
-      setUserLastName(profileResponse.response.last_name);
-      setUserEmail(profileResponse.response.emailId);
+      if (profileResponse) {
+        setUserName(profileResponse.response.first_name);
+        setUserLastName(profileResponse.response.last_name);
+        setUserEmail(profileResponse.response.emailId);
+      }
+
       const profileExtData = await API.getUserProfileExt();
-      setUserProfile(profileExtData.response);
-      setAvatarProfile(profileExtData.response.avatar);
-      setSkills(profileExtData.response.skills);
-      setData(profileExtData.response);
-      console.log(profileExtData);
-      setPreferredIndustry(profileExtData.response.preferredIndustry);
+      if (profileExtData) {
+        setUserProfile(profileExtData.response);
+        setAvatarProfile(profileExtData.response.avatar);
+        setSkills(profileExtData.response.skills);
+        setData(profileExtData.response);
+        console.log(profileExtData);
+        setPreferredIndustry(profileExtData.response.preferredIndustry);
+      }
     };
 
     if (loginStatus) {
@@ -126,16 +152,23 @@ const Profile = props => {
       justify="space-evenly"
       alignItems="flex-end"
       style={{ padding: "2vh 0" }}
-      value={chipValue}
     >
       <Grid item>
-        <TextField onChange={e => setChipValue(e.target.value)} />
+        <TextField
+          value={chipValue}
+          onChange={e => setChipValue(e.target.value)}
+        />
       </Grid>
       <Grid item>
         <Button
           variant="contained"
           fullWidth
-          onClick={() => addChip(chipValue)}
+          onClick={() => {
+            if (chipValue !== "" && chipValue.length> 1) {
+              console.log(chipValue);
+              addChip(chipValue);
+            }
+          }}
           style={{ backgroundColor: "rgba(255, 129, 0, 0.21)" }}
         >
           Add
@@ -145,6 +178,7 @@ const Profile = props => {
   ) : (
     ""
   );
+
   const deleteChip = chip => {
     let newArray = [];
     skills.map(data => {
@@ -154,6 +188,7 @@ const Profile = props => {
         return newArray;
       }
     });
+
     if (Array.isArray(newArray)) {
       console.log(newArray);
       API.updateUserPreferences({
@@ -168,17 +203,18 @@ const Profile = props => {
     }
   };
 
-  const addChip = chip => {
+  const addChip = async chip => {
     if (skills === null) {
       setSkills([]);
     }
+
     if (Array.isArray(skills) && chip !== undefined) {
       let newSkills = skills;
       if (!newSkills.includes(chip)) {
         newSkills.push(chip);
       }
 
-      API.updateUserPreferences({
+      const skillsData = await API.updateUserPreferences({
         avatar: data.avatar,
         preferredLocation: userProfile.preferredLocation,
         skills,
@@ -186,9 +222,11 @@ const Profile = props => {
         resumeURL: fileURL,
         coverLetter: coverLetterUrl !== "" ? coverLetterUrl : coverLetter,
       });
-
-      setSkills(newSkills);
-      setChipValue("");
+      if (skillsData) {
+        setChipValue("");
+        setSkills(newSkills);
+        setIsUpdated(true);
+      }
     }
   };
 
@@ -201,129 +239,131 @@ const Profile = props => {
   const content =
     userProfile !== undefined && userProfile !== null ? (
       <>
-        <Grid container style={{ overflow: "hidden" }}>
-          <Grid container justify="space-between" style={{ padding: "3vh" }}>
-            <Grid
-              item
-              container
-              justify="flex-start"
-              alignItems="baseline"
-              xs={5}
-            >
-              <Grid item xs={9}>
-                <img
-                  src={ImageAvatar}
-                  alt="avatar"
-                  style={{
-                    borderRadius: "50%",
-                    height: "130px",
-                    width: "130px",
-                  }}
-                ></img>
+        <ThemeProvider theme={theme}>
+          <Grid container style={{ overflow: "hidden" }}>
+            <Grid container justify="space-between" style={{ padding: "3vh" }}>
+              <Grid
+                item
+                container
+                justify="flex-start"
+                alignItems="baseline"
+                xs={5}
+              >
+                <Grid item xs={9}>
+                  <img
+                    src={ImageAvatar}
+                    alt="avatar"
+                    style={{
+                      borderRadius: "50%",
+                      height: "130px",
+                      width: "130px",
+                    }}
+                  ></img>
+                </Grid>
+                {editAvatar}
               </Grid>
-              {editAvatar}
-            </Grid>
-            <Grid container item xs={6} alignItems="center">
-              <Grid>
-                <Typography variant="h6">
-                  {userName} {userLastName}
-                </Typography>
-              </Grid>
-              <Grid container justify="flex-start">
+              <Grid container item xs={6} alignItems="center">
                 <Grid>
-                  <Typography variant="subtitle1">
-                    {userProfile.preferredLocation}
+                  <Typography variant="h6">
+                    {userName} {userLastName}
                   </Typography>
                 </Grid>
-                <Grid item xs={5}>
-                  <Typography variant="caption">{userEmail}</Typography>
+                <Grid container justify="flex-start">
+                  <Grid>
+                    <Typography variant="subtitle1">
+                      {userProfile.preferredLocation}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <Typography variant="caption">{userEmail}</Typography>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid container>
-            <Grid
-              item
-              container
-              justify="space-between"
-              xs={12}
-              style={{
-                backgroundColor: "rgba(8, 124, 149, 0.1)",
-                height: "8vh",
-                padding: "2vh",
-              }}
-            >
-              <Grid item>
-                <Typography variant="h5">Experience</Typography>
-              </Grid>
-              <Grid item>
-                <AddBoxIcon onClick={() => openAddMode("work")} />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid container>{experience}</Grid>
-          <Grid container>
-            <Grid
-              item
-              container
-              justify="space-between"
-              xs={12}
-              style={{
-                backgroundColor: "rgba(8, 124, 149, 0.1)",
-                height: "8vh",
-                padding: "2vh",
-              }}
-            >
-              <Grid item>
-                <Typography variant="h5">Education</Typography>
-              </Grid>
-              <Grid item>
-                <AddBoxIcon onClick={() => openAddMode("education")} />
+            <Grid container>
+              <Grid
+                item
+                container
+                justify="space-between"
+                xs={12}
+                style={{
+                  backgroundColor: "rgba(8, 124, 149, 0.1)",
+                  height: "8vh",
+                  padding: "2vh",
+                }}
+              >
+                <Grid item>
+                  <Typography variant="h5">Experience</Typography>
+                </Grid>
+                <Grid item>
+                  <AddBoxIcon onClick={() => openAddMode("work")} />
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid container>{education}</Grid>
-          <Grid container>
-            <Grid
-              item
-              container
-              justify="space-between"
-              xs={12}
-              style={{
-                backgroundColor: isEditSkills
-                  ? "rgba(255, 129, 0, 0.21)"
-                  : "rgba(8, 124, 149, 0.1)",
-                height: "8vh",
-                padding: "2vh",
-              }}
-            >
-              <Grid item>
-                <Typography variant="h5">Skills</Typography>
+            <Grid container>{experience}</Grid>
+            <Grid container>
+              <Grid
+                item
+                container
+                justify="space-between"
+                xs={12}
+                style={{
+                  backgroundColor: "rgba(8, 124, 149, 0.1)",
+                  height: "8vh",
+                  padding: "2vh",
+                }}
+              >
+                <Grid item>
+                  <Typography variant="h5">Education</Typography>
+                </Grid>
+                <Grid item>
+                  <AddBoxIcon onClick={() => openAddMode("education")} />
+                </Grid>
               </Grid>
-              <Grid item>{buttonIcon}</Grid>
             </Grid>
-          </Grid>
-          <Grid container style={{ padding: "2vh 1vw" }} spacing={1}>
-            {editSkills}
+            <Grid container>{education}</Grid>
+            <Grid container>
+              <Grid
+                item
+                container
+                justify="space-between"
+                xs={12}
+                style={{
+                  backgroundColor: isEditSkills
+                    ? "rgba(255, 129, 0, 0.21)"
+                    : "rgba(8, 124, 149, 0.1)",
+                  height: "8vh",
+                  padding: "2vh",
+                }}
+              >
+                <Grid item>
+                  <Typography variant="h5">Skills</Typography>
+                </Grid>
+                <Grid item>{buttonIcon}</Grid>
+              </Grid>
+            </Grid>
+            <Grid container style={{ padding: "2vh 1vw" }} spacing={1}>
+              {editSkills}
 
-            {Array.isArray(skills)
-              ? skills.map(skill => {
-                  return (
-                    <Grid item key={Math.random()}>
-                      <Chip
-                        onDelete={() => deleteChip(skill)}
-                        label={skill}
-                        style={{
-                          backgroundColor: "rgba(8, 124, 149, 0.1)",
-                          color: "Black",
-                        }}
-                      />
-                    </Grid>
-                  );
-                })
-              : ""}
+              {Array.isArray(skills)
+                ? skills.map(skill => {
+                    return (
+                      <Grid item key={Math.random()}>
+                        <Chip
+                          onDelete={() => deleteChip(skill)}
+                          label={skill}
+                          style={{
+                            backgroundColor: "rgba(8, 124, 149, 0.1)",
+                            color: "Black",
+                          }}
+                        />
+                      </Grid>
+                    );
+                  })
+                : ""}
+            </Grid>
           </Grid>
-        </Grid>
+        </ThemeProvider>
       </>
     ) : (
       <Spinner />

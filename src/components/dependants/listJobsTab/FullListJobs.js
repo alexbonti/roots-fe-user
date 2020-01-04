@@ -9,6 +9,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import FilterListIcon from "../../../helpers/img/search.svg";
 import ReplayIcon from "@material-ui/icons/Replay";
 import PropTypes from "prop-types";
+import { set } from "date-fns";
 
 const theme = createMuiTheme({
   palette: {
@@ -29,16 +30,13 @@ export const FullListJobs = props => {
     jobId,
     listSavedJobs,
     filteredData,
+    setFilteredData,
     isFilterOn,
     setIsFilterOn,
   } = useContext(HomeContext);
   const [searchSettingTab, setSearchSettingTab] = useState(false);
 
-  const opportunityString =
-    props.data.length > 1 ? "opportunities" : "opportunity";
-  const filteredString = filteredData > 1 ? "opportunities" : "opportunity";
 
-  const filteredResultString = isFilterOn ? filteredString : opportunityString;
 
   const newValues = [];
 
@@ -68,6 +66,34 @@ export const FullListJobs = props => {
 
   let singleJobData = isFullView ? findSingleJobData(jobId) : "";
 
+  const opportunityString =
+    props.data.length > 1 ? "opportunities" : "opportunity";
+
+  const filteredString = filteredData.length> 1 ? "opportunities" : "opportunity";
+
+  const filteredByIndustryString = filteredByIndustry.length > 1 ? "opportunities" : "opportunity";
+  
+  const initialStringFilteredByIndustry = filteredByIndustry.length > 0 ? filteredByIndustryString : opportunityString;
+
+  const filteredResultString = isFilterOn ? filteredString : initialStringFilteredByIndustry;
+  const filteredNumber = isFilterOn ? filteredData.length : filteredByIndustry.length;
+
+
+  const resetValuesButton = isFilterOn ? (
+    <Grid item xs={12} align="right" style={{ paddingRight: "2vw" }}>
+      <Typography
+        variant="caption"
+        align="right"
+        style={{ borderBottom: "1px solid black" }}
+        onClick={()=> {setIsFilterOn(false);}}
+      >
+        Reset filters
+      </Typography>
+    </Grid>
+  ) : (
+    ""
+  );
+
   let searchTab = searchSettingTab ? (
     <>
       <Grid
@@ -85,25 +111,19 @@ export const FullListJobs = props => {
     <>
       <Grid
         container
-        alignItems="center"
+        alignItems="flex-end"
         justify="space-evenly"
         style={{
-          padding: "2vh 0vw",
-          paddingBottom: "5vh",
+          paddingTop: "4vh",
+          paddingBottom: "1vh",
           backgroundColor: "rgba(8, 124, 149, 0.1)",
         }}
       >
-        {isFilterOn ? (
-          <Grid item xs={1} align="right" onClick={() => setIsFilterOn(false)}>
-            <ReplayIcon style={{ color: "rgba(0, 0, 0, 0.71)" }} />
-          </Grid>
-        ) : (
-          ""
-        )}
-        
+    
+
         <Grid item xs={10} lg={8} md={10}>
           <Typography variant="h6">
-            We found {filteredByIndustry.length} {filteredResultString}
+            We found {filteredNumber} {filteredResultString}
           </Typography>
         </Grid>
         <Grid
@@ -112,8 +132,13 @@ export const FullListJobs = props => {
           align="right"
           onClick={() => setSearchSettingTab(true)}
         >
-          <img src={FilterListIcon} alt="search-icon"style={{ color: "rgba(0, 0, 0, 0.71)" }} />
+          <img
+            src={FilterListIcon}
+            alt="search-icon"
+            style={{ color: "rgba(0, 0, 0, 0.71)" }}
+          />
         </Grid>
+        {resetValuesButton}
       </Grid>
     </>
   );
@@ -160,7 +185,7 @@ export const FullListJobs = props => {
       listOfJobs
     );
 
-  let filderedResult =
+  let filteredResults =
     filteredData !== [] ? (
       <>
         {searchTab}
@@ -190,7 +215,7 @@ export const FullListJobs = props => {
         savedStatus={singleJobData.savedStatus}
       />
     ) : (
-      filderedResult
+      filteredResults
     );
 
   const results = isFilterOn ? contentFiltered : contentNotFiltered;
@@ -205,5 +230,5 @@ export const FullListJobs = props => {
 FullListJobs.propTypes = {
   data: PropTypes.array,
   savedJobs: PropTypes.array,
-  searchSetting: PropTypes.array
+  searchSetting: PropTypes.array,
 };

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import "date-fns";
 import { Typography, Grid, TextField, Button, createMuiTheme } from "@material-ui/core/";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles,ThemeProvider } from "@material-ui/core/styles";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -10,7 +10,6 @@ import {
 } from "@material-ui/pickers";
 import { TextEditor, notify } from "components";
 import { TextEditorContext, UserContext } from "contexts/index";
-import { ThemeProvider } from "@material-ui/styles";
 
 import { API } from "helpers";
 
@@ -77,10 +76,12 @@ export const AddNewExperience = props => {
         },
       };
       const workExpApiData = await API.updateWorkExp(data);
-      setIsUpdated(true);
-      setIsAddMode(false);
-      notify("New Work Experience added succesfully");
-      console.log("workExpApiData", workExpApiData);
+      if(workExpApiData){
+        setIsUpdated(true);
+        setIsAddMode(false);
+        notify("New Work Experience added succesfully");
+        console.log("workExpApiData", workExpApiData);
+      }
     } else if (field === "education") {
       let data = {
         "education": {
@@ -92,10 +93,12 @@ export const AddNewExperience = props => {
         },
       };
       const educationExpData = await API.updateEducationExp(data);
-      setIsUpdated(true);
-      setIsAddMode(false);
-      notify("New Education Experience added succesfully");
-      console.log("educationExpData", educationExpData);
+      if(educationExpData){
+        setIsUpdated(true);
+        setIsAddMode(false);
+        notify("New Education Experience added succesfully");
+        console.log("educationExpData", educationExpData);
+      }
     }
   };
 

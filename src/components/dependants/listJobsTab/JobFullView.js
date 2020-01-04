@@ -24,14 +24,16 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
-    fontSize: "8px"
+    fontSize: "12px",
+    height: 55
   },
   alternativeButton: {
     color: "#087b94 !important",
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "white",
-    fontSize: "8px"
+    fontSize: "12px",
+    height: 55
 
   },
 }));
@@ -111,7 +113,7 @@ export const JobFullView = props => {
       item
       justify="space-evenly"
     >
-      <Grid item xs={4} md={2} lg={2}>
+      <Grid item xs={5} md={2} lg={2}>
         <Button
           fullWidth
           className={classes.alternativeButton}
@@ -122,7 +124,7 @@ export const JobFullView = props => {
           Save
         </Button>
       </Grid>
-      <Grid item xs={4} md={2} lg={2}>
+      <Grid item xs={5} md={2} lg={2}>
         <Button
           fullWidth
           disabled={buttonApplyStatus}

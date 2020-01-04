@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "date-fns";
-import { Grid, TextField, Button, Typography } from "@material-ui/core/";
+import { Grid, TextField, Button, Typography, createMuiTheme } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -9,7 +9,9 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { TextEditor, notify, Experience } from "components";
-import { TextEditorContext } from "contexts/index";
+import { TextEditorContext, UserContext } from "contexts/index";
+import { ThemeProvider } from "@material-ui/styles";
+
 import { API } from "helpers";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 
@@ -20,8 +22,21 @@ const useStyles = makeStyles(() => ({
     border: "1px solid #087b94np",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: 55
   },
 }));
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#087B94" },
+    secondary: { main: "#C74197" },
+    terziary: { main: "#2B2B28" },
+    accent: { main: "#FFD922" },
+    error: { main: "#D0011B" },
+    contrastThreshold: 3,
+    tonalOffset: 0.2,
+  },
+});
 
 export const EditExperience = props => {
   const [isEditModeOn, setIsEditModeOn] = useState(true);
@@ -34,6 +49,7 @@ export const EditExperience = props => {
     new Date("2019-08-18T21:11:54")
   );
   const { workExperience } = useContext(TextEditorContext);
+  const { setIsUpdated } = useContext(UserContext);
 
   const { companyName, positionTitle, description, _id } = props.data;
 
@@ -50,10 +66,11 @@ export const EditExperience = props => {
   };
 
   const UpdateSingleUserWorkExp = () => {
-    console.log("description", description,"workExperience", workExperience );
+    console.log("description", description, "workExperience", workExperience);
     const callAPI = async () => {
       let data;
       if (workExperience === "") {
+        console.log("inside empty workexperience", workExperience);
         data = {
           "workExperienceId": _id,
           "positionTitle": newPositionName,
@@ -82,9 +99,12 @@ export const EditExperience = props => {
       });
 
       const workExpApiData = await API.editWorkExperience(data);
-      notify(" Work Experience edited successfully");
-      console.log("workExpApiData", workExpApiData.response);
-      setIsEditModeOn(false);
+      if (workExpApiData) {
+        notify(" Work Experience edited successfully");
+        console.log("workExpApiData", workExpApiData.response);
+        setIsUpdated(true);
+        setIsEditModeOn(false);
+      }
     };
 
     callAPI();
@@ -97,107 +117,112 @@ export const EditExperience = props => {
   //EDIT FORM
   const content = (
     <>
-      <Grid container justify="center" style={{ padding: "2vh 0" }}>
-        <Grid
-          item
-          container
-          justify="space-between"
-          xs={12}
-          style={{
-            backgroundColor: "rgba(255, 129, 0, 0.21)",
-            height: "8vh",
-            padding: "2vh",
-          }}
-        >
-          <Grid item>
-            <Typography variant="h6">Edit</Typography>
+      <ThemeProvider theme={theme}>
+        <Grid container justify="center" style={{ padding: "2vh 0" }}>
+          <Grid
+            item
+            container
+            justify="space-between"
+            xs={12}
+            style={{
+              backgroundColor: "rgba(255, 129, 0, 0.21)",
+              height: "8vh",
+              padding: "2vh",
+            }}
+          >
+            <Grid item>
+              <Typography variant="h6">Edit</Typography>
+            </Grid>
+            <Grid item>
+              <CancelPresentationIcon
+                onClick={() => {
+                  closeEditMode();
+                }}
+              />
+            </Grid>
           </Grid>
-          <Grid item>
-            <CancelPresentationIcon
-              onClick={() => {
-                closeEditMode();
+          <Grid item xs={11} style={{ padding: "2vh 0" }}>
+            <TextField
+              label="Position Title"
+              defaultValue={positionTitle}
+              fullWidth
+              onChange={event => {
+                setNewPositionName(event.target.value);
               }}
             />
           </Grid>
-        </Grid>
-        <Grid item xs={11} style={{ padding: "2vh 0" }}>
-          <TextField
-            label="Position Title"
-            defaultValue={positionTitle}
-            fullWidth
-            onChange={event => {
-              setNewPositionName(event.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={11} style={{ padding: "2vh 0" }}>
-          <TextField
-            label="Company Name"
-            defaultValue={companyName}
-            fullWidth
-            onChange={event => {
-              setNewCompanyName(event.target.value);
-            }}
-          />
-        </Grid>
-        <Grid
-          item
-          container
-          justify="space-evenly"
-          style={{ padding: "2vh 0" }}
-        >
-          <Grid item xs={5}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/yyyy"
-                margin="normal"
-                value={selectedStartDate}
-                id="date-picker-inline"
-                label="Start Date"
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider>
+          <Grid item xs={11} style={{ padding: "2vh 0" }}>
+            <TextField
+              label="Company Name"
+              defaultValue={companyName}
+              fullWidth
+              onChange={event => {
+                setNewCompanyName(event.target.value);
+              }}
+            />
           </Grid>
-          <Grid item xs={5}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/yyyy"
-                margin="normal"
-                value={selectedEndDate}
-                id="date-picker-inline"
-                label="End Date"
-                onChange={handleDateChangeEnd}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </MuiPickersUtilsProvider>
-          </Grid>
-        </Grid>
-        <Grid item xs={11}>
-          <TextEditor
-            data={{ content: "editWorkExperience", defaultValue: description }}
-          />
-        </Grid>
-        <Grid item xs={11} style={{ padding: "2vh 0" }}>
-          <Button
-            className={classes.buttons}
-            fullWidth
-            onClick={() => {
-              UpdateSingleUserWorkExp();
-            }}
+          <Grid
+            item
+            container
+            justify="space-evenly"
+            style={{ padding: "2vh 0" }}
           >
-            Save Changes
-          </Button>
+            <Grid item xs={5}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/yyyy"
+                  margin="normal"
+                  value={selectedStartDate}
+                  id="date-picker-inline-start"
+                  label="Start Date"
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item xs={5}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/yyyy"
+                  margin="normal"
+                  value={selectedEndDate}
+                  id="date-picker-inline-end"
+                  label="End Date"
+                  onChange={handleDateChangeEnd}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+          </Grid>
+          <Grid item xs={11}>
+            <TextEditor
+              data={{
+                content: "editWorkExperience",
+                defaultValue: description,
+              }}
+            />
+          </Grid>
+          <Grid item xs={11} style={{ padding: "2vh 0" }}>
+            <Button
+              className={classes.buttons}
+              fullWidth
+              onClick={() => {
+                UpdateSingleUserWorkExp();
+              }}
+            >
+              Save Changes
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+      </ThemeProvider>
     </>
   );
 

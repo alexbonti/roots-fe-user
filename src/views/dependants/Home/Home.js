@@ -93,15 +93,21 @@ const Home = (props) => {
     const triggerAPI = async () => {
       setIsFullView(false)
       const oppResponse = await API.getOpportunity();
-      setOppData(oppResponse.response);
+      if(oppResponse){
+        setOppData(oppResponse.response);
+      }
       const profileResponse = await API.getUserProfile();
-      setUserName(profileResponse.response.first_name);
-      setUserLastName(profileResponse.response.last_name);
-      setUserEmail(profileResponse.response.emailId);
+      if(profileResponse){
+        setUserName(profileResponse.response.first_name);
+        setUserLastName(profileResponse.response.last_name);
+        setUserEmail(profileResponse.response.emailId);
+      }
       const profileExtData = await API.getUserProfileExt();
-      setAvatarProfile(profileExtData.response.avatar);
-      setListSavedJobs(profileExtData.response.savedJobs);
-      setSearchSettings(profileExtData.response.preferredIndustry);
+      if(profileExtData){
+        setAvatarProfile(profileExtData.response.avatar);
+        setListSavedJobs(profileExtData.response.savedJobs);
+        setSearchSettings(profileExtData.response.preferredIndustry);
+      }
     };
     if (loginStatus) {
       triggerAPI();
