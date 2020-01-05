@@ -112,7 +112,7 @@ export const TemporaryDrawer = () => {
               <Link
                 user={userProfile}
                 style={{ textDecoration: "none", color: "inherit",  }}
-                to="/jobs"
+                to={{pathname: "/jobs", state: {direction: "saved-jobs"}}}
               >
                 <Typography style={{paddingLeft: "33.5px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Saved Opportunities</Typography>
               </Link>
@@ -122,7 +122,7 @@ export const TemporaryDrawer = () => {
               <Link
                 user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
-                to="/jobs"
+                to={{pathname: "/jobs", state: {direction: "applied-jobs"}}}
               >
                 <Typography style={{paddingLeft: "33.5px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Applied Opportunities</Typography>
               </Link>

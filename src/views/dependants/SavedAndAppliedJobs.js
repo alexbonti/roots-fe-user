@@ -73,7 +73,7 @@ function a11yProps(index) {
   };
 }
 
-const SavedAndAppliedJobs = () => {
+const SavedAndAppliedJobs = (props) => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [listSavedJobs, setListSavedJobs] = useState("");
@@ -138,12 +138,18 @@ const SavedAndAppliedJobs = () => {
     setIsFullView
   ]);
 
+  let dedfaultValueTab = 0;
+
+  if(props.location.state !== undefined){
+    dedfaultValueTab =  props.location.state.direction === "applied-jobs" ? 1 : 0;
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
         <AppBar position="static" color="default" style={{ height: "12vh" }}>
           <Tabs
-            value={value}
+            value={dedfaultValueTab}
             onChange={handleChange}
             indicatorColor="primary"
             textColor="primary"
