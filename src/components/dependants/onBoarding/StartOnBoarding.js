@@ -9,13 +9,7 @@ import { OnBoardingContext } from "contexts";
 
 
 
-const CustomTabPanel = withStyles(
-  {
- span: {
-   backgroundColor: "transparent"
- }
-  },
-)(TabPanel);
+
 
 
 function TabPanel(props) {
@@ -34,6 +28,15 @@ function TabPanel(props) {
     </Typography>
   );
 }
+
+const CustomTabPanel = withStyles(
+  {
+     div:  {
+       backgroundColor: "white !important"
+     }
+ }
+
+)(Tabs);
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -202,7 +205,7 @@ export const StartOnBoarding = props => {
             </Typography>
           </Grid>
           <Grid container item xs={12} justify="center" style={{paddingBottom: "63px"}}>
-            <Tabs
+            <CustomTabPanel
               value={value}
               onChange={handleChange}
               // onClick={() => {
@@ -229,7 +232,7 @@ export const StartOnBoarding = props => {
                   setUserHasExperience(false);
                 }}
               />
-            </Tabs>
+            </CustomTabPanel>
           </Grid>
           <Grid item container justify="center">
       <TabPanel value={value} index={0}>
