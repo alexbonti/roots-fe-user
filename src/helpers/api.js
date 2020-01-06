@@ -27,17 +27,8 @@ const errorHelper = (error, variant) => {
 class API {
   loginUser = async (data, setAccessToken) => {
     return await axiosInstance
-<<<<<<< HEAD
     .post("/user/login",data)
     .then(response => {
-=======
-    .post("/user/login", data, {})
-      // method: "post",
-      // //url: "http://localhost:8031/api/user/login",
-      // url: "http://localhost:8031/api/user/login",
-      // data,
-      .then(response => {
->>>>>>> development
         setAccessToken(response.data.data.accessToken);
         return response.data.data;
     })
