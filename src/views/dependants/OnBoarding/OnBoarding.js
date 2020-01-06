@@ -21,8 +21,8 @@ import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   topper: {
-    height: "6vh",
-    backgroundColor: "white",
+    backgroundColor: "#F7F6F6",
+    height: "6vh"
   },
   secondTopper: {
     backgroundColor: "rgb(234, 244, 246,1 )",
@@ -37,6 +37,11 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: "55px"
+  },
+  backButton: {
+    fontSize: "10px",
+    textTransform: "inherit"
   },
 }));
 
@@ -70,8 +75,7 @@ const OnBoarding = props => {
     if (loginStatus) {
       const triggerAPI = async () => {
         const data = {
-          avatar:
-            "string",
+          avatar: "string",
           preferredLocation: "",
           skills: [],
           preferredIndustry: [],
@@ -79,7 +83,10 @@ const OnBoarding = props => {
           coverLetter: "",
         };
         const profileData = await API.getUserProfile(accessToken);
-        setUserProfile(profileData.response);
+        if(profileData){
+          setUserProfile(profileData.response);
+        }
+        
         await API.updateUserPreferences(data);
       };
       triggerAPI(accessToken);
@@ -92,13 +99,15 @@ const OnBoarding = props => {
   };
 
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    if (activeStep > 0) {
+      setActiveStep(prevActiveStep => prevActiveStep - 1);
+    }
   };
 
   // ---------------------button stepper------------------------
 
   const buttonStepper = isStart ? (
-    <Grid item xs={10}>
+    <Grid item xs={11}>
       <Button
         fullWidth
         variant="contained"
@@ -106,7 +115,7 @@ const OnBoarding = props => {
         className={classes.buttons}
         onClick={handleNext}
       >
-        {activeStep === steps.length - 1 ? "Finish" : "Next"}
+        {activeStep === steps.length - 1 ? "Finish" : "Continue"}
       </Button>
     </Grid>
   ) : (
@@ -154,13 +163,9 @@ const OnBoarding = props => {
     activeStep > 2 ? (
       <EndOnBoarding />
     ) : (
-      <ThemeProvider theme={theme}>
+      <>
         <Grid container className={classes.topper} alignItems="flex-end">
-          <Button
-            disabled={activeStep === 0}
-            onClick={handleBack}
-            className={classes.backButton}
-          >
+          <Button onClick={handleBack} className={classes.backButton}>
             {"<"} Back
           </Button>
         </Grid>
@@ -168,21 +173,24 @@ const OnBoarding = props => {
         <Grid
           container
           item
-          xs={11}
+          xs={12}
           justify="center"
           alignItems="center"
-          style={{ height: "15vh" }}
+          style={{ height: "15vh", backgroundColor: "rgb(234, 244, 246)" }}
         >
-          <Typography variant="h6">
-            Welcome, {userProfile.first_name}. <br />
-            Let's get your profile ready.
-          </Typography>
+          <Grid item xs={11}>
+            <Typography variant="h6">
+              Welcome, {userProfile.first_name}. <br />
+              Let's get your profile ready.
+            </Typography>
+          </Grid>
         </Grid>
         <Grid
           style={{
-            backgroundColor: "rgb(234, 244, 246,1 )",
             height: "5vh",
             width: "100vw",
+            position: "relative",
+            top: "-13px"
           }}
         >
           <Stepper
@@ -193,7 +201,7 @@ const OnBoarding = props => {
               padding: "unset",
             }}
           >
-            <Step color="secondary">
+            <Step>
               <StepLabel></StepLabel>
             </Step>
             <Step>
@@ -205,8 +213,9 @@ const OnBoarding = props => {
           </Stepper>
         </Grid>
         {getStepContent(activeStep)}
-      </ThemeProvider>
+      </>
     );
+
 
   return <>{mainContent}</>;
 };

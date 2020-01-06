@@ -63,13 +63,13 @@ export const NoExperience = () => {
     <>
       <ThemeProvider theme={theme}>
         <Grid container justify="center">
-          <Grid item xs={9}>
-            <Typography >
+          <Grid item xs={11}>
+            <Typography style={{fonstSize: "16px", fontFamily: `"Arial", "Helvetica", sans-serif`, fontWeight: "bold"}}>
               Let's do this! <br />
               Where do you want to get your first job?
             </Typography>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={11}>
             <div>
               <TextField
                 required
@@ -77,7 +77,6 @@ export const NoExperience = () => {
                 label="Location"
                 value={inputPosition}
                 placeholder="Location"
-                className={classes.textField}
                 margin="normal"
                 fullWidth
                 onChange={event => {

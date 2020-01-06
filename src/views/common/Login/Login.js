@@ -7,15 +7,14 @@ import {
   Typography,
   Button,
   Grid,
-  List,
-  ListItemText,
-  ListItemIcon,
-  Divider,
-  ListItem
-
+  // List,
+  // ListItemText,
+  // ListItemIcon,
+  // Divider,
+  // ListItem
 } from "@material-ui/core";
-import FacebookIcon from '@material-ui/icons/Facebook';
-import InstagramIcon from '@material-ui/icons/Instagram';
+// import FacebookIcon from '@material-ui/icons/Facebook';
+// import InstagramIcon from '@material-ui/icons/Instagram';
 import { LoginContext } from "contexts";
 import { notify } from "components";
 import { API } from "helpers/index";
@@ -25,7 +24,7 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import Image from "../../../helpers/img/rootsheader.gif";
+import Image from "../../../helpers/img/Hands.svg";
 
 let theme = createMuiTheme({
   palette: {
@@ -43,40 +42,35 @@ const useStyles = makeStyles(theme => ({
     },
   },
   body: {
-    height: "65vh",
-    background: "rgba(237,237,237)"
+    //height: "60vh",
+    //background: "rgba(237,237,237)",
   },
   header: {
-    height: "42vh",
-    backgroundImage: `url(${Image})`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    backgroundSize: "100% 100%",
+    paddingBottom: "1vh ",
   },
   footer: {
     backgroundColor: "#363635",
     color: "#f0f0f0",
-    fontSize: ".3rem"
+    fontSize: ".3rem",
   },
 
   creator: {
     fontSize: ".7rem",
-    padding: ".5rem"
+    padding: ".5rem",
   },
-  
+
   divider: {
     border: "1px solid #FFD923",
     width: "65%",
-    marginLeft: "10%"
+    marginLeft: "10%",
   },
-
 
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   secondaryText: {
-    color: "white"
+    color: "white",
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -86,6 +80,17 @@ const useStyles = makeStyles(theme => ({
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
+    height: "55px",
+    boxShadow: "none"
+  },
+  buttonRegister: {
+    color: "#087b94",
+    borderRadius: "25px",
+    border: "2px solid #087b94",
+    backgroundColor: "white",
+    height: "55px",
+    boxShadow: "none"
+
   },
   developMessage: {},
   inputText: {
@@ -141,9 +146,24 @@ export const Login = () => {
   };
 
   let content = (
-    <div>
+    <div style={{ overflow: "hidden" }}>
       <ThemeProvider theme={theme}>
-        <Grid container justify="center" className={classes.header}></Grid>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          className={classes.header}
+        >
+          <Grid item xs={12} container justify="center" alignItems="center">
+            <Grid item xs={12} align="center">
+              <img
+                src={Image}
+                alt="logo"
+                style={{ height: "100%", width: "100%" }}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
         <Grid
           container
           justify="center"
@@ -175,6 +195,7 @@ export const Login = () => {
                 onChange={e => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
+              <Typography component={Link} to="/ResetPassword"color="primary" variant="caption" > Forgot passowrd?</Typography>
             </form>
           </Grid>
           <Grid
@@ -184,9 +205,9 @@ export const Login = () => {
             md={8}
             justify="center"
             alignItems="center"
-            style={{ padding: "3vh 5vw" }}
+            style={{ paddingTop: "5vh" }}
           >
-            <Grid item xs={12} md={4}style={{ paddingBottom: "3vh" }}>
+            <Grid item xs={10} sm={8} style={{ paddingBottom: "1vh" }}>
               <Button
                 fullWidth
                 variant="contained"
@@ -196,25 +217,25 @@ export const Login = () => {
                 Login
               </Button>
             </Grid>
-            <Grid item xs={12} md={10} style={{ paddingBottom: "3vh" }}>
-              <Typography align="center" variant="caption" display="block">
-                Or
+            <Grid item xs={12}  style={{ paddingTop: "2vh" }}>
+              <Typography align="center"  display="block" style={{fontFailmily: `"Arial Rounded MT", sans-serif`, fontSize: "16px", fontWeight: "bold", color: "#007D97"}}>
+                or
               </Typography>
             </Grid>
-            <Grid item xs={12} md={4} style={{ paddingBottom: "5vh" }}>
+            <Grid item xs={10} sm={8} style={{paddingTop: "2vh" , paddingBottom: "51.3px" }}>
               <Button
                 fullWidth
                 variant="contained"
-                className={classes.buttons}
+                className={classes.buttonRegister}
                 component={Link}
                 to="/register"
               >
-                Register
+                SIGN UP
               </Button>
             </Grid>
           </Grid>
         </Grid>
-        <Grid container justify="center" className={classes.footer}>
+        {/* <Grid container justify="center" className={classes.footer}>
           <Grid item xs={12} className={classes.developMessage}>
             <Grid container  item justify="space-between" >
               <Grid
@@ -280,7 +301,7 @@ export const Login = () => {
               Developed by Deakin Launchpad
             </Typography>
           </Grid>
-        </Grid>
+        </Grid> */}
       </ThemeProvider>
     </div>
   );

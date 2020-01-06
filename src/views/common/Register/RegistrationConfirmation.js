@@ -11,7 +11,8 @@ import {
 import { ThemeProvider } from "@material-ui/styles";
 import { API } from "helpers/index";
 import { LoginContext, UserContext } from "../../../contexts";
-import Image from "../../../helpers/img/RootLogo.svg";
+
+import { notify } from "components";
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -20,32 +21,18 @@ const useStyles = makeStyles(theme => ({
   },
   registerBox: {
     width: "100%", // Fix IE 11 issue.
-    height: "87vh",
-    marginTop: theme.spacing(2),
-    backgroundColor: "azure",
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+
   buttons: {
-    marginTop: theme.spacing(1),
-    borderRadius: "1rem",
+    borderRadius: "25px",
     backgroundColor: "#087B94",
     color: "white",
-  },
-  developMessage: {
-    position: "absolute",
-    bottom: "1vh",
+    height: "55px",
   },
   text: {
-    fontFamily: "Lato, Helvetica, Arial, sans-serif",
-    fontSize: "large",
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  containerButton: {
-    lineHeight: "5rem",
-    textAlign: "center",
+    fontFamily: "Arial Round, Helvetica, Arial, sans-serif",
+    fontSize: "18px",
+    fontWeight: "bold",
   },
 }));
 
@@ -68,6 +55,8 @@ const RegistrationConfirmation = ({ ...props }) => {
   const [isVerified, setIsVerified] = useState(false);
   const { setLoginStatus } = useContext(LoginContext);
   const { userProfile, setUserProfile } = useContext(UserContext);
+  const [isRedirect, setIsRedirect] = useState(false);
+
   const [hasGotRights] = useState(
     props.location.state &&
       props.location.state.hasOwnProperty("accessToken") &&
@@ -75,7 +64,6 @@ const RegistrationConfirmation = ({ ...props }) => {
       ? true
       : false
   );
-
 
   let accessToken =
     props.location.state && props.location.state.hasOwnProperty("accessToken")
@@ -93,77 +81,52 @@ const RegistrationConfirmation = ({ ...props }) => {
     }
   }, [isVerified, setLoginStatus]);
 
+  const resendOTP = async () => {
+    const resendOtpData = await API.resendOTP(accessToken);
+    if (resendOtpData) {
+      notify("Otp code sent");
+    }
+  };
   const sendCode = async () => {
     const verificationStatus = await API.sendOTP(
       { "OTPCode": code },
       accessToken
     );
-    if (verificationStatus === 200) {
+    if (verificationStatus) {
       window.localStorage.setItem("accessToken", accessToken);
       setIsVerified(true);
-      API.updateUserPreferences(
-        {
-          "avatar": "string",
-          "preferredLocation": "",
-          "skills": [
-            
-          ],
-          "preferredIndustry": [
-            
-          ],
-          "resumeURL": "",
-          "coverLetter": ""
-        }
-      );
+      API.updateUserPreferences({
+        "avatar": "string",
+        "preferredLocation": "",
+        "skills": [],
+        "preferredIndustry": [],
+        "resumeURL": "",
+        "coverLetter": "",
+      });
       setUserProfile(userDetails);
+      setLoginStatus(true);
+      setIsRedirect(true);
     }
   };
 
-  const content = isVerified ? (<ThemeProvider theme={theme}>
-    <Grid
-      container
-      className={classes.registerBox}
-      alignItems="center"
-      justify="center"
-    >
-      <Grid item xs={10} className={classes.text}>
-        Your account has been verified
-      </Grid>
-      <Grid item xs={10} container justify="center">
-        <Grid item xs={6}>
-          <Button fullWidth className={classes.buttons}>
-            <Link to="/onboarding" user={userProfile} style={{textDecoration: "none", color: "white"}}>Home</Link>
-          </Button>
-        </Grid>
-      </Grid>
-    </Grid>
-  </ThemeProvider>
-    
+  const content = isRedirect ? (
+    <Redirect
+      to={{
+        pathname: "/registerEnd",
+        state: { userProfile },
+      }}
+    />
   ) : (
     <ThemeProvider theme={theme}>
-      <Grid
-        container
-        className={classes.registerBox}
-        alignItems="center"
-        justify="center"
-      >
-        <Grid
-          item
-          xs={10}
-          container
-          justify="space-between"
-          alignItems="center"
-          spacing={3}
-          direction="column"
-          className={classes.text}
-        >
-          A verification code has been sent to:
-          <Typography variant="h5" color="secondary">
+      <Grid container className={classes.registerBox} justify="center">
+        <Grid item xs={11} container style={{ paddingTop: "5vh" }}>
+          <Typography className={classes.text}>
+            A verification code has been sent to: <br />
             {props.location.state.emailId}
           </Typography>
         </Grid>
-        <Grid item xs={10} container alignItems="center" justify="center">
-          <Grid item xs={6}>
+        <Grid item xs={10} container justify="center">
+          <Grid item xs={9}>
             <TextField
               margin="normal"
               required
@@ -174,7 +137,7 @@ const RegistrationConfirmation = ({ ...props }) => {
               onChange={e => setCode(e.target.value)}
             ></TextField>
           </Grid>
-          <Grid item xs={10} className={classes.containerButton}>
+          <Grid item xs={10} style={{ paddingTop: "5vh" }}>
             <Button
               fullWidth
               className={classes.buttons}
@@ -183,6 +146,17 @@ const RegistrationConfirmation = ({ ...props }) => {
               }}
             >
               Send
+            </Button>
+          </Grid>
+          <Grid item xs={10} style={{ paddingTop: "5vh" }}>
+            <Button
+              fullWidth
+              className={classes.buttons}
+              onClick={() => {
+                resendOTP();
+              }}
+            >
+              Resend OTP
             </Button>
           </Grid>
         </Grid>

@@ -1,6 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
-import { Grid, Chip, Typography, Button } from "@material-ui/core/";
+import {
+  makeStyles,
+  createMuiTheme,
+  withStyles,
+} from "@material-ui/core/styles";
+import { Grid, Chip, Typography, Button, TextField } from "@material-ui/core/";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
 import { LoginContext } from "contexts";
 import { withRouter } from "react-router-dom";
 import { API } from "../../../helpers";
@@ -44,10 +50,21 @@ const theme = createMuiTheme({
   },
 });
 
+const CustomAutocomplete = withStyles({
+  tag: {
+    backgroundColor: "#C74197",
+    display: "none",
+    "& .MuiChip-deleteIcon": {
+      color: "rgba(255, 255, 255, 0.7)",
+    },
+    color: "white",
+  },
+})(Autocomplete);
+
 const SearchSettings = () => {
   const classes = useStyles();
   const { loginStatus } = useContext(LoginContext);
-  const { setAvatarProfile } = useContext(UserContext);
+  const { setAvatarProfile, coverLetterUrl } = useContext(UserContext);
   const [chipData, setChipData] = useState(jobs);
   const [accumulator, setAccumulator] = useState();
   const [userExp, setUserExp] = useState();
@@ -58,6 +75,11 @@ const SearchSettings = () => {
       setUserExp(profileExtData.response);
       setAvatarProfile(profileExtData.response.avatar);
       setAccumulator(profileExtData.response.preferredIndustry);
+      const {preferredIndustry} = profileExtData.response;
+      let values  = [];
+      preferredIndustry.forEach(industry => values.push(Object.values(industry)[1]));
+      let filteredSavedData = jobs.filter(job => !values.includes(job.label) );
+      setChipData(filteredSavedData);
     };
     if (loginStatus) {
       triggerAPI();
@@ -75,27 +97,27 @@ const SearchSettings = () => {
     });
   };
 
-  const handleAdd = chipToAdd => () => {
-    let newData = chipData.filter(chip => chip.key === chipToAdd.key);
+  const handleAdd = chipToAdd => {
+    let newData = chipData.filter(chip => chip.label === chipToAdd.label);
     let x = accumulator !== null ? accumulator.concat(newData) : newData;
     setAccumulator(x);
     setChipData(chips => {
-      return chips.filter(chip => chip.key !== chipToAdd.key);
+      return chips.filter(chip => chip.label !== chipToAdd.label);
     });
   };
 
   let content = Array.isArray(accumulator)
     ? accumulator.map(chip => {
-      return (
-        <Chip
-          key={Math.random()}
-          label={chip.label}
-          color="secondary"
-          onDelete={handleDelete(chip)}
-          style={{ margin: ".5vh 1vw" }}
-        />
-      );
-    })
+        return (
+          <Chip
+            key={Math.random()}
+            label={chip.label}
+            color="secondary"
+            onDelete={handleDelete(chip)}
+            style={{ margin: ".5vh 1vw" }}
+          />
+        );
+      })
     : "";
 
   const saveChanges = () => {
@@ -109,10 +131,10 @@ const SearchSettings = () => {
 
     const data = {
       avatar,
-      coverLetter: coverLetter === null ? " " : coverLetter,
-      preferredLocation: preferredLocation === null ? " " : preferredLocation,
+      coverLetter: coverLetter !== "" ? coverLetter : coverLetterUrl,
+      preferredLocation,
       resumeUrl,
-      skills: skills === null ? [] : skills,
+      skills,
       preferredIndustry: accumulator,
     };
 
@@ -145,6 +167,28 @@ const SearchSettings = () => {
         <Grid item xs={12} style={{ padding: "0vh 3vw" }}>
           <Typography variant="h6">Choose from the list below</Typography>
         </Grid>
+        <Grid item xs={11}>
+          <CustomAutocomplete
+            multiple
+            id="tags-standard"
+            fullwidth="true"
+            options={chipData}
+            getOptionLabel={option => option.label}
+            onChange={e => {
+              handleAdd({ label: e.target.innerText });
+            }}
+            renderInput={params => (
+              <TextField
+                {...params}
+                variant="standard"
+                label="Multiple values"
+                placeholder="Favorites"
+                margin="normal"
+                fullWidth
+              />
+            )}
+          />
+        </Grid>
 
         <Grid
           container
@@ -152,13 +196,13 @@ const SearchSettings = () => {
           spacing={1}
           style={{ padding: "3vh", backgroundColor: "white" }}
         >
-          {chipData.map(chip => {
+          {chipData.slice(0, 8).map(chip => {
             return (
               <Grid key={Math.random()} item>
                 <Chip
                   key={Math.random()}
                   label={chip.label}
-                  onClick={handleAdd(chip)}
+                  onClick={() => handleAdd(chip)}
                 />
               </Grid>
             );
@@ -181,33 +225,33 @@ const SearchSettings = () => {
 };
 const jobs = [
   { key: 0, label: "Accounting" },
-  { key: 1, label: "Administration & Office Support" },
-  { key: 2, label: "Agriculture, Horticulture, Animal & Fishing" },
-  { key: 3, label: "Banking, Superannuation & Finance" },
   { key: 4, label: "Construction" },
-  { key: 5, label: "Customer Service & Call Centre" },
-  { key: 6, label: "Design & Architecture" },
-  { key: 7, label: "Editorial, Media & Creative Arts" },
-  { key: 8, label: "Education, Training & Childcare" },
+  { key: 8, label: "Education" },
   { key: 9, label: "Engineering" },
-  { key: 10, label: "Executive Management & Consulting" },
-  { key: 11, label: "Government, Emergency Services & Defence" },
-  { key: 12, label: "Healthcare & Medical" },
-  { key: 13, label: "Hospitality, Tourism & Food Services" },
-  { key: 14, label: "Human Resources (HR) & Recruitment" },
-  { key: 15, label: "Information Technology (IT)" },
+  { key: 13, label: "Hospitality" },
   { key: 16, label: "Insurance" },
+  { key: 23, label: "Sales" },
+  { key: 27, label: "Transport" },
+  { key: 1, label: "Administration" },
+  { key: 2, label: "Agriculture" },
+  { key: 3, label: "Banking" },
+  { key: 5, label: "Customer Service" },
+  { key: 6, label: "Design" },
+  { key: 7, label: "Editorial, Media" },
+  { key: 10, label: "Executive Management" },
+  { key: 11, label: "Government" },
+  { key: 12, label: "Healthcare" },
+  { key: 14, label: "Human Resources" },
+  { key: 15, label: "Information Technology (IT)" },
   { key: 17, label: "Legal" },
   { key: 18, label: "Manufacturing, Production & Operations" },
   { key: 19, label: "Marketing & Advertising" },
   { key: 20, label: "Mining & Energy" },
   { key: 21, label: "Property & Real Estate" },
   { key: 22, label: "Retail" },
-  { key: 23, label: "Sales" },
   { key: 24, label: "Science, Technology & Environment" },
   { key: 25, label: "Social Work & Community Services" },
   { key: 26, label: "Trades & Services" },
-  { key: 27, label: "Transport & Logistics" },
   { key: 28, label: "Work From Home & Self Employed" },
 ];
 

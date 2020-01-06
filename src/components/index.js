@@ -38,8 +38,8 @@ import { LargeNewsCard } from "./dependants/newsTab/LargeNewsCard";
 import { ListNews } from "./dependants/newsTab/ListNews";
 import { NewsCard } from "./dependants/newsTab/NewsCard";
 import { NewsFullView } from "./dependants/newsTab/NewsFullView";
-
-import { GoogleMaps } from "./dependants/MapsInput";
+import {MenuHamburger} from "../helpers/MenuHamburger";
+import { FilterOpportunity } from "./dependants/MapsInput";
 
 export {
   Notification,
@@ -79,9 +79,10 @@ export {
   JobAppiedList,
   FullListAppliedJobs,
   JobAppliedSmallCard,
-  GoogleMaps,
+  FilterOpportunity,
   LargeNewsCard,
   ListNews,
   NewsCard,
   NewsFullView,
+  MenuHamburger
 };

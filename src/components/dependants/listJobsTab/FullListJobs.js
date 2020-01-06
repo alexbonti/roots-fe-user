@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import {  Typography, Grid } from "@material-ui/core/";
-import { JobSmallCard, JobFullView, GoogleMaps } from "components";
+import { Typography, Grid } from "@material-ui/core/";
+import { JobSmallCard, JobFullView, FilterOpportunity } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
 import CloseIcon from "@material-ui/icons/Close";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import ReplayIcon from "@material-ui/icons/Replay";
+import FilterListIcon from "../../../helpers/img/search.svg";
+import PropTypes from "prop-types";
 
 const theme = createMuiTheme({
   palette: {
@@ -22,17 +22,40 @@ const theme = createMuiTheme({
 });
 
 export const FullListJobs = props => {
-  const { isFullView, jobId, listSavedJobs, filteredData, isFilterOn, setIsFilterOn } = useContext(HomeContext);
+  const {
+    isFullView,
+    jobId,
+    listSavedJobs,
+    filteredData,
+    setFilteredData,
+    isFilterOn,
+    setIsFilterOn,
+  } = useContext(HomeContext);
+
   const [searchSettingTab, setSearchSettingTab] = useState(false);
 
+  const newValues = [];
 
-  const opportunityString = props.data.length > 1 ? "opportunities" : "opportunity";
-  const filteredString = filteredData > 1 ? "opportunities" : "opportunity";
+  const value = Array.isArray(props.searchSetting)
+    ? props.searchSetting.map(industry => {
+        newValues.push(industry.label);
+        return newValues;
+      })
+    : [];
 
-  const filteredResultString = isFilterOn ? filteredString : opportunityString;
+  const filteredByIndustry =
+    Array.isArray(props.data) && value.length > 0
+      ? props.data.filter(job => {
+          return value[0].includes(job.industryField);
+        })
+      : props.data;
 
   const findSingleJobData = id => {
-    if (Array.isArray(props.data) && listSavedJobs !== "") {
+    if (
+      Array.isArray(props.data) &&
+      listSavedJobs !== "" &&
+      props.data.length > 0
+    ) {
       let selectedJob = props.data.filter(jobs => jobs._id === id);
       return {
         data: selectedJob[0],
@@ -43,6 +66,43 @@ export const FullListJobs = props => {
 
   let singleJobData = isFullView ? findSingleJobData(jobId) : "";
 
+  const opportunityString =
+    props.data.length > 1 ? "opportunities" : "opportunity";
+
+  const filteredString =
+    filteredData.length > 1 ? "opportunities" : "opportunity";
+
+  const filteredByIndustryString =
+    filteredByIndustry.length > 1 ? "opportunities" : "opportunity";
+
+  const initialStringFilteredByIndustry =
+    filteredByIndustry.length > 0
+      ? filteredByIndustryString
+      : opportunityString;
+
+  const filteredResultString = isFilterOn
+    ? filteredString
+    : initialStringFilteredByIndustry;
+  const filteredNumber = isFilterOn
+    ? filteredData.length
+    : filteredByIndustry.length;
+
+  const resetValuesButton = isFilterOn ? (
+    <Grid item xs={12} align="right" style={{ paddingRight: "2vw" }}>
+      <Typography
+        variant="caption"
+        align="right"
+        style={{ borderBottom: "1px solid black" }}
+        onClick={() => {
+          setIsFilterOn(false);
+        }}
+      >
+        Reset filters
+      </Typography>
+    </Grid>
+  ) : (
+    ""
+  );
 
   let searchTab = searchSettingTab ? (
     <>
@@ -54,42 +114,39 @@ export const FullListJobs = props => {
         <Grid item xs={11} align="right">
           <CloseIcon onClick={() => setSearchSettingTab(false)} />
         </Grid>
-        <GoogleMaps data={props.data} />
+        <FilterOpportunity data={props.data} />
       </Grid>
     </>
   ) : (
     <>
       <Grid
         container
-        alignItems="flex-start"
-        justify="center"
+        alignItems="flex-end"
+        justify="space-evenly"
         style={{
-          padding: "2vh 0vw",
-          paddingBottom: "5vh",
+          paddingTop: "4vh",
+          paddingBottom: "1vh",
           backgroundColor: "rgba(8, 124, 149, 0.1)",
         }}
       >
-        {isFilterOn ? (
-          <Grid item xs={12} align="right" onClick={() => setIsFilterOn(false)}>
-            <ReplayIcon style={{ color: "rgba(0, 0, 0, 0.71)" }} />
-          </Grid>
-        ) : (
-          ""
-        )}
+        <Grid item xs={10} lg={8} md={10}>
+          <Typography variant="h6">
+            We found {filteredNumber} {filteredResultString}
+          </Typography>
+        </Grid>
         <Grid
           item
-          xs={11}
-          lg={8} md={10}
+          xs={1}
           align="right"
           onClick={() => setSearchSettingTab(true)}
         >
-          <FilterListIcon style={{ color: "rgba(0, 0, 0, 0.71)" }} />
+          <img
+            src={FilterListIcon}
+            alt="search-icon"
+            style={{ color: "rgba(0, 0, 0, 0.71)" }}
+          />
         </Grid>
-        <Grid item xs={11} lg={8} md={10}>
-          <Typography variant="h6">
-            We found {props.data.length} {filteredResultString}
-          </Typography>
-        </Grid>
+        {resetValuesButton}
       </Grid>
     </>
   );
@@ -97,11 +154,10 @@ export const FullListJobs = props => {
   let listOfJobs = Array.isArray(props.data) ? (
     <>
       {searchTab}
-      <Grid container justify="center" >
-        <Grid item xs={12} md={10} lg={8} >
-          {props.data.map(job => {
+      <Grid container justify="center">
+        <Grid item xs={12} md={10} lg={8}>
+          {filteredByIndustry.map(job => {
             let isSaved = listSavedJobs.includes(job._id);
-
             return listSavedJobs !== "" ? (
               <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
             ) : (
@@ -126,7 +182,7 @@ export const FullListJobs = props => {
 
   let contentNotFiltered =
     isFullView &&
-    props.hasOwnProperty("data") &&
+    Object.prototype.hasOwnProperty.call(props, "data") &&
     singleJobData !== undefined ? (
       <JobFullView
         data={singleJobData.data}
@@ -136,45 +192,38 @@ export const FullListJobs = props => {
       listOfJobs
     );
 
-    
-  
+  let filteredResults =
+    filteredData !== [] ? (
+      <>
+        {searchTab}
+        <Grid container style={{ backgroundColor: "white" }}>
+          <Grid item xs={11} md={10} lg={10}>
+            {filteredData.map(job => {
+              let isSaved = listSavedJobs.includes(job._id);
+              return listSavedJobs !== "" ? (
+                <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
+              ) : (
+                ""
+              );
+            })}
+          </Grid>
+        </Grid>{" "}
+      </>
+    ) : (
+      <Grid>No results</Grid>
+    );
 
-  
-
-  let filderedResult =  filteredData !== [] ? (
-    <>
-      {searchTab}
-      
-      <Grid container style={{ backgroundColor: "white" }}>
-        <Grid item xs={11} md={10} lg={10}>
-          
-          {filteredData.map(job => {
-            let isSaved = listSavedJobs.includes(job._id);
-            return listSavedJobs !== "" ? (
-              <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
-            ) : (
-              ""
-            );
-          })}
-        </Grid>
-      </Grid>{" "}
-    </>
-  ) : <Grid>No results</Grid>;
-
-
-  let  contentFiltered =
+  let contentFiltered =
     isFullView &&
-    props.hasOwnProperty("data") &&
+    Object.prototype.hasOwnProperty.call(props,"data") &&
     singleJobData !== undefined ? (
       <JobFullView
         data={singleJobData.data}
         savedStatus={singleJobData.savedStatus}
       />
     ) : (
-      filderedResult
+      filteredResults
     );
-
-
 
   const results = isFilterOn ? contentFiltered : contentNotFiltered;
 
@@ -183,4 +232,10 @@ export const FullListJobs = props => {
       <ThemeProvider theme={theme}>{results}</ThemeProvider>
     </>
   );
+};
+
+FullListJobs.propTypes = {
+  data: PropTypes.array,
+  savedJobs: PropTypes.array.isRequired,
+  searchSetting: PropTypes.array,
 };

@@ -20,16 +20,15 @@ const theme = createMuiTheme({
 });
 
 export const JobAppliedSmallCard = props => {
-  const { setIsFullView, setJobId} = useContext(HomeContext);
+  const { setIsFullViewApplied, setJobId} = useContext(HomeContext);
 
 
  
   const openFullView = id => {
-    setIsFullView(true);
+    setIsFullViewApplied(true);
     setJobId(id);
   };
 
-  console.log(props);
   const {
     _id,
     company,

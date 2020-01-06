@@ -13,8 +13,6 @@ import { Spinner } from "components";
 import { API } from "helpers";
 import ReactHtmlParser from "react-html-parser";
 
-
-
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#087B94" },
@@ -25,15 +23,12 @@ const theme = createMuiTheme({
     contrastThreshold: 3,
     tonalOffset: 0.2,
   },
- 
-
 });
 
 export const JobSmallCard = props => {
   const { setIsFullView, setJobId, setIsUpdated } = useContext(HomeContext);
   const [savedJobs, setSavedJobs] = useState(props.savedStatus);
   const saveText = savedJobs ? "Saved" : "Save";
-
   
   const openFullView = id => {
     setIsFullView(true);
@@ -48,7 +43,7 @@ export const JobSmallCard = props => {
     location,
     positionTitle,
     publishDate,
-    description
+    description,
   } = props.data;
 
   const toogleSave = _id => {
@@ -65,8 +60,7 @@ export const JobSmallCard = props => {
     }
   };
   React.useEffect(() => {
-    window.scroll(0,0)
-    
+    window.scroll(0, 0);
   }, [props]);
 
   let endDateNew = endDate.substring(0, 10);
@@ -75,35 +69,77 @@ export const JobSmallCard = props => {
     <>
       {" "}
       <ThemeProvider theme={theme}>
-        <Grid container justify="center"alignItems="center" >
+        <Grid container justify="center" alignItems="center">
           <Grid
             item
             xs={11}
             onClick={() => {
-              window.scroll(0,0);
-              openFullView(_id); 
+              openFullView(_id);
             }}
+            style={{maxHeight: "185px", overflow: "hidden"}}
           >
-            <Grid style={{ padding: "1vh 0" }}>
-              <Typography variant="h6">{positionTitle}</Typography>
-              <Typography variant="subtitle2">
+            <Grid style={{ paddingTop: "22px"}}>
+              <Typography
+                style={{
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  fontFamily: `"Arial Rounded","Helvetica", sans-serif`,
+                }}
+              >
+                {positionTitle}
+              </Typography>
+              <Typography
+                style={{
+                  fontSize: "12px",
+                  fontFamily: `"Helvetica", sans-serif`,
+                }}
+              >
                 {company} on {publishDate.substring(0, 10)}
               </Typography>
             </Grid>
-            <Grid style={{ padding: "1vh 0" }}>
-              <Typography variant="body1">
+            <Grid style={{ paddingTop: "24px" }}>
+              <Typography
+                style={{
+                  fontSize: "12px",
+                  fontFamily: `"Arial Unicode MS", sans-serif`,
+                }}
+              >
                 {employmentType} / {location}
               </Typography>
-              {ReactHtmlParser(description.substring(0,50))} click to see more...
+              <div
+                style={{
+                  lineHeight: "17px",
+                  letterSpacing: "-0.41px",
+                  fontSize: "14px",
+                  fontFamily: `"Arial Unicode MS", sans-serif`,
+                }}
+              >
+                {ReactHtmlParser(description)}
+              </div>
             </Grid>
           </Grid>
-          <Grid container alignItems="center" item xs={11}style={{ padding: "1vh 0" }}>
+          {/* <Grid item xs={11}>
+            <Typography align="left" style={{fontSize: "15px", fontFamily: "Helvetica"}}>...click to see more</Typography>
+          </Grid> */}
+          <Grid
+            container
+            alignItems="center"
+            item
+            xs={11}
+            style={{ paddingTop: "34px", paddingBottom: "22px" }}
+          >
             <FormControlLabel
               style={{ marginRight: "0" }}
               control={
                 <Checkbox
                   icon={<StarBorder />}
-                  checkedIcon={<StarRate />}
+                  checkedIcon={
+                    <StarRate
+                      style={{
+                        color: "#FFD923",
+                      }}
+                    />
+                  }
                   checked={savedJobs}
                   onClick={() => {
                     toogleSave(_id);
@@ -111,23 +147,29 @@ export const JobSmallCard = props => {
                 />
               }
             />
-            <Typography align="left">{saveText}</Typography>
-            <Grid item container justify="flex-end">
-              <Grid item xs={10}>
-                <Typography
-                  align="right"
-                  variant="subtitle1"
-                  style={{ color: "rgb(157, 157, 157)" }}
-                >
-                  Expires on {endDateNew}
-                </Typography>
-              </Grid>
-            </Grid>
+            <Typography
+              style={
+                savedJobs
+                  ? {
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                      fontFamily: `"Helvetica", sans-serif`,
+                    }
+                  : {
+                      fontWeight: "400",
+                      fontSize: "12px",
+                      fontFamily: `"Helvetica", sans-serif`,
+                    }
+              }
+              align="left"
+            >
+              {saveText}
+            </Typography>
           </Grid>
           <Grid
             item
             xs={12}
-            style={{ height: "1vh", backgroundColor: "#F9F9F9" }}
+            style={{ height: "18px", backgroundColor: "#F9F9F9" }}
           ></Grid>
         </Grid>
       </ThemeProvider>

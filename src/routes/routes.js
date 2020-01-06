@@ -12,9 +12,10 @@ import {
   OnBoarding,
   Profile,
   SavedAndAppliedJobs,
-  SearchSettings
+  SearchSettings,
 } from "views";
 import { Layout } from "../layout";
+import { ResetPassword,  ResetPasswordSecondStep, RegisterSuccess} from "views/index";
 
 export const AppRoutes = props => {
   const { loginStatus } = useContext(LoginContext);
@@ -35,6 +36,18 @@ export const AppRoutes = props => {
           ) : (
             <Redirect to={{ pathname: "/home" }} {...props} />
           )
+        }
+      />
+      <Route
+        exact
+        path="/ResetPassword"
+        render={() => <ResetPassword  {...props} />
+        }
+      />
+      <Route
+        exact
+        path="/ResetPasswordSecondStep"
+        render={() => <ResetPasswordSecondStep  {...props} />
         }
       />
       <Route
@@ -71,10 +84,21 @@ export const AppRoutes = props => {
             )
           }
         />
+        
         <Route
           exact
           path="/registerSuccess"
           render={() => <RegistrationConfirmation {...props} />}
+        />
+
+        <Route
+          exact
+          path="/registerEnd"
+          render={() =>  redirectToLogin ? (
+            <Redirect to={{ pathname: "/login" }} {...props} />
+          ) : (
+            <RegisterSuccess {...props} />
+          )}
         />
 
         <Route

@@ -1,13 +1,26 @@
 import React, { useState, useContext } from "react";
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme,withStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Tabs, Tab, Box } from "@material-ui/core/";
 import { NoExperience, GotExperience } from "components";
 import PropTypes from "prop-types";
 import { OnBoardingContext } from "contexts";
 
+
+
+
+const CustomTabPanel = withStyles(
+  {
+ span: {
+   backgroundColor: "transparent"
+ }
+  },
+)(TabPanel);
+
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  console.log(props);
   return (
     <Typography
       component="div"
@@ -44,12 +57,33 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
-  buttons: {
-    color: "white",
-    border: "1px solid #087b94",
-    backgroundColor: "#087b94 !important",
-    margin: "4vh 0",
+  buttonRight: {
+    color: " #087b94",
+    border: "2px solid #087b94",
+    backgroundColor: "white",
+    position: "relative",
+    right: "30px",
+    width: "39vw",
+    borderRadius: "30px ",
+    "&:focus": {
+      color: "white",
+      backgroundColor: " #087b94",
+    },
+  },
+
+  buttonLeft: {
+    color: " #087b94",
+    border: "2px solid #087b94",
+    borderRight: "none",
+    backgroundColor: "white",
     width: "37vw",
+    borderRadius: "30px 0 0 30px ",
+    "&:focus": {
+      color: "white",
+      position: "relative",
+      borderRadius: "30px ",
+      backgroundColor: " #087b94",
+    },
   },
 }));
 
@@ -67,11 +101,11 @@ const theme = createMuiTheme({
 
 export const StartOnBoarding = props => {
   const classes = useStyles();
-  const [isStarted, setIsStarted] = useState(false);
-  const [value, setValue] = React.useState(false);
-  const {setUserHasExperience } = useContext(
-    OnBoardingContext
-  );
+  //const [isStarted, setIsStarted] = useState(false);
+  const [value, setValue] = useState(1);
+  const [btnLeftIsClicked, setBtnLeftIsClicked] = useState(false);
+  const [btnRightIsClicked, setBtnRightIsClicked] = useState(true);
+  const { setUserHasExperience } = useContext(OnBoardingContext);
 
   //   const changeStep = () => {
   //     setIsStart(true);
@@ -81,22 +115,75 @@ export const StartOnBoarding = props => {
     setValue(newValue);
   };
 
-  const handleStart = () => {
-    if (!isStarted) {
-      setIsStarted(true);
-    }
+  // const handleStart = () => {
+  //   if (!isStarted) {
+  //     setIsStarted(true);
+  //   }
+  // };
+
+  const styleIsClickedLeft = {
+    color: "white",
+    borderRadius: "30px ",
+    backgroundColor: " #087b94 ",
+    border: "2px solid #087b94",
+    width: "42vw",
+    transition: "all .1s ease-out",
+    textTransform: "inherit",
+    fontFamily: `"Arial ROunded MT Bold", "Helvetica", "Arial", sans-serif`,
   };
 
-  const tabsRender = isStarted ? (
-    <Grid item container justify="center">
-      <TabPanel value={value} index={0}>
-        <GotExperience />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <NoExperience />
-      </TabPanel>
-    </Grid>
-  ) : ""
+  const isNotClickedLeft = {
+    color: "#087b94",
+    borderRadius: "30px 0px  0px 30px ",
+    backgroundColor: " transparent",
+    border: "2px solid #087b94",
+    borderRight: "none",
+    width: "40vw",
+    left: "0px",
+    transition: "all .1s ease-out",
+    textTransform: "inherit",
+    fontFamily: `"Arial ROunded MT Bold", "Helvetica", "Arial", sans-serif`,
+  };
+
+  const styleIsClickedRight = {
+    color: "white",
+    position: "relative",
+    right: "20px",
+    borderRadius: "30px ",
+    backgroundColor: " #087b94 ",
+    border: "2px solid #087b94",
+    width: "40vw",
+    transition: "all .1s ease-out",
+    textTransform: "inherit",
+    fontFamily: `"Arial ROunded MT Bold", "Helvetica", "Arial", sans-serif`,
+  };
+
+  const isNotClickedRight = {
+    color: "#087b94",
+    borderRadius: "0px 30px 30px 0px ",
+    backgroundColor: " transparent",
+    border: "2px solid #087b94",
+    borderLeft: "none",
+    width: "40vw",
+    right: "20px",
+    transition: "all .1s ease-out",
+    textTransform: "inherit",
+    fontFamily: `"Arial ROunded MT Bold", "Helvetica", "Arial", sans-serif`,
+  };
+
+  const statusBtnLeft = btnLeftIsClicked
+    ? styleIsClickedLeft
+    : isNotClickedLeft;
+
+  const statusBtnRight = btnRightIsClicked
+    ? styleIsClickedRight
+    : isNotClickedRight;
+
+  // const tabsRender = isStarted ? (
+    
+  // ) : (
+  //   ""
+  // );
 
   return (
     <>
@@ -105,46 +192,53 @@ export const StartOnBoarding = props => {
           container
           justify="center"
           className={classes.rootMain}
-          spacing={2}
         >
-          <Grid item xs={9} container justify="flex-start">
-            <Typography variant="body1">
+          <Grid item xs={11} container justify="flex-start"  style={{paddingBottom: "14px"}}>
+            <Typography style={{fonstSize: "16px", fontFamily: `"Arial", "Helvetica", sans-serif`, fontWeight: "bold"}}>
               {" "}
               First of all,
               <br />
               have you got experience before ?
             </Typography>
           </Grid>
-          <Grid container item xs={12} justify="space-evenly">
+          <Grid container item xs={12} justify="center" style={{paddingBottom: "63px"}}>
             <Tabs
               value={value}
               onChange={handleChange}
-              onClick={() => {
-                handleStart();
-              }}
-              aria-label="simple tabs example"
+              // onClick={() => {
+              //   handleStart();
+              // }}
             >
               <Tab
                 label="Yes, I have"
                 {...a11yProps(0)}
-                className={classes.buttons}
+                style={statusBtnLeft}
                 onClick={() => {
+                  setBtnRightIsClicked(false);
+                  setBtnLeftIsClicked(true);
                   setUserHasExperience(true);
                 }}
-                style={{ borderRadius: "15px 0  0 15px" }}
               />
               <Tab
-                label="No, I'm new"
+                label="No, I am new"
                 {...a11yProps(1)}
-                className={classes.buttons}
+                style={statusBtnRight}
                 onClick={() => {
+                  setBtnRightIsClicked(true);
+                  setBtnLeftIsClicked(false);
                   setUserHasExperience(false);
                 }}
-                style={{ borderRadius: "0px 15px 15px 0" }}
               />
             </Tabs>
           </Grid>
-          {tabsRender}
+          <Grid item container justify="center">
+      <TabPanel value={value} index={0}>
+        <GotExperience />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <NoExperience />
+      </TabPanel>
+    </Grid>
         </Grid>
       </ThemeProvider>
     </>

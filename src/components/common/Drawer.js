@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, {useState, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import { Button, Grid, Typography, Avatar } from "@material-ui/core/";
+import { Button, Grid, Typography } from "@material-ui/core/";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
@@ -13,14 +13,14 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
 import SearchIcon from "@material-ui/icons/Search";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Icon from "@material-ui/core/Icon";
 import { API } from "helpers";
 import { LoginContext, UserContext } from "contexts";
-import Image from "../../helpers/img/rootsheader.gif";
+import { MenuHamburger } from "helpers/MenuHamburger";
+//import Image from "../../helpers/img/rootsheader.gif";
 
 const useStyles = makeStyles({
   list: {
-    width: 250,
+    width: "100% !important",
   },
   fullList: {
     width: "auto",
@@ -39,6 +39,7 @@ const useStyles = makeStyles({
 
 export const TemporaryDrawer = () => {
   const classes = useStyles();
+  const [isRedirect, setIsRedirect] = useState(false);
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -46,7 +47,7 @@ export const TemporaryDrawer = () => {
     right: false,
   });
   const { setLoginStatus } = useContext(LoginContext);
-  const { userName, userLastName, userProfile } = useContext(UserContext);
+  const {  userProfile  }  =  useContext(UserContext);
 
   const toggleDrawer = (side, open) => event => {
     if (
@@ -59,26 +60,27 @@ export const TemporaryDrawer = () => {
     setState({ ...state, [side]: open });
   };
 
-  const logout = () => {
-    API.logout();
-    setLoginStatus(false);
+  const logout = async () => {
+    const logoutdata = await API.logout();
+    if(logoutdata){
+      setLoginStatus(false);
+    }
   };
 
   const sideList = side => (
     <div
-      className={classes.list}
       role="presentation"
       onClick={toggleDrawer(side, false)}
       onKeyDown={toggleDrawer(side, false)}
-      style={{ height: "100%", backgroundColor: "white", width: "100%" }}
+      style={{ height: "100%" }}
     >
-      <List style={{ height: "100%", paddingTop: "0" }}>
+      <List style={{ height: "100%", paddingTop: "8px", backgroundColor:"rgba(8, 124, 149, .1)" }}>
         <Grid
           container
           justify="space-between"
           alignItems="baseline"
           direction="column"
-          style={{ height: "100%" }}
+          style={{ height: "100%"}}
         >
           <Grid item>
             <Grid
@@ -87,92 +89,80 @@ export const TemporaryDrawer = () => {
               justify="center"
               alignItems="center"
               style={{
-                backgroundColor: "#065a6d",
-                backgroundImage:
-                  " linear-gradient(242deg, #065a6d 0%, #087b94 58%, #0e91b1 100%)",
-                height: "15vh",
+                backgroundColor: "rgba(8,124,149, 1)", height: "53px",
               }}
             >
-              <Grid item container justify="space-evenly" alignItems="center">
+              <Grid item container  alignItems="center" >
                 <Grid>
-                  <Avatar variant="rounded" sizes="large" src={Image} className={classes.bigAvatar}/>
-                </Grid>
-                <Grid>
-                  <Typography variant="body1" style={{ color: "white" }}>
-                    Welcome,
-                  </Typography>
-                  <Typography variant="h6" style={{ color: "white" }}>
-                    {userName} {userLastName}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-            <ListItem button={true} className={classes.item}>
-              <ListItemIcon>
-                <AssignmentIndIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
-              <Link
+                <Link
                 user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/profile"
               >
-                <ListItemText primary="My Profile" />
+                  <Typography variant="body1" style={{ color: "rgb(243,243,243)", fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold", padding:"17px 10px 18px 33px "}}>
+                    My profile
+                  </Typography></Link>
+                </Grid>
+              </Grid>
+            </Grid>
+       
+
+            <ListItem button>
+            
+              <Link
+                user={userProfile}
+                style={{ textDecoration: "none", color: "inherit",  }}
+                to={{pathname: "/jobs", state: {direction: "saved-jobs"}}}
+              >
+                <Typography style={{paddingLeft: "33.5px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Saved Opportunities</Typography>
               </Link>
             </ListItem>
 
             <ListItem button>
-              <ListItemIcon>
-                <StarBorderIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
               <Link
                 user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
-                to="/jobs"
+                to={{pathname: "/jobs", state: {direction: "applied-jobs"}}}
               >
-                <ListItemText primary="Saved Opportunities" />
+                <Typography style={{paddingLeft: "33.5px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Applied Opportunities</Typography>
               </Link>
             </ListItem>
 
             <ListItem button>
-              <ListItemIcon>
-                <DoneOutlineIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
-              <Link
-                user={userProfile}
-                style={{ textDecoration: "none", color: "inherit" }}
-                to="/jobs"
-              >
-                <ListItemText primary="Applied Opportunities" />
-              </Link>
-            </ListItem>
-
-            <ListItem button>
-              <ListItemIcon>
-                <SearchIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
               <Link
                 user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/search"
               >
-                <ListItemText primary="Search Settings" />
+                <Typography style={{paddingLeft: "33.5px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Search Settings</Typography>
               </Link>
             </ListItem>
-            <Divider />
-          </Grid>
-          <Grid item>
+            <Grid container justify="center" style={{paddingTop: "16px"}}>
+                <Grid item xs={9}>
+                    <Divider style={{border: "1px solid rgba(149, 154, 156, 1)"}} />
+                </Grid>
+            </Grid>
+            <Grid item>
             <ListItem
               button={true}
               onClick={() => logout()}
-              style={{ bottom: "0", position: "relative" }}
+              style={{paddingLeft: "0"}}
             >
-              <ListItemIcon>
-                <ExitToAppIcon style={{ color: "#065a6d" }} />
-              </ListItemIcon>
-              <ListItemText primary="Log out" />
+  
+  <Typography style={{paddingLeft: "27px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Log out  {"    "}  > </Typography>
+            </ListItem>
+          </Grid>
+          </Grid>
+          <Grid item >
+            <ListItem
+           style={{paddingLeft: "102.5px", paddingBottom: "60px"}}
+            >
+  
+  <Typography style={{fontSize: "14px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Deakin Create</Typography>
             </ListItem>
           </Grid>
         </Grid>
+        
       </List>
     </div>
   );
@@ -181,7 +171,7 @@ export const TemporaryDrawer = () => {
     <div>
       <Button onClick={toggleDrawer("right", true)}>
         {" "}
-        <Icon style={{ color: "#FFFFFF" }}>list</Icon>
+        <MenuHamburger />
       </Button>
       <Drawer
         anchor="right"

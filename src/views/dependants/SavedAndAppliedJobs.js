@@ -11,7 +11,6 @@ import API from "../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
 import { UserContext } from "contexts/index";
 
-
 //todo add a message when there are no saved opportunities and/or applied ones
 
 const useStyles = makeStyles(theme => ({
@@ -73,11 +72,11 @@ function a11yProps(index) {
   };
 }
 
-const SavedAndAppliedJobs = () => {
+const SavedAndAppliedJobs = props => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const [listSavedJobs, setListSavedJobs] = useState("");
-  const [appliedJobs, setAppliedJobs] = useState("");
+  const [appliedJobs, setAppliedJobs] = useState([]);
   const { loginStatus } = useContext(LoginContext);
   const { setIsFullView } = useContext(HomeContext);
   const {
@@ -85,7 +84,7 @@ const SavedAndAppliedJobs = () => {
     setUserLastName,
     setUserEmail,
     setAvatarProfile,
-    setIsUpdated
+    setIsUpdated,
   } = useContext(UserContext);
   const [oppData, setOppData] = useState("");
 
@@ -99,44 +98,88 @@ const SavedAndAppliedJobs = () => {
     setValue(index);
   };
 
-  useEffect(() => {
-    setIsFullView(false);
-    const triggerAPI = async () => {
-      const oppResponse = await API.getOpportunity();
-      setOppData(oppResponse.response);
-      const profileResponse = await API.getUserProfile();
-      setUserName(profileResponse.response.first_name);
-      setUserLastName(profileResponse.response.last_name);
-      setUserEmail(profileResponse.response.emailId);
-      const profileExtData = await API.getUserProfileExt();
-      setAvatarProfile(profileExtData.response.avatar);
-      setListSavedJobs(profileExtData.response.savedJobs);
-      const appliedOppData = await API.getUserAppliedJobs();
-      setAppliedJobs(appliedOppData.response);
-      console.log(appliedOppData);
 
+  useEffect(() => {
+    const triggerAPI = async () => {
+      const appliedOppData = await API.getUserAppliedJobs();
+      if (appliedOppData) {
+        setAppliedJobs(appliedOppData.response);
+      }
     };
     if (loginStatus) {
       triggerAPI();
-      setIsUpdated(true);
-
     }
-  }, [loginStatus, 
-    setOppData,
-    setUserName,
-    setUserLastName,
-    setUserEmail,
-    setIsUpdated,
-    setAvatarProfile,
-    setIsFullView
+  }, []);
+
+  useEffect(() => {
+    const triggerAPI = async () => {
+      const profileResponse = await API.getUserProfile();
+      if (profileResponse) {
+        setUserName(profileResponse.response.first_name);
+        setUserLastName(profileResponse.response.last_name);
+        setUserEmail(profileResponse.response.emailId);
+      }
+    };
+    if (loginStatus) {
+      triggerAPI();
+    }
+  }, []);
+
+  useEffect(() => {
+    const triggerAPI = async () => {
+      const profileExtData = await API.getUserProfileExt();
+      if (profileExtData) {
+        setAvatarProfile(profileExtData.response.avatar);
+        setListSavedJobs(profileExtData.response.savedJobs);
+      }
+    };
+    if (loginStatus) {
+      triggerAPI();
+    }
+  }, []);
+
+
+  // useEffect(() => {
+  //   const triggerAPI = async () => {
+  //     const profileExtData = await API.getUserProfileExt();
+  //     if (profileExtData) {
+  //       setAvatarProfile(profileExtData.response.avatar);
+  //       setListSavedJobs(profileExtData.response.savedJobs);
+  //     }
+  //   };
+  //   if (loginStatus) {
+  //     triggerAPI();
+  //   }
+  // }, []);
+
+
+
+  useEffect(() => {
+    const triggerAPI = async () => {
+      const oppResponse = await API.getOpportunity();
+      if (oppResponse) {
+        setOppData(oppResponse.response);
+      }
+    };
+    if (loginStatus) {
+      triggerAPI();
+    }
+  }, [
   ]);
+
+  let dedfaultValueTab = 0;
+
+  if (props.location.state !== undefined) {
+    dedfaultValueTab =
+      props.location.state.direction === "applied-jobs" ? 1 : 0;
+  }
 
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
         <AppBar position="static" color="default" style={{ height: "12vh" }}>
           <Tabs
-            value={value}
+            value={dedfaultValueTab}
             onChange={handleChange}
             indicatorColor="primary"
             textColor="primary"
@@ -145,8 +188,16 @@ const SavedAndAppliedJobs = () => {
             aria-label="full width tabs example"
             style={{ marginTop: 0 }}
           >
-            <Tab label="Saved Opportunities" {...a11yProps(0)} className={classes.tab} />
-            <Tab label="Applied Opportunity" {...a11yProps(1)} className={classes.tab} />
+            <Tab
+              label="Saved Opportunities"
+              {...a11yProps(0)}
+              className={classes.tab}
+            />
+            <Tab
+              label="Applied Opportunity"
+              {...a11yProps(1)}
+              className={classes.tab}
+            />
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -155,7 +206,7 @@ const SavedAndAppliedJobs = () => {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <FullListSavedJobs data={oppData} savedJobs={listSavedJobs}/>
+            <FullListSavedJobs data={oppData} savedJobs={listSavedJobs} />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             <FullListAppliedJobs data={appliedJobs} />
@@ -165,6 +216,5 @@ const SavedAndAppliedJobs = () => {
     </ThemeProvider>
   );
 };
-
 
 export default withRouter(SavedAndAppliedJobs);

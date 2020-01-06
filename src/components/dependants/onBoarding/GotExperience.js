@@ -16,6 +16,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#087b94 !important",
     margin: "4vh 0",
   },
+  textField: {
+    marginTop: "0px",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -70,13 +73,19 @@ export const GotExperience = () => {
     <>
       <ThemeProvider theme={theme}>
         <Grid container justify="center">
-          <Grid item xs={10}>
-            <Typography>
+          <Grid item xs={11}>
+            <Typography
+              style={{
+                fonstSize: "16px",
+                fontFamily: "Arial, Helvetica, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
               Great! <br />
               What was your recent position?
             </Typography>
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={11}>
             <TextField
               className={classes.textField}
               required
@@ -90,7 +99,7 @@ export const GotExperience = () => {
               }}
             />{" "}
           </Grid>
-          <Grid item xs={10} >
+          <Grid item xs={11}>
             <TextField
               className={classes.textField}
               required
@@ -104,7 +113,13 @@ export const GotExperience = () => {
               }}
             />{" "}
           </Grid>
-          <Grid container item justify="space-evenly" xs={10} style={{padding: "2vh 0"}}>
+          <Grid
+            container
+            item
+            justify="space-evenly"
+            xs={11}
+            style={{ padding: "2vh 0" }}
+          >
             <Grid item xs={6}>
               <TextField
                 id="date"
@@ -137,12 +152,18 @@ export const GotExperience = () => {
             </Grid>
           </Grid>
 
-          <Grid item xs={10} style={{padding: "4vh 0 0 0"}}>
-            <Typography>
-              Where do you want to get your first job?
+          <Grid item xs={11} style={{ padding: "120px 0 0 0" }}>
+            <Typography
+              style={{
+                fonstSize: "16px",
+                fontFamily: `"Arial", "Helvetica", sans-serif`,
+                fontWeight: "bold",
+              }}
+            >
+              Where are you looking to work in?
             </Typography>
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={11}>
             <div>
               <TextField
                 required
@@ -162,25 +183,25 @@ export const GotExperience = () => {
                 {positionSuggestions !== null &&
                 positionSuggestions !== undefined &&
                 positionSuggestions !== "" ? (
-                    <div className={classes.suggestion}>
-                      {positionSuggestions.map(suggestion => {
-                        return (
-                          <div
-                            key={Math.random()}
-                            onClick={event => {
-                              event.preventDefault();
-                              setSuggestions(event);
-                              getLongLat(suggestion);
-                            }}
-                          >
-                            {suggestion.label}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                  <div className={classes.suggestion}>
+                    {positionSuggestions.map(suggestion => {
+                      return (
+                        <div
+                          key={Math.random()}
+                          onClick={event => {
+                            event.preventDefault();
+                            setSuggestions(event);
+                            getLongLat(suggestion);
+                          }}
+                        >
+                          {suggestion.label}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div />
             </div>

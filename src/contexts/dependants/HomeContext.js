@@ -11,10 +11,13 @@ export const HomeProvider = props => {
   const [userWantsToApply, setUserWantsToApply] = useState(false);
   const [dataToBeSentResources, setDataToBeSentResources] = useState({});
   const [jobId, setJobId] = useState("");
-  const [listSavedJobs, setListSavedJobs] = useState("");
+  const [listSavedJobs, setListSavedJobs] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [test, setTest] = useState("test")
   const [isFilterOn, setIsFilterOn] = useState(false);
   const [isFullViewNews, setIsFullViewNews] = useState(false);
+  const [isFullViewSaved, setIsFullViewSaved] = useState(false);
+  const [isFullViewApplied, setIsFullViewApplied] = useState(false);
   const [detailsNews, setDetailsNews] = useState("");
 
   const { children } = props;
@@ -44,7 +47,13 @@ export const HomeProvider = props => {
         detailsNews, 
         setDetailsNews,
         isFullViewNews, 
-        setIsFullViewNews
+        setIsFullViewNews,
+        isFullViewApplied, 
+        setIsFullViewApplied,
+        isFullViewSaved, 
+        setIsFullViewSaved,
+        test, 
+        setTest
 
       }}
     >

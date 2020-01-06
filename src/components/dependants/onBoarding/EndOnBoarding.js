@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: "55px"
   },
 }));
 
@@ -44,7 +45,7 @@ export const EndOnBoarding = () => {
           }}
         >
           <Grid item xs={8}>
-            <Typography variant="h6">
+            <Typography style={{fontFamily: "Arial Rounded MT, sans-serif", fontSize: "21px", fontWeight: "bold"}}>
               Congratulation, {userProfile.first_name}. <br /> Now, you are all set for your next
               job!
             </Typography>
@@ -54,9 +55,11 @@ export const EndOnBoarding = () => {
               fullWidth
               variant="contained"
               color="primary"
+              component={Link}
+              to="/"
               className={classes.buttons}
             >
-              <Link to="/" style={{textDecoration: "none", color: "white"}}> Search Opportunities </Link>
+              Search Opportunities 
             </Button>
           </Grid>
         </Grid>

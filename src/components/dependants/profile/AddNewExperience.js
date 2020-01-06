@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import "date-fns";
-import { Typography, Grid, TextField, Button } from "@material-ui/core/";
-import { makeStyles } from "@material-ui/core/styles";
+import { Typography, Grid, TextField, Button, createMuiTheme } from "@material-ui/core/";
+import { makeStyles,ThemeProvider } from "@material-ui/core/styles";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -10,6 +10,7 @@ import {
 } from "@material-ui/pickers";
 import { TextEditor, notify } from "components";
 import { TextEditorContext, UserContext } from "contexts/index";
+
 import { API } from "helpers";
 
 const useStyles = makeStyles(() => ({
@@ -19,18 +20,31 @@ const useStyles = makeStyles(() => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: "55px"
   },
 }));
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#087B94" },
+    secondary: { main: "#C74197" },
+    terziary: { main: "#2B2B28" },
+    accent: { main: "#FFD922" },
+    error: { main: "#D0011B" },
+    contrastThreshold: 3,
+    tonalOffset: 0.2,
+  },
+});
 
 export const AddNewExperience = props => {
   const classes = useStyles();
   const { workExperience } = useContext(TextEditorContext);
   const { setIsAddMode, setIsUpdated } = useContext(UserContext);
   const [selectedStartDate, setSelectedStartDate] = React.useState(
-    new Date("2019-08-18T21:11:54")
+    new Date(Date.now())
   );
   const [selectedEndDate, setSelectedEndDate] = React.useState(
-    new Date("2019-08-18T21:11:54")
+    new Date(Date.now())
   );
   const [newPositionName, setNewPositionName] = useState("");
   const [newCompanyName, setNewCompanyName] = useState("");
@@ -62,10 +76,12 @@ export const AddNewExperience = props => {
         },
       };
       const workExpApiData = await API.updateWorkExp(data);
-      setIsUpdated(true);
-      setIsAddMode(false);
-      notify("New Work Experience added succesfully");
-      console.log("workExpApiData", workExpApiData);
+      if(workExpApiData){
+        setIsUpdated(true);
+        setIsAddMode(false);
+        notify("New Work Experience added succesfully");
+        console.log("workExpApiData", workExpApiData);
+      }
     } else if (field === "education") {
       let data = {
         "education": {
@@ -77,10 +93,12 @@ export const AddNewExperience = props => {
         },
       };
       const educationExpData = await API.updateEducationExp(data);
-      setIsUpdated(true);
-      setIsAddMode(false);
-      notify("New Education Experience added succesfully");
-      console.log("educationExpData", educationExpData);
+      if(educationExpData){
+        setIsUpdated(true);
+        setIsAddMode(false);
+        notify("New Education Experience added succesfully");
+        console.log("educationExpData", educationExpData);
+      }
     }
   };
 
@@ -89,7 +107,8 @@ export const AddNewExperience = props => {
   const content =
     props.data === "work" ? (
       <>
-        <Grid container justify="center" style={{ padding: "2vh 0" }}>
+      <ThemeProvider theme={theme}>
+        <Grid container justify="center" style={{ overflow: "hidden" }}>
           <Grid
             item
             xs={12}
@@ -98,7 +117,7 @@ export const AddNewExperience = props => {
               backgroundColor: "rgba(8, 124, 149, 0.1)",
             }}
           >
-            <Typography variant="h5">Work Experience</Typography>
+            <Typography style={{fontWeight: "bold", fontSize: "21px", fontFamily: "Arial Rounded MD, sans-serif"}}>Work Experience</Typography>
           </Grid>
           <Grid
             container
@@ -112,6 +131,7 @@ export const AddNewExperience = props => {
               onClick={() => {
                 setIsAddMode(false);
               }}
+              style={{fontSize: "12px", fontFamily: "Arial Unicode MS, sans-serif"}}
             >
               {"<"} Back to Profile
             </Grid>
@@ -190,9 +210,11 @@ export const AddNewExperience = props => {
             </Button>
           </Grid>
         </Grid>
+        </ThemeProvider>
       </>
     ) : (
       <>
+      <ThemeProvider theme={theme}>
         <Grid container justify="center" style={{ padding: "2vh 0" }}>
           <Grid
             item
@@ -300,6 +322,7 @@ export const AddNewExperience = props => {
             </Button>
           </Grid>
         </Grid>
+        </ThemeProvider >
       </>
     );
 
