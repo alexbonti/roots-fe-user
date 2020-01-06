@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab, Typography, Box } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
-import { FullListJobs, FullListResources,ListNews } from "components";
+import { FullListJobs, FullListResources, ListNews, Spinner } from "components";
 import { LoginContext, UserContext, HomeContext } from "contexts";
 import { withRouter } from "react-router-dom";
 import API from "../../../helpers/api";
@@ -69,29 +69,39 @@ function a11yProps(index) {
 }
 
 const Home = (props) => {
+
+  console.log("TCL: Home -> props", props);
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const { loginStatus } = useContext(LoginContext);
-  const {setIsUpdated, listSavedJobs, setListSavedJobs, setIsFullView} = useContext(HomeContext);
+
+
+  //CONTEXT
+  const { listSavedJobs, setListSavedJobs, setIsFullView} = useContext(HomeContext);
   const {
     setUserName,
     setUserLastName,
     setUserEmail,
     setAvatarProfile,
   } = useContext(UserContext);
+
+  // STATE
   const [searchSettings, setSearchSettings] = useState([]);
   const [oppData, setOppData] = useState([]);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+
   const handleChangeIndex = index => {
     setValue(index);
   };
 
+
+  //API CALLS
   useEffect(() => {
     const triggerAPI = async () => {
-      setIsFullView(false)
+
+      setIsFullView(false);
       const oppResponse = await API.getOpportunity();
       if(oppResponse){
         setOppData(oppResponse.response);
@@ -108,12 +118,12 @@ const Home = (props) => {
         setListSavedJobs(profileExtData.response.savedJobs);
         setSearchSettings(profileExtData.response.preferredIndustry);
       }
+
+      Promise.all([profileResponse,profileExtData, oppResponse]).then(res => res).catch(err => err);
     };
-    if (loginStatus) {
-      triggerAPI();
-      setIsUpdated(false);
-    }
-  }, [loginStatus, 
+    triggerAPI();
+
+  }, [ 
     setOppData,
     setUserName,
     setUserLastName,
@@ -121,9 +131,10 @@ const Home = (props) => {
     setAvatarProfile,
     setListSavedJobs,
     setIsFullView,
-    setIsUpdated]);
+  ]);
 
-  return (
+  return Array.isArray(oppData) ? (
+
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
         <AppBar position="static" color="default" >
@@ -159,8 +170,11 @@ const Home = (props) => {
         </SwipeableViews>
       </div>
     </ThemeProvider>
-  );
+  ) : <Spinner />
 };
 
 
 export default withRouter(Home);
+// Home.PropTypes = {
+//   data: 
+// }

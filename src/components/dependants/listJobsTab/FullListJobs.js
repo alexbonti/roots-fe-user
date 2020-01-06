@@ -7,9 +7,7 @@ import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
 import CloseIcon from "@material-ui/icons/Close";
 import FilterListIcon from "../../../helpers/img/search.svg";
-import ReplayIcon from "@material-ui/icons/Replay";
 import PropTypes from "prop-types";
-import { set } from "date-fns";
 
 const theme = createMuiTheme({
   palette: {
@@ -24,7 +22,6 @@ const theme = createMuiTheme({
 });
 
 export const FullListJobs = props => {
-  console.log(props);
   const {
     isFullView,
     jobId,
@@ -34,9 +31,8 @@ export const FullListJobs = props => {
     isFilterOn,
     setIsFilterOn,
   } = useContext(HomeContext);
+
   const [searchSettingTab, setSearchSettingTab] = useState(false);
-
-
 
   const newValues = [];
 
@@ -55,7 +51,11 @@ export const FullListJobs = props => {
       : props.data;
 
   const findSingleJobData = id => {
-    if (Array.isArray(props.data) && listSavedJobs !== "") {
+    if (
+      Array.isArray(props.data) &&
+      listSavedJobs !== "" &&
+      props.data.length > 0
+    ) {
       let selectedJob = props.data.filter(jobs => jobs._id === id);
       return {
         data: selectedJob[0],
@@ -69,15 +69,23 @@ export const FullListJobs = props => {
   const opportunityString =
     props.data.length > 1 ? "opportunities" : "opportunity";
 
-  const filteredString = filteredData.length> 1 ? "opportunities" : "opportunity";
+  const filteredString =
+    filteredData.length > 1 ? "opportunities" : "opportunity";
 
-  const filteredByIndustryString = filteredByIndustry.length > 1 ? "opportunities" : "opportunity";
-  
-  const initialStringFilteredByIndustry = filteredByIndustry.length > 0 ? filteredByIndustryString : opportunityString;
+  const filteredByIndustryString =
+    filteredByIndustry.length > 1 ? "opportunities" : "opportunity";
 
-  const filteredResultString = isFilterOn ? filteredString : initialStringFilteredByIndustry;
-  const filteredNumber = isFilterOn ? filteredData.length : filteredByIndustry.length;
+  const initialStringFilteredByIndustry =
+    filteredByIndustry.length > 0
+      ? filteredByIndustryString
+      : opportunityString;
 
+  const filteredResultString = isFilterOn
+    ? filteredString
+    : initialStringFilteredByIndustry;
+  const filteredNumber = isFilterOn
+    ? filteredData.length
+    : filteredByIndustry.length;
 
   const resetValuesButton = isFilterOn ? (
     <Grid item xs={12} align="right" style={{ paddingRight: "2vw" }}>
@@ -85,7 +93,9 @@ export const FullListJobs = props => {
         variant="caption"
         align="right"
         style={{ borderBottom: "1px solid black" }}
-        onClick={()=> {setIsFilterOn(false);}}
+        onClick={() => {
+          setIsFilterOn(false);
+        }}
       >
         Reset filters
       </Typography>
@@ -119,8 +129,6 @@ export const FullListJobs = props => {
           backgroundColor: "rgba(8, 124, 149, 0.1)",
         }}
       >
-    
-
         <Grid item xs={10} lg={8} md={10}>
           <Typography variant="h6">
             We found {filteredNumber} {filteredResultString}
@@ -150,7 +158,6 @@ export const FullListJobs = props => {
         <Grid item xs={12} md={10} lg={8}>
           {filteredByIndustry.map(job => {
             let isSaved = listSavedJobs.includes(job._id);
-
             return listSavedJobs !== "" ? (
               <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
             ) : (
@@ -175,7 +182,7 @@ export const FullListJobs = props => {
 
   let contentNotFiltered =
     isFullView &&
-    props.hasOwnProperty("data") &&
+    Object.prototype.hasOwnProperty.call(props, "data") &&
     singleJobData !== undefined ? (
       <JobFullView
         data={singleJobData.data}
@@ -208,7 +215,7 @@ export const FullListJobs = props => {
 
   let contentFiltered =
     isFullView &&
-    props.hasOwnProperty("data") &&
+    Object.prototype.hasOwnProperty.call(props,"data") &&
     singleJobData !== undefined ? (
       <JobFullView
         data={singleJobData.data}
@@ -229,6 +236,6 @@ export const FullListJobs = props => {
 
 FullListJobs.propTypes = {
   data: PropTypes.array,
-  savedJobs: PropTypes.array,
+  savedJobs: PropTypes.array.isRequired,
   searchSetting: PropTypes.array,
 };

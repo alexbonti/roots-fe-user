@@ -5,8 +5,9 @@ import { Typography, Grid } from "@material-ui/core/";
 import { JobAppliedSmallCard, JobFullView } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
+import PropTypes from "prop-types";
 
-// TODO change the full view accordingly coming from this page
+
 
 const theme = createMuiTheme({
   palette: {
@@ -20,17 +21,19 @@ const theme = createMuiTheme({
   },
 });
 
-export const FullListAppliedJobs = props => {
-  const { isFullView, jobId } = useContext(HomeContext);
 
+export const FullListAppliedJobs = props => {
+  const { isFullViewApplied,  jobId } = useContext(HomeContext);
+  
   const findSingleJobData = id => {
     if (Array.isArray(props.data)) {
       let selectedJob = props.data.filter(jobs => jobs.jobId._id === id);
       return selectedJob[0].jobId;
     }
   };
-
-  let singleJobData = isFullView ? findSingleJobData(jobId) : [];
+  
+  let singleJobData = isFullViewApplied ? findSingleJobData(jobId) : [];
+  console.log("TCL: singleJobData", singleJobData)
   let introMessage =
     props.data < 1 ? (
       <Grid item xs={11}>
@@ -64,10 +67,9 @@ export const FullListAppliedJobs = props => {
       </Grid>
     </Grid>
   );
-
   let content =
-    isFullView &&
-    props.hasOwnProperty("data") &&
+  isFullViewApplied &&
+    Object.prototype.hasOwnProperty.call(props, "data") &&
     singleJobData !== undefined ? (
       <JobFullView data={singleJobData} comesFromAppiedList={true} />
     ) : (
@@ -78,4 +80,10 @@ export const FullListAppliedJobs = props => {
       <ThemeProvider theme={theme}>{content}</ThemeProvider>
     </>
   );
+};
+
+
+
+FullListAppliedJobs.propTypes = {
+  data: PropTypes.array,
 };

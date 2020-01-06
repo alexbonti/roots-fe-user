@@ -55,7 +55,7 @@ const theme = createMuiTheme({
 export const JobFullView = props => {
   console.log(props);
   const classes = useStyles();
-  const { setIsFullView, userWantsToApply, setUserWantsToApply } = useContext(
+  const { setIsFullView, setIsFullViewSaved, setIsFullViewApplied, userWantsToApply, setUserWantsToApply } = useContext(
     HomeContext
   );
   const { loginStatus } = useContext(LoginContext);
@@ -139,7 +139,7 @@ export const JobFullView = props => {
     </Grid>
   );
 
-  let content = props.hasOwnProperty("data") ? (
+  let content =  props.data !==  undefined  ? (
     <ThemeProvider theme={theme}>
       <Grid container justify="center">
         <Grid
@@ -153,6 +153,8 @@ export const JobFullView = props => {
           <Grid
             onClick={() => {
               setIsFullView(false);
+              setIsFullViewSaved(false);
+              setIsFullViewApplied(false);
             }}
             style={{fontSize: "12px",  fontFamily: "Arial Unicode MS"}}
           >
@@ -193,10 +195,10 @@ export const JobFullView = props => {
           }}
         >
           <Grid item xs={11} lg={8} md={8}>
-            <Typography style={{fontFamily: `"SofiaProRegular","Helvetica" sans-serif`, fontSize: " 12.2px"}}>{location}</Typography>
-            <Typography style={{fontFamily: `"SofiaProRegular","Helvetica" sans-serif`, fontSize: " 12.2px"}}>{industryField}</Typography>
-            <Typography style={{fontFamily: `"SofiaProRegular","Helvetica" sans-serif`, fontSize: " 12.2px"}}>{employmentType}</Typography>
-            <Typography style={{fontFamily: `"SofiaProRegular","Helvetica" sans-serif`, fontSize: " 12.2px"}}>Expires on {endDate.substring(0,10)}</Typography>
+            <Typography style={{fontFamily: "SofiaProRegular,Helvetica, sans-serif", fontSize: " 12.2px"}}>{location}</Typography>
+            <Typography style={{fontFamily: "SofiaProRegular,Helvetica, sans-serif", fontSize: " 12.2px"}}>{industryField}</Typography>
+            <Typography style={{fontFamily: "SofiaProRegular,Helvetica, sans-serif", fontSize: " 12.2px"}}>{employmentType}</Typography>
+            <Typography style={{fontFamily: "SofiaProRegular,Helvetica, sans-serif", fontSize: " 12.2px"}}>Expires on {endDate.substring(0,10)}</Typography>
           </Grid>
         </Grid>
         <Grid container item xs={12} lg={12} md={12} justify="center" >

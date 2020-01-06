@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid } from "@material-ui/core/";
-import { JobSmallCard, JobFullView } from "components";
+import { JobSavedSmallCard, JobFullView } from "components";
 import { HomeContext } from "contexts";
 import { Spinner } from "../../common/Spinner";
 
@@ -19,31 +19,29 @@ const theme = createMuiTheme({
 });
 
 export const FullListSavedJobs = props => {
-  const { isFullView, jobId } = useContext(HomeContext);
+  const { isFullViewSaved, jobId } = useContext(HomeContext);
 
   const findSingleJobData = id => {
-    if (Array.isArray(props.data)) {
+    if (Array.isArray(props.data)  && props.data.length > 0) {
       let selectedJob = props.data.filter(job => job._id === id);
       return selectedJob[0];
     }
   };
 
-  console.log(props, jobId);
 
-  let singleJobData = isFullView ? findSingleJobData(jobId) : [];
+  let singleJobData = isFullViewSaved ? findSingleJobData(jobId) : [];
+  let introMessage = props.data.length < 1 ? <Grid item xs={11}><Typography variant="h6" align="center">No saved jobs at the moment</Typography></Grid> : "";
 
-  let introMessage = props.savedJobs.length < 1 ? <Grid item xs={11}><Typography variant="h6" align="center">No saved jobs at the moment</Typography></Grid> : "";
-  let listOfJobs = Array.isArray(props.data) ? (
+
+  let listOfJobs = Array.isArray(props.data)? (
     <>
-      
       <Grid container style={{ backgroundColor: "white" }} justify="center">
         {introMessage}
         <Grid item xs={11}>
           {props.data.map(job => {
             let isSaved = props.savedJobs.includes(job._id);
-
             return isSaved ? (
-              <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
+              <JobSavedSmallCard key={job._id} data={job} savedStatus={isSaved} />
             ) : (
               ""
             );
@@ -65,10 +63,10 @@ export const FullListSavedJobs = props => {
   );
 
   let content =
-    isFullView &&
+  isFullViewSaved &&
     props.hasOwnProperty("data") &&
     singleJobData !== undefined ? (
-      <JobFullView data={singleJobData} />
+      <JobFullView data={singleJobData} comingFromSavedSection={true} />
     ) : (
       listOfJobs
     );
