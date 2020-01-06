@@ -1,14 +1,26 @@
 import React, { useState, useContext } from "react";
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme,withStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Tabs, Tab, Box } from "@material-ui/core/";
 import { NoExperience, GotExperience } from "components";
 import PropTypes from "prop-types";
 import { OnBoardingContext } from "contexts";
-import { formatRelative } from "date-fns";
+
+
+
+
+const CustomTabPanel = withStyles(
+  {
+ span: {
+   backgroundColor: "transparent"
+ }
+  },
+)(TabPanel);
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  console.log(props);
   return (
     <Typography
       component="div"
@@ -89,8 +101,8 @@ const theme = createMuiTheme({
 
 export const StartOnBoarding = props => {
   const classes = useStyles();
-  const [isStarted, setIsStarted] = useState(false);
-  const [value, setValue] = useState(false);
+  //const [isStarted, setIsStarted] = useState(false);
+  const [value, setValue] = useState(1);
   const [btnLeftIsClicked, setBtnLeftIsClicked] = useState(false);
   const [btnRightIsClicked, setBtnRightIsClicked] = useState(true);
   const { setUserHasExperience } = useContext(OnBoardingContext);
@@ -103,11 +115,11 @@ export const StartOnBoarding = props => {
     setValue(newValue);
   };
 
-  const handleStart = () => {
-    if (!isStarted) {
-      setIsStarted(true);
-    }
-  };
+  // const handleStart = () => {
+  //   if (!isStarted) {
+  //     setIsStarted(true);
+  //   }
+  // };
 
   const styleIsClickedLeft = {
     color: "white",
@@ -167,18 +179,11 @@ export const StartOnBoarding = props => {
     ? styleIsClickedRight
     : isNotClickedRight;
 
-  const tabsRender = isStarted ? (
-    <Grid item container justify="center">
-      <TabPanel value={value} index={0}>
-        <GotExperience />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <NoExperience />
-      </TabPanel>
-    </Grid>
-  ) : (
-    ""
-  );
+  // const tabsRender = isStarted ? (
+    
+  // ) : (
+  //   ""
+  // );
 
   return (
     <>
@@ -200,9 +205,9 @@ export const StartOnBoarding = props => {
             <Tabs
               value={value}
               onChange={handleChange}
-              onClick={() => {
-                handleStart();
-              }}
+              // onClick={() => {
+              //   handleStart();
+              // }}
             >
               <Tab
                 label="Yes, I have"
@@ -226,7 +231,14 @@ export const StartOnBoarding = props => {
               />
             </Tabs>
           </Grid>
-          {tabsRender}
+          <Grid item container justify="center">
+      <TabPanel value={value} index={0}>
+        <GotExperience />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <NoExperience />
+      </TabPanel>
+    </Grid>
         </Grid>
       </ThemeProvider>
     </>
