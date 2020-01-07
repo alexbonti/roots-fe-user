@@ -15,14 +15,14 @@ export const LargeNewsCard = props => {
   return props.data !== undefined ? (
     <>
       <Grid container justify="center" onClick={()=> openFullNews()}>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={7}>
           <img
             src={props.data.imageURL}
             alt={props.data.title}
             style={{ width: "100%", height: "30vh" }}
           />
         </Grid>
-        <Grid container item xs={11}>
+        <Grid container item xs={11} md={7}>
           <Grid item xs={12}>
             <Typography variant="h6">{props.data.title}</Typography>
           </Grid>
@@ -32,7 +32,7 @@ export const LargeNewsCard = props => {
           <Grid item xs={12}>
             {ReactHtmlParser(props.data.content.substring(0, 150))}
           </Grid>
-          <Grid item align="right" xs={12}>
+          <Grid item align="right" xs={12} md={6}>
             <Typography  variant="caption">read more...</Typography>
           </Grid>
         </Grid>

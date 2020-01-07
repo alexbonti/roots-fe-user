@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
-    height: "55px"
+    height: "55px",
   },
   alternativeButton: {
     color: "#087b94 !important",
@@ -70,19 +70,16 @@ export const CoverLetterAndResume = props => {
 
     let dataCVCL = {
       resumeURL: fileURL,
-      coverLetter: coverLetterUrl !== "" ? coverLetterUrl : coverLetter
+      coverLetter: coverLetterUrl !== "" ? coverLetterUrl : coverLetter,
     };
 
-    if (loginStatus) {
-      console.log(dataCVCL);
-      const sendCVCL = await API.updateUserResumeAndCoverLetter(dataCVCL);
-      console.log(sendCVCL.response);
-      const saveJobResData = await API.userApplyJob(data);
-      console.log(saveJobResData);
-      notify("Congratulation your application has been sent");
-      setUserWantsToApply(true);
-      setHasApplied(true);
-    }
+    console.log(dataCVCL);
+    const sendCVCL = await API.updateUserResumeAndCoverLetter(dataCVCL);
+    console.log(sendCVCL);
+    const saveJobResData = await API.userApplyJob(data);
+    notify("Congratulation your application has been sent");
+    setUserWantsToApply(true);
+    setHasApplied(true);
   };
 
   let progressBarComponent = progressBar ? <ProgressBar /> : "";
@@ -95,9 +92,17 @@ export const CoverLetterAndResume = props => {
         container
         justify="center"
         alignItems="center"
-        style={{ paddingTop: "19px", paddingBottom: "13px", backgroundColor: "#f8f8f8", fontSize: "12px", fontFamily: "Arial Unicode Ms" }}
+        style={{
+          paddingTop: "19px",
+          paddingBottom: "13px",
+          backgroundColor: "#f8f8f8",
+          fontSize: "12px",
+          fontFamily: "Arial Unicode Ms",
+        }}
       >
-        <Grid item xs={11}
+        <Grid
+          item
+          xs={11}
           onClick={() => {
             setUserWantsToApply(false);
           }}
@@ -115,7 +120,16 @@ export const CoverLetterAndResume = props => {
         alignItems="center"
       >
         <Grid item xs={11} md={8} lg={8}>
-          <Typography style={{lineHeight: "109px", fontSize: "21px", fontFamily: "Arial Rounded MT, Helvetica, sans-serif", fontWeight: "bold"}}>Great, Let's apply for this job</Typography>
+          <Typography
+            style={{
+              lineHeight: "109px",
+              fontSize: "21px",
+              fontFamily: "Arial Rounded MT, Helvetica, sans-serif",
+              fontWeight: "bold",
+            }}
+          >
+            Great, Let's apply for this job
+          </Typography>
         </Grid>
       </Grid>
 
@@ -124,9 +138,8 @@ export const CoverLetterAndResume = props => {
           <Typography variant="h6">Please, write your coverletter</Typography>
         </Grid>
 
-
         <Grid item xs={11} md={8} lg={8}>
-          <TextEditor data={{content: "coverletter"}} />
+          <TextEditor data={{ content: "coverletter" }} />
         </Grid>
 
         <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
@@ -142,10 +155,12 @@ export const CoverLetterAndResume = props => {
             style={{ padding: "2vh 0" }}
           >
             <Grid item xs={11}>
-              <Typography variant="body1" align="center">Cover Letter</Typography>{" "}
+              <Typography variant="body1" align="center">
+                Cover Letter
+              </Typography>{" "}
             </Grid>
             <Grid item xs={11}>
-              <MyDropzone data={"coverletter"} size="small"  />
+              <MyDropzone data={"coverletter"} size="small" />
             </Grid>
           </Grid>
           <Grid
@@ -156,7 +171,9 @@ export const CoverLetterAndResume = props => {
             style={{ padding: "2vh 0" }}
           >
             <Grid item xs={11}>
-              <Typography variant="body1" align="center">Resume</Typography>{" "}
+              <Typography variant="body1" align="center">
+                Resume
+              </Typography>{" "}
             </Grid>
             <Grid item xs={11}>
               <MyDropzone data={"file"} size="small" />

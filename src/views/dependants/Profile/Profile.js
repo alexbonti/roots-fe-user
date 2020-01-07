@@ -11,13 +11,23 @@ import {
   createMuiTheme,
 } from "@material-ui/core/";
 import { API } from "helpers";
-import { UserContext, LoginContext, HomeContext } from "contexts";
-import { Spinner, Education, Experience, AddNewExperience } from "components";
-import MyDropZone from "../../../components/dependants/DropDrag";
+import {
+  UserContext,
+  LoginContext,
+  HomeContext,
+  TextEditorContext,
+} from "contexts";
+import {
+  Spinner,
+  Education,
+  Experience,
+  AddNewExperience,
+  EditProfile,
+  GeneralProfile,
+} from "components";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import FallBackAvatar from "../../../helpers/img/man.svg";
-import { TextEditorContext } from "contexts/index";
 
 const theme = createMuiTheme({
   palette: {
@@ -29,13 +39,24 @@ const theme = createMuiTheme({
     contrastThreshold: 3,
     tonalOffset: 0.2,
   },
+  typography: {
+    h5: {
+      fontFamily: "Arial Rounded MT, Helvetica, sans-serif",
+      fontWeight: "bold",
+      fontSize: 21,
+    },
+    body1: {
+      fontFamily: "Arial Unicode MS, Helvetica, sans-serif",
+      fontSize: 14,
+    },
+    body2: { fontFamily: "Helvetica, sans-serif", fontSize: 14 },
+  },
 });
 
 const Profile = props => {
   const { loginStatus } = useContext(LoginContext);
   const { setIsFullView } = useContext(HomeContext);
   const { coverLetter } = useContext(TextEditorContext);
-  console.log(props);
   const {
     setUserName,
     setUserLastName,
@@ -77,10 +98,12 @@ const Profile = props => {
         setUserProfile(profileExtData.response);
         setAvatarProfile(profileExtData.response.avatar);
         setSkills(profileExtData.response.skills);
-        setData(profileExtData.response);
-        console.log(profileExtData);
         setPreferredIndustry(profileExtData.response.preferredIndustry);
+        setData(profileExtData.response);
       }
+      Promise.all([profileResponse, profileExtData]).then(res =>
+        console.log(res)
+      );
     };
 
     if (loginStatus) {
@@ -115,6 +138,8 @@ const Profile = props => {
     <AddBoxIcon onClick={() => openAddMode("edit skills")} />
   );
 
+  //------------PROFILE EDIT ----------------------------
+
   //------------EXPERIENCE--------------------------------
   const experience =
     typeof userProfile === "object" &&
@@ -137,12 +162,6 @@ const Profile = props => {
       <Spinner />
     );
 
-  const editAvatar = (
-    <Grid item xs={3}>
-      <MyDropZone data={"photo"} size={"small"} />
-    </Grid>
-  );
-
   //---------------Skills--------------------------------
   const editSkills = isEditSkills ? (
     <Grid
@@ -164,8 +183,7 @@ const Profile = props => {
           variant="contained"
           fullWidth
           onClick={() => {
-            if (chipValue !== "" && chipValue.length> 1) {
-              console.log(chipValue);
+            if (chipValue !== "" && chipValue.length > 1) {
               addChip(chipValue);
             }
           }}
@@ -190,7 +208,6 @@ const Profile = props => {
     });
 
     if (Array.isArray(newArray)) {
-      console.log(newArray);
       API.updateUserPreferences({
         avatar: data.avatar,
         preferredLocation: userProfile.preferredLocation,
@@ -230,56 +247,21 @@ const Profile = props => {
     }
   };
 
-  const ImageAvatar =
-    avatarProfile === "" ||
-    avatarProfile === undefined ||
-    avatarProfile === "string"
-      ? FallBackAvatar
-      : avatarProfile;
   const content =
     userProfile !== undefined && userProfile !== null ? (
       <>
         <ThemeProvider theme={theme}>
           <Grid container style={{ overflow: "hidden" }}>
-            <Grid container justify="space-between" style={{ padding: "3vh" }}>
-              <Grid
-                item
-                container
-                justify="flex-start"
-                alignItems="baseline"
-                xs={5}
-              >
-                <Grid item xs={9}>
-                  <img
-                    src={ImageAvatar}
-                    alt="avatar"
-                    style={{
-                      borderRadius: "50%",
-                      height: "130px",
-                      width: "130px",
-                    }}
-                  ></img>
-                </Grid>
-                {editAvatar}
-              </Grid>
-              <Grid container item xs={6} alignItems="center">
-                <Grid>
-                  <Typography variant="h6">
-                    {userName} {userLastName}
-                  </Typography>
-                </Grid>
-                <Grid container justify="flex-start">
-                  <Grid>
-                    <Typography variant="subtitle1">
-                      {userProfile.preferredLocation}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={5}>
-                    <Typography variant="caption">{userEmail}</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+            <GeneralProfile
+              data={{
+                FallBackAvatar,
+                avatarProfile,
+                userName,
+                userLastName,
+                userProfile,
+                userEmail,
+              }}
+            />
             <Grid container>
               <Grid
                 item
@@ -369,7 +351,21 @@ const Profile = props => {
       <Spinner />
     );
 
-  return isAddMode ? <AddNewExperience data={field} /> : content;
+  return isAddMode ? (
+    <AddNewExperience data={field} />
+  ) : (
+    <ThemeProvider theme={theme}>
+      <EditProfile
+        data={{
+          avatarProfile,
+          userName,
+          userLastName,
+          userProfile,
+          userEmail,
+        }}
+      />
+    </ThemeProvider>
+  );
 };
 
 export default withRouter(Profile);

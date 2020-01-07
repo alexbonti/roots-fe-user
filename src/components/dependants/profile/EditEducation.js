@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import "date-fns";
-import { Grid, TextField, Button, Typography } from "@material-ui/core/";
+import {
+  Grid,
+  TextField,
+  Button,
+  Typography,
+  Checkbox,
+} from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -11,6 +17,7 @@ import {
 import { notify, Education } from "components";
 import { API } from "helpers";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
+import {UserContext} from "contexts";
 
 const useStyles = makeStyles(() => ({
   buttons: {
@@ -19,12 +26,21 @@ const useStyles = makeStyles(() => ({
     border: "1px solid #087b94np",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: 55,
   },
+  buttonVariant: {
+    color: "#087b94 ",
+    borderRadius: "25px",
+    border: "1px solid #087b94",
+    backgroundColor: "white ",
+    height: "55px",
+    margin: "1vh 0",
+
+  }
 }));
 
 export const EditEducation = props => {
   const [isEditModeOn, setIsEditModeOn] = useState(true);
-
   const classes = useStyles();
   const [selectedStartDate, setSelectedStartDate] = useState(
     new Date("2017-08-18T21:11:54")
@@ -33,12 +49,14 @@ export const EditEducation = props => {
     new Date("2019-08-18T21:11:54")
   );
 
-  const { _id} = props.data;
+  const { _id } = props.data;
 
   const [newSchool, SetNewSchool] = useState("");
   const [newMajor, setNewMajor] = useState("");
   const [newDegree, setNewDegree] = useState("");
   const [dataToSendToComp, setDataToSendToComp] = useState(props.data);
+  const { setIsUpdated } = useContext(UserContext);
+
 
   const handleDateChange = date => {
     setSelectedStartDate(date);
@@ -48,12 +66,24 @@ export const EditEducation = props => {
     setSelectedEndDate(date);
   };
 
-  const UpdateEducation = () => {
-    const callAPI = async () => {
+  const deleteEducation = async () => {
+    const data = {
+      "educationId": _id,
+    };
 
-      if(newSchool === "" || newMajor === "" || newDegree === ""){
+    const deleteData = await API.deleteEducation(data);
+    if (deleteData) {
+      notify("Deleted");
+      setIsUpdated(true);
+      setIsEditModeOn(false);
+    }
+  };
+
+  const updateEducation = () => {
+    const callAPI = async () => {
+      if (newSchool === "" || newMajor === "" || newDegree === "") {
         return notify("fields can not be empty");
-      }else{
+      } else {
         let data = {
           "educationId": _id,
           "school": newSchool,
@@ -62,13 +92,12 @@ export const EditEducation = props => {
           "endDate": selectedEndDate,
           "degree": newDegree,
         };
-  
+
         const eduExpData = await API.editEduExperience(data);
         notify(" Education Experience edited successfully");
         console.log("eduExpData", eduExpData.response);
         setIsEditModeOn(false);
         setDataToSendToComp(data);
-
       }
     };
 
@@ -105,7 +134,7 @@ export const EditEducation = props => {
             />
           </Grid>
         </Grid>
-       
+
         <Grid item xs={11} style={{ padding: "2vh 0" }}>
           <TextField
             placeholder="School"
@@ -174,16 +203,30 @@ export const EditEducation = props => {
             </MuiPickersUtilsProvider>
           </Grid>
         </Grid>
-        <Grid item xs={11} md={5} lg={4} style={{ padding: "4vh 0" }}>
-          <Button
-            className={classes.buttons}
-            fullWidth
-            onClick={() => {
-              UpdateEducation();
-            }}
-          >
-            Save Changes
-          </Button>
+
+        <Grid item xs={11} md={5} lg={4} style={{ padding: "4vh 0" }} container justify="space-evenly">
+          <Grid item xs={5}>
+            <Button
+              className={classes.buttonVariant}
+              fullWidth
+              onClick={() => {
+                deleteEducation();
+              }}
+            >
+              Delete
+            </Button>
+          </Grid>
+          <Grid item xs={5}>
+            <Button
+              className={classes.buttons}
+              fullWidth
+              onClick={() => {
+                updateEducation();
+              }}
+            >
+              Save Changes
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </>

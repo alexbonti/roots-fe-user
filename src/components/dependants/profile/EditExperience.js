@@ -1,6 +1,13 @@
 import React, { useState, useContext } from "react";
 import "date-fns";
-import { Grid, TextField, Button, Typography, createMuiTheme } from "@material-ui/core/";
+import {
+  Grid,
+  TextField,
+  Button,
+  Typography,
+  createMuiTheme,
+  Checkbox,
+} from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -22,8 +29,17 @@ const useStyles = makeStyles(() => ({
     border: "1px solid #087b94np",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
-    height: 55
+    height: 55,
   },
+  buttonVariant: {
+    color: "#087b94 ",
+    borderRadius: "25px",
+    border: "1px solid #087b94",
+    backgroundColor: "white ",
+    height: "55px",
+    margin: "1vh 0",
+
+  }
 }));
 
 const theme = createMuiTheme({
@@ -40,18 +56,23 @@ const theme = createMuiTheme({
 
 export const EditExperience = props => {
   const [isEditModeOn, setIsEditModeOn] = useState(true);
+  const {
+    companyName,
+    positionTitle,
+    description,
+    _id,
+    endDate,
+    startDate,
+  } = props.data;
 
   const classes = useStyles();
   const [selectedStartDate, setSelectedStartDate] = useState(
-    new Date("2017-08-18T21:11:54")
+    new Date(startDate)
   );
-  const [selectedEndDate, setSelectedEndDate] = useState(
-    new Date("2019-08-18T21:11:54")
-  );
+  const [selectedEndDate, setSelectedEndDate] = useState(new Date(endDate));
   const { workExperience } = useContext(TextEditorContext);
   const { setIsUpdated } = useContext(UserContext);
-
-  const { companyName, positionTitle, description, _id } = props.data;
+  const [checked, setChecked] = useState(false);
 
   const [newPositionName, setNewPositionName] = useState(positionTitle);
   const [newCompanyName, setNewCompanyName] = useState(companyName);
@@ -65,7 +86,27 @@ export const EditExperience = props => {
     setSelectedEndDate(date);
   };
 
-  const UpdateSingleUserWorkExp = () => {
+  const handleChange = event => {
+    setSelectedEndDate(new Date(Date.now()));
+    setChecked(event.target.checked);
+  };
+
+
+
+  const deleteJob =  async () => {
+    const data = {
+      "workExperienceId": _id,
+    }
+
+    const deleteData = await API.deleteWorkExperience(data);
+    if(deleteData){
+      notify("Deleted");
+      setIsUpdated(true);
+      setIsEditModeOn(false);
+    }
+  };
+
+  const updateSingleUserWorkExp = () => {
     console.log("description", description, "workExperience", workExperience);
     const callAPI = async () => {
       let data;
@@ -202,6 +243,21 @@ export const EditExperience = props => {
               </MuiPickersUtilsProvider>
             </Grid>
           </Grid>
+          <Grid item xs={11} container alignItems="center">
+            <Grid xs={6}>
+              <Typography className={classes.textField}>
+                Currently working here
+              </Typography>
+            </Grid>
+            <Grid xs={4}>
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                value="primary"
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            </Grid>
+          </Grid>
           <Grid item xs={11}>
             <TextEditor
               data={{
@@ -210,16 +266,28 @@ export const EditExperience = props => {
               }}
             />
           </Grid>
-          <Grid item xs={11} style={{ padding: "2vh 0" }}>
-            <Button
-              className={classes.buttons}
-              fullWidth
-              onClick={() => {
-                UpdateSingleUserWorkExp();
-              }}
-            >
-              Save Changes
-            </Button>
+          <Grid container item xs={11} style={{ padding: "2vh 0" }} justify="space-evenly">
+            <Grid item xs={5}>
+              <Button
+                className={classes.buttonVariant}
+                fullWidth
+                onClick={() => {deleteJob();
+                }}
+              >
+                Delete 
+              </Button>
+            </Grid>
+            <Grid item xs={5}>
+              <Button
+                className={classes.buttons}
+                fullWidth
+                onClick={() => {
+                  updateSingleUserWorkExp();
+                }}
+              >
+                Save Changes
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </ThemeProvider>

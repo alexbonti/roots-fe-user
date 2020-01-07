@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab, Typography, Box } from "@material-ui/core/";
 import PropTypes from "prop-types";
@@ -72,7 +72,7 @@ const Home = (props) => {
 
   console.log("TCL: Home -> props", props);
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
 
   //CONTEXT
@@ -107,10 +107,12 @@ const Home = (props) => {
         setOppData(oppResponse.response);
       }
       const profileResponse = await API.getUserProfile();
+      console.log(profileResponse);
       if(profileResponse){
         setUserName(profileResponse.response.first_name);
         setUserLastName(profileResponse.response.last_name);
         setUserEmail(profileResponse.response.emailId);
+        //setUserPassword(profileResponse.response.password);
       }
       const profileExtData = await API.getUserProfileExt();
       if(profileExtData){
