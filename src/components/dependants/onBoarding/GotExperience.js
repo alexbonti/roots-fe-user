@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Typography, Grid, TextField } from "@material-ui/core/";
+import { Typography, Grid, TextField, Checkbox } from "@material-ui/core/";
 import { OnBoardingContext } from "contexts/index";
 import { API } from "helpers";
 
@@ -37,6 +37,7 @@ export const GotExperience = () => {
   const classes = useStyles();
 
   const [inputPosition, setInputPosition] = useState("");
+  const [checked, setChecked] = useState(false);
   const [positionSuggestions, setPositionSuggestions] = useState("");
   const {
     setLocation,
@@ -45,6 +46,7 @@ export const GotExperience = () => {
     setCompanyName,
     setStartDate,
     setEndDate,
+    endDate
   } = useContext(OnBoardingContext);
   const [, setLat] = useState("");
   const [, setLong] = useState("");
@@ -52,6 +54,7 @@ export const GotExperience = () => {
   const autoFill = async event => {
     setInputPosition(event.target.value);
     let suggestions = await API.getAddress(inputPosition);
+    console.log(suggestions);
     setPositionSuggestions(suggestions.suggestions);
   };
 
@@ -67,6 +70,12 @@ export const GotExperience = () => {
     const data = await API.getLatLong(input.locationId);
     setLat(data.response.latitude);
     setLong(data.response.longitude);
+  };
+
+  const handleChange = event => {
+    setEndDate(`${new Date().getFullYear()} ${new Date().getMonth()+1} ${new Date().getDate()}`);
+    console.log(endDate);
+    setChecked(event.target.checked);
   };
 
   return (
@@ -141,6 +150,7 @@ export const GotExperience = () => {
                 label="End"
                 type="date"
                 fullWidth
+                value={endDate}
                 className={classes.textField}
                 InputLabelProps={{
                   shrink: true,
@@ -148,6 +158,21 @@ export const GotExperience = () => {
                 onChange={event => {
                   setEndDate(event.target.value);
                 }}
+              />
+            </Grid>
+          </Grid>
+          <Grid item xs={11} container  alignItems="center">
+            <Grid xs={6}>
+              <Typography className={classes.textField}>
+                Currently working here
+              </Typography>
+            </Grid>
+            <Grid xs={4}>
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                value="primary"
+                inputProps={{ "aria-label": "primary checkbox" }}
               />
             </Grid>
           </Grid>
@@ -194,7 +219,7 @@ export const GotExperience = () => {
                             getLongLat(suggestion);
                           }}
                         >
-                          {suggestion.label}
+                          {suggestion.label.substring(16, suggestion.label.lenght)}
                         </div>
                       );
                     })}

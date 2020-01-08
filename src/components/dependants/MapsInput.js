@@ -179,7 +179,7 @@ export const FilterOpportunity = props => {
                         getLongLat(suggestion);
                       }}
                     >
-                      {suggestion.label}
+                      {suggestion.label.substring(16, suggestion.label.lenght)}
                     </div>
                   );
                 })}

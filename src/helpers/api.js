@@ -182,7 +182,7 @@ class API {
     const app_code = "SOaMBDA1FYyc8mAtg7STgg";
     return axios({
       method: "get",
-      url: ` http://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=${app_id}&app_code=${app_code}&query=${input}`,
+      url: ` http://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=${app_id}&app_code=${app_code}&query=${input}&country=AUS`,
     })
       .then(response => response.data)
       .catch(error => errorHelper(error));
@@ -242,6 +242,40 @@ class API {
     console.log(data);
     return await axiosInstance
       .put("/user/workExperienceUserExtended", data, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        errorHelper(error)
+      });
+  };
+
+  deleteWorkExperience = async data => {
+    let accessToken = localStorage.getItem("accessToken");
+    console.log(data);
+    return await axiosInstance
+      .put("/user/removeWorkExperience", data, {
+        headers: {
+          "authorization": `bearer ${accessToken}`,
+        },
+      })
+      .then(response => {
+        return { "response": response };
+      })
+      .catch(error => {
+        errorHelper(error)
+      });
+  };
+
+  deleteEducation = async data => {
+    let accessToken = localStorage.getItem("accessToken");
+    console.log(data);
+    return await axiosInstance
+      .put("/user/removeEducation", data, {
         headers: {
           "authorization": `bearer ${accessToken}`,
         },

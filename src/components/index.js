@@ -29,6 +29,7 @@ import { Experience } from "./dependants/profile/Experience";
 import { Education } from "./dependants/profile/Education";
 import { Volunteer } from "./dependants/profile/Volunteer";
 import { AddNewExperience } from "./dependants/profile/AddNewExperience";
+import { GeneralProfile } from "./dependants/profile/GeneralProfile";
 import { EditProfile } from "./dependants/profile/EditProfile";
 import { JobSavedSmallCard } from "./dependants/listJobsTab/JobSavedSmallCard";
 import { JobAppiedList } from "./dependants/listJobsTab/JobAppiedList";
@@ -71,6 +72,7 @@ export {
   Education,
   Volunteer,
   AddNewExperience,
+  GeneralProfile,
   EditProfile,
   FullListJobs,
   JobFullView,

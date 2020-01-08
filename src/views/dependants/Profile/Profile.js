@@ -11,13 +11,23 @@ import {
   createMuiTheme,
 } from "@material-ui/core/";
 import { API } from "helpers";
-import { UserContext, LoginContext, HomeContext } from "contexts";
-import { Spinner, Education, Experience, AddNewExperience } from "components";
-import MyDropZone from "../../../components/dependants/DropDrag";
+import {
+  UserContext,
+  LoginContext,
+  HomeContext,
+  TextEditorContext,
+} from "contexts";
+import {
+  Spinner,
+  Education,
+  Experience,
+  AddNewExperience,
+  EditProfile,
+  GeneralProfile,
+} from "components";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import FallBackAvatar from "../../../helpers/img/man.svg";
-import { TextEditorContext } from "contexts/index";
 
 const theme = createMuiTheme({
   palette: {
@@ -29,13 +39,24 @@ const theme = createMuiTheme({
     contrastThreshold: 3,
     tonalOffset: 0.2,
   },
+  typography: {
+    h5: {
+      fontFamily: "Arial Rounded MT, Helvetica, sans-serif",
+      fontWeight: "bold",
+      fontSize: 21,
+    },
+    body1: {
+      fontFamily: "Arial Unicode MS, Helvetica, sans-serif",
+      fontSize: 14,
+    },
+    body2: { fontFamily: "Helvetica, sans-serif", fontSize: 12 },
+  },
 });
 
 const Profile = props => {
   const { loginStatus } = useContext(LoginContext);
   const { setIsFullView } = useContext(HomeContext);
   const { coverLetter } = useContext(TextEditorContext);
-  console.log(props);
   const {
     setUserName,
     setUserLastName,
@@ -56,15 +77,18 @@ const Profile = props => {
     fileURL,
     coverLetterUrl,
     setPreferredIndustry,
+    isEditGeneralProfile,
+    setIsEditGeneralProfile,
   } = useContext(UserContext);
   const [field, setField] = useState("");
   const [data, setData] = useState("");
-  const [chipValue, setChipValue] = useState();
+  const [chipValue, setChipValue] = useState("");
   const [isEditSkills, setIsEditSkills] = useState(false);
 
   useEffect(() => {
     setIsFullView(false);
     const triggerAPI = async () => {
+      setIsEditGeneralProfile(false);
       const profileResponse = await API.getUserProfile();
       if (profileResponse) {
         setUserName(profileResponse.response.first_name);
@@ -77,10 +101,12 @@ const Profile = props => {
         setUserProfile(profileExtData.response);
         setAvatarProfile(profileExtData.response.avatar);
         setSkills(profileExtData.response.skills);
-        setData(profileExtData.response);
-        console.log(profileExtData);
         setPreferredIndustry(profileExtData.response.preferredIndustry);
+        setData(profileExtData.response);
       }
+      Promise.all([profileResponse, profileExtData]).then(res =>
+        console.log(res)
+      );
     };
 
     if (loginStatus) {
@@ -115,16 +141,18 @@ const Profile = props => {
     <AddBoxIcon onClick={() => openAddMode("edit skills")} />
   );
 
+  //------------PROFILE EDIT ----------------------------
+
   //------------EXPERIENCE--------------------------------
   const experience =
     typeof userProfile === "object" &&
     Array.isArray(userProfile.workExperience) ? (
-      userProfile.workExperience.map((experience, index) => {
-        return <Experience key={index} data={experience} />;
-      })
-    ) : (
-      <Spinner />
-    );
+        userProfile.workExperience.map((experience, index) => {
+          return <Experience key={index} data={experience} />;
+        })
+      ) : (
+        <Spinner />
+      );
 
   //------------EDUCATION--------------------------------
 
@@ -137,42 +165,47 @@ const Profile = props => {
       <Spinner />
     );
 
-  const editAvatar = (
-    <Grid item xs={3}>
-      <MyDropZone data={"photo"} size={"small"} />
-    </Grid>
-  );
-
   //---------------Skills--------------------------------
   const editSkills = isEditSkills ? (
     <Grid
       container
       item
-      xs={10}
-      justify="space-evenly"
-      alignItems="flex-end"
+      xs={11}
+      justify="center"
+      alignItems="baseline"
       style={{ padding: "2vh 0" }}
     >
-      <Grid item>
-        <TextField
-          value={chipValue}
-          onChange={e => setChipValue(e.target.value)}
-        />
-      </Grid>
-      <Grid item>
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={() => {
-            if (chipValue !== "" && chipValue.length> 1) {
-              console.log(chipValue);
-              addChip(chipValue);
-            }
-          }}
-          style={{ backgroundColor: "rgba(255, 129, 0, 0.21)" }}
-        >
-          Add
-        </Button>
+      <Grid container item xs={11}>
+        <Grid item xs={5} sm={3}>
+          <TextField
+            value={chipValue}
+            label="Skill"
+            placeholder="Add your skill here"
+            onChange={e => setChipValue(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={5} sm={3}>
+          <Button
+            variant="contained"
+            fullWidth
+            color="primary"
+            onClick={() => {
+              if (chipValue !== "" && chipValue.length > 1) {
+                addChip(chipValue);
+              }
+            }}
+            style={{
+              
+              height: "100%",
+              marginLeft: "20px",
+              color: "white",
+              borderRadius: "25px",
+              boxShadow: "none"
+            }}
+          >
+            Add
+          </Button>
+        </Grid>
       </Grid>
     </Grid>
   ) : (
@@ -190,7 +223,6 @@ const Profile = props => {
     });
 
     if (Array.isArray(newArray)) {
-      console.log(newArray);
       API.updateUserPreferences({
         avatar: data.avatar,
         preferredLocation: userProfile.preferredLocation,
@@ -230,56 +262,21 @@ const Profile = props => {
     }
   };
 
-  const ImageAvatar =
-    avatarProfile === "" ||
-    avatarProfile === undefined ||
-    avatarProfile === "string"
-      ? FallBackAvatar
-      : avatarProfile;
   const content =
     userProfile !== undefined && userProfile !== null ? (
       <>
         <ThemeProvider theme={theme}>
-          <Grid container style={{ overflow: "hidden" }}>
-            <Grid container justify="space-between" style={{ padding: "3vh" }}>
-              <Grid
-                item
-                container
-                justify="flex-start"
-                alignItems="baseline"
-                xs={5}
-              >
-                <Grid item xs={9}>
-                  <img
-                    src={ImageAvatar}
-                    alt="avatar"
-                    style={{
-                      borderRadius: "50%",
-                      height: "130px",
-                      width: "130px",
-                    }}
-                  ></img>
-                </Grid>
-                {editAvatar}
-              </Grid>
-              <Grid container item xs={6} alignItems="center">
-                <Grid>
-                  <Typography variant="h6">
-                    {userName} {userLastName}
-                  </Typography>
-                </Grid>
-                <Grid container justify="flex-start">
-                  <Grid>
-                    <Typography variant="subtitle1">
-                      {userProfile.preferredLocation}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={5}>
-                    <Typography variant="caption">{userEmail}</Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
+          <Grid container style={{ overflow: "hidden" }} justify="center">
+            <GeneralProfile
+              data={{
+                FallBackAvatar,
+                avatarProfile,
+                userName,
+                userLastName,
+                userProfile,
+                userEmail,
+              }}
+            />
             <Grid container>
               <Grid
                 item
@@ -342,24 +339,24 @@ const Profile = props => {
                 <Grid item>{buttonIcon}</Grid>
               </Grid>
             </Grid>
-            <Grid container style={{ padding: "2vh 1vw" }} spacing={1}>
+            <Grid item xs={12}container style={{ padding: "2vh 0" }} spacing={1}>
               {editSkills}
-
               {Array.isArray(skills)
                 ? skills.map(skill => {
-                    return (
-                      <Grid item key={Math.random()}>
-                        <Chip
-                          onDelete={() => deleteChip(skill)}
-                          label={skill}
-                          style={{
-                            backgroundColor: "rgba(8, 124, 149, 0.1)",
-                            color: "Black",
-                          }}
-                        />
-                      </Grid>
-                    );
-                  })
+                  return (
+                    <Grid key={Math.random()}>
+                      <Chip
+                        onDelete={() => deleteChip(skill)}
+                        label={skill}
+                        style={{
+                          backgroundColor: "rgba(8, 124, 149, 0.1)",
+                          color: "Black",
+                          margin: "3px"
+                        }}
+                      />
+                    </Grid>
+                  );
+                })
                 : ""}
             </Grid>
           </Grid>
@@ -369,7 +366,24 @@ const Profile = props => {
       <Spinner />
     );
 
-  return isAddMode ? <AddNewExperience data={field} /> : content;
+  return isAddMode ? (
+    <AddNewExperience data={field} />
+  ) : isEditGeneralProfile ? (
+    <ThemeProvider theme={theme}>
+      <EditProfile
+        data={{
+          FallBackAvatar,
+          avatarProfile,
+          userName,
+          userLastName,
+          userProfile,
+          userEmail,
+        }}
+      />
+    </ThemeProvider>
+  ) : (
+    content
+  );
 };
 
 export default withRouter(Profile);

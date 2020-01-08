@@ -218,7 +218,7 @@ export const Login = () => {
               </Button>
             </Grid>
             <Grid item xs={12}  style={{ paddingTop: "2vh" }}>
-              <Typography align="center"  display="block" style={{fontFailmily: `"Arial Rounded MT", sans-serif`, fontSize: "16px", fontWeight: "bold", color: "#007D97"}}>
+              <Typography align="center"  display="block" style={{fontFailmily: "Arial Rounded MT, sans-serif", fontSize: "16px", fontWeight: "bold", color: "#007D97"}}>
                 or
               </Typography>
             </Grid>

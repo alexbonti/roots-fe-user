@@ -89,6 +89,7 @@ export const AvatarPictureUpload = () => {
         avatar: avatarPictureURL,
         preferredLocation: location,
         skills: [],
+        coverLetter: "",
         preferredIndustry: industryField,
       };
 
@@ -171,7 +172,7 @@ export const AvatarPictureUpload = () => {
           {confirmButton}
           <Grid item>
             <Typography variant="body2">
-              You can always do it <a href="http:test">later</a>
+              You can always do it <a href="/">later</a>
             </Typography>
           </Grid>
         </Grid>

@@ -99,7 +99,7 @@ export const NoExperience = () => {
                             getLongLat(suggestion);
                           }}
                         >
-                          {suggestion.label}
+                          {suggestion.label.substring(16, suggestion.label.lenght)}
                           
                         </div>
                       );

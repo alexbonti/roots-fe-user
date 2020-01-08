@@ -73,8 +73,9 @@ function a11yProps(index) {
 }
 
 const SavedAndAppliedJobs = props => {
+  const [dedfaultValueTab, setDefaultValueTab] = useState(props.location.state.direction === "applied-jobs" ? 1 : 0);
   const classes = useStyles();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(dedfaultValueTab);
   const [listSavedJobs, setListSavedJobs] = useState("");
   const [appliedJobs, setAppliedJobs] = useState([]);
   const { loginStatus } = useContext(LoginContext);
@@ -88,18 +89,28 @@ const SavedAndAppliedJobs = props => {
   } = useContext(UserContext);
   const [oppData, setOppData] = useState("");
 
+  
+
+
+
   const handleChange = (event, newValue) => {
     setIsFullView(false);
+    setDefaultValueTab(newValue);
+
     setValue(newValue);
   };
 
   const handleChangeIndex = index => {
     setIsFullView(false);
+    setDefaultValueTab(index);
     setValue(index);
   };
 
 
   useEffect(() => {
+    if(props.location.state.direction === "saved-job"){
+      setValue(0);
+    }
     const triggerAPI = async () => {
       const appliedOppData = await API.getUserAppliedJobs();
       if (appliedOppData) {
@@ -112,6 +123,8 @@ const SavedAndAppliedJobs = props => {
   }, []);
 
   useEffect(() => {
+    if(props.location.state.direction === "applied-job"){
+      setValue(1);}
     const triggerAPI = async () => {
       const profileResponse = await API.getUserProfile();
       if (profileResponse) {
@@ -167,12 +180,11 @@ const SavedAndAppliedJobs = props => {
   }, [
   ]);
 
-  let dedfaultValueTab = 0;
 
-  if (props.location.state !== undefined) {
-    dedfaultValueTab =
-      props.location.state.direction === "applied-jobs" ? 1 : 0;
-  }
+  // if (props.location.state !== undefined) {
+  //   dedfaultValueTab =
+      
+  // }
 
   return (
     <ThemeProvider theme={theme}>

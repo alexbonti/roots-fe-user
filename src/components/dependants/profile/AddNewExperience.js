@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "date-fns";
-import { Typography, Grid, TextField, Button, createMuiTheme } from "@material-ui/core/";
+import { Typography, Grid, TextField, Button, Checkbox, createMuiTheme } from "@material-ui/core/";
 import { makeStyles,ThemeProvider } from "@material-ui/core/styles";
 
 import DateFnsUtils from "@date-io/date-fns";
@@ -40,6 +40,8 @@ export const AddNewExperience = props => {
   const classes = useStyles();
   const { workExperience } = useContext(TextEditorContext);
   const { setIsAddMode, setIsUpdated } = useContext(UserContext);
+  const [checked, setChecked] = useState(false);
+
   const [selectedStartDate, setSelectedStartDate] = React.useState(
     new Date(Date.now())
   );
@@ -54,6 +56,11 @@ export const AddNewExperience = props => {
 
   const handleDateChange = date => {
     setSelectedStartDate(date);
+  };
+
+  const handleChange = event => {
+    setSelectedEndDate(new Date(Date.now()));
+    setChecked(event.target.checked);
   };
 
   const handleDateChangeEnd = date => {
@@ -193,6 +200,21 @@ export const AddNewExperience = props => {
                   }}
                 />
               </MuiPickersUtilsProvider>
+            </Grid>
+          </Grid>
+          <Grid item xs={11} container  alignItems="center">
+            <Grid xs={6}>
+              <Typography className={classes.textField}>
+                Currently working here
+              </Typography>
+            </Grid>
+            <Grid xs={4}>
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                value="primary"
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
             </Grid>
           </Grid>
           <Grid item xs={11} style={{ padding: "2vh 0" }}>

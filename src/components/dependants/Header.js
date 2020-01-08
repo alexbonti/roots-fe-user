@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     paddingRight: 2, // keep right padding when drawer closed
     backgroundColor: "#2C2C29",
-    height: "9vh",
+    height: "56px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
