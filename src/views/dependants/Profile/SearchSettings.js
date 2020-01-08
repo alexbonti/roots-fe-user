@@ -181,7 +181,7 @@ const SearchSettings = () => {
               <TextField
                 {...params}
                 variant="standard"
-                label="Multiple values"
+                label="Industry fields"
                 placeholder="Favorites"
                 margin="normal"
                 fullWidth
@@ -196,7 +196,7 @@ const SearchSettings = () => {
           spacing={1}
           style={{ padding: "3vh", backgroundColor: "white" }}
         >
-          {chipData.slice(0, 8).map(chip => {
+          {chipData.slice(0, 10).map(chip => {
             return (
               <Grid key={Math.random()} item>
                 <Chip

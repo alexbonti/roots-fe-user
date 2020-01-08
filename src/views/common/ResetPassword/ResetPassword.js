@@ -127,6 +127,7 @@ const ResetPassword = () => {
               borderRadius: "25px",
               border: "1px solid #087b94",
               backgroundColor: "#087b94 !important",
+              height: "55px"
             }}
           >
             Send

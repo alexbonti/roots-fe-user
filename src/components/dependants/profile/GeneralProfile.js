@@ -1,16 +1,25 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Typography, Grid } from "@material-ui/core/";
 import PropTypes from "prop-types";
+import { UserContext } from "contexts/index";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+// import DescriptionIcon from "@material-ui/icons/Description";
+// import MyDropzone from "../DropDrag";
 
-export const GeneralProfile = props => {
+export const GeneralProfile = ({data}) => {
+  const { setIsEditGeneralProfile } = useContext(UserContext);
   const {
     FallBackAvatar,
     avatarProfile,
     userName,
+    //userProfile,
     userLastName,
-    userProfile,
     userEmail,
-  } = props.data;
+  } = data;
+
+  
+  //const textUploadResume = userProfile.resumeURL === "" ? "Upload your Resume" : "Your Resume";
+
   const ImageAvatar =
     avatarProfile === "" ||
     avatarProfile === undefined ||
@@ -18,7 +27,16 @@ export const GeneralProfile = props => {
       ? FallBackAvatar
       : avatarProfile;
   return (
-    <Grid container justify="space-between" style={{ padding: "3vh" }}>
+    <Grid container justify="space-evenly" style={{ padding: "2vh 0" }}>
+      <Grid container justify="flex-end" item xs={11}>
+        <Grid>
+          <EditOutlinedIcon
+            onClick={() => {
+              setIsEditGeneralProfile(true);
+            }}
+          />
+        </Grid>
+      </Grid>
       <Grid item container justify="flex-start" alignItems="baseline" xs={5}>
         <Grid item xs={9}>
           <img
@@ -37,23 +55,26 @@ export const GeneralProfile = props => {
           <Typography variant="h6">
             {userName} {userLastName}
           </Typography>
+          <Typography variant="caption">{userEmail}</Typography>
         </Grid>
-        <Grid container justify="flex-start">
-          <Grid>
-            <Typography variant="subtitle1">
-              {userProfile.preferredLocation}
-            </Typography>
+
+        {/* //! resume implemented  */}
+        {/* <Grid container justify="flex-start" alignItems="center">
+          <Grid item xs={2}>
+            <DescriptionIcon style={{ borderRadius: "5px"}}/>
           </Grid>
-          <Grid item xs={5}>
-            <Typography variant="caption">{userEmail}</Typography>
+          <Grid item xs={1} style={{ opacity: 0, position: "fixed" }}>
+            <MyDropzone data={"file"} />
           </Grid>
-        </Grid>
+          <Typography variant="body2">{textUploadResume}</Typography>
+        </Grid> */}
       </Grid>
     </Grid>
   );
 };
 
 GeneralProfile.propTypes = {
+  data: PropTypes.object,
   avatarProfile: PropTypes.string,
   userName: PropTypes.string,
   userLastName: PropTypes.string,

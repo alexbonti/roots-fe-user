@@ -13,6 +13,8 @@ export const UserProvider = props => {
   const [fileURL, setFileURL] = useState("");
   const [coverLetterUrl, setCoverLetterUrl] = useState("");
   const [isEditMode, setIsEditMode] = useState({status: false, id:""});
+  const [isEditGeneralProfile, setIsEditGeneralProfile] = useState(false);
+
   const [isAddMode, setIsAddMode] = useState(false);
   const [preferredIndustry, setPreferredIndustry] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -45,6 +47,8 @@ export const UserProvider = props => {
         setCoverLetterUrl,
         preferredIndustry, 
         setPreferredIndustry,
+        isEditGeneralProfile, 
+        setIsEditGeneralProfile
     
       }}
     >

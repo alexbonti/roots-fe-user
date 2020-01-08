@@ -49,7 +49,7 @@ const theme = createMuiTheme({
       fontFamily: "Arial Unicode MS, Helvetica, sans-serif",
       fontSize: 14,
     },
-    body2: { fontFamily: "Helvetica, sans-serif", fontSize: 14 },
+    body2: { fontFamily: "Helvetica, sans-serif", fontSize: 12 },
   },
 });
 
@@ -77,15 +77,18 @@ const Profile = props => {
     fileURL,
     coverLetterUrl,
     setPreferredIndustry,
+    isEditGeneralProfile,
+    setIsEditGeneralProfile,
   } = useContext(UserContext);
   const [field, setField] = useState("");
   const [data, setData] = useState("");
-  const [chipValue, setChipValue] = useState();
+  const [chipValue, setChipValue] = useState("");
   const [isEditSkills, setIsEditSkills] = useState(false);
 
   useEffect(() => {
     setIsFullView(false);
     const triggerAPI = async () => {
+      setIsEditGeneralProfile(false);
       const profileResponse = await API.getUserProfile();
       if (profileResponse) {
         setUserName(profileResponse.response.first_name);
@@ -144,12 +147,12 @@ const Profile = props => {
   const experience =
     typeof userProfile === "object" &&
     Array.isArray(userProfile.workExperience) ? (
-      userProfile.workExperience.map((experience, index) => {
-        return <Experience key={index} data={experience} />;
-      })
-    ) : (
-      <Spinner />
-    );
+        userProfile.workExperience.map((experience, index) => {
+          return <Experience key={index} data={experience} />;
+        })
+      ) : (
+        <Spinner />
+      );
 
   //------------EDUCATION--------------------------------
 
@@ -167,30 +170,42 @@ const Profile = props => {
     <Grid
       container
       item
-      xs={10}
-      justify="space-evenly"
-      alignItems="flex-end"
+      xs={11}
+      justify="center"
+      alignItems="baseline"
       style={{ padding: "2vh 0" }}
     >
-      <Grid item>
-        <TextField
-          value={chipValue}
-          onChange={e => setChipValue(e.target.value)}
-        />
-      </Grid>
-      <Grid item>
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={() => {
-            if (chipValue !== "" && chipValue.length > 1) {
-              addChip(chipValue);
-            }
-          }}
-          style={{ backgroundColor: "rgba(255, 129, 0, 0.21)" }}
-        >
-          Add
-        </Button>
+      <Grid container item xs={11}>
+        <Grid item xs={5} sm={3}>
+          <TextField
+            value={chipValue}
+            label="Skill"
+            placeholder="Add your skill here"
+            onChange={e => setChipValue(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={5} sm={3}>
+          <Button
+            variant="contained"
+            fullWidth
+            color="primary"
+            onClick={() => {
+              if (chipValue !== "" && chipValue.length > 1) {
+                addChip(chipValue);
+              }
+            }}
+            style={{
+              
+              height: "100%",
+              marginLeft: "20px",
+              color: "white",
+              borderRadius: "25px",
+              boxShadow: "none"
+            }}
+          >
+            Add
+          </Button>
+        </Grid>
       </Grid>
     </Grid>
   ) : (
@@ -251,7 +266,7 @@ const Profile = props => {
     userProfile !== undefined && userProfile !== null ? (
       <>
         <ThemeProvider theme={theme}>
-          <Grid container style={{ overflow: "hidden" }}>
+          <Grid container style={{ overflow: "hidden" }} justify="center">
             <GeneralProfile
               data={{
                 FallBackAvatar,
@@ -324,24 +339,24 @@ const Profile = props => {
                 <Grid item>{buttonIcon}</Grid>
               </Grid>
             </Grid>
-            <Grid container style={{ padding: "2vh 1vw" }} spacing={1}>
+            <Grid item xs={12}container style={{ padding: "2vh 0" }} spacing={1}>
               {editSkills}
-
               {Array.isArray(skills)
                 ? skills.map(skill => {
-                    return (
-                      <Grid item key={Math.random()}>
-                        <Chip
-                          onDelete={() => deleteChip(skill)}
-                          label={skill}
-                          style={{
-                            backgroundColor: "rgba(8, 124, 149, 0.1)",
-                            color: "Black",
-                          }}
-                        />
-                      </Grid>
-                    );
-                  })
+                  return (
+                    <Grid key={Math.random()}>
+                      <Chip
+                        onDelete={() => deleteChip(skill)}
+                        label={skill}
+                        style={{
+                          backgroundColor: "rgba(8, 124, 149, 0.1)",
+                          color: "Black",
+                          margin: "3px"
+                        }}
+                      />
+                    </Grid>
+                  );
+                })
                 : ""}
             </Grid>
           </Grid>
@@ -353,10 +368,11 @@ const Profile = props => {
 
   return isAddMode ? (
     <AddNewExperience data={field} />
-  ) : (
+  ) : isEditGeneralProfile ? (
     <ThemeProvider theme={theme}>
       <EditProfile
         data={{
+          FallBackAvatar,
           avatarProfile,
           userName,
           userLastName,
@@ -365,6 +381,8 @@ const Profile = props => {
         }}
       />
     </ThemeProvider>
+  ) : (
+    content
   );
 };
 

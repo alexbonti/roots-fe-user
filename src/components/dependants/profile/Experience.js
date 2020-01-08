@@ -48,7 +48,7 @@ export const Experience = props => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body1">
-                {newTimeS} {" || "}
+                {newTimeS} {" ~ "}
                 {newTimeE}
               </Typography>
             </Grid>

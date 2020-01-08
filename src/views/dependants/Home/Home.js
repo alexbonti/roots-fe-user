@@ -68,15 +68,15 @@ function a11yProps(index) {
   };
 }
 
-const Home = (props) => {
-
+const Home = props => {
   console.log("TCL: Home -> props", props);
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
-
   //CONTEXT
-  const { listSavedJobs, setListSavedJobs, setIsFullView} = useContext(HomeContext);
+  const { listSavedJobs, setListSavedJobs, setIsFullView } = useContext(
+    HomeContext
+  );
   const {
     setUserName,
     setUserLastName,
@@ -91,41 +91,39 @@ const Home = (props) => {
     setValue(newValue);
   };
 
-
   const handleChangeIndex = index => {
     setValue(index);
   };
 
-
   //API CALLS
   useEffect(() => {
     const triggerAPI = async () => {
-
       setIsFullView(false);
+      const profileExtData = await API.getUserProfileExt();
+      if (profileExtData) {
+        setListSavedJobs(profileExtData.response.savedJobs);
+        setAvatarProfile(profileExtData.response.avatar);
+        setSearchSettings(profileExtData.response.preferredIndustry);
+      }
       const oppResponse = await API.getOpportunity();
-      if(oppResponse){
+      if (oppResponse) {
         setOppData(oppResponse.response);
       }
       const profileResponse = await API.getUserProfile();
       console.log(profileResponse);
-      if(profileResponse){
+      if (profileResponse) {
         setUserName(profileResponse.response.first_name);
         setUserLastName(profileResponse.response.last_name);
         setUserEmail(profileResponse.response.emailId);
         //setUserPassword(profileResponse.response.password);
       }
-      const profileExtData = await API.getUserProfileExt();
-      if(profileExtData){
-        setAvatarProfile(profileExtData.response.avatar);
-        setListSavedJobs(profileExtData.response.savedJobs);
-        setSearchSettings(profileExtData.response.preferredIndustry);
-      }
 
-      Promise.all([profileResponse,profileExtData, oppResponse]).then(res => res).catch(err => err);
+      Promise.all([profileResponse, profileExtData, oppResponse])
+        .then(res => res)
+        .catch(err => err);
     };
     triggerAPI();
-
-  }, [ 
+  }, [
     setOppData,
     setUserName,
     setUserLastName,
@@ -136,10 +134,9 @@ const Home = (props) => {
   ]);
 
   return Array.isArray(oppData) ? (
-
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
-        <AppBar position="static" color="default" >
+        <AppBar position="static" color="default">
           <Tabs
             value={value}
             onChange={handleChange}
@@ -148,7 +145,7 @@ const Home = (props) => {
             variant="fullWidth"
             className={classes.tabs}
             aria-label="full width tabs example"
-            style={{ marginTop: 0, height: "58px"}}
+            style={{ marginTop: 0, height: "58px" }}
           >
             <Tab label="Search" {...a11yProps(0)} className={classes.tab} />
             <Tab label="News" {...a11yProps(1)} className={classes.tab} />
@@ -161,7 +158,11 @@ const Home = (props) => {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <FullListJobs data={oppData} savedJobs={listSavedJobs} searchSetting={searchSettings}/>
+            <FullListJobs
+              data={oppData}
+              savedJobs={listSavedJobs}
+              searchSetting={searchSettings}
+            />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             <ListNews />
@@ -172,11 +173,12 @@ const Home = (props) => {
         </SwipeableViews>
       </div>
     </ThemeProvider>
-  ) : <Spinner />
+  ) : (
+    <Spinner />
+  );
 };
-
 
 export default withRouter(Home);
 // Home.PropTypes = {
-//   data: 
+//   data:
 // }

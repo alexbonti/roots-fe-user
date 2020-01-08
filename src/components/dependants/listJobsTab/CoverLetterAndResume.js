@@ -4,13 +4,11 @@ import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Button } from "@material-ui/core/";
 import {
   HomeContext,
-  LoginContext,
   UserContext,
   TextEditorContext,
 } from "contexts";
 import { API } from "helpers";
 import { notify, TextEditor, EndApplication } from "components";
-import MyDropzone from "../DropDrag";
 import { ProgressBar } from "../../common/ProgressBar";
 
 const useStyles = makeStyles(theme => ({
@@ -60,7 +58,6 @@ export const CoverLetterAndResume = props => {
   const { setUserWantsToApply, progressBar } = useContext(HomeContext);
   const { fileURL, coverLetterUrl } = useContext(UserContext);
   const { coverLetter } = useContext(TextEditorContext);
-  const { loginStatus } = useContext(LoginContext);
   const [hasApplied, setHasApplied] = useState(false);
 
   const applyJob = async () => {
@@ -142,11 +139,11 @@ export const CoverLetterAndResume = props => {
           <TextEditor data={{ content: "coverletter" }} />
         </Grid>
 
-        <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+        {/* <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
           <Typography variant="h6">Or attach your documents</Typography>
-        </Grid>
-        <Grid item xs={11} container justify="center">
-          <Grid
+        </Grid> */}
+        {/* <Grid item xs={11} container justify="center"> */}
+        {/* <Grid
             item
             container
             xs={5}
@@ -179,7 +176,7 @@ export const CoverLetterAndResume = props => {
               <MyDropzone data={"file"} size="small" />
             </Grid>
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <Grid container justify="center" style={{ padding: "2vh 0" }}>

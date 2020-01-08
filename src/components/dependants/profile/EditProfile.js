@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
 import { Typography, Grid, TextField, Button } from "@material-ui/core/";
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import MyDropzone from "../DropDrag";
 import { API } from "helpers";
 import PropTypes from "prop-types";
 import { notify } from "components";
 import { Link } from "react-router-dom";
+import { UserContext } from "contexts/index";
 
 const useStyles = makeStyles(() => ({
   buttons: {
@@ -29,8 +30,18 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const EditProfile = ({ data }) => {
-  const [newFirstName, setNewFirstName] = useState("");
-  const [newLastName, setNewLastName] = useState("");
+  const ImageAvatar =
+    data.avatarProfile === "" ||
+    data.avatarProfile === undefined ||
+    data.avatarProfile === "string"
+      ? data.FallBackAvatar
+      : data.avatarProfile;
+
+  const {  setIsEditGeneralProfile } = useContext(
+    UserContext
+  );
+  const [newFirstName, setNewFirstName] = useState(data.userName);
+  const [newLastName, setNewLastName] = useState(data.userLastName);
   /**
    * Error Fields states
    * @error default is false
@@ -39,7 +50,6 @@ export const EditProfile = ({ data }) => {
   const [lastNameErrorField, setLastNameErrorField] = useState(false);
 
   const validationCheck = () => {
-
     if (newFirstName.length < 0 || newFirstName.length === 0) {
       setFirstNameErrorField(true);
       return notify("First name field can not be empty");
@@ -63,8 +73,10 @@ export const EditProfile = ({ data }) => {
       notify("First Name or Last Name must not include numbers or symbols");
       setFirstNameErrorField(true);
       setLastNameErrorField(true);
-    }else{setFirstNameErrorField(false);
-        setLastNameErrorField(false);}
+    } else {
+      setFirstNameErrorField(false);
+      setLastNameErrorField(false);
+    }
     if (firstNamePatternTest && lastNamePatternTest) {
       return updateUser();
     }
@@ -78,10 +90,9 @@ export const EditProfile = ({ data }) => {
         "firstLogin": false,
       };
       const dataProfile = await API.updateUserProfile(data);
-      if(dataProfile){
-          notify("Details changed");
+      if (dataProfile) {
+        notify("Details changed");
       }
-      console.log(dataProfile);
     };
     triggerAPI();
   };
@@ -95,10 +106,29 @@ export const EditProfile = ({ data }) => {
           item
           alignItems="center"
           xs={12}
-          style={{ backgroundColor: "rgba(8, 124, 149, 0.1)", height: "15vh" }}
+          style={{ backgroundColor: "rgba(8, 124, 149, 0.1)", height: "12vh" }}
         >
           <Grid item xs={11}>
             <Typography variant="h5">Edit Profile</Typography>
+          </Grid>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          container
+          justify="center"
+          alignItems="center"
+          style={{ backgroundColor: "rgb(248, 248, 248)", height: "4vh" }}
+        >
+          <Grid item xs={11}>
+            <Typography
+              variant="body2"
+              onClick={() => {
+                setIsEditGeneralProfile(false);
+              }}
+            >
+              {"< "}Back to Profile
+            </Typography>
           </Grid>
         </Grid>
         <Grid
@@ -110,12 +140,13 @@ export const EditProfile = ({ data }) => {
           style={{ height: "15vh" }}
         >
           <Grid>
-            <MyDropzone data="photo" size="small" avatar={data.avatarProfile} />
+            <MyDropzone data="photo" size="small" avatar={ImageAvatar} />
           </Grid>
         </Grid>
         <Grid item xs={11} style={{ marginTop: "4vh" }}>
           <TextField
             error={firstNameErrorField}
+            defaultValue={data.userName}
             fullWidth
             onChange={e => {
               setNewFirstName(e.target.value);
@@ -127,6 +158,7 @@ export const EditProfile = ({ data }) => {
         <Grid item xs={11}>
           <TextField
             error={lastNameErrorField}
+            defaultValue={data.userLastName}
             className={classes.textfield}
             fullWidth
             onChange={e => {
@@ -143,7 +175,7 @@ export const EditProfile = ({ data }) => {
             variant="caption"
           >
             {" "}
-            Forgot passowrd?
+            Reset password
           </Typography>
         </Grid>
 
@@ -159,4 +191,10 @@ export const EditProfile = ({ data }) => {
       </Grid>
     </>
   );
+};
+
+EditProfile.propTypes = {
+  data: PropTypes.object,
+  userName: PropTypes.string,
+  userLastName: PropTypes.string,
 };

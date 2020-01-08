@@ -128,20 +128,22 @@ const ResetPasswordSecondStep = () => {
         justify="center"
         style={{
           backgroundColor: "rgb(234, 244, 246)",
-          height: "24vh",
+          height: "20vh",
           paddingBottom: "1vh",
         }}
       >
-        <Grid container item xs={10}>
-          <Typography
-            style={{
-              fontFamily: `"Arial", "Helvetica", sans-serif`,
-              fontWeight: "bold",
-              fontSize: "20px",
-            }}
-          >
-            Reset your password
-          </Typography>
+        <Grid container item xs={10} style={{paddingBottom: "3vh"}} >
+          <Grid item xs={12}>
+            <Typography
+              style={{
+                fontFamily: `"Arial", "Helvetica", sans-serif`,
+                fontWeight: "bold",
+                fontSize: "20px",
+              }}
+            >
+              Reset your password
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
       <Grid container justify="center">
@@ -209,6 +211,7 @@ const ResetPasswordSecondStep = () => {
               borderRadius: "25px",
               border: "1px solid #087b94",
               backgroundColor: "#087b94 !important",
+              height: 55,
             }}
           >
             Send
