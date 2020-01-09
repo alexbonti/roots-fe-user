@@ -16,8 +16,9 @@ import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 const useStyles = makeStyles(() => ({
   avatar: {
     width: "100%",
-    heigth: "100%",
-    borderRadius: "20px",
+    height: "100%",
+    marginRight: "2px"
+    // borderRadius: "20px",
   },
   container: {
     "&:focus": {
@@ -174,8 +175,8 @@ export default function Accept({ avatar, ...props }) {
         style={style}
         justify="flex-end"
       >
-        <Grid container item xs={10} justify="flex-end">
-          <Grid item xs={10}>
+        <Grid container item xs={10} justify="space-around">
+          <Grid item xs={9}>
             {preAvatar}
           </Grid>
           <Grid item xs={2}>

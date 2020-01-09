@@ -2,46 +2,55 @@ import React from "react";
 import { Typography, Grid } from "@material-ui/core/";
 import { Spinner } from "components";
 import ReactHtmlParser from "react-html-parser";
-import {HomeContext} from "contexts";
+import { HomeContext } from "contexts";
+import PropTypes from "prop-types";
 
-export const LargeNewsCard = props => {
-  const {setDetailsNews, setIsFullViewNews} = React.useContext(HomeContext);
-
+export const LargeNewsCard = ({ data }) => {
+  const { imageURL, title, datePublished, content } = data;
+  const { setDetailsNews, setIsFullViewNews } = React.useContext(HomeContext);
 
   const openFullNews = () => {
-    setDetailsNews(props.data);
+    setDetailsNews(data);
     setIsFullViewNews(true);
-  }
-  return props.data !== undefined ? (
+  };
+  return data !== undefined ? (
     <>
-      <Grid container justify="center" onClick={()=> openFullNews()}>
+      <Grid container justify="center" onClick={() => openFullNews()}>
         <Grid item xs={12} md={7}>
           <img
-            src={props.data.imageURL}
-            alt={props.data.title}
+            src={imageURL}
+            alt={title}
             style={{ width: "100%", height: "30vh" }}
           />
         </Grid>
         <Grid container item xs={11} md={7}>
           <Grid item xs={12}>
-            <Typography variant="h6">{props.data.title}</Typography>
+            <Typography variant="h5">{title}</Typography>
           </Grid>
           <Grid item xs={12}>
-            {props.data.datePublished.substring(0, 10)}
+            <Typography variant="h5" style={{ fontSize: 14 }}>
+              {datePublished.substring(0, 10)}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
-            {ReactHtmlParser(props.data.content.substring(0, 150))}
-          </Grid>
-          <Grid item align="right" xs={12} md={6}>
-            <Typography  variant="caption">read more...</Typography>
+            <Typography variant="body1" dangerouslySetInnerHTML={{ __html: content.substring(0, 150) }}>
+            </Typography>
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <hr style={{ border: "5px solid rgb(249, 249, 249)" }} />
+          <hr style={{ border: "5px solid rgb(249, 249, 249)", margin: 0 }} />
         </Grid>
       </Grid>
     </>
   ) : (
     <Spinner />
   );
+};
+
+LargeNewsCard.prototype = {
+  data: PropTypes.object,
+  imageURL: PropTypes.string,
+  title: PropTypes.string,
+  datePublished: PropTypes.string,
+  content: PropTypes.string,
 };
