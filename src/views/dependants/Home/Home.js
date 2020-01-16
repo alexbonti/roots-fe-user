@@ -152,25 +152,25 @@ const Home = props => {
             <Tab label="Resources" {...a11yProps(2)} className={classes.tab} />
           </Tabs>
         </AppBar>
-        <SwipeableViews
+        {/* <SwipeableViews
           axis={theme.direction === "rtl" ? "x-reverse" : "x"}
           index={value}
           onChangeIndex={handleChangeIndex}
-        >
-          <TabPanel value={value} index={0} dir={theme.direction}>
-            <FullListJobs
-              data={oppData}
-              savedJobs={listSavedJobs}
-              searchSetting={searchSettings}
-            />
-          </TabPanel>
-          <TabPanel value={value} index={1} dir={theme.direction}>
-            <ListNews />
-          </TabPanel>
-          <TabPanel value={value} index={2} dir={theme.direction}>
-            <FullListResources />
-          </TabPanel>
-        </SwipeableViews>
+        > */}
+        <TabPanel value={value} index={0} dir={theme.direction}>
+          <FullListJobs
+            data={oppData}
+            savedJobs={listSavedJobs}
+            searchSetting={searchSettings}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          <ListNews />
+        </TabPanel>
+        <TabPanel value={value} index={2} dir={theme.direction}>
+          <FullListResources />
+        </TabPanel>
+        {/* </SwipeableViews> */}
       </div>
     </ThemeProvider>
   ) : (
