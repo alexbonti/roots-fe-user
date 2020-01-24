@@ -1,4 +1,9 @@
-.App {
+html,
+body {
+  position: fixed;
+  overflow: hidden;
+}
+App {
   text-align: center;
   background-color: white !important;
 }

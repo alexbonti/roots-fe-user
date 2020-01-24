@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography, Grid } from "@material-ui/core/";
 import { Spinner } from "components";
-import ReactHtmlParser from "react-html-parser";
 import { HomeContext } from "contexts";
 import PropTypes from "prop-types";
 
@@ -33,8 +32,10 @@ export const LargeNewsCard = ({ data }) => {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body1" dangerouslySetInnerHTML={{ __html: content.substring(0, 150) }}>
-            </Typography>
+            <Typography
+              variant="body1"
+              dangerouslySetInnerHTML={{ __html: content.substring(0, 150) }}
+            ></Typography>
           </Grid>
         </Grid>
         <Grid item xs={12}>

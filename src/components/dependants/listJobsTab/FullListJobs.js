@@ -121,11 +121,10 @@ export const FullListJobs = props => {
     <>
       <Grid
         container
-        alignItems="flex-end"
+        alignItems="center"
         justify="space-evenly"
         style={{
-          paddingTop: "4vh",
-          paddingBottom: "1vh",
+          height: "100px",
           backgroundColor: "rgba(8, 124, 149, 0.1)",
         }}
       >
