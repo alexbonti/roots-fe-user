@@ -72,14 +72,17 @@ const SearchSettings = () => {
   useEffect(() => {
     const triggerAPI = async () => {
       const profileExtData = await API.getUserProfileExt();
-      setUserExp(profileExtData.response);
-      setAvatarProfile(profileExtData.response.avatar);
-      setAccumulator(profileExtData.response.preferredIndustry);
-      const {preferredIndustry} = profileExtData.response;
-      let values  = [];
-      preferredIndustry.forEach(industry => values.push(Object.values(industry)[1]));
-      let filteredSavedData = jobs.filter(job => !values.includes(job.label) );
-      setChipData(filteredSavedData);
+      if(profileExtData){
+        setUserExp(profileExtData.response);
+        setAvatarProfile(profileExtData.response.avatar);
+        setAccumulator(profileExtData.response.preferredIndustry);
+        const {preferredIndustry} = profileExtData.response;
+        let values  = [];
+        preferredIndustry.forEach(industry => values.push(Object.values(industry)[1]));
+        let filteredSavedData = jobs.filter(job => !values.includes(job.label) );
+        setChipData(filteredSavedData);
+
+      }
     };
     if (loginStatus) {
       triggerAPI();
