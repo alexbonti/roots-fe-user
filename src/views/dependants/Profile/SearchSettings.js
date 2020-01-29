@@ -111,16 +111,16 @@ const SearchSettings = () => {
 
   let content = Array.isArray(accumulator)
     ? accumulator.map(chip => {
-        return (
-          <Chip
-            key={Math.random()}
-            label={chip.label}
-            color="secondary"
-            onDelete={handleDelete(chip)}
-            style={{ margin: ".5vh 1vw" }}
-          />
-        );
-      })
+      return (
+        <Chip
+          key={Math.random()}
+          label={chip.label}
+          color="secondary"
+          onDelete={handleDelete(chip)}
+          style={{ margin: ".5vh 1vw" }}
+        />
+      );
+    })
     : "";
 
   const saveChanges = () => {

@@ -1,4 +1,4 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import "date-fns";
 import {
   Grid,
@@ -17,7 +17,7 @@ import {
 import { notify, Education } from "components";
 import { API } from "helpers";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
-import {UserContext} from "contexts";
+import { UserContext } from "contexts";
 
 const useStyles = makeStyles(() => ({
   buttons: {
@@ -35,28 +35,26 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "white ",
     height: "55px",
     margin: "1vh 0",
-
-  }
+  },
 }));
 
 export const EditEducation = props => {
+  const { endDate, startDate, school, major, degree } = props.data;
+
   const [isEditModeOn, setIsEditModeOn] = useState(true);
   const classes = useStyles();
   const [selectedStartDate, setSelectedStartDate] = useState(
-    new Date("2017-08-18T21:11:54")
+    new Date(startDate)
   );
-  const [selectedEndDate, setSelectedEndDate] = useState(
-    new Date("2019-08-18T21:11:54")
-  );
+  const [selectedEndDate, setSelectedEndDate] = useState(new Date(endDate));
 
   const { _id } = props.data;
 
-  const [newSchool, SetNewSchool] = useState("");
-  const [newMajor, setNewMajor] = useState("");
-  const [newDegree, setNewDegree] = useState("");
+  const [newSchool, setNewSchool] = useState(school);
+  const [newMajor, setNewMajor] = useState(major);
+  const [newDegree, setNewDegree] = useState(degree);
   const [dataToSendToComp, setDataToSendToComp] = useState(props.data);
   const { setIsUpdated } = useContext(UserContext);
-
 
   const handleDateChange = date => {
     setSelectedStartDate(date);
@@ -74,31 +72,36 @@ export const EditEducation = props => {
     const deleteData = await API.deleteEducation(data);
     if (deleteData) {
       notify("Deleted");
-      setIsUpdated(true);
       setIsEditModeOn(false);
+      setIsUpdated(true);
     }
+  };
+
+  const handleDefaultValues = () => {
+    if (newSchool === "") {
+      return notify("School field can't be empty");
+    } else if (newDegree === "") {
+      return notify("Degree field can't be empty");
+    } else if (newMajor === "") {
+      return notify("Major field can't be empty");
+    } else updateEducation();
   };
 
   const updateEducation = () => {
     const callAPI = async () => {
-      if (newSchool === "" || newMajor === "" || newDegree === "") {
-        return notify("fields can not be empty");
-      } else {
-        let data = {
-          "educationId": _id,
-          "school": newSchool,
-          "major": newMajor,
-          "startDate": selectedStartDate,
-          "endDate": selectedEndDate,
-          "degree": newDegree,
-        };
+      let data = {
+        "educationId": _id,
+        "school": newSchool,
+        "major": newMajor,
+        "startDate": selectedStartDate,
+        "endDate": selectedEndDate,
+        "degree": newDegree,
+      };
 
-        const eduExpData = await API.editEduExperience(data);
-        notify(" Education Experience edited successfully");
-        console.log("eduExpData", eduExpData.response);
-        setIsEditModeOn(false);
-        setDataToSendToComp(data);
-      }
+      const eduExpData = await API.editEduExperience(data);
+      notify(" Education Experience edited successfully");
+      setIsEditModeOn(false);
+      setDataToSendToComp(data);
     };
 
     callAPI();
@@ -139,8 +142,9 @@ export const EditEducation = props => {
           <TextField
             placeholder="School"
             fullWidth
+            defaultValue={props.data.school}
             onChange={event => {
-              SetNewSchool(event.target.value);
+              setNewSchool(event.target.value);
             }}
           />
         </Grid>
@@ -148,6 +152,7 @@ export const EditEducation = props => {
           <TextField
             placeholder="Major"
             fullWidth
+            defaultValue={props.data.major}
             onChange={event => {
               setNewMajor(event.target.value);
             }}
@@ -157,6 +162,7 @@ export const EditEducation = props => {
           <TextField
             placeholder="Degree"
             fullWidth
+            defaultValue={props.data.degree}
             onChange={event => {
               setNewDegree(event.target.value);
             }}
@@ -204,7 +210,15 @@ export const EditEducation = props => {
           </Grid>
         </Grid>
 
-        <Grid item xs={11} md={5} lg={4} style={{ padding: "4vh 0" }} container justify="space-evenly">
+        <Grid
+          item
+          xs={11}
+          md={5}
+          lg={4}
+          style={{ padding: "4vh 0" }}
+          container
+          justify="space-evenly"
+        >
           <Grid item xs={5}>
             <Button
               className={classes.buttonVariant}
@@ -221,7 +235,7 @@ export const EditEducation = props => {
               className={classes.buttons}
               fullWidth
               onClick={() => {
-                updateEducation();
+                handleDefaultValues();
               }}
             >
               Save Changes

@@ -84,6 +84,7 @@ export const EditExperience = props => {
 
   const handleDateChangeEnd = date => {
     setSelectedEndDate(date);
+    setChecked(false);
   };
 
   const handleChange = event => {
@@ -96,22 +97,28 @@ export const EditExperience = props => {
   const deleteJob =  async () => {
     const data = {
       "workExperienceId": _id,
-    }
+    };
 
     const deleteData = await API.deleteWorkExperience(data);
     if(deleteData){
       notify("Deleted");
-      setIsUpdated(true);
       setIsEditModeOn(false);
+      setIsUpdated(true);
     }
   };
 
+  const handleDefaultValues = () => {
+    if (newPositionName === "") {
+      return notify("Position name field can't be empty");
+    } else if (newCompanyName === "") {
+      return notify("Company name field can't be empty");
+    } else updateSingleUserWorkExp();
+  };
+
   const updateSingleUserWorkExp = () => {
-    console.log("description", description, "workExperience", workExperience);
     const callAPI = async () => {
       let data;
       if (workExperience === "") {
-        console.log("inside empty workexperience", workExperience);
         data = {
           "workExperienceId": _id,
           "positionTitle": newPositionName,
@@ -142,7 +149,6 @@ export const EditExperience = props => {
       const workExpApiData = await API.editWorkExperience(data);
       if (workExpApiData) {
         notify(" Work Experience edited successfully");
-        console.log("workExpApiData", workExpApiData.response);
         setIsUpdated(true);
         setIsEditModeOn(false);
       }
@@ -282,7 +288,7 @@ export const EditExperience = props => {
                 className={classes.buttons}
                 fullWidth
                 onClick={() => {
-                  updateSingleUserWorkExp();
+                  handleDefaultValues();
                 }}
               >
                 Save Changes

@@ -84,7 +84,7 @@ const RegistrationConfirmation = ({ ...props }) => {
   const resendOTP = async () => {
     const resendOtpData = await API.resendOTP(accessToken);
     if (resendOtpData) {
-      notify("Otp code sent");
+      notify("OTP code sent");
     }
   };
   const sendCode = async () => {

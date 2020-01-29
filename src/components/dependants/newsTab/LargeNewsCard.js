@@ -26,7 +26,7 @@ export const LargeNewsCard = ({ data }) => {
           <Grid item xs={12}>
             <Typography variant="h5">{title}</Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={11}>
             <Typography variant="h5" style={{ fontSize: 14 }}>
               {datePublished.substring(0, 10)}
             </Typography>
@@ -35,7 +35,9 @@ export const LargeNewsCard = ({ data }) => {
             <Typography
               variant="body1"
               dangerouslySetInnerHTML={{ __html: content.substring(0, 150) }}
-            ></Typography>
+            >
+            </Typography>
+            <Typography>...</Typography>
           </Grid>
         </Grid>
         <Grid item xs={12}>

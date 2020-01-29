@@ -37,7 +37,7 @@ export const EditProfile = ({ data }) => {
       ? data.FallBackAvatar
       : data.avatarProfile;
 
-  const {  setIsEditGeneralProfile } = useContext(
+  const {  setIsEditGeneralProfile, setIsUpdated} = useContext(
     UserContext
   );
   const [newFirstName, setNewFirstName] = useState(data.userName);
@@ -91,6 +91,7 @@ export const EditProfile = ({ data }) => {
       };
       const dataProfile = await API.updateUserProfile(data);
       if (dataProfile) {
+        setIsUpdated(true);
         notify("Details changed");
       }
     };
