@@ -52,7 +52,7 @@ const ResetPassword = () => {
   const validationCheck = () => {
     if (emailId.length < 0 || emailId === "") {
       setEmailErrorField(true);
-      return notify("email field can not be empty");
+      return notify("Email or password must not be empty!");
     } else {
       setEmailErrorField(false);
     }
@@ -62,7 +62,7 @@ const ResetPassword = () => {
     let emailPatternTest = emailPattern.test(emailId);
     if (!emailPatternTest) {
       setEmailErrorField(true);
-      notify("Please provide a rigth email address");
+      notify("Email address is incorect");
     } else {
       setEmailErrorField(false);
     }

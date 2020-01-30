@@ -138,16 +138,16 @@ export const TemporaryDrawer = () => {
               </Link>
             </ListItem>
             <Grid container justify="center" style={{paddingTop: "16px"}}>
-                <Grid item xs={9}>
-                    <Divider style={{border: "1px solid rgba(149, 154, 156, 1)"}} />
-                </Grid>
+              <Grid item xs={9}>
+                <Divider style={{border: "1px solid rgba(149, 154, 156, 1)"}} />
+              </Grid>
             </Grid>
             <Grid item>
-            <ListItem
-              button={true}
-              onClick={() => logout()}
-              style={{paddingLeft: "0"}}
-            >
+              <ListItem
+                button={true}
+                onClick={() => logout()}
+                style={{paddingLeft: "0"}}
+              >
   
   <Typography style={{paddingLeft: "27px",fontSize: "16px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Log out  {"    "}  > </Typography>
             </ListItem>
@@ -158,7 +158,7 @@ export const TemporaryDrawer = () => {
            style={{paddingLeft: "102.5px", paddingBottom: "60px"}}
             >
   
-  <Typography style={{fontSize: "14px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>Deakin Create</Typography>
+  <Typography style={{fontSize: "14px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>ROOTS</Typography>
             </ListItem>
           </Grid>
         </Grid>

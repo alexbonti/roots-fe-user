@@ -98,12 +98,14 @@ const OnBoarding = props => {
     console.log(activeStep);
   };
 
+  
   const handleBack = () => {
     if (activeStep > 0) {
       setActiveStep(prevActiveStep => prevActiveStep - 1);
     }
   };
-
+  
+  const buttonStatusDisabled= activeStep <  1 ? true : false;
   // ---------------------button stepper------------------------
 
   const buttonStepper = isStart ? (
@@ -165,7 +167,7 @@ const OnBoarding = props => {
     ) : (
       <>
         <Grid container className={classes.topper} alignItems="flex-end">
-          <Button onClick={handleBack} className={classes.backButton}>
+          <Button onClick={handleBack} className={classes.backButton} disabled={buttonStatusDisabled}>
             {"<"} Back
           </Button>
         </Grid>

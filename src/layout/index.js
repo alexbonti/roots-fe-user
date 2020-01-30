@@ -2,6 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { Header } from "components";
 
+const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
@@ -15,8 +17,11 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     // paddingTop: theme.spacing(5),
-    paddingBottom: theme.spacing(4)
-  }
+    paddingBottom: theme.spacing(7)
+  },
+  iOSPadding: {
+    height: "5vh"
+  },
 }));
 
 export const Layout = props => {
@@ -29,6 +34,7 @@ export const Layout = props => {
         <div className={classes.appBarSpacer} />
         <div className={classes.container}>{props.children}</div>
       </main>
+      <div className={classes.iOSPadding} />
     </div>
   );
   return content;

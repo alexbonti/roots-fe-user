@@ -37,7 +37,7 @@ export const FilterOpportunity = props => {
   const [, setDataSetFilteredByLocation] = useState("");
 
   const [keyword, setKeyword] = useState("");
-  const [positionFilter, setPositionFilter] = useState("");
+  const [employmentTypeFilter, setEmploymentTypeFilter] = useState("");
   const { setFilteredData, setIsFilterOn } = useContext(HomeContext);
 
   const [locationError, setLocationError] = useState(false);
@@ -89,8 +89,8 @@ export const FilterOpportunity = props => {
         setIsFilterOn(true);
         if (keyword !== "") {
           filterByKeyword(dataLocation.response);
-        } else if (positionFilter !== "") {
-          filterBySeniority(dataLocation.response);
+        } else if (employmentTypeFilter !== "") {
+          filterByEmploymentType(dataLocation.response);
         }
       } else {
         notify("No Results");
@@ -120,20 +120,20 @@ export const FilterOpportunity = props => {
       }
     };
 
-    const filterBySeniority = dataSet => {
-      let dataSetFilteredBySeniority = [];
+    const filterByEmploymentType = dataSet => {
+      let dataSetFilterByEmploymentType = [];
       dataSet.map(data => {
-        return data.seniority.includes(positionFilter)
-          ? dataSetFilteredBySeniority.push(data)
+        return data.employmentType.includes(employmentTypeFilter)
+          ? dataSetFilterByEmploymentType.push(data)
           : console.log("No results");
       });
 
-      if (dataSetFilteredBySeniority < 1) {
+      if (dataSetFilterByEmploymentType < 1) {
         notify("No Results");
       }
-      setFilteredData(dataSetFilteredBySeniority);
+      setFilteredData(dataSetFilterByEmploymentType);
       setIsFilterOn(true);
-      return console.log(dataSetFilteredBySeniority);
+      return console.log(dataSetFilterByEmploymentType);
     };
 
     if (checkEmpty(inputPosition)) {
@@ -217,7 +217,7 @@ export const FilterOpportunity = props => {
         margin="normal"
         fullWidth
         label="Position type"
-        onChange={e => setPositionFilter(e.target.value)}
+        onChange={e => setEmploymentTypeFilter(e.target.value)}
         style={{marginTop: 0}}
       >
         {positionTypeOption.map(option => (

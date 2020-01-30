@@ -26,7 +26,7 @@ export const NewsCard = ({ data }) => {
           <img
             src={imageURL}
             alt={title}
-            style={{ width: "100%", height: "100%" }}
+            style={{ maxHeight: 100, width: "100%", height: "100%" }}
           />
         </Grid>
         <Grid

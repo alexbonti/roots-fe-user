@@ -55,10 +55,11 @@ const theme = createMuiTheme({
 
 const Profile = props => {
   const { loginStatus } = useContext(LoginContext);
-  const { setIsFullView } = useContext(HomeContext);
+  const { setIsFullView, setIsFullViewApplied } = useContext(HomeContext);
   const { coverLetter } = useContext(TextEditorContext);
   const {
     setUserName,
+    
     setUserLastName,
     setUserEmail,
     setUserProfile,
@@ -87,6 +88,7 @@ const Profile = props => {
 
   useEffect(() => {
     setIsFullView(false);
+    setIsFullViewApplied(false);
     const triggerAPI = async () => {
       setIsEditGeneralProfile(false);
       const profileResponse = await API.getUserProfile();

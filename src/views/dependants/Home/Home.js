@@ -74,7 +74,7 @@ const Home = props => {
   const [value, setValue] = useState(0);
 
   //CONTEXT
-  const { listSavedJobs, setListSavedJobs, setIsFullView } = useContext(
+  const { listSavedJobs, setIsFullViewApplied,setListSavedJobs, setIsFullView } = useContext(
     HomeContext
   );
   const {
@@ -99,6 +99,8 @@ const Home = props => {
   useEffect(() => {
     const triggerAPI = async () => {
       setIsFullView(false);
+      setIsFullViewApplied(false);
+
       const profileExtData = await API.getUserProfileExt();
       if (profileExtData) {
         setListSavedJobs(profileExtData.response.savedJobs);

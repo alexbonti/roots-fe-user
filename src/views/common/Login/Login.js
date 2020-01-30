@@ -132,7 +132,7 @@ export const Login = () => {
       } else if (emailPatternTest === undefined && pwd === undefined) {
         notify("Email or password must not be empty!");
         return false;
-      } else if (!emailPatternTest) {
+      } else if (!emailPatternTest === undefined) {
         notify("Email must not be empty!");
         return false;
       } else if (!emailPatternTest && email.length > 0) {
@@ -195,7 +195,7 @@ export const Login = () => {
                 onChange={e => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
-              <Typography component={Link} to="/ResetPassword"color="primary" variant="caption" > Forgot passowrd?</Typography>
+              <Typography component={Link} to="/ResetPassword"color="primary" variant="caption" > Forgot password?</Typography>
             </form>
           </Grid>
           <Grid
