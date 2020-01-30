@@ -186,7 +186,7 @@ export const CoverLetterAndResume = props => {
         <Grid item xs={11} md={10} lg={10} style={{ padding: "2vh 0" }}>
           {progressBarComponent}
         </Grid>
-        <Grid item xs={11} md={3} lg={3} style={{ padding: "1vh 0" }}>
+        <Grid item xs={10} md={3} lg={3} style={{ padding: "1vh 0" }}>
           <Button
             className={classes.buttons}
             fullWidth

@@ -144,20 +144,20 @@ const Register = props => {
     <>
       <ThemeProvider theme={theme}>
         <Header />
-        <Grid style={{height: "9vh"}}/>
+      <Grid style={{height: "9vh"}}/>
         <Grid
           container
           justify="center"
           alignItems="center"
           style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "15vh" }}
         >
-          <Grid item xs={10}>
+          <Grid item xs={10} md={7}>
             <Typography style={{fontSize: `"Arial Rounded MT", sans-serif`, fontSize: "21px", fontWeight: "bold"}}>Let's start</Typography>
           </Grid>
    
         </Grid>
         <Grid container justify="space-evenly" alignItems="center">
-          <Grid item xs={10}>
+          <Grid item xs={10} md={7}> 
             <form noValidate>
               <TextField
                 margin="normal"
@@ -219,7 +219,7 @@ const Register = props => {
               />
             </form>
           </Grid>
-          <Grid item xs={10} style={{paddingTop: "5vh"}}>
+          <Grid item xs={10} md={7}style={{paddingTop: "5vh"}}>
             <Button
               fullWidth
               variant="contained"

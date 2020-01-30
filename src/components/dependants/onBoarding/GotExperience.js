@@ -185,7 +185,7 @@ export const GotExperience = () => {
                 fontWeight: "bold",
               }}
             >
-              Where are you looking to work in?
+              Where  ?
             </Typography>
           </Grid>
           <Grid item xs={11}>
