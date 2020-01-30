@@ -5,8 +5,10 @@ COPY . .
 
 EXPOSE 3031
 
+RUN npm install -g serve
+
 RUN npm install 
 
-RUN npm rebuild node-sass
+RUN npm run build
 
-CMD ["npm","start"]
+CMD ["serve","-s", "build", "-l","3031"]
