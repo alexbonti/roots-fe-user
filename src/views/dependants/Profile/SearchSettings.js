@@ -68,6 +68,7 @@ const SearchSettings = () => {
   const [chipData, setChipData] = useState(jobs);
   const [accumulator, setAccumulator] = useState();
   const [userExp, setUserExp] = useState();
+  
 
   useEffect(() => {
     const triggerAPI = async () => {

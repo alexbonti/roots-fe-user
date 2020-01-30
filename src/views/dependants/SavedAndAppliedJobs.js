@@ -73,7 +73,10 @@ function a11yProps(index) {
 }
 
 const SavedAndAppliedJobs = props => {
-  const [dedfaultValueTab, setDefaultValueTab] = useState(props.location.state.direction === "applied-jobs" ? 1 : 0);
+
+
+  const [dedfaultValueTab, setDefaultValueTab] = useState( 0);
+
   const classes = useStyles();
   const [value, setValue] = useState(dedfaultValueTab);
   const [listSavedJobs, setListSavedJobs] = useState("");
@@ -87,11 +90,8 @@ const SavedAndAppliedJobs = props => {
     setAvatarProfile,
     setIsUpdated,
   } = useContext(UserContext);
+  const [redirect, setRedirect] = useState(false);
   const [oppData, setOppData] = useState("");
-
-  
-
-
 
   const handleChange = (event, newValue) => {
     setIsFullView(false);
@@ -106,10 +106,10 @@ const SavedAndAppliedJobs = props => {
     setValue(index);
   };
 
-
   useEffect(() => {
-    if(props.location.state.direction === "saved-job"){
-      setValue(0);
+
+    if(props.location.state ===  "applied-jobs"){
+      setDefaultValueTab(1);
     }
     const triggerAPI = async () => {
       const appliedOppData = await API.getUserAppliedJobs();
@@ -123,8 +123,8 @@ const SavedAndAppliedJobs = props => {
   }, []);
 
   useEffect(() => {
-    if(props.location.state.direction === "applied-job"){
-      setValue(1);}
+
+
     const triggerAPI = async () => {
       const profileResponse = await API.getUserProfile();
       if (profileResponse) {
@@ -151,22 +151,6 @@ const SavedAndAppliedJobs = props => {
     }
   }, []);
 
-
-  // useEffect(() => {
-  //   const triggerAPI = async () => {
-  //     const profileExtData = await API.getUserProfileExt();
-  //     if (profileExtData) {
-  //       setAvatarProfile(profileExtData.response.avatar);
-  //       setListSavedJobs(profileExtData.response.savedJobs);
-  //     }
-  //   };
-  //   if (loginStatus) {
-  //     triggerAPI();
-  //   }
-  // }, []);
-
-
-
   useEffect(() => {
     const triggerAPI = async () => {
       const oppResponse = await API.getOpportunity();
@@ -177,16 +161,11 @@ const SavedAndAppliedJobs = props => {
     if (loginStatus) {
       triggerAPI();
     }
-  }, [
-  ]);
+  }, []);
 
+ 
 
-  // if (props.location.state !== undefined) {
-  //   dedfaultValueTab =
-      
-  // }
-
-  return (
+  return  (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
         <AppBar position="static" color="default" style={{ height: "12vh" }}>
