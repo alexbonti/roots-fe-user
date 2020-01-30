@@ -10,15 +10,6 @@ import { NoExperience, GotExperience } from "components";
 import PropTypes from "prop-types";
 import { OnBoardingContext } from "contexts";
 
-<<<<<<< HEAD
-
-
-
-
-
-
-=======
->>>>>>> development
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   console.log(props);
@@ -36,14 +27,11 @@ function TabPanel(props) {
   );
 }
 
-const CustomTabPanel = withStyles(
-  {
-     div:  {
-       backgroundColor: "white !important"
-     }
- }
-
-)(Tabs);
+const CustomTabPanel = withStyles({
+  div: {
+    backgroundColor: "white !important",
+  },
+})(Tabs);
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -79,7 +67,6 @@ const useStyles = makeStyles(theme => ({
       color: "white",
       backgroundColor: " #087b94",
     },
-    
   },
 
   bigIndicator: {
@@ -224,7 +211,13 @@ export const StartOnBoarding = props => {
               have you got experience before ?
             </Typography>
           </Grid>
-          <Grid container item xs={12} justify="center" style={{paddingBottom: "63px"}}>
+          <Grid
+            container
+            item
+            xs={12}
+            justify="center"
+            style={{ paddingBottom: "63px" }}
+          >
             <CustomTabPanel
               value={value}
               indicatorColor="primary"
