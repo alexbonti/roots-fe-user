@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: "55px"
   },
 }));
 
@@ -51,7 +52,7 @@ export const EndApplication = (props) => {
               Good Luck
             </Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={8} >
             <Button
               fullWidth
               variant="contained"

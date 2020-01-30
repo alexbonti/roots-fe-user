@@ -77,11 +77,12 @@ const RegisterSuccess = ({ ...props }) => {
         className={classes.registerBox}
         alignItems="center"
         justify="center"
+        
       >
-        <Grid item xs={10} className={classes.text} style={{paddingTop: "5vh", textAlign:"center"}}>
+        <Grid item xs={10} md={7} className={classes.text} style={{paddingTop: "5vh", textAlign:"center", height: "30vh"}}>
           Your account has been verified
         </Grid>
-        <Grid item xs={10} container justify="center">
+        <Grid item xs={10} md={7} alignItems="center"container justify="center">
           <Grid item xs={10} style={{paddingTop: "5vh"}}>
             <Button
               component={Link}

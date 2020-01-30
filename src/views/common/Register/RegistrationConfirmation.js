@@ -119,13 +119,13 @@ const RegistrationConfirmation = ({ ...props }) => {
   ) : (
     <ThemeProvider theme={theme}>
       <Grid container className={classes.registerBox} justify="center">
-        <Grid item xs={11} container style={{ paddingTop: "5vh" }}>
+        <Grid item xs={11} md={7} justify="center" container style={{ paddingTop: "5vh" }}>
           <Typography className={classes.text}>
             A verification code has been sent to: <br />
             {props.location.state.emailId}
           </Typography>
         </Grid>
-        <Grid item xs={10} container justify="center">
+        <Grid item xs={10} md={7}container justify="center">
           <Grid item xs={9}>
             <TextField
               margin="normal"

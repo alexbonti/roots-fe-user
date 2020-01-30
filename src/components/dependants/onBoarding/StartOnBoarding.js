@@ -1,17 +1,24 @@
 import React, { useState, useContext } from "react";
-import { makeStyles, createMuiTheme,withStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  createMuiTheme,
+  withStyles,
+} from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Tabs, Tab, Box } from "@material-ui/core/";
 import { NoExperience, GotExperience } from "components";
 import PropTypes from "prop-types";
 import { OnBoardingContext } from "contexts";
 
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> development
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
   console.log(props);
@@ -72,6 +79,11 @@ const useStyles = makeStyles(theme => ({
       color: "white",
       backgroundColor: " #087b94",
     },
+    
+  },
+
+  bigIndicator: {
+    display: "none",
   },
 
   buttonLeft: {
@@ -183,7 +195,7 @@ export const StartOnBoarding = props => {
     : isNotClickedRight;
 
   // const tabsRender = isStarted ? (
-    
+
   // ) : (
   //   ""
   // );
@@ -191,13 +203,21 @@ export const StartOnBoarding = props => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Grid
-          container
-          justify="center"
-          className={classes.rootMain}
-        >
-          <Grid item xs={11} container justify="flex-start"  style={{paddingBottom: "14px"}}>
-            <Typography style={{fonstSize: "16px", fontFamily: `"Arial", "Helvetica", sans-serif`, fontWeight: "bold"}}>
+        <Grid container justify="center" className={classes.rootMain}>
+          <Grid
+            item
+            xs={11}
+            container
+            justify="flex-start"
+            style={{ paddingBottom: "14px" }}
+          >
+            <Typography
+              style={{
+                fonstSize: "16px",
+                fontFamily: `"Arial", "Helvetica", sans-serif`,
+                fontWeight: "bold",
+              }}
+            >
               {" "}
               First of all,
               <br />
@@ -207,10 +227,9 @@ export const StartOnBoarding = props => {
           <Grid container item xs={12} justify="center" style={{paddingBottom: "63px"}}>
             <CustomTabPanel
               value={value}
+              indicatorColor="primary"
+              classes={{ indicator: classes.bigIndicator }}
               onChange={handleChange}
-              // onClick={() => {
-              //   handleStart();
-              // }}
             >
               <Tab
                 label="Yes, I have"
@@ -235,13 +254,13 @@ export const StartOnBoarding = props => {
             </CustomTabPanel>
           </Grid>
           <Grid item container justify="center">
-      <TabPanel value={value} index={0}>
-        <GotExperience />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <NoExperience />
-      </TabPanel>
-    </Grid>
+            <TabPanel value={value} index={0}>
+              <GotExperience />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <NoExperience />
+            </TabPanel>
+          </Grid>
         </Grid>
       </ThemeProvider>
     </>

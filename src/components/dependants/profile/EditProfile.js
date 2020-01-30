@@ -138,7 +138,7 @@ export const EditProfile = ({ data }) => {
           justify="center"
           alignItems="center"
           xs={11}
-          style={{ height: "15vh" }}
+          style={{ height: "21vh" }}
         >
           <Grid>
             <MyDropzone data="photo" size="small" avatar={ImageAvatar} />
