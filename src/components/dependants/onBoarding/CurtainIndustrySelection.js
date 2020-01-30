@@ -136,7 +136,7 @@ export const CurtainIndustrySelection = () => {
                 <TextField
                   {...params}
                   variant="standard"
-                  label="Multiple values"
+                  label="Industries"
                   placeholder="Favorites"
                   margin="normal"
                   fullWidth

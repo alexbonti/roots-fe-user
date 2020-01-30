@@ -1,4 +1,4 @@
-import React, {useContext } from "react";
+import React, { useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Button } from "@material-ui/core/";
@@ -6,9 +6,7 @@ import MyDropzone from "../DropDrag";
 import { OnBoardingContext, LoginContext, UserContext } from "contexts";
 import { API } from "helpers";
 
-
 //TODO add type controls check on files uploading
-
 
 const useStyles = makeStyles(theme => ({
   topper: {
@@ -57,7 +55,7 @@ export const AvatarPictureUpload = () => {
     endDate,
     industryField,
     avatarPictureURL,
-    userHasExperience
+    userHasExperience,
   } = useContext(OnBoardingContext);
 
   const { loginStatus } = useContext(LoginContext);
@@ -72,8 +70,8 @@ export const AvatarPictureUpload = () => {
   const sendOnBoardingDetails = async () => {
     if (loginStatus) {
       let workExpData;
-      
-      if(startDate && endDate !== ""){
+
+      if (startDate && endDate !== "") {
         workExpData = {
           workExperience: {
             positionTitle,
@@ -100,32 +98,30 @@ export const AvatarPictureUpload = () => {
       };
 
       if (userHasExperience) {
-        
         const workExpApiData = await API.updateWorkExp(workExpData);
-        console.log("workExpApiData", workExpApiData);
 
         const userPreferencesApiData = await API.updateUserPreferences(
           userPreferencesData
         );
-        console.log("userPreferencesApiData", userPreferencesApiData);
 
         const userProfileApiData = await API.updateUserProfile(
           updateFirstLoginData
         );
-        console.log("userProfileApiData", userProfileApiData);
-        //TODO handle the change of tab in case there's an error from BE!
-        handleNext();
+        if (userPreferencesApiData && userProfileApiData && workExpApiData) {
+          handleNext();
+        }
       } else {
         const userPreferencesApiData = await API.updateUserPreferences(
           userPreferencesData
         );
-        console.log("userPreferencesApiData", userPreferencesApiData);
+
         const userProfileApiData = await API.updateUserProfile(
           updateFirstLoginData
         );
-        console.log("userProfileApiData", userProfileApiData);
-        //TODO handle the change of tab in case there's an error from BE!
-        handleNext();
+
+        if (userProfileApiData && userPreferencesApiData) {
+          handleNext();
+        }
       }
 
       console.log(activeStep);
@@ -167,7 +163,7 @@ export const AvatarPictureUpload = () => {
             <Typography variant="body1">Add your profile photo</Typography>
           </Grid>
           <Grid item xs={10}>
-            <MyDropzone data={"photo"}/>
+            <MyDropzone data={"photo"} />
           </Grid>
           {confirmButton}
           <Grid item>

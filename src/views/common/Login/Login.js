@@ -7,14 +7,7 @@ import {
   Typography,
   Button,
   Grid,
-  // List,
-  // ListItemText,
-  // ListItemIcon,
-  // Divider,
-  // ListItem
 } from "@material-ui/core";
-// import FacebookIcon from '@material-ui/icons/Facebook';
-// import InstagramIcon from '@material-ui/icons/Instagram';
 import { LoginContext } from "contexts";
 import { notify } from "components";
 import { API } from "helpers/index";
@@ -40,10 +33,6 @@ const useStyles = makeStyles(theme => ({
     body: {
       backgroundColor: theme.palette.common.dark,
     },
-  },
-  body: {
-    //height: "60vh",
-    //background: "rgba(237,237,237)",
   },
   header: {
     paddingBottom: "1vh ",
@@ -81,7 +70,7 @@ const useStyles = makeStyles(theme => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     height: "55px",
-    boxShadow: "none"
+    boxShadow: "none",
   },
   buttonRegister: {
     color: "#087b94",
@@ -89,8 +78,7 @@ const useStyles = makeStyles(theme => ({
     border: "2px solid #087b94",
     backgroundColor: "white",
     height: "55px",
-    boxShadow: "none"
-
+    boxShadow: "none",
   },
   developMessage: {},
   inputText: {
@@ -108,7 +96,7 @@ export const Login = () => {
 
   const performLogin = async () => {
     const data = {
-      emailId,
+      emailId: emailId.toLowerCase(),
       password,
     };
     const otp = await API.loginUser(data, setAccessToken);
@@ -146,162 +134,128 @@ export const Login = () => {
   };
 
   let content = (
-    <div style={{ overflow: "hidden" }}>
+    <div style={{display: "flex", justifyContent: "center"}}>
       <ThemeProvider theme={theme}>
-        <Grid
-          container
-          justify="center"
-          alignItems="center"
-          className={classes.header}
-        >
-          <Grid item xs={12} container justify="center" alignItems="center">
-            <Grid item xs={12} align="center">
-              <img
-                src={Image}
-                alt="logo"
-                style={{ height: "100%", width: "100%" }}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid
-          container
-          justify="center"
-          alignItems="flex-start"
-          className={classes.body}
-        >
-          <Grid className={classes.loginBox} item xs={10} md={5}>
-            <form noValidate>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                onChange={e => setEmailId(e.target.value)}
-                autoFocus
-                className={classes.inputText}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                onChange={e => setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
-              <Typography component={Link} to="/ResetPassword"color="primary" variant="caption" > Forgot password?</Typography>
-            </form>
-          </Grid>
+        <Grid container justify="center" alignItems="center"item xs={12} md={4}>
           <Grid
             container
             item
-            xs={12}
-            md={8}
             justify="center"
             alignItems="center"
-            style={{ paddingTop: "5vh" }}
+            className={classes.header}
+            xs={12} 
           >
-            <Grid item xs={10} sm={8} style={{ paddingBottom: "1vh" }}>
-              <Button
-                fullWidth
-                variant="contained"
-                className={classes.buttons}
-                onClick={validationCheck}
-              >
-                Login
-              </Button>
+            <Grid
+              item
+              xs={12}
+
+              container
+              justify="center"
+              alignItems="center"
+            >
+              <Grid item xs={12} align="center">
+                <img
+                  src={Image}
+                  alt="logo"
+                  style={{ height: "100%", width: "100%" }}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}  style={{ paddingTop: "2vh" }}>
-              <Typography align="center"  display="block" style={{fontFailmily: "Arial Rounded MT, sans-serif", fontSize: "16px", fontWeight: "bold", color: "#007D97"}}>
-                or
-              </Typography>
+          </Grid>
+          <Grid
+            container
+            justify="center"
+            alignItems="flex-start"
+            className={classes.body}
+          >
+            <Grid className={classes.loginBox} item xs={10} container>
+              <form noValidate>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={e => setEmailId(e.target.value)}
+                  autoFocus
+                  className={classes.inputText}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  onChange={e => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                />
+                <Typography
+                  component={Link}
+                  to="/ResetPassword"
+                  color="primary"
+                  variant="caption"
+                >
+                  {" "}
+                  Forgot password?
+                </Typography>
+              </form>
             </Grid>
-            <Grid item xs={10} sm={8} style={{paddingTop: "2vh" , paddingBottom: "51.3px" }}>
-              <Button
-                fullWidth
-                variant="contained"
-                className={classes.buttonRegister}
-                component={Link}
-                to="/register"
+            <Grid
+              container
+              item
+              xs={12}
+              md={8}
+              justify="center"
+              alignItems="center"
+              style={{ paddingTop: "5vh" }}
+            >
+              <Grid item xs={10} sm={8} style={{ paddingBottom: "1vh" }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  className={classes.buttons}
+                  onClick={validationCheck}
+                >
+                  Login
+                </Button>
+              </Grid>
+              <Grid item xs={12} style={{ paddingTop: "2vh" }}>
+                <Typography
+                  align="center"
+                  display="block"
+                  style={{
+                    fontFailmily: "Arial Rounded MT, sans-serif",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    color: "#007D97",
+                  }}
+                >
+                  or
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={10}
+                sm={8}
+                style={{ paddingTop: "2vh", paddingBottom: "51.3px" }}
               >
-                SIGN UP
-              </Button>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  className={classes.buttonRegister}
+                  component={Link}
+                  to="/register"
+                >
+                  SIGN UP
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-        {/* <Grid container justify="center" className={classes.footer}>
-          <Grid item xs={12} className={classes.developMessage}>
-            <Grid container  item justify="space-between" >
-              <Grid
-                container
-                item
-                xs={5}
-                direction="column"
-                justify="flex-start"
-              >
-                <List component="nav"  >
-                  <ListItem component="a" >
-                    <ListItemText primary="Deakin"/>
-                  </ListItem>
-                  <Divider className={classes.divider}/>
-                  <ListItem component="a" >
-                    <ListItemText style={{fontSize:".8rem"}}>Copyright</ListItemText>
-                  </ListItem>
-                  <ListItem component="a" >
-                    <ListItemText style={{fontSize:".8rem"}}>Disclaimner</ListItemText>
-                  </ListItem>
-                  <ListItem component="a" >
-                    <ListItemText style={{fontSize:".8rem"}}>Privacy</ListItemText>
-                  </ListItem>
-                </List>
-                <List component="nav">
-                  <ListItem component="a">
-                    <ListItemText primary="Help" />
-                  </ListItem>
-                  <Divider className={classes.divider}/>
-                  <ListItem component="a" >
-                    <ListItemText style={{fontSize:".8rem"}}>FAQ</ListItemText>
-                  </ListItem>
-                  <ListItem component="a" >
-                    <ListItemText style={{fontSize:".8rem"}}>Contact</ListItemText>
-                  </ListItem>
-                </List>
-              </Grid>
-              <Grid
-                container
-                item
-                xs={5}
-                direction="column"
-                justify="flex-start"
-                alignItems="center"
-              >
-                <List component="nav"  >
-                  <ListItem component="a" >
-                    <ListItemText className={classes.footer}>Follow Us</ListItemText>
-                  </ListItem>
-                  <Divider className={classes.divider}/>
-                  <ListItem component="a">
-                    <ListItemIcon >
-                      <FacebookIcon color="primary"/> 
-                    </ListItemIcon>
-                    <ListItemIcon >
-                      <InstagramIcon color="primary"/>
-                    </ListItemIcon>
-                  </ListItem>
-                </List>
-              </Grid>
-            </Grid>
-            <Typography variant="body2"  align="center" className={classes.creator}>
-              Developed by Deakin Launchpad
-            </Typography>
-          </Grid>
-        </Grid> */}
       </ThemeProvider>
     </div>
   );

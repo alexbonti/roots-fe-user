@@ -15,30 +15,17 @@ import { UserContext } from "contexts/index";
 import { notify } from "components";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%",
-    flexGrow: 1,
-    padding: 0,
-    // padding: "3vh 0 0 0",
-  },
-  tabs: {
-    height: "100%",
-    boxShadow: "none",
-    padding: 0,
-  },
 
-  tab: {
-    height: "100%",
-    alignSelf: "flex-end",
-    //border: "1px solid #f0f0f0",
-    borderTop: "none",
-  },
+
+
+
   buttons: {
     color: "white",
     borderRadius: "25px",
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
+    height: "55px"
   },
 }));
 
@@ -148,13 +135,14 @@ const SearchSettings = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container justify="center">
+      <Grid container justify="center" style={{overflrow: "hidden !important"}}>
         <Grid
           item
           xs={12}
           style={{
             padding: "5vh 3vw",
             backgroundColor: "rgba(8, 124, 149, 0.1)",
+            overflrow: "hidden"
           }}
         >
           <Typography variant="h5">Edit Search settings</Typography>
@@ -197,8 +185,7 @@ const SearchSettings = () => {
         <Grid
           container
           justify="center"
-          spacing={1}
-          style={{ padding: "3vh", backgroundColor: "white" }}
+          style={{ padding: "3vh 1vw", backgroundColor: "white" }}
         >
           {chipData.slice(0, 10).map(chip => {
             return (
@@ -206,7 +193,9 @@ const SearchSettings = () => {
                 <Chip
                   key={Math.random()}
                   label={chip.label}
+                  style={{ margin: ".5vh 1vw" }}
                   onClick={() => handleAdd(chip)}
+                  
                 />
               </Grid>
             );
