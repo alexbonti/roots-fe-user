@@ -38,7 +38,7 @@ export const ListNews = () => {
   useEffect(() => {
     const triggerAPI = async () => {
       let data = {
-        "category": "ROOTS",
+        "category": "MECHID",
         "numberOfRecords": 10,
       };
       const allNewsData = await API.getNews(data);
