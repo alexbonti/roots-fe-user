@@ -8,7 +8,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import { TemporaryDrawer } from "../index";
 import { UserContext } from "contexts/index";
 import FallBackAvatar from "../../helpers/img/man.svg";
-import Logo from "../../helpers/img/favicon.svg";
+import Logo from "../../helpers/img/favicon.png";
 import { MenuHamburger } from "helpers";
 
 // import { AccessToken } from "contexts/helpers/index";
@@ -147,7 +147,7 @@ export const Header = () => {
 
           <Grid item xs={6} container justify="center" alignItems="center">
             <Grid item xs={3} align="right" style={{margin: "0 -4px", marginLeft: "8vw"}}>
-              <Avatar src={Logo} style={{transform: "scale(.8)"}} />
+              <Avatar src={Logo} style={{transform: "scale(.7)", margin: "0 2px"}} />
             </Grid>
             <Grid item xs={6}>
               <Link to="/" style={{ textDecoration: "none", color: "white" }}>
@@ -158,7 +158,7 @@ export const Header = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  ROOTS
+                  MECHID
                 </Typography>
               </Link>
             </Grid>
