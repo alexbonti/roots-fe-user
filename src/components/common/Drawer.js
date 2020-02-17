@@ -158,7 +158,7 @@ export const TemporaryDrawer = () => {
            style={{paddingLeft: "102.5px", paddingBottom: "60px"}}
             >
   
-  <Typography style={{fontSize: "14px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>ROOTS</Typography>
+  <Typography style={{fontSize: "14px", fontFamily: "Arial Rounded MD, sans-serif", fontWeight: "bold"}}>MECHID</Typography>
             </ListItem>
           </Grid>
         </Grid>
