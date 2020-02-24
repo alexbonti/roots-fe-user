@@ -15,6 +15,12 @@ export var LoginStatus = localStorage.getItem("loginStatus");
 export var DevMode = localStorage.getItem("devMode");
 
 export const LoginContext = createContext();
+let logoutFunction;
+
+export const logout = async init => {
+  if (init !== undefined) await init();
+  logoutFunction();
+};
 export const LoginProvider = props => {
   const { children } = props;
   const [devMode, _setDevMode] = useState(DevMode !== "" ? DevMode : false);
@@ -48,6 +54,18 @@ export const LoginProvider = props => {
   };
   const [openModal, setOpenModal] = useState(false);
 
+  const logoutUser = async init => {
+    if (init instanceof Function) {
+      init();
+    }
+    window.localStorage.setItem("loginStatus", false);
+    LoginStatus = false;
+    _setLoginStatus(false);
+  };
+  useEffect(() => {
+    logoutFunction = logoutUser;
+  }, []);
+
   useEffect(() => {
     if (accessToken) {
       setLoginStatus(true);
@@ -77,7 +95,7 @@ export const LoginProvider = props => {
         setLoginStatus,
         setDevMode,
         openModal,
-        setOpenModal
+        setOpenModal,
       }}
     >
       {children}

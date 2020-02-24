@@ -1,6 +1,8 @@
 import axios from "axios";
 import { axiosInstance, axiosInstanceNews } from "helpers";
 import {notify} from 'components';
+import {logout } from "contexts/helpers";
+
 
 
 const errorHelper = (error, variant) => {
@@ -9,10 +11,21 @@ const errorHelper = (error, variant) => {
     return false;
   }
   if (error.response.statusCode === 401) {
-    if (variant === "login")
-      return notify("Invalid Credentials");
+    if (variant === "login") return notify("Invalid Credentials");
     notify("You may have been logged out");
-    //logout();
+    logout();
+    return false;
+  }
+  if (error.response.data.statusCode === 401) {
+    if (variant === "login") return notify("Invalid Credentials");
+    notify("You may have been logged out");
+    logout();
+    return false;
+  }
+  if (error.response.status === 401) {
+    if (variant === "login") return notify("Invalid Credentials");
+    notify("You may have been logged out");
+    logout();
     return false;
   }
   if (error.response.data.message !== "") {
@@ -23,7 +36,14 @@ const errorHelper = (error, variant) => {
     notify(error.response.statusText);
     return false;
   }
-}
+};
+
+const performCallback = (callback, data) => {
+  if (callback instanceof Function) {
+    if (data !== undefined) return callback(data);
+    callback();
+  }
+};
 class API {
   loginUser = async (data, setAccessToken) => {
     return await axiosInstance

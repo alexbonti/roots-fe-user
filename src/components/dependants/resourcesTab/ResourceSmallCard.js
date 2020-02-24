@@ -11,8 +11,6 @@ export const ResourceSmallCard = props => {
     HomeContext
   );
 
-
-
   const handleToogle = () => {
     return isOpen
       ? (setIsOpen(false), setButton("See more"))
@@ -35,9 +33,14 @@ export const ResourceSmallCard = props => {
 
   let content = data.map((tile, i) => {
     return (
-      <Grid key={i} container justify="center" onClick={() => {
-        openFullview(tile.title, tile.content);
-      }}>
+      <Grid
+        key={i}
+        container
+        justify="center"
+        onClick={() => {
+          openFullview(tile.title, tile.content);
+        }}
+      >
         <Grid
           container
           item
@@ -47,15 +50,14 @@ export const ResourceSmallCard = props => {
           style={{ padding: "2vh 0" }}
         >
           <Grid item xs={10}>
-            <Typography
-              variant="h6"
-            >
-              {tile.title}
-            </Typography>
+            <Typography variant="h6">{tile.title}</Typography>
           </Grid>
           <Grid item xs={10} lg={8} md={11}>
-            {ReactHtmlParser(tile.content.slice(0, 100))}
-            {""} ...
+            <Typography
+              variant="body1"
+              dangerouslySetInnerHTML={{ __html: tile.content.slice(0, 100) }}
+            />
+         
           </Grid>
         </Grid>
         <Grid item xs={11} lg={8} md={11}>
