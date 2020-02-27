@@ -17,16 +17,17 @@ export const NewsCard = ({ data }) => {
 
   return data !== undefined ? (
     <>
-      <Grid
-        container
-        justify="center"
-        onClick={() => openFullNews()}
-      >
+      <Grid container justify="center" onClick={() => openFullNews()}>
         <Grid item xs={4} md={4}>
           <img
             src={imageURL}
             alt={title}
-            style={{ maxHeight: 100, width: "100%", height: "100%" }}
+            style={{
+              maxHeight: 100,
+              width: "95%",
+              height: "100%",
+              padding: "5px 10px",
+            }}
           />
         </Grid>
         <Grid
@@ -38,26 +39,28 @@ export const NewsCard = ({ data }) => {
           //alignItems="center"
           style={{ padding: "0 1vw" }}
         >
-          <Grid item xs={11} >
+          <Grid item xs={11}>
             <Typography variant="h5" style={{ fontSize: "16px" }}>
               {title}
             </Typography>
           </Grid>
-          <Grid item xs={11} style={{maxHeight: 100, overflow: "hidden"}}>
+          <Grid item xs={11} style={{ maxHeight: 100, overflow: "hidden" }}>
             <Typography
               variant="body1"
-             // dangerouslySetInnerHTML={{ __html: content}}
-            >Here there's some test</Typography>
+              // dangerouslySetInnerHTML={{ __html: content}}
+            >
+              Here there's some test
+            </Typography>
           </Grid>
           <Grid item xs={11}>
-            <Typography variant="body1" >
+            <Typography variant="body1">
               {datePublished.substring(0, 10)}
             </Typography>
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12} md={4}>
-        <hr style={{ border: "4px solid rgb(249, 249, 249)", margin: 0}} />
+        <hr style={{ border: "4px solid rgb(249, 249, 249)", margin: 0 }} />
       </Grid>
     </>
   ) : (

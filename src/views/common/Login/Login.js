@@ -229,7 +229,7 @@ export const Login = () => {
                   display="block"
                   style={{
                     fontFailmily: "Arial Rounded MT, sans-serif",
-                    fontSize: "16px",
+                    fontSize: "18px",
                     fontWeight: "bold",
                     color: "#007D97",
                   }}

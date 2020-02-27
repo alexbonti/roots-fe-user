@@ -12,6 +12,19 @@ const theme = createMuiTheme({
     secondary: { main: "#C74197" },
     terziary: { main: "#2B2B28" },
   },
+  typography: {
+    h5: {
+      fontFamily: "Arial Rounded MT, Helvetica, sans-serif",
+      fontWeight: "bold",
+      fontSize: 21,
+    },
+    body1: {
+      fontFamily: "Arial Unicode MS, Helvetica, sans-serif",
+      fontSize: 14,
+      fontWeight: "300"
+    },
+    body2: { fontFamily: "Helvetica, sans-serif", fontSize: 12 }
+  }
 });
 export const FullListResources = () => {
   const [resourceArray, setResourceArray] = useState([]);
