@@ -7,6 +7,7 @@ import {
   TextEditorContext,
   TextEditorProvider,
 } from "./dependants/TextEditorContext";
+import {logout} from "./common/LoginContext"
 
 import {
   OnBoardingContext,
@@ -26,6 +27,7 @@ export {
   UserProvider,
   OnBoardingContext,
   OnBoardingProvider,
+  logout
 };
 
 export const ContextManager = props => {

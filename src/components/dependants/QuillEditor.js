@@ -50,6 +50,7 @@ export const TextEditor = props => {
           theme="snow"
           placeholder="Description ..."
           defaultValue={(props.data.defaultValue)}
+          style={{ fontSize: "18px !important" }}
         />
         <Grid container justify="center"  className="textEditorContent">
           <Grid item xs={11}>{ReactHtmlParser(nodeRedData)}</Grid>
