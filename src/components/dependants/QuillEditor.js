@@ -16,17 +16,20 @@ const modules = {
 };
 
 export const TextEditor = props => {
-  const { setCoverLetter, setWorkExperience } = useContext(TextEditorContext);
+  const { workExperience, setCoverLetter, setWorkExperience, setCriteriaSelection } = useContext(TextEditorContext);
   const [nodeRedData] = useState("");
 
 
   const handleTextEditorChange = value => {
+  console.log("TCL: value", props)
     switch (props.data.content) {
     case "coverletter":
       return (
         setCoverLetter(value));
     case "editWorkExperience":
       return setWorkExperience(value);
+    case "ksc":
+      return setCriteriaSelection(value);
     default:
       return null;
     }

@@ -38,8 +38,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "white ",
     height: "55px",
     margin: "1vh 0",
-
-  }
+  },
 }));
 
 const theme = createMuiTheme({
@@ -63,6 +62,7 @@ export const EditExperience = props => {
     _id,
     endDate,
     startDate,
+    referee
   } = props.data;
 
   const classes = useStyles();
@@ -76,6 +76,9 @@ export const EditExperience = props => {
 
   const [newPositionName, setNewPositionName] = useState(positionTitle);
   const [newCompanyName, setNewCompanyName] = useState(companyName);
+ 
+
+  const [newReferee, setNewReferee] = useState(referee);
   const [dataToSendToComp, setDataToSendToComp] = useState(props.data);
 
   const handleDateChange = date => {
@@ -92,15 +95,13 @@ export const EditExperience = props => {
     setChecked(event.target.checked);
   };
 
-
-
-  const deleteJob =  async () => {
+  const deleteJob = async () => {
     const data = {
       "workExperienceId": _id,
     };
 
     const deleteData = await API.deleteWorkExperience(data);
-    if(deleteData){
+    if (deleteData) {
       notify("Deleted");
       setIsEditModeOn(false);
       setIsUpdated(true);
@@ -126,6 +127,7 @@ export const EditExperience = props => {
           "startDate": selectedStartDate,
           "endDate": selectedEndDate,
           "description": description,
+          "referee": {name: newReferee.name, phoneNumber: newReferee.phoneNumber.toString()}
         };
       } else {
         data = {
@@ -135,6 +137,7 @@ export const EditExperience = props => {
           "startDate": selectedStartDate,
           "endDate": selectedEndDate,
           "description": workExperience,
+          "referee": {name: newReferee.name, phoneNumber: newReferee.phoneNumber.toString()}
         };
       }
 
@@ -149,7 +152,7 @@ export const EditExperience = props => {
       const workExpApiData = await API.editWorkExperience(data);
       if (workExpApiData) {
         notify(" Work Experience edited successfully");
-        setIsUpdated(true);
+        setIsUpdated(false);
         setIsEditModeOn(false);
       }
     };
@@ -162,7 +165,7 @@ export const EditExperience = props => {
   };
 
   //EDIT FORM
-  const content = (
+  const content = referee !== undefined ? (
     <>
       <ThemeProvider theme={theme}>
         <Grid container justify="center" style={{ padding: "2vh 0" }}>
@@ -249,6 +252,31 @@ export const EditExperience = props => {
               </MuiPickersUtilsProvider>
             </Grid>
           </Grid>
+          <Grid container item xs={11} justify="center">
+            <Grid item xs={12}>
+              <Typography variant="body1">Referee</Typography>
+              <Grid item xs={12} style={{ padding: "2vh 0" }}>
+                <TextField
+                  placeholder="Name"
+                  fullWidth
+                  defaultValue={referee.name}
+                  onChange={event => {
+                    setNewReferee({name: event.target.value, phoneNumber: newReferee.phoneNumber});
+                  }}
+                />
+              </Grid>
+              <Grid xs={12} item style={{ padding: "2vh 0" }}>
+                <TextField
+                  placeholder="Contact number"
+                  defaultValue={referee.phoneNumber}
+                  fullWidth
+                  onChange={event => {
+                    setNewReferee({phoneNumber: event.target.value, name: newReferee.name });
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid item xs={11} container alignItems="center">
             <Grid xs={6}>
               <Typography className={classes.textField}>
@@ -272,15 +300,22 @@ export const EditExperience = props => {
               }}
             />
           </Grid>
-          <Grid container item xs={11} style={{ padding: "2vh 0" }} justify="space-evenly">
+          <Grid
+            container
+            item
+            xs={11}
+            style={{ padding: "2vh 0" }}
+            justify="space-evenly"
+          >
             <Grid item xs={5}>
               <Button
                 className={classes.buttonVariant}
                 fullWidth
-                onClick={() => {deleteJob();
+                onClick={() => {
+                  deleteJob();
                 }}
               >
-                Delete 
+                Delete
               </Button>
             </Grid>
             <Grid item xs={5}>
@@ -298,7 +333,7 @@ export const EditExperience = props => {
         </Grid>
       </ThemeProvider>
     </>
-  );
+  ) : "";
 
   return isEditModeOn ? content : <Experience data={dataToSendToComp} />;
 };
