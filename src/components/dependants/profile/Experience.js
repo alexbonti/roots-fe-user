@@ -7,12 +7,14 @@ import { Spinner } from "components";
 
 export const Experience = props => {
   const [isEditModeOn, setIsEditModeOn] = useState(false);
+
   const {
     companyName,
     description,
     endDate,
     startDate,
     positionTitle,
+    referee,
   } = props.data;
 
   let newTimeS =
@@ -24,8 +26,8 @@ export const Experience = props => {
       ? `${endDate.getMonth() + 1} - ${endDate.getFullYear()}`
       : endDate.substring(0, 10);
 
- newTimeE =  endDate === "Currently working here" ? endDate : newTimeE;
- 
+  newTimeE = endDate === "Currently working here" ? endDate : newTimeE;
+
   let content =
     props.data !== null && props.data !== undefined ? (
       <>
@@ -52,6 +54,19 @@ export const Experience = props => {
                 {newTimeE}
               </Typography>
             </Grid>
+
+            {props.data.referee === undefined ? (
+              ""
+            ) : (
+              <Grid item xs={12} container>
+                <Grid item xs={11}>
+                  <Typography variant="caption">
+                    Referee: {referee.name}{" "}
+                    {referee.phoneNumber}{" "}
+                  </Typography>
+                </Grid>
+              </Grid>
+            )}
           </Grid>
           <Grid item xs={12}>
             {ReactHtmlParser(description)}{" "}

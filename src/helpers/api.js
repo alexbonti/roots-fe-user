@@ -462,9 +462,9 @@ class API {
       });
   };
 
-  userApplyJob = data => {
+  userApplyJob = async data => {
     let accessToken = localStorage.getItem("accessToken");
-    axiosInstance
+    return await axiosInstance
       .post("/user/applyjob", data, {
         headers: {
           authorization: "Bearer " + accessToken,

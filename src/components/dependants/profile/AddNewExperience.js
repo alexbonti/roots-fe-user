@@ -1,7 +1,14 @@
 import React, { useState, useContext } from "react";
 import "date-fns";
-import { Typography, Grid, TextField, Button, Checkbox, createMuiTheme } from "@material-ui/core/";
-import { makeStyles,ThemeProvider } from "@material-ui/core/styles";
+import {
+  Typography,
+  Grid,
+  TextField,
+  Button,
+  Checkbox,
+  createMuiTheme,
+} from "@material-ui/core/";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -20,7 +27,7 @@ const useStyles = makeStyles(() => ({
     border: "1px solid #087b94",
     backgroundColor: "#087b94 !important",
     margin: "1vh 0",
-    height: "55px"
+    height: "55px",
   },
 }));
 
@@ -53,6 +60,8 @@ export const AddNewExperience = props => {
   const [newSchool, SetNewSchool] = useState("");
   const [newMajor, setNewMajor] = useState("");
   const [newDegree, setNewDegree] = useState("");
+  const [refereeName, setRefereeName] = useState("");
+  const [refereePhone, setRefereePhone] = useState("");
 
   const handleDateChange = date => {
     setSelectedStartDate(date);
@@ -68,11 +77,8 @@ export const AddNewExperience = props => {
     setSelectedEndDate(date);
   };
 
-
-
   const UpdateSingleUserExp = async field => {
     if (field === "work") {
-      console.log(newPositionName, workExperience, newCompanyName);
       let data = {
         "workExperience": {
           "positionTitle": newPositionName,
@@ -80,14 +86,14 @@ export const AddNewExperience = props => {
           "startDate": selectedStartDate,
           "endDate": selectedEndDate,
           "description": workExperience,
+          "referee": {name:refereeName, phoneNumber: refereePhone}
         },
       };
       const workExpApiData = await API.updateWorkExp(data);
-      if(workExpApiData){
+      if (workExpApiData) {
         setIsUpdated(true);
         setIsAddMode(false);
         notify("New Work Experience added succesfully");
-        console.log("workExpApiData", workExpApiData);
       }
     } else if (field === "education") {
       let data = {
@@ -100,251 +106,283 @@ export const AddNewExperience = props => {
         },
       };
       const educationExpData = await API.updateEducationExp(data);
-      if(educationExpData){
+      if (educationExpData) {
         setIsUpdated(true);
         setIsAddMode(false);
         notify("New Education Experience added succesfully");
-        console.log("educationExpData", educationExpData);
       }
     }
   };
 
-
-
   const content =
     props.data === "work" ? (
       <>
-      <ThemeProvider theme={theme}>
-        <Grid container justify="center" style={{ overflow: "hidden" }}>
-          <Grid
-            item
-            xs={12}
-            style={{
-              padding: "4vh 4vw",
-              backgroundColor: "rgba(8, 124, 149, 0.1)",
-            }}
-          >
-            <Typography style={{fontWeight: "bold", fontSize: "21px", fontFamily: "Arial Rounded MD, sans-serif"}}>Work Experience</Typography>
-          </Grid>
-          <Grid
-            container
-            alignItems="center"
-            style={{
-              padding: "2vh 2vw",
-              backgroundColor: "#f8f8f8",
-            }}
-          >
+        <ThemeProvider theme={theme}>
+          <Grid container justify="center" style={{ overflow: "hidden" }}>
             <Grid
-              onClick={() => {
-                setIsAddMode(false);
+              item
+              xs={12}
+              style={{
+                padding: "4vh 4vw",
+                backgroundColor: "rgba(8, 124, 149, 0.1)",
               }}
-              style={{fontSize: "12px", fontFamily: "Arial Unicode MS, sans-serif"}}
             >
-              {"<"} Back to Profile
-            </Grid>
-          </Grid>
-          <Grid item xs={11} style={{ padding: "2vh 0" }}>
-            <TextField
-              placeholder="Position title"
-              fullWidth
-              onChange={event => {
-                setNewPositionName(event.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={11} style={{ padding: "2vh 0" }}>
-            <TextField
-              placeholder="Company Name"
-              fullWidth
-              onChange={event => {
-                setNewCompanyName(event.target.value);
-              }}
-            />
-          </Grid>
-          <Grid
-            item
-            container
-            justify="space-evenly"
-            style={{ padding: "2vh 0" }}
-          >
-            <Grid item xs={5}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/yyyy"
-                  margin="normal"
-                  value={selectedStartDate}
-                  id="date-picker-inline"
-                  label="Start Date"
-                  onChange={handleDateChange}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item xs={5}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/yyyy"
-                  margin="normal"
-                  value={selectedEndDate}
-                  id="date-picker-inline"
-                  label="End Date"
-                  onChange={handleDateChangeEnd}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-          </Grid>
-          <Grid item xs={11} container  alignItems="center">
-            <Grid xs={6}>
-              <Typography className={classes.textField}>
-                Currently working here
+              <Typography
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "21px",
+                  fontFamily: "Arial Rounded MD, sans-serif",
+                }}
+              >
+                Work Experience
               </Typography>
             </Grid>
-            <Grid xs={4}>
-              <Checkbox
-                checked={checked}
-                onChange={handleChange}
-                value="primary"
-                inputProps={{ "aria-label": "primary checkbox" }}
-              />
-            </Grid>
-          </Grid>
-          <Grid item xs={11} style={{ padding: "2vh 0" }}>
-            <TextEditor data={"editWorkExperience"} />
-          </Grid>
-          <Grid item xs={11} md={5} lg={4} style={{ padding: "4vh 0" }}>
-            <Button
-              className={classes.buttons}
-              fullWidth
-              onClick={() => {
-                UpdateSingleUserExp("work");
+            <Grid
+              container
+              alignItems="center"
+              style={{
+                padding: "2vh 2vw",
+                backgroundColor: "#f8f8f8",
               }}
             >
-              Add new experience
-            </Button>
+              <Grid
+                onClick={() => {
+                  setIsAddMode(false);
+                }}
+                style={{
+                  fontSize: "12px",
+                  fontFamily: "Arial Unicode MS, sans-serif",
+                }}
+              >
+                {"<"} Back to Profile
+              </Grid>
+            </Grid>
+            <Grid item xs={11} style={{ padding: "2vh 0" }}>
+              <TextField
+                placeholder="Position title"
+                fullWidth
+                onChange={event => {
+                  setNewPositionName(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={11} style={{ padding: "2vh 0" }}>
+              <TextField
+                placeholder="Company Name"
+                fullWidth
+                onChange={event => {
+                  setNewCompanyName(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              container
+              justify="space-evenly"
+              style={{ padding: "2vh 0" }}
+            >
+              <Grid item xs={5}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/yyyy"
+                    margin="normal"
+                    value={selectedStartDate}
+                    id="date-picker-inline"
+                    label="Start Date"
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+              <Grid item xs={5}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/yyyy"
+                    margin="normal"
+                    value={selectedEndDate}
+                    id="date-picker-inline"
+                    label="End Date"
+                    onChange={handleDateChangeEnd}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+            </Grid>
+            <Grid container item xs={11} justify="center">
+              <Grid item xs={12}>
+                <Typography variant="body1">Referee</Typography>
+                <Grid item xs={12} style={{ padding: "2vh 0" }}>
+                  <TextField
+                    placeholder="Name"
+                    fullWidth
+                    onChange={event => {
+                       setRefereeName(event.target.value);
+                     }}
+                  />
+                </Grid>
+                <Grid xs={12} item style={{ padding: "2vh 0" }}>
+                  <TextField
+                    placeholder="Contact number"
+                    type="tel"
+                    fullWidth
+                    onChange={event => {
+                      setRefereePhone(event.target.value);
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={11} container alignItems="center">
+              <Grid xs={6}>
+                <Typography className={classes.textField}>
+                  Currently working here
+                </Typography>
+              </Grid>
+              <Grid xs={4}>
+                <Checkbox
+                  checked={checked}
+                  onChange={handleChange}
+                  value="primary"
+                  inputProps={{ "aria-label": "primary checkbox" }}
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs={11} style={{ padding: "2vh 0" }}>
+              <TextEditor data={{content: "editWorkExperience"}} />
+            </Grid>
+            <Grid item xs={11} md={5} lg={4} style={{ padding: "4vh 0" }}>
+              <Button
+                className={classes.buttons}
+                fullWidth
+                onClick={() => {
+                  UpdateSingleUserExp("work");
+                }}
+              >
+                Add new experience
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
         </ThemeProvider>
       </>
     ) : (
       <>
-      <ThemeProvider theme={theme}>
-        <Grid container justify="center" style={{ padding: "2vh 0" }}>
-          <Grid
-            item
-            xs={12}
-            style={{
-              padding: "4vh 4vw",
-              backgroundColor: "rgba(8, 124, 149, 0.1)",
-            }}
-          >
-            <Typography variant="h5">Education</Typography>
-          </Grid>
-          <Grid
-            container
-            alignItems="center"
-            style={{
-              padding: "2vh 2vw",
-              backgroundColor: "#f8f8f8",
-            }}
-          >
+        <ThemeProvider theme={theme}>
+          <Grid container justify="center" style={{ padding: "2vh 0" }}>
             <Grid
-              onClick={() => {
-                setIsAddMode(false);
+              item
+              xs={12}
+              style={{
+                padding: "4vh 4vw",
+                backgroundColor: "rgba(8, 124, 149, 0.1)",
               }}
             >
-              {"<"} Back to Profile
+              <Typography variant="h5">Education</Typography>
             </Grid>
-          </Grid>
-          <Grid item xs={11} style={{ padding: "2vh 0" }}>
-            <TextField
-              placeholder="School"
-              fullWidth
-              onChange={event => {
-                SetNewSchool(event.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={11} style={{ padding: "2vh 0" }}>
-            <TextField
-              placeholder="Major"
-              fullWidth
-              onChange={event => {
-                setNewMajor(event.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={11} style={{ padding: "2vh 0" }}>
-            <TextField
-              placeholder="Degree"
-              fullWidth
-              onChange={event => {
-                setNewDegree(event.target.value);
-              }}
-            />
-          </Grid>
-          <Grid
-            item
-            container
-            justify="space-evenly"
-            style={{ padding: "2vh 0" }}
-          >
-            <Grid item xs={5}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/yyyy"
-                  margin="normal"
-                  value={selectedStartDate}
-                  id="date-picker-inline"
-                  label="Start Date"
-                  onChange={handleDateChange}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item xs={5}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  variant="inline"
-                  format="MM/yyyy"
-                  margin="normal"
-                  value={selectedEndDate}
-                  id="date-picker-inline"
-                  label="End Date"
-                  onChange={handleDateChangeEnd}
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-          </Grid>
-          <Grid item xs={11} md={5} lg={4} style={{ padding: "4vh 0" }}>
-            <Button
-              className={classes.buttons}
-              fullWidth
-              onClick={() => {
-                UpdateSingleUserExp("education");
+            <Grid
+              container
+              alignItems="center"
+              style={{
+                padding: "2vh 2vw",
+                backgroundColor: "#f8f8f8",
               }}
             >
-              Add new Education details
-            </Button>
+              <Grid
+                onClick={() => {
+                  setIsAddMode(false);
+                }}
+              >
+                {"<"} Back to Profile
+              </Grid>
+            </Grid>
+            <Grid item xs={11} style={{ padding: "2vh 0" }}>
+              <TextField
+                placeholder="School"
+                fullWidth
+                onChange={event => {
+                  SetNewSchool(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={11} style={{ padding: "2vh 0" }}>
+              <TextField
+                placeholder="Major"
+                fullWidth
+                onChange={event => {
+                  setNewMajor(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={11} style={{ padding: "2vh 0" }}>
+              <TextField
+                placeholder="Degree"
+                fullWidth
+                onChange={event => {
+                  setNewDegree(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid
+              item
+              container
+              justify="space-evenly"
+              style={{ padding: "2vh 0" }}
+            >
+              <Grid item xs={5}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/yyyy"
+                    margin="normal"
+                    value={selectedStartDate}
+                    id="date-picker-inline"
+                    label="Start Date"
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+              <Grid item xs={5}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/yyyy"
+                    margin="normal"
+                    value={selectedEndDate}
+                    id="date-picker-inline"
+                    label="End Date"
+                    onChange={handleDateChangeEnd}
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+            </Grid>
+            <Grid item xs={11} md={5} lg={4} style={{ padding: "4vh 0" }}>
+              <Button
+                className={classes.buttons}
+                fullWidth
+                onClick={() => {
+                  UpdateSingleUserExp("education");
+                }}
+              >
+                Add new Education details
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-        </ThemeProvider >
+        </ThemeProvider>
       </>
     );
 

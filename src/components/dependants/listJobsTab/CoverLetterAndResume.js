@@ -1,15 +1,10 @@
 import React, { useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Typography, Grid, Button } from "@material-ui/core/";
-import {
-  HomeContext,
-  UserContext,
-  TextEditorContext,
-} from "contexts";
+import { Typography, Grid, Button, Checkbox } from "@material-ui/core/";
+import { HomeContext, UserContext, TextEditorContext } from "contexts";
 import { API } from "helpers";
 import { notify, TextEditor, EndApplication } from "components";
-import { ProgressBar } from "../../common/ProgressBar";
 
 const useStyles = makeStyles(theme => ({
   topper: {
@@ -55,31 +50,52 @@ const theme = createMuiTheme({
 
 export const CoverLetterAndResume = props => {
   const classes = useStyles();
-  const { setUserWantsToApply, progressBar } = useContext(HomeContext);
+  const { setUserWantsToApply } = useContext(HomeContext);
   const { fileURL, coverLetterUrl } = useContext(UserContext);
-  const { coverLetter } = useContext(TextEditorContext);
+  const { coverLetter, criteriaSelection } = useContext(TextEditorContext);
+  console.log("TCL: criteriaSelection", criteriaSelection)
   const [hasApplied, setHasApplied] = useState(false);
+  const [checked, setChecked] = React.useState(false);
+  const [checkCL, setCheckCL] = React.useState(false);
+  const [checkKSC, setCheckKSC] = React.useState(false);
 
-  const applyJob = async () => {
-    let data = {
-      jobId: props.data,
-    };
-
-    let dataCVCL = {
-      resumeURL: fileURL,
-      coverLetter: coverLetterUrl !== "" ? coverLetterUrl : coverLetter,
-    };
-
-    console.log(dataCVCL);
-    const sendCVCL = await API.updateUserResumeAndCoverLetter(dataCVCL);
-    console.log(sendCVCL);
-    const saveJobResData = await API.userApplyJob(data);
-    notify("Congratulation your application has been sent");
-    setUserWantsToApply(true);
-    setHasApplied(true);
+  const handleChange = event => {
+    setChecked(event.target.checked);
+  };
+  const handleChangeCL = () => {
+    setCheckCL(!checkCL);
   };
 
-  let progressBarComponent = progressBar ? <ProgressBar /> : "";
+  const handleChangeKSC = () => {
+    setCheckKSC(!checkKSC);
+  };
+
+  const applyJob = async () => {
+    if (!checked) {
+      return notify("You must hold a refugee or asylum visa status");
+    } else {
+      let data = {
+        jobId: props.data,
+        coverLetter,
+        criteriaSelection
+      };
+
+      
+
+
+      const saveJobResData = await API.userApplyJob(data);
+      console.log("TCL: applyJob -> saveJobResData", saveJobResData)
+      if (saveJobResData) {
+        
+        notify("Congratulation your application has been sent");
+        setUserWantsToApply(true);
+        setHasApplied(true);
+        
+      }
+    }
+  };
+
+
 
   let content = hasApplied ? (
     <EndApplication />
@@ -131,13 +147,62 @@ export const CoverLetterAndResume = props => {
       </Grid>
 
       <Grid container justify="center" style={{ padding: "3vh 0" }}>
-        <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
-          <Typography variant="h6">Please, write your coverletter</Typography>
+        <Grid item container xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+          <Grid item xs={10}>
+            <Typography variant="body1">
+              Do you hold a refugee or asylum seeker related visa ? *{" "}
+            </Typography>
+          </Grid>
+          <Grid item xs={2} alignItems="flex-end" container>
+            <Checkbox
+              checked={checked}
+              onChange={handleChange}
+              value="primary"
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+          </Grid>
         </Grid>
+        <Grid container item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+          <Grid item xs={10}>
+            <Typography variant="h6">Add your coverletter</Typography>
+          </Grid>
+          <Grid item xs={2}>
+            <Checkbox
+              onChange={handleChangeCL}
+              value="primary"
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+          </Grid>
+        </Grid>
+        {checkCL ? (
+          <Grid item xs={11} md={8} lg={8}>
+            <TextEditor data={{ content: "coverletter" }} />
+          </Grid>
+        ) : (
+          ""
+        )}
 
-        <Grid item xs={11} md={8} lg={8}>
-          <TextEditor data={{ content: "coverletter" }} />
+        <Grid container item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+          <Grid item xs={10}>
+            <Typography variant="h6">
+              Add your key selection criteria
+            </Typography>
+          </Grid>
+          <Grid item xs={2}>
+            <Checkbox
+              onChange={handleChangeKSC}
+              value="primary"
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+          </Grid>
         </Grid>
+        {checkKSC ? (
+          <Grid item xs={11} md={8} lg={8}>
+            <TextEditor data={{ content: "ksc" }} />
+          </Grid>
+        ) : (
+          ""
+        )}
 
         {/* <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
           <Typography variant="h6">Or attach your documents</Typography>
@@ -183,9 +248,7 @@ export const CoverLetterAndResume = props => {
         {/* <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
         <Typography variant="subtitle1">Attach your resume</Typography>
       </Grid> */}
-        <Grid item xs={11} md={10} lg={10} style={{ padding: "2vh 0" }}>
-          {progressBarComponent}
-        </Grid>
+   
         <Grid item xs={10} md={3} lg={3} style={{ padding: "1vh 0" }}>
           <Button
             className={classes.buttons}
