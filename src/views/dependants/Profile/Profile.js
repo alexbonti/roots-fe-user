@@ -150,6 +150,7 @@ const Profile = props => {
     typeof userProfile === "object" &&
     Array.isArray(userProfile.workExperience) ? (
         userProfile.workExperience.map((experience, index) => {
+          console.log(experience);
           return <Experience key={index} data={experience} />;
         })
       ) : (
