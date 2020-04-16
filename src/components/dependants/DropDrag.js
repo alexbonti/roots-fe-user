@@ -107,7 +107,6 @@ export default function Accept({ avatar, ...props }) {
         let file = new FormData();
         file.append("documentFile", data[0]);
         const fileData = await API.upLoadFile(file);
-        console.log("TCL: Accept -> fileData", fileData)
         if (fileData) {
           setFileURL(fileData.response.data.data.documentFileUrl.original);
 
@@ -116,7 +115,6 @@ export default function Accept({ avatar, ...props }) {
             coverLetter: coverLetter !== "" ? coverLetter : coverLetterUrl,
           };
           await API.updateUserResumeAndCoverLetter(data);
-          console.log("uploaded");
           setProgressBar(false);
         }
       };

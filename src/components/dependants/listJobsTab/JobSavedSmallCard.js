@@ -26,7 +26,6 @@ const theme = createMuiTheme({
 });
 
 export const JobSavedSmallCard = props => {
-console.log("TCL: props", props)
 
   const { savedJobs } = props.data;
   const {  setIsFullViewSaved, setJobId } = useContext(

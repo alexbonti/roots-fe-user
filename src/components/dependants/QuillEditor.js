@@ -21,7 +21,6 @@ export const TextEditor = props => {
 
 
   const handleTextEditorChange = value => {
-  console.log("TCL: value", props)
     switch (props.data.content) {
     case "coverletter":
       return (

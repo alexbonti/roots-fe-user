@@ -107,7 +107,7 @@ const Profile = props => {
         setData(profileExtData.response);
       }
       Promise.all([profileResponse, profileExtData]).then(res =>
-        console.log(res)
+        res
       );
     };
 
@@ -150,7 +150,6 @@ const Profile = props => {
     typeof userProfile === "object" &&
     Array.isArray(userProfile.workExperience) ? (
         userProfile.workExperience.map((experience, index) => {
-          console.log(experience);
           return <Experience key={index} data={experience} />;
         })
       ) : (

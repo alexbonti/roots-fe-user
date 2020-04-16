@@ -69,7 +69,6 @@ function a11yProps(index) {
 }
 
 const Home = props => {
-  console.log("TCL: Home -> props", props);
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
@@ -114,7 +113,6 @@ const Home = props => {
           setOppData(oppResponse.response);
         }
         const profileResponse = await API.getUserProfile();
-        console.log(profileResponse);
         if (profileResponse) {
           setUserName(profileResponse.response.first_name);
           setUserLastName(profileResponse.response.last_name);

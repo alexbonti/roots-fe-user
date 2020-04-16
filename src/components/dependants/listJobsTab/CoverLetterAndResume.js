@@ -53,7 +53,6 @@ export const CoverLetterAndResume = props => {
   const { setUserWantsToApply } = useContext(HomeContext);
   const { fileURL, coverLetterUrl } = useContext(UserContext);
   const { coverLetter, criteriaSelection } = useContext(TextEditorContext);
-  console.log("TCL: criteriaSelection", criteriaSelection)
   const [hasApplied, setHasApplied] = useState(false);
   const [checked, setChecked] = React.useState(false);
   const [checkCL, setCheckCL] = React.useState(false);
@@ -84,7 +83,6 @@ export const CoverLetterAndResume = props => {
 
 
       const saveJobResData = await API.userApplyJob(data);
-      console.log("TCL: applyJob -> saveJobResData", saveJobResData)
       if (saveJobResData) {
         
         notify("Congratulation your application has been sent");

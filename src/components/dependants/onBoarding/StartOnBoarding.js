@@ -12,7 +12,6 @@ import { OnBoardingContext } from "contexts";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  console.log(props);
   return (
     <Typography
       component="div"

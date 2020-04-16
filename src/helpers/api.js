@@ -88,8 +88,7 @@ class API {
     return await axiosInstance
       .post("/user/register", data)
       .then(response => {
-        console.log(response);
-        return { response: response.data };
+        return { response: response.data.data};
       })
       .catch(error => {
         errorHelper(error);
@@ -263,7 +262,6 @@ class API {
 
   updateWorkExp = async data => {
     let accessToken = localStorage.getItem("accessToken");
-    console.log(data);
     return await axiosInstance
       .put("/user/workExperienceUserExtended", data, {
         headers: {
@@ -280,7 +278,6 @@ class API {
 
   deleteWorkExperience = async data => {
     let accessToken = localStorage.getItem("accessToken");
-    console.log(data);
     return await axiosInstance
       .put("/user/removeWorkExperience", data, {
         headers: {
@@ -297,7 +294,6 @@ class API {
 
   deleteEducation = async data => {
     let accessToken = localStorage.getItem("accessToken");
-    console.log(data);
     return await axiosInstance
       .put("/user/removeEducation", data, {
         headers: {
@@ -345,7 +341,6 @@ class API {
 
   updateEducationExp = async data => {
     let accessToken = localStorage.getItem("accessToken");
-    console.log(data);
     return await axiosInstance
       .put("/user/educationUserExtended", data, {
         headers: {
