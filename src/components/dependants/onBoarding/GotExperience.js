@@ -54,7 +54,6 @@ export const GotExperience = () => {
   const autoFill = async event => {
     setInputPosition(event.target.value);
     let suggestions = await API.getAddress(inputPosition);
-    console.log(suggestions);
     setPositionSuggestions(suggestions.suggestions);
   };
 
@@ -74,7 +73,6 @@ export const GotExperience = () => {
 
   const handleChange = event => {
     setEndDate(`${new Date().getFullYear()} ${new Date().getMonth()+1} ${new Date().getDate()}`);
-    console.log(endDate);
     setChecked(event.target.checked);
   };
 

@@ -4,7 +4,6 @@ const DBDropStatus = process.env.REACT_APP_DROP_IDB_DATABASE;
 
 const init = () => {
   if (!("indexedDB" in window)) {
-    console.log("This browser doesn't support IndexedDB");
     return;
   } else {
     if (DBDropStatus) {

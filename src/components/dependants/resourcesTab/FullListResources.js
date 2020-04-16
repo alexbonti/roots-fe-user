@@ -5,6 +5,8 @@ import { ResourceSmallCard, ResourceFullView } from "components";
 import { HomeContext } from "contexts";
 import { API } from "helpers";
 import { Spinner } from "components/index";
+import {LoginContext} from "contexts";
+
 
 const theme = createMuiTheme({
   palette: {
@@ -28,27 +30,32 @@ const theme = createMuiTheme({
 });
 export const FullListResources = () => {
   const [resourceArray, setResourceArray] = useState([]);
+  const {loginStatus} = useContext(LoginContext);
+
 
   useEffect(() => {
-    let accumulator = resourceArray;
-    const categories = ["LEGAL ADVICE", "PROGRAMS", "ORGANIZATIONS"];
-    const triggerAPI = async categorie => {
-      let data = {
-        "category": categorie,
-        "numberOfRecords": 10,
+    if(loginStatus){
+      let accumulator = resourceArray;
+      const categories = ["LEGAL ADVICE", "PROGRAMS", "ORGANIZATIONS"];
+      const triggerAPI = async categorie => {
+        let data = {
+          "category": categorie,
+          "numberOfRecords": 10,
+        };
+  
+        const allNewsData = await API.getNews(data);
+        if(allNewsData && allNewsData.response.data.data.data.length > 0){
+          accumulator.push({
+            categorie,
+            data: allNewsData.response.data.data.data,
+          });
+        }
+        setResourceArray(accumulator);
       };
+  
+      categories.forEach(categorie => triggerAPI(categorie));
 
-      const allNewsData = await API.getNews(data);
-      if(allNewsData && allNewsData.response.data.data.data.length > 0){
-        accumulator.push({
-          categorie,
-          data: allNewsData.response.data.data.data,
-        });
-      }
-      setResourceArray(accumulator);
-    };
-
-    categories.forEach(categorie => triggerAPI(categorie));
+    }
   }, [resourceArray]);
 
  

@@ -70,7 +70,6 @@ export const CurtainIndustrySelection = () => {
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
     setIndustryField(accumulator);
-    console.log(accumulator)
   };
 
   const handleDelete = chipToDelete => () => {

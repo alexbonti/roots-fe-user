@@ -62,7 +62,6 @@ function getSteps() {
 }
 
 const OnBoarding = props => {
-  console.log(props);
   const classes = useStyles();
   const { activeStep, setActiveStep, isStart } = useContext(OnBoardingContext);
   const steps = getSteps();
@@ -95,7 +94,6 @@ const OnBoarding = props => {
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
-    console.log(activeStep);
   };
 
   
