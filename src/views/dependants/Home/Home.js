@@ -83,6 +83,7 @@ const Home = props => {
     setUserEmail,
     setAvatarProfile,
   } = useContext(UserContext);
+  const {loginStatus} = useContext(LoginContext);
 
   // STATE
   const [searchSettings, setSearchSettings] = useState([]);
@@ -97,34 +98,37 @@ const Home = props => {
 
   //API CALLS
   useEffect(() => {
-    const triggerAPI = async () => {
-      setIsFullView(false);
-      setIsFullViewApplied(false);
-
-      const profileExtData = await API.getUserProfileExt();
-      if (profileExtData) {
-        setListSavedJobs(profileExtData.response.savedJobs);
-        setAvatarProfile(profileExtData.response.avatar);
-        setSearchSettings(profileExtData.response.preferredIndustry);
-      }
-      const oppResponse = await API.getOpportunity();
-      if (oppResponse) {
-        setOppData(oppResponse.response);
-      }
-      const profileResponse = await API.getUserProfile();
-      console.log(profileResponse);
-      if (profileResponse) {
-        setUserName(profileResponse.response.first_name);
-        setUserLastName(profileResponse.response.last_name);
-        setUserEmail(profileResponse.response.emailId);
-        //setUserPassword(profileResponse.response.password);
-      }
-
-      Promise.all([profileResponse, profileExtData, oppResponse])
-        .then(res => res)
-        .catch(err => err);
-    };
-    triggerAPI();
+    if(loginStatus){
+      const triggerAPI = async () => {
+        setIsFullView(false);
+        setIsFullViewApplied(false);
+  
+        const profileExtData = await API.getUserProfileExt();
+        if (profileExtData) {
+          setListSavedJobs(profileExtData.response.savedJobs);
+          setAvatarProfile(profileExtData.response.avatar);
+          setSearchSettings(profileExtData.response.preferredIndustry);
+        }
+        const oppResponse = await API.getOpportunity();
+        if (oppResponse) {
+          setOppData(oppResponse.response);
+        }
+        const profileResponse = await API.getUserProfile();
+        console.log(profileResponse);
+        if (profileResponse) {
+          setUserName(profileResponse.response.first_name);
+          setUserLastName(profileResponse.response.last_name);
+          setUserEmail(profileResponse.response.emailId);
+          //setUserPassword(profileResponse.response.password);
+        }
+  
+        Promise.all([profileResponse, profileExtData, oppResponse])
+          .then(res => res)
+          .catch(err => err);
+      };
+      triggerAPI();
+    }
+    
   }, [
     setOppData,
     setUserName,

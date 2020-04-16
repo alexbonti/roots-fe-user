@@ -11,9 +11,9 @@ import { notify } from "components";
 import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
 import { Header } from "../../../components/dependants/Header";
-import { withRouter , Redirect} from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -44,7 +44,7 @@ const theme = createMuiTheme({
     tonalOffset: 0.2,
   },
 });
-const Register = props => {
+const Register = (props) => {
   // const { setLoginStatus } = React.useContex(LoginContext);
   const classes = useStyles();
   const [emailId, setEmailId] = useState("");
@@ -55,7 +55,7 @@ const Register = props => {
   const [redirect, setRedirect] = useState(false);
   const [accessToken, setAccessToken] = useState("");
   const [emailVerified, setEmailVerified] = useState("");
-  const [userDetails, setUserDetails] = useState("")
+  const [userDetails, setUserDetails] = useState("");
 
   /**
    * Error Fields states
@@ -67,24 +67,25 @@ const Register = props => {
   const [lastNameErrorField, setLastNameErrorField] = useState(false);
 
   // const { setOpenModal } = useContext(LoginContext);
-  
+
   const registerUser = () => {
     const data = {
       first_name: firstName,
       last_name: lastName,
       emailId,
-      password
+      password,
     };
 
     const triggerAPI = async () => {
       const registerData = await API.registerUser(data);
-      if(registerData){
+      console.log("triggerAPI -> registerData", registerData)
+      if (registerData) {
         console.log(registerData);
         setAccessToken(registerData.response.accessToken);
         setEmailVerified(registerData.response.userDetails.emailVerified);
         setUserDetails(registerData.response.userDetails);
         setRedirect(true);
-      }else{
+      } else {
         console.log("error");
       }
     };
@@ -92,28 +93,32 @@ const Register = props => {
   };
 
   const validationCheck = () => {
-   
-
-    
-
-    if(firstName.length < 0 || firstName.length === 0 ){
+    if (firstName.length < 0 || firstName.length === 0) {
       setFirstNameErrorField(true);
       return notify("first name field can not be empty");
-    }else{setFirstNameErrorField(false);}
+    } else {
+      setFirstNameErrorField(false);
+    }
 
-    if(lastName.length < 0 || lastName.length === 0){
+    if (lastName.length < 0 || lastName.length === 0) {
       setLastNameErrorField(true);
       return notify("last name field can not be empty");
-    }else{setLastNameErrorField(false);}
+    } else {
+      setLastNameErrorField(false);
+    }
 
-    if(emailId.length < 0 || emailId === ""){
+    if (emailId.length < 0 || emailId === "") {
       setEmailErrorField(true);
       return notify("email field can not be empty");
-    }else{setEmailErrorField(false);}
-    if(password.length < 0 || confirmPassword.length < 0){
+    } else {
+      setEmailErrorField(false);
+    }
+    if (password.length < 0 || confirmPassword.length < 0) {
       setPasswordErrorField(true);
       return notify("Password field can not be empty");
-    }else{setPasswordErrorField(false);}
+    } else {
+      setPasswordErrorField(false);
+    }
 
     let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -121,13 +126,17 @@ const Register = props => {
     if (!emailPatternTest) {
       setEmailErrorField(true);
       notify("Please provide a rigth email address");
-    }else{setEmailErrorField(false);}
+    } else {
+      setEmailErrorField(false);
+    }
     if (password !== confirmPassword) {
       setPasswordErrorField(true);
       setPassword("");
       setConfirmPassword("");
       return notify("Passwords don't match.");
-    }else{setPasswordErrorField(false);}
+    } else {
+      setPasswordErrorField(false);
+    }
     if (emailPatternTest) {
       return registerUser();
     }
@@ -144,7 +153,7 @@ const Register = props => {
     <>
       <ThemeProvider theme={theme}>
         <Header />
-      <Grid style={{height: "9vh"}}/>
+        <Grid style={{ height: "9vh" }} />
         <Grid
           container
           justify="center"
@@ -152,12 +161,19 @@ const Register = props => {
           style={{ backgroundColor: "rgb(234, 244, 246,1 )", height: "15vh" }}
         >
           <Grid item xs={10} md={7}>
-            <Typography style={{fontSize: `"Arial Rounded MT", sans-serif`, fontSize: "21px", fontWeight: "bold"}}>Let's start</Typography>
+            <Typography
+              style={{
+                fontSize: `"Arial Rounded MT", sans-serif`,
+                fontSize: "21px",
+                fontWeight: "bold",
+              }}
+            >
+              Let's start
+            </Typography>
           </Grid>
-   
         </Grid>
         <Grid container justify="space-evenly" alignItems="center">
-          <Grid item xs={10} md={7}> 
+          <Grid item xs={10} md={7}>
             <form noValidate>
               <TextField
                 margin="normal"
@@ -168,7 +184,7 @@ const Register = props => {
                 label="First Name"
                 name="firstName"
                 autoComplete="email"
-                onChange={e => setFirstName(e.target.value)}
+                onChange={(e) => setFirstName(e.target.value)}
                 autoFocus
               />{" "}
               <TextField
@@ -180,7 +196,7 @@ const Register = props => {
                 label="Last Name"
                 name="lastName"
                 autoComplete="email"
-                onChange={e => setLastName(e.target.value)}
+                onChange={(e) => setLastName(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -191,7 +207,7 @@ const Register = props => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={e => setEmailId(e.target.value)}
+                onChange={(e) => setEmailId(e.target.value)}
               />
               <TextField
                 error={passwordErrorField}
@@ -202,7 +218,7 @@ const Register = props => {
                 label="Password"
                 type="password"
                 id="password"
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
               <TextField
@@ -214,12 +230,12 @@ const Register = props => {
                 label="Confirm Password"
                 type="password"
                 id="confirmPassword"
-                onChange={e => setConfirmPassword(e.target.value)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 autoComplete="current-password"
               />
             </form>
           </Grid>
-          <Grid item xs={10} md={7}style={{paddingTop: "5vh"}}>
+          <Grid item xs={10} md={7} style={{ paddingTop: "5vh" }}>
             <Button
               fullWidth
               variant="contained"

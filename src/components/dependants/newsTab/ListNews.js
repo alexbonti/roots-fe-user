@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext} from "react";
 import { NewsCard, LargeNewsCard, Spinner } from "components";
 import { API } from "helpers/index";
 import { NewsFullView } from "components/index";
 import { HomeContext } from "contexts/index";
 import { createMuiTheme } from "@material-ui/core/";
 import { ThemeProvider } from "@material-ui/core/styles";
+import {LoginContext} from "contexts";
 
 const theme = createMuiTheme({
   palette: {
@@ -32,22 +33,26 @@ const theme = createMuiTheme({
 });
 export const ListNews = () => {
   const [newsArray, setNewsArray] = useState([]);
+  const {loginStatus} = useContext(LoginContext);
 
   const { detailsNews, isFullViewNews } = React.useContext(HomeContext);
 
   useEffect(() => {
-    const triggerAPI = async () => {
-      let data = {
-        "category": "MECHID",
-        "numberOfRecords": 10,
+    if(loginStatus){
+      const triggerAPI = async () => {
+        let data = {
+          "category": "MECHID",
+          "numberOfRecords": 10,
+        };
+        const allNewsData = await API.getNews(data);
+        if (allNewsData) {
+          setNewsArray(allNewsData.response.data.data.data);
+        }
+        triggerAPI();
       };
-      const allNewsData = await API.getNews(data);
-      if (allNewsData) {
-        setNewsArray(allNewsData.response.data.data.data);
-      }
-    };
+  
 
-    triggerAPI();
+    }
   }, []);
 
   const content = isFullViewNews ? (
