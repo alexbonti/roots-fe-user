@@ -51,12 +51,10 @@ export const JobSmallCard = props => {
       API.userUnsaveJob({ "jobId": _id });
       setSavedJobs(false);
       setIsUpdated(true);
-      console.log(props, "here");
     } else {
       API.userSaveJob({ "jobId": _id });
       setSavedJobs(true);
       setIsUpdated(true);
-      console.log(props);
     }
   };
   React.useEffect(() => {

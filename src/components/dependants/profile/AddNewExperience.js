@@ -73,7 +73,6 @@ export const AddNewExperience = props => {
   };
 
   const handleDateChangeEnd = date => {
-    console.log(date);
     setSelectedEndDate(date);
   };
 

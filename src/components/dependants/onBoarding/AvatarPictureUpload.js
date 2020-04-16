@@ -65,7 +65,6 @@ export const AvatarPictureUpload = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
-  console.log(activeStep);
 
   const sendOnBoardingDetails = async () => {
     if (loginStatus) {
@@ -124,7 +123,6 @@ export const AvatarPictureUpload = () => {
         }
       }
 
-      console.log(activeStep);
 
       setIsUpdated(false);
     }
