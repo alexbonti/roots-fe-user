@@ -27,7 +27,6 @@ const theme = createMuiTheme({
 
 export const JobSavedSmallCard = props => {
 
-  const { savedJobs } = props.data;
   const {  setIsFullViewSaved, setJobId } = useContext(
     HomeContext
   );
@@ -44,12 +43,11 @@ export const JobSavedSmallCard = props => {
     location,
     employmentType,
     company,
-    endDate,
     _id,
   } = props.data;
 
 
-const toogleSave = () => {
+  const toogleSave = () => {
     if (isSaved) {
       API.userUnsaveJob({ "jobId": _id });
       setIsSaved(false);

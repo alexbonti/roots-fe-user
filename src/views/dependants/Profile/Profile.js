@@ -59,7 +59,7 @@ const Profile = props => {
   const { coverLetter } = useContext(TextEditorContext);
   const {
     setUserName,
-    
+
     setUserLastName,
     setUserEmail,
     setUserProfile,
@@ -126,6 +126,10 @@ const Profile = props => {
     isUpdated,
     setIsFullView,
     setSkills,
+    setIsEditGeneralProfile,
+    setIsFullViewApplied,
+    setIsUpdated,
+    setPreferredIndustry
   ]);
 
   const openAddMode = field => {
@@ -140,15 +144,15 @@ const Profile = props => {
   const buttonIcon = isEditSkills ? (
     <CancelPresentationIcon onClick={() => openAddMode("edit skills")} />
   ) : (
-    <AddBoxIcon onClick={() => openAddMode("edit skills")} />
-  );
+      <AddBoxIcon onClick={() => openAddMode("edit skills")} />
+    );
 
   //------------PROFILE EDIT ----------------------------
 
   //------------EXPERIENCE--------------------------------
   const experience =
     typeof userProfile === "object" &&
-    Array.isArray(userProfile.workExperience) ? (
+      Array.isArray(userProfile.workExperience) ? (
         userProfile.workExperience.map((experience, index) => {
           return <Experience key={index} data={experience} />;
         })
@@ -164,8 +168,8 @@ const Profile = props => {
         return <Education key={index} data={education} />;
       })
     ) : (
-      <Spinner />
-    );
+        <Spinner />
+      );
 
   //---------------Skills--------------------------------
   const editSkills = isEditSkills ? (
@@ -197,7 +201,7 @@ const Profile = props => {
               }
             }}
             style={{
-              
+
               height: "100%",
               marginLeft: "20px",
               color: "white",
@@ -211,8 +215,8 @@ const Profile = props => {
       </Grid>
     </Grid>
   ) : (
-    ""
-  );
+      ""
+    );
 
   const deleteChip = chip => {
     let newArray = [];
@@ -341,7 +345,7 @@ const Profile = props => {
                 <Grid item>{buttonIcon}</Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12}container style={{ padding: "2vh 0" }} spacing={1}>
+            <Grid item xs={12} container style={{ padding: "2vh 0" }} spacing={1}>
               {editSkills}
               {Array.isArray(skills)
                 ? skills.map(skill => {
@@ -365,8 +369,8 @@ const Profile = props => {
         </ThemeProvider>
       </>
     ) : (
-      <Spinner />
-    );
+        <Spinner />
+      );
 
   return isAddMode ? (
     <AddNewExperience data={field} />
@@ -384,8 +388,8 @@ const Profile = props => {
       />
     </ThemeProvider>
   ) : (
-    content
-  );
+        content
+      );
 };
 
 export default withRouter(Profile);

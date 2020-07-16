@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
   Grid,
@@ -19,7 +18,7 @@ import {
 } from "components";
 import { withRouter } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   topper: {
     backgroundColor: "#F7F6F6",
     height: "6vh"
@@ -45,28 +44,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#087B94" },
-    secondary: { main: "#C74197" },
-    terziary: { main: "#2B2B28" },
-    accent: { main: "#FFD922" },
-    error: { main: "#D0011B" },
-    contrastThreshold: 3,
-    tonalOffset: 0.2,
-  },
-});
 
 function getSteps() {
   return ["", "", ""];
 }
 
-const OnBoarding = props => {
+const OnBoarding = () => {
   const classes = useStyles();
   const { activeStep, setActiveStep, isStart } = useContext(OnBoardingContext);
   const steps = getSteps();
   const { loginStatus, accessToken } = useContext(LoginContext);
-  const { userProfile, setUserProfile, setAvatarProfile } = useContext(
+  const { userProfile, setUserProfile } = useContext(
     UserContext
   );
 
@@ -82,10 +70,10 @@ const OnBoarding = props => {
           coverLetter: "",
         };
         const profileData = await API.getUserProfile(accessToken);
-        if(profileData){
+        if (profileData) {
           setUserProfile(profileData.response);
         }
-        
+
         await API.updateUserPreferences(data);
       };
       triggerAPI(accessToken);
@@ -96,14 +84,14 @@ const OnBoarding = props => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
   };
 
-  
+
   const handleBack = () => {
     if (activeStep > 0) {
       setActiveStep(prevActiveStep => prevActiveStep - 1);
     }
   };
-  
-  const buttonStatusDisabled= activeStep <  1 ? true : false;
+
+  const buttonStatusDisabled = activeStep < 1 ? true : false;
   // ---------------------button stepper------------------------
 
   const buttonStepper = isStart ? (
@@ -119,8 +107,8 @@ const OnBoarding = props => {
       </Button>
     </Grid>
   ) : (
-    ""
-  );
+      ""
+    );
 
   //--------------------------------------------------------------
   function getStepContent(stepIndex) {
@@ -163,58 +151,58 @@ const OnBoarding = props => {
     activeStep > 2 ? (
       <EndOnBoarding />
     ) : (
-      <>
-        <Grid container className={classes.topper} alignItems="flex-end">
-          <Button onClick={handleBack} className={classes.backButton} disabled={buttonStatusDisabled}>
-            {"<"} Back
+        <>
+          <Grid container className={classes.topper} alignItems="flex-end">
+            <Button onClick={handleBack} className={classes.backButton} disabled={buttonStatusDisabled}>
+              {"<"} Back
           </Button>
-        </Grid>
+          </Grid>
 
-        <Grid
-          container
-          item
-          xs={12}
-          justify="center"
-          alignItems="center"
-          style={{ height: "15vh", backgroundColor: "rgb(234, 244, 246)" }}
-        >
-          <Grid item xs={11}>
-            <Typography variant="h6">
-              Welcome, {userProfile.first_name}. <br />
+          <Grid
+            container
+            item
+            xs={12}
+            justify="center"
+            alignItems="center"
+            style={{ height: "15vh", backgroundColor: "rgb(234, 244, 246)" }}
+          >
+            <Grid item xs={11}>
+              <Typography variant="h6">
+                Welcome, {userProfile.first_name}. <br />
               Let's get your profile ready.
             </Typography>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid
-          style={{
-            height: "5vh",
-            width: "100vw",
-            position: "relative",
-            top: "-13px"
-          }}
-        >
-          <Stepper
-            activeStep={activeStep}
-            alternativeLabel
+          <Grid
             style={{
-              backgroundColor: "transparent",
-              padding: "unset",
+              height: "5vh",
+              width: "100vw",
+              position: "relative",
+              top: "-13px"
             }}
           >
-            <Step>
-              <StepLabel></StepLabel>
-            </Step>
-            <Step>
-              <StepLabel></StepLabel>
-            </Step>
-            <Step>
-              <StepLabel></StepLabel>
-            </Step>
-          </Stepper>
-        </Grid>
-        {getStepContent(activeStep)}
-      </>
-    );
+            <Stepper
+              activeStep={activeStep}
+              alternativeLabel
+              style={{
+                backgroundColor: "transparent",
+                padding: "unset",
+              }}
+            >
+              <Step>
+                <StepLabel></StepLabel>
+              </Step>
+              <Step>
+                <StepLabel></StepLabel>
+              </Step>
+              <Step>
+                <StepLabel></StepLabel>
+              </Step>
+            </Stepper>
+          </Grid>
+          {getStepContent(activeStep)}
+        </>
+      );
 
 
   return <>{mainContent}</>;

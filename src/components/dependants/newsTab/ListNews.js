@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { NewsCard, LargeNewsCard, Spinner } from "components";
 import { API } from "helpers/index";
 import { NewsFullView } from "components/index";
 import { HomeContext } from "contexts/index";
 import { createMuiTheme } from "@material-ui/core/";
 import { ThemeProvider } from "@material-ui/core/styles";
-import {LoginContext} from "contexts";
+import { LoginContext } from "contexts";
 
 const theme = createMuiTheme({
   palette: {
@@ -33,12 +33,12 @@ const theme = createMuiTheme({
 });
 export const ListNews = () => {
   const [newsArray, setNewsArray] = useState([]);
-  const {loginStatus} = useContext(LoginContext);
+  const { loginStatus } = useContext(LoginContext);
 
   const { detailsNews, isFullViewNews } = React.useContext(HomeContext);
 
   useEffect(() => {
-    if(loginStatus){
+    if (loginStatus) {
       const triggerAPI = async () => {
         let data = {
           "category": "MECHID",
@@ -48,28 +48,26 @@ export const ListNews = () => {
         if (allNewsData) {
           setNewsArray(allNewsData.response.data.data.data);
         }
-        triggerAPI();
       };
-  
-
+      triggerAPI();
     }
-  }, []);
+  }, [loginStatus]);
 
   const content = isFullViewNews ? (
     <ThemeProvider theme={theme}>
       <NewsFullView data={detailsNews} />
     </ThemeProvider>
   ) : (
-    <>
-      <ThemeProvider theme={theme}>
-        {" "}
-        <LargeNewsCard data={newsArray[0]} />
-        {newsArray.map((news, i) => {
-          return i !== 0 ? <NewsCard key={news.title + i} data={news} /> : "";
-        })}
-      </ThemeProvider>
-    </>
-  );
+      <>
+        <ThemeProvider theme={theme}>
+          {" "}
+          <LargeNewsCard data={newsArray[0]} />
+          {newsArray.map((news, i) => {
+            return i !== 0 ? <NewsCard key={news.title + i} data={news} /> : "";
+          })}
+        </ThemeProvider>
+      </>
+    );
 
   return newsArray.length > 0 ? <>{content}</> : <Spinner />;
 };

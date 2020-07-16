@@ -2,11 +2,11 @@ import React, { useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Button, Checkbox } from "@material-ui/core/";
-import { HomeContext, UserContext, TextEditorContext } from "contexts";
+import { HomeContext, TextEditorContext } from "contexts";
 import { API } from "helpers";
 import { notify, TextEditor, EndApplication } from "components";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   topper: {
     height: "10vh",
     backgroundColor: "white",
@@ -51,7 +51,6 @@ const theme = createMuiTheme({
 export const CoverLetterAndResume = props => {
   const classes = useStyles();
   const { setUserWantsToApply } = useContext(HomeContext);
-  const { fileURL, coverLetterUrl } = useContext(UserContext);
   const { coverLetter, criteriaSelection } = useContext(TextEditorContext);
   const [hasApplied, setHasApplied] = useState(false);
   const [checked, setChecked] = React.useState(false);
@@ -79,16 +78,16 @@ export const CoverLetterAndResume = props => {
         criteriaSelection
       };
 
-      
+
 
 
       const saveJobResData = await API.userApplyJob(data);
       if (saveJobResData) {
-        
+
         notify("Congratulation your application has been sent");
         setUserWantsToApply(true);
         setHasApplied(true);
-        
+
       }
     }
   };
@@ -98,115 +97,115 @@ export const CoverLetterAndResume = props => {
   let content = hasApplied ? (
     <EndApplication />
   ) : (
-    <ThemeProvider theme={theme}>
-      <Grid
-        container
-        justify="center"
-        alignItems="center"
-        style={{
-          paddingTop: "19px",
-          paddingBottom: "13px",
-          backgroundColor: "#f8f8f8",
-          fontSize: "12px",
-          fontFamily: "Arial Unicode Ms",
-        }}
-      >
+      <ThemeProvider theme={theme}>
         <Grid
-          item
-          xs={11}
-          onClick={() => {
-            setUserWantsToApply(false);
+          container
+          justify="center"
+          alignItems="center"
+          style={{
+            paddingTop: "19px",
+            paddingBottom: "13px",
+            backgroundColor: "#f8f8f8",
+            fontSize: "12px",
+            fontFamily: "Arial Unicode Ms",
           }}
         >
-          {"<"} Back
-        </Grid>
-      </Grid>
-
-      <Grid
-        container
-        style={{
-          backgroundColor: "rgba(8, 124, 149, 0.1)",
-        }}
-        justify="center"
-        alignItems="center"
-      >
-        <Grid item xs={11} md={8} lg={8}>
-          <Typography
-            style={{
-              lineHeight: "109px",
-              fontSize: "21px",
-              fontFamily: "Arial Rounded MT, Helvetica, sans-serif",
-              fontWeight: "bold",
+          <Grid
+            item
+            xs={11}
+            onClick={() => {
+              setUserWantsToApply(false);
             }}
           >
-            Great, Let's apply for this job
-          </Typography>
+            {"<"} Back
         </Grid>
-      </Grid>
+        </Grid>
 
-      <Grid container justify="center" style={{ padding: "3vh 0" }}>
-        <Grid item container xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
-          <Grid item xs={10}>
-            <Typography variant="body1">
-              Do you hold a refugee or asylum seeker related visa ? *{" "}
+        <Grid
+          container
+          style={{
+            backgroundColor: "rgba(8, 124, 149, 0.1)",
+          }}
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item xs={11} md={8} lg={8}>
+            <Typography
+              style={{
+                lineHeight: "109px",
+                fontSize: "21px",
+                fontFamily: "Arial Rounded MT, Helvetica, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              {"Great, Let's apply for this job"}
             </Typography>
           </Grid>
-          <Grid item xs={2} alignItems="flex-end" container>
-            <Checkbox
-              checked={checked}
-              onChange={handleChange}
-              value="primary"
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-          </Grid>
         </Grid>
-        <Grid container item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
-          <Grid item xs={10}>
-            <Typography variant="h6">Add your coverletter</Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <Checkbox
-              onChange={handleChangeCL}
-              value="primary"
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-          </Grid>
-        </Grid>
-        {checkCL ? (
-          <Grid item xs={11} md={8} lg={8}>
-            <TextEditor data={{ content: "coverletter" }} />
-          </Grid>
-        ) : (
-          ""
-        )}
 
-        <Grid container item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
-          <Grid item xs={10}>
-            <Typography variant="h6">
-              Add your key selection criteria
+        <Grid container justify="center" style={{ padding: "3vh 0" }}>
+          <Grid item container xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+            <Grid item xs={10}>
+              <Typography variant="body1">
+                Do you hold a refugee or asylum seeker related visa ? *{" "}
+              </Typography>
+            </Grid>
+            <Grid item xs={2} alignItems="flex-end" container>
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                value="primary"
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            </Grid>
+          </Grid>
+          <Grid container item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+            <Grid item xs={10}>
+              <Typography variant="h6">Add your coverletter</Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Checkbox
+                onChange={handleChangeCL}
+                value="primary"
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            </Grid>
+          </Grid>
+          {checkCL ? (
+            <Grid item xs={11} md={8} lg={8}>
+              <TextEditor data={{ content: "coverletter" }} />
+            </Grid>
+          ) : (
+              ""
+            )}
+
+          <Grid container item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+            <Grid item xs={10}>
+              <Typography variant="h6">
+                Add your key selection criteria
             </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Checkbox
+                onChange={handleChangeKSC}
+                value="primary"
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={2}>
-            <Checkbox
-              onChange={handleChangeKSC}
-              value="primary"
-              inputProps={{ "aria-label": "primary checkbox" }}
-            />
-          </Grid>
-        </Grid>
-        {checkKSC ? (
-          <Grid item xs={11} md={8} lg={8}>
-            <TextEditor data={{ content: "ksc" }} />
-          </Grid>
-        ) : (
-          ""
-        )}
+          {checkKSC ? (
+            <Grid item xs={11} md={8} lg={8}>
+              <TextEditor data={{ content: "ksc" }} />
+            </Grid>
+          ) : (
+              ""
+            )}
 
-        {/* <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+          {/* <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
           <Typography variant="h6">Or attach your documents</Typography>
         </Grid> */}
-        {/* <Grid item xs={11} container justify="center"> */}
-        {/* <Grid
+          {/* <Grid item xs={11} container justify="center"> */}
+          {/* <Grid
             item
             container
             xs={5}
@@ -240,27 +239,27 @@ export const CoverLetterAndResume = props => {
             </Grid>
           </Grid>
         </Grid> */}
-      </Grid>
+        </Grid>
 
-      <Grid container justify="center" style={{ padding: "2vh 0" }}>
-        {/* <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+        <Grid container justify="center" style={{ padding: "2vh 0" }}>
+          {/* <Grid item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
         <Typography variant="subtitle1">Attach your resume</Typography>
       </Grid> */}
-   
-        <Grid item xs={10} md={3} lg={3} style={{ padding: "1vh 0" }}>
-          <Button
-            className={classes.buttons}
-            fullWidth
-            onClick={() => {
-              applyJob();
-            }}
-          >
-            Easy apply
+
+          <Grid item xs={10} md={3} lg={3} style={{ padding: "1vh 0" }}>
+            <Button
+              className={classes.buttons}
+              fullWidth
+              onClick={() => {
+                applyJob();
+              }}
+            >
+              Easy apply
           </Button>
+          </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
-  );
+      </ThemeProvider>
+    );
 
   return <>{content}</>;
 };

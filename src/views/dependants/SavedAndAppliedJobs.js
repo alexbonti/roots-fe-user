@@ -13,7 +13,7 @@ import { UserContext } from "contexts/index";
 
 //todo add a message when there are no saved opportunities and/or applied ones
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     flexGrow: 1,
@@ -75,7 +75,7 @@ function a11yProps(index) {
 const SavedAndAppliedJobs = props => {
 
 
-  const [dedfaultValueTab, setDefaultValueTab] = useState( 0);
+  const [dedfaultValueTab, setDefaultValueTab] = useState(0);
 
   const classes = useStyles();
   const [value, setValue] = useState(dedfaultValueTab);
@@ -88,9 +88,8 @@ const SavedAndAppliedJobs = props => {
     setUserLastName,
     setUserEmail,
     setAvatarProfile,
-    setIsUpdated,
+
   } = useContext(UserContext);
-  const [redirect, setRedirect] = useState(false);
   const [oppData, setOppData] = useState("");
 
   const handleChange = (event, newValue) => {
@@ -108,7 +107,7 @@ const SavedAndAppliedJobs = props => {
 
   useEffect(() => {
 
-    if(props.location.state ===  "applied-jobs"){
+    if (props.location.state === "applied-jobs") {
       setDefaultValueTab(1);
     }
     const triggerAPI = async () => {
@@ -120,7 +119,7 @@ const SavedAndAppliedJobs = props => {
     if (loginStatus) {
       triggerAPI();
     }
-  }, []);
+  }, [loginStatus, props]);
 
   useEffect(() => {
 
@@ -136,7 +135,7 @@ const SavedAndAppliedJobs = props => {
     if (loginStatus) {
       triggerAPI();
     }
-  }, []);
+  }, [loginStatus, setUserEmail, setUserLastName, setUserName]);
 
   useEffect(() => {
     const triggerAPI = async () => {
@@ -149,7 +148,7 @@ const SavedAndAppliedJobs = props => {
     if (loginStatus) {
       triggerAPI();
     }
-  }, []);
+  }, [loginStatus, setAvatarProfile]);
 
   useEffect(() => {
     const triggerAPI = async () => {
@@ -161,11 +160,11 @@ const SavedAndAppliedJobs = props => {
     if (loginStatus) {
       triggerAPI();
     }
-  }, []);
+  }, [loginStatus]);
 
- 
 
-  return  (
+
+  return (
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
         <AppBar position="static" color="default" style={{ height: "12vh" }}>

@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Typography, Grid, Button } from "@material-ui/core/";
 import { HomeContext } from "contexts/index";
-import ReactHtmlParser from "react-html-parser";
 
 export const ResourceSmallCard = props => {
   const [isOpen, setIsOpen] = useState(false);

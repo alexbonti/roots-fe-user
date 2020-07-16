@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography, Grid } from "@material-ui/core/";
 import { Spinner } from "components";
-import ReactHtmlParser from "react-html-parser";
 import { HomeContext } from "contexts";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 

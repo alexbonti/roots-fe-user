@@ -9,7 +9,6 @@ import { TemporaryDrawer } from "../index";
 import { UserContext } from "contexts/index";
 import FallBackAvatar from "../../helpers/img/man.svg";
 import Logo from "../../helpers/img/favicon.png";
-import { MenuHamburger } from "helpers";
 
 // import { AccessToken } from "contexts/helpers/index";
 

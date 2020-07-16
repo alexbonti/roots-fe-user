@@ -39,7 +39,6 @@ export const JobSmallCard = props => {
     _id,
     company,
     employmentType,
-    endDate,
     location,
     positionTitle,
     publishDate,
@@ -61,8 +60,7 @@ export const JobSmallCard = props => {
     window.scroll(0, 0);
   }, [props]);
 
-  let endDateNew = endDate.substring(0, 10);
-
+  
   return props.data !== undefined && props.data !== null ? (
     <>
       {" "}
@@ -81,7 +79,7 @@ export const JobSmallCard = props => {
                 style={{
                   fontSize: "14px",
                   fontWeight: "bold",
-                  fontFamily: `"Arial Rounded","Helvetica", sans-serif`,
+                  fontFamily: "\"Arial Rounded\",\"Helvetica\", sans-serif",
                 }}
               >
                 {positionTitle}
@@ -89,7 +87,7 @@ export const JobSmallCard = props => {
               <Typography
                 style={{
                   fontSize: "12px",
-                  fontFamily: `"Helvetica", sans-serif`,
+                  fontFamily: "\"Helvetica\", sans-serif",
                 }}
               >
                 {company} on {publishDate.substring(0, 10)}
@@ -99,7 +97,7 @@ export const JobSmallCard = props => {
               <Typography
                 style={{
                   fontSize: "12px",
-                  fontFamily: `"Arial Unicode MS", sans-serif`,
+                  fontFamily: "\"Arial Unicode MS\", sans-serif",
                 }}
               >
                 {employmentType} / {location}
@@ -109,7 +107,7 @@ export const JobSmallCard = props => {
                   lineHeight: "17px",
                   letterSpacing: "-0.41px",
                   fontSize: "14px",
-                  fontFamily: `"Arial Unicode MS", sans-serif`,
+                  fontFamily: "\"Arial Unicode MS\", sans-serif",
                 }}
               >
                 {ReactHtmlParser(description)}
@@ -149,15 +147,15 @@ export const JobSmallCard = props => {
               style={
                 savedJobs
                   ? {
-                      fontWeight: "bold",
-                      fontSize: "12px",
-                      fontFamily: `"Helvetica", sans-serif`,
-                    }
+                    fontWeight: "bold",
+                    fontSize: "12px",
+                    fontFamily: "\"Helvetica\", sans-serif",
+                  }
                   : {
-                      fontWeight: "400",
-                      fontSize: "12px",
-                      fontFamily: `"Helvetica", sans-serif`,
-                    }
+                    fontWeight: "400",
+                    fontSize: "12px",
+                    fontFamily: "\"Helvetica\", sans-serif",
+                  }
               }
               align="left"
             >

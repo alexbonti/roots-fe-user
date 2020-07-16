@@ -38,12 +38,8 @@ const errorHelper = (error, variant) => {
   }
 };
 
-const performCallback = (callback, data) => {
-  if (callback instanceof Function) {
-    if (data !== undefined) return callback(data);
-    callback();
-  }
-};
+
+
 class API {
   loginUser = async (data, setAccessToken) => {
     return await axiosInstance

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import {
   makeStyles,
   Button,
@@ -121,11 +121,11 @@ const RegistrationConfirmation = ({ ...props }) => {
       <Grid container className={classes.registerBox} justify="center">
         <Grid item xs={11} md={7} justify="center" container style={{ paddingTop: "5vh" }}>
           <Typography className={classes.text}>
-            A verification code has been sent to: <br />
+              A verification code has been sent to: <br />
             {props.location.state.emailId}
           </Typography>
         </Grid>
-        <Grid item xs={10} md={7}container justify="center">
+        <Grid item xs={10} md={7} container justify="center">
           <Grid item xs={9}>
             <TextField
               margin="normal"
@@ -145,7 +145,7 @@ const RegistrationConfirmation = ({ ...props }) => {
                 sendCode();
               }}
             >
-              Send
+                Send
             </Button>
           </Grid>
           <Grid item xs={10} style={{ paddingTop: "5vh" }}>
@@ -156,7 +156,7 @@ const RegistrationConfirmation = ({ ...props }) => {
                 resendOTP();
               }}
             >
-              Resend OTP
+                Resend OTP
             </Button>
           </Grid>
         </Grid>

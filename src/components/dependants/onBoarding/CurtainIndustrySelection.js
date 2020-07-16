@@ -60,9 +60,7 @@ export const CurtainIndustrySelection = () => {
   const [chipData, setChipData] = useState(jobs);
   const [accumulator, setAccumulator] = useState([]);
   const {
-    activeStep,
     setActiveStep,
-    industryField,
     setIndustryField,
   } = useContext(OnBoardingContext);
 

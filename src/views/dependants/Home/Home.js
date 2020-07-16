@@ -2,14 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab, Typography, Box } from "@material-ui/core/";
 import PropTypes from "prop-types";
-import SwipeableViews from "react-swipeable-views";
 import { FullListJobs, FullListResources, ListNews, Spinner } from "components";
 import { LoginContext, UserContext, HomeContext } from "contexts";
 import { withRouter } from "react-router-dom";
 import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     flexGrow: 1,
@@ -68,12 +67,12 @@ function a11yProps(index) {
   };
 }
 
-const Home = props => {
+const Home = () => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
   //CONTEXT
-  const { listSavedJobs, setIsFullViewApplied,setListSavedJobs, setIsFullView } = useContext(
+  const { listSavedJobs, setIsFullViewApplied, setListSavedJobs, setIsFullView } = useContext(
     HomeContext
   );
   const {
@@ -82,7 +81,7 @@ const Home = props => {
     setUserEmail,
     setAvatarProfile,
   } = useContext(UserContext);
-  const {loginStatus} = useContext(LoginContext);
+  const { loginStatus } = useContext(LoginContext);
 
   // STATE
   const [searchSettings, setSearchSettings] = useState([]);
@@ -91,17 +90,13 @@ const Home = props => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = index => {
-    setValue(index);
-  };
-
   //API CALLS
   useEffect(() => {
-    if(loginStatus){
+    if (loginStatus) {
       const triggerAPI = async () => {
         setIsFullView(false);
         setIsFullViewApplied(false);
-  
+
         const profileExtData = await API.getUserProfileExt();
         if (profileExtData) {
           setListSavedJobs(profileExtData.response.savedJobs);
@@ -119,14 +114,14 @@ const Home = props => {
           setUserEmail(profileResponse.response.emailId);
           //setUserPassword(profileResponse.response.password);
         }
-  
+
         Promise.all([profileResponse, profileExtData, oppResponse])
           .then(res => res)
           .catch(err => err);
       };
       triggerAPI();
     }
-    
+
   }, [
     setOppData,
     setUserName,
@@ -135,6 +130,8 @@ const Home = props => {
     setAvatarProfile,
     setListSavedJobs,
     setIsFullView,
+    loginStatus,
+    setIsFullViewApplied
   ]);
 
   return Array.isArray(oppData) ? (
@@ -178,8 +175,8 @@ const Home = props => {
       </div>
     </ThemeProvider>
   ) : (
-    <Spinner />
-  );
+      <Spinner />
+    );
 };
 
 export default withRouter(Home);

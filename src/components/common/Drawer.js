@@ -1,46 +1,15 @@
-import React, { useState, useContext } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import React, {  useContext } from "react";
+import { Link } from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
 import { Button, Grid, Typography } from "@material-ui/core/";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
-import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
-import SearchIcon from "@material-ui/icons/Search";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { API } from "helpers";
 import { LoginContext, UserContext } from "contexts";
 import { MenuHamburger } from "helpers/MenuHamburger";
-//import Image from "../../helpers/img/rootsheader.gif";
-
-const useStyles = makeStyles({
-  
-  list: {
-    width: "100% !important",
-  },
-  fullList: {
-    width: "auto",
-  },
-  item: {
-    "&:focus": {
-      backgroundColor: "white",
-    },
-  },
-  bigAvatar: {
-    margin: 10,
-    width: 60,
-    height: 60,
-  },
-});
 
 export const TemporaryDrawer = () => {
-  const classes = useStyles();
-  const [isRedirect, setIsRedirect] = useState(false);
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -201,7 +170,7 @@ export const TemporaryDrawer = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  Log out {"    "} >{" "}
+                  Log out {"     > "}
                 </Typography>
               </ListItem>
             </Grid>

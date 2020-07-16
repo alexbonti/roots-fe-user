@@ -16,7 +16,7 @@ const modules = {
 };
 
 export const TextEditor = props => {
-  const { workExperience, setCoverLetter, setWorkExperience, setCriteriaSelection } = useContext(TextEditorContext);
+  const { setCoverLetter, setWorkExperience, setCriteriaSelection } = useContext(TextEditorContext);
   const [nodeRedData] = useState("");
 
 
@@ -54,7 +54,7 @@ export const TextEditor = props => {
           defaultValue={(props.data.defaultValue)}
           style={{ fontSize: "18px !important" }}
         />
-        <Grid container justify="center"  className="textEditorContent">
+        <Grid container justify="center" className="textEditorContent">
           <Grid item xs={11}>{ReactHtmlParser(nodeRedData)}</Grid>
         </Grid>
       </Grid>

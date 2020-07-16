@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { Header } from "components";
 
-const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -13,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     height: "100vh",
-   overflow: "auto"
+    overflow: "auto"
   },
   container: {
     // paddingTop: theme.spacing(5),

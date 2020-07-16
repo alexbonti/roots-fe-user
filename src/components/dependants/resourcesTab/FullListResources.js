@@ -5,7 +5,7 @@ import { ResourceSmallCard, ResourceFullView } from "components";
 import { HomeContext } from "contexts";
 import { API } from "helpers";
 import { Spinner } from "components/index";
-import {LoginContext} from "contexts";
+import { LoginContext } from "contexts";
 
 
 const theme = createMuiTheme({
@@ -30,11 +30,11 @@ const theme = createMuiTheme({
 });
 export const FullListResources = () => {
   const [resourceArray, setResourceArray] = useState([]);
-  const {loginStatus} = useContext(LoginContext);
+  const { loginStatus } = useContext(LoginContext);
 
 
   useEffect(() => {
-    if(loginStatus){
+    if (loginStatus) {
       let accumulator = resourceArray;
       const categories = ["LEGAL ADVICE", "PROGRAMS", "ORGANIZATIONS"];
       const triggerAPI = async categorie => {
@@ -42,9 +42,9 @@ export const FullListResources = () => {
           "category": categorie,
           "numberOfRecords": 10,
         };
-  
+
         const allNewsData = await API.getNews(data);
-        if(allNewsData && allNewsData.response.data.data.data.length > 0){
+        if (allNewsData && allNewsData.response.data.data.data.length > 0) {
           accumulator.push({
             categorie,
             data: allNewsData.response.data.data.data,
@@ -52,29 +52,29 @@ export const FullListResources = () => {
         }
         setResourceArray(accumulator);
       };
-  
+
       categories.forEach(categorie => triggerAPI(categorie));
 
     }
-  }, [resourceArray]);
+  }, [resourceArray, loginStatus]);
 
- 
+
   const { isFullViewResource, dataToBeSentResources } = useContext(HomeContext);
 
   let list =
     resourceArray.length > 0 && resourceArray !== undefined ? (
       resourceArray.map((dataCategory, i) => {
-        return <ResourceSmallCard key={i}  data={dataCategory} />;
+        return <ResourceSmallCard key={i} data={dataCategory} />;
       })
     ) : (
-      <Spinner />
-    );
+        <Spinner />
+      );
 
   let content = isFullViewResource ? (
     <ResourceFullView data={dataToBeSentResources} />
   ) : (
-    list
-  );
+      list
+    );
 
   return (
     <>

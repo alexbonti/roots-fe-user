@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import { API } from "helpers/index";
-import { Grid, Button } from "@material-ui/core/";
+import { Grid } from "@material-ui/core/";
 import {
   OnBoardingContext,
   HomeContext,
@@ -11,7 +11,7 @@ import {
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import DescriptionIcon from "@material-ui/icons/Description";
 import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
-import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -52,14 +52,14 @@ export default function Accept({ avatar, ...props }) {
   if (props.data === "photo" && !props.size) {
     logo =
       avatarPictureURL === "" ? (
-       ""
+        ""
       ) : (
-        <img src={avatarPictureURL} alt=" avatar" />
-      );
+          <img src={avatarPictureURL} alt=" avatar" />
+        );
   } else if (props.data === "file" || props.data === "coverletter") {
     logo = <DescriptionIcon fontSize="large" color="secondary" />;
   } else if (props.size === "small") {
-    logo = ""
+    logo = "";
   }
 
   if (coverLetterUrl !== "" && props.data === "coverletter") {
@@ -72,8 +72,8 @@ export default function Accept({ avatar, ...props }) {
     avatar !== "" && avatar !== undefined ? (
       <img src={avatar} alt="avatar" className={classes.avatar} />
     ) : (
-      logo
-    );
+        logo
+      );
 
   useEffect(() => {
     if (acceptedFiles.length > 0 && props.data === "photo") {
@@ -91,7 +91,7 @@ export default function Accept({ avatar, ...props }) {
               preferredIndustry !== [] ? preferredIndustry : [],
             "resumeURL": fileURL,
           };
-          const profileData = await API.updateUserPreferences(dataUserExt);
+          await API.updateUserPreferences(dataUserExt);
           setAvatarPictureURL(
             imageData.response.data.data.imageFileURL.thumbnail
           );
@@ -144,22 +144,31 @@ export default function Accept({ avatar, ...props }) {
     setFileURL,
     setProgressBar,
     setIsUpdated,
+    avatarPictureURL, 
+    coverLetter, 
+    coverLetterUrl, 
+    fileURL, 
+    preferredIndustry, 
+    props, 
+    setAvatarProfile, 
+    setCoverLetterUrl, 
+    skills
   ]);
 
   let style =
     props.size === "small"
       ? {
-          border: "none",
-          backgroundColor: "transaprent",
-          outline: "none",
-          padding: "2vh 2vw",
-        }
+        border: "none",
+        backgroundColor: "transaprent",
+        outline: "none",
+        padding: "2vh 2vw",
+      }
       : {
-          border: "1px dashed #d0d0d0",
-          backgroundColor: "white",
-          outline: "none",
-          padding: "2vh 2vw",
-        };
+        border: "1px dashed #d0d0d0",
+        backgroundColor: "white",
+        outline: "none",
+        padding: "2vh 2vw",
+      };
 
   return (
     <Grid container justify="center" className="container">

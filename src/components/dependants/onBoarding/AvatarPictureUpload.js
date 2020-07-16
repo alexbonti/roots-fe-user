@@ -8,7 +8,7 @@ import { API } from "helpers";
 
 //TODO add type controls check on files uploading
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   topper: {
     height: "10vh",
     backgroundColor: "white",
@@ -45,7 +45,6 @@ export const AvatarPictureUpload = () => {
   const classes = useStyles();
 
   const {
-    activeStep,
     setActiveStep,
     setIsUpdated,
     positionTitle,

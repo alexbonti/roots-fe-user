@@ -1,12 +1,11 @@
 import React from "react";
 import { Typography, Grid } from "@material-ui/core/";
 import { Spinner } from "components";
-import ReactHtmlParser from "react-html-parser";
 import { HomeContext } from "contexts";
 import PropTypes from "prop-types";
 
 export const NewsCard = ({ data }) => {
-  const { imageURL, title, datePublished, content } = data;
+  const { imageURL, title, datePublished } = data;
 
   const { setDetailsNews, setIsFullViewNews } = React.useContext(HomeContext);
 
@@ -47,7 +46,7 @@ export const NewsCard = ({ data }) => {
           <Grid item xs={11} style={{ maxHeight: 100, overflow: "hidden" }}>
             <Typography
               variant="body1"
-              // dangerouslySetInnerHTML={{ __html: content}}
+            // dangerouslySetInnerHTML={{ __html: content}}
             >
               Here there's some test
             </Typography>
@@ -64,8 +63,8 @@ export const NewsCard = ({ data }) => {
       </Grid>
     </>
   ) : (
-    <Spinner />
-  );
+      <Spinner />
+    );
 };
 
 NewsCard.prototype = {

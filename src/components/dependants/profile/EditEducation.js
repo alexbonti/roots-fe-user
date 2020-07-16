@@ -5,7 +5,6 @@ import {
   TextField,
   Button,
   Typography,
-  Checkbox,
 } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -98,7 +97,7 @@ export const EditEducation = props => {
         "degree": newDegree,
       };
 
-      const eduExpData = await API.editEduExperience(data);
+      await API.editEduExperience(data);
       notify(" Education Experience edited successfully");
       setIsEditModeOn(false);
       setDataToSendToComp(data);

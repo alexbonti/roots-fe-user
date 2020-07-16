@@ -44,7 +44,7 @@ const theme = createMuiTheme({
     tonalOffset: 0.2,
   },
 });
-const Register = (props) => {
+const Register = () => {
   // const { setLoginStatus } = React.useContex(LoginContext);
   const classes = useStyles();
   const [emailId, setEmailId] = useState("");
@@ -163,12 +163,12 @@ const Register = (props) => {
           <Grid item xs={10} md={7}>
             <Typography
               style={{
-                fontSize: `"Arial Rounded MT", sans-serif`,
+                fontFamily: "\"Arial Rounded MT\", sans-serif",
                 fontSize: "21px",
                 fontWeight: "bold",
               }}
             >
-              Let's start
+              {"Let's start"}
             </Typography>
           </Grid>
         </Grid>

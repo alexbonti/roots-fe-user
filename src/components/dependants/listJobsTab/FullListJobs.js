@@ -27,7 +27,6 @@ export const FullListJobs = props => {
     jobId,
     listSavedJobs,
     filteredData,
-    setFilteredData,
     isFilterOn,
     setIsFilterOn,
   } = useContext(HomeContext);
@@ -38,16 +37,16 @@ export const FullListJobs = props => {
 
   const value = Array.isArray(props.searchSetting)
     ? props.searchSetting.map(industry => {
-        newValues.push(industry.label);
-        return newValues;
-      })
+      newValues.push(industry.label);
+      return newValues;
+    })
     : [];
 
   const filteredByIndustry =
     Array.isArray(props.data) && value.length > 0
       ? props.data.filter(job => {
-          return value[0].includes(job.industryField);
-        })
+        return value[0].includes(job.industryField);
+      })
       : props.data;
 
   const findSingleJobData = id => {
@@ -183,13 +182,13 @@ export const FullListJobs = props => {
     isFullView &&
     Object.prototype.hasOwnProperty.call(props, "data") &&
     singleJobData !== undefined ? (
-      <JobFullView
-        data={singleJobData.data}
-        savedStatus={singleJobData.savedStatus}
-      />
-    ) : (
-      listOfJobs
-    );
+        <JobFullView
+          data={singleJobData.data}
+          savedStatus={singleJobData.savedStatus}
+        />
+      ) : (
+        listOfJobs
+      );
 
   let filteredResults =
     filteredData !== [] ? (
@@ -216,13 +215,13 @@ export const FullListJobs = props => {
     isFullView &&
     Object.prototype.hasOwnProperty.call(props,"data") &&
     singleJobData !== undefined ? (
-      <JobFullView
-        data={singleJobData.data}
-        savedStatus={singleJobData.savedStatus}
-      />
-    ) : (
-      filteredResults
-    );
+        <JobFullView
+          data={singleJobData.data}
+          savedStatus={singleJobData.savedStatus}
+        />
+      ) : (
+        filteredResults
+      );
 
   const results = isFilterOn ? contentFiltered : contentNotFiltered;
 

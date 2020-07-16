@@ -1,18 +1,13 @@
 import React, { useState, useContext } from "react";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Link,  withRouter } from "react-router-dom";
 import {
   makeStyles,
   Button,
   Grid,
-  TextField,
   createMuiTheme,
-  Typography,
 } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import { API, } from "helpers/index";
 import { LoginContext, UserContext } from "../../../contexts";
-
-import {notify} from "components"
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -56,10 +51,6 @@ const RegisterSuccess = ({ ...props }) => {
   const { setLoginStatus } = useContext(LoginContext);
   const { userProfile, } = useContext(UserContext);
 
-  
-
- 
-
 
   React.useEffect(() => {
     if (isVerified) {
@@ -67,7 +58,6 @@ const RegisterSuccess = ({ ...props }) => {
     }
   }, [isVerified, setLoginStatus]);
 
- 
  
 
   const content =  (
