@@ -53,7 +53,6 @@ const theme = createMuiTheme({
 
 
 export const JobFullView = props => {
-  console.log(props);
   const classes = useStyles();
   const { setIsFullView, setIsFullViewSaved, setIsFullViewApplied, userWantsToApply, setUserWantsToApply } = useContext(
     HomeContext
@@ -78,8 +77,7 @@ export const JobFullView = props => {
       jobId: _id,
     };
     if (loginStatus) {
-      const saveJobResData = await API.userSaveJob(data);
-      console.log(saveJobResData);
+      await API.userSaveJob(data);
       notify("Job Saved");
     }
   };

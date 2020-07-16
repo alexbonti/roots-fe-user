@@ -501,7 +501,6 @@ class API {
       });
   };
   resendOTP = async (accessToken) => {
-    console.log(accessToken)
     return await axiosInstance
       .put("/user/resendOTP",{}, {
         headers: {

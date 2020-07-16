@@ -40,10 +40,7 @@ const ResetPassword = () => {
     const triggerAPI = async () => {
       const response = await API.resetPasswordFirstStep(data);
       if (response) {
-        console.log(response);
         setRedirect(true);
-      } else {
-        console.log("error");
       }
     };
     triggerAPI();

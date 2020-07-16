@@ -33,7 +33,6 @@ export const FullListAppliedJobs = props => {
   };
   
   let singleJobData = isFullViewApplied ? findSingleJobData(jobId) : [];
-  console.log("TCL: singleJobData", singleJobData)
   let introMessage =
     props.data < 1 ? (
       <Grid item xs={11}>

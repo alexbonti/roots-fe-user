@@ -78,15 +78,11 @@ const Register = () => {
 
     const triggerAPI = async () => {
       const registerData = await API.registerUser(data);
-      console.log("triggerAPI -> registerData", registerData)
       if (registerData) {
-        console.log(registerData);
         setAccessToken(registerData.response.accessToken);
         setEmailVerified(registerData.response.userDetails.emailVerified);
         setUserDetails(registerData.response.userDetails);
         setRedirect(true);
-      } else {
-        console.log("error");
       }
     };
     triggerAPI();

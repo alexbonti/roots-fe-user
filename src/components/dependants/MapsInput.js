@@ -5,7 +5,7 @@ import { OnBoardingContext, HomeContext } from "contexts";
 import { API } from "helpers";
 import { notify } from "components";
 import { checkWord, checkEmpty } from "../../helpers/validation";
-import PropTypes  from "prop-types";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles(() => ({
   rootMain: {
@@ -33,7 +33,7 @@ export const FilterOpportunity = props => {
   const { setLocation, setIsStart } = useContext(OnBoardingContext);
   const [lat, setLat] = useState("");
   const [long, setLong] = useState("");
-  const [distance, ] = useState(40000);
+  const [distance,] = useState(40000);
   const [, setDataSetFilteredByLocation] = useState("");
 
   const [keyword, setKeyword] = useState("");
@@ -79,7 +79,7 @@ export const FilterOpportunity = props => {
       if (keyword !== "" && checkWord(keyword)) {
         setKeywordError(true);
         return notify("Keyword is too short");
-      }else{ setKeywordError(false);}
+      } else { setKeywordError(false); }
 
       const dataLocation = await API.searchByLocation(data);
       setDataSetFilteredByLocation(dataLocation.response);
@@ -125,7 +125,7 @@ export const FilterOpportunity = props => {
       dataSet.map(data => {
         return data.employmentType.includes(employmentTypeFilter)
           ? dataSetFilterByEmploymentType.push(data)
-          : console.log("No results");
+          : null;
       });
 
       if (dataSetFilterByEmploymentType < 1) {
@@ -133,7 +133,6 @@ export const FilterOpportunity = props => {
       }
       setFilteredData(dataSetFilterByEmploymentType);
       setIsFilterOn(true);
-      return console.log(dataSetFilterByEmploymentType);
     };
 
     if (checkEmpty(inputPosition)) {
@@ -166,8 +165,8 @@ export const FilterOpportunity = props => {
         />
         <div>
           {positionSuggestions !== null &&
-          positionSuggestions !== undefined &&
-          positionSuggestions !== "" ? (
+            positionSuggestions !== undefined &&
+            positionSuggestions !== "" ? (
               <div className={classes.suggestion}>
                 {positionSuggestions.map(suggestion => {
                   return (
@@ -218,7 +217,7 @@ export const FilterOpportunity = props => {
         fullWidth
         label="Position type"
         onChange={e => setEmploymentTypeFilter(e.target.value)}
-        style={{marginTop: 0}}
+        style={{ marginTop: 0 }}
       >
         {positionTypeOption.map(option => (
           <MenuItem key={Math.random()} value={option.label}>

@@ -63,8 +63,6 @@ const ResetPasswordSecondStep = () => {
         if (loginDataResponse) {
           setRedirect(true);
         }
-      } else {
-        console.log("error");
       }
     };
     triggerAPI();
@@ -120,106 +118,106 @@ const ResetPasswordSecondStep = () => {
       }}
     />
   ) : (
-    <ThemeProvider theme={theme}>
-      <Header />
-      <Grid
-        container
-        alignItems="flex-end"
-        justify="center"
-        style={{
-          backgroundColor: "rgb(234, 244, 246)",
-          height: "20vh",
-          paddingBottom: "1vh",
-        }}
-      >
-        <Grid container item xs={10} style={{paddingBottom: "3vh"}} >
-          <Grid item xs={12}>
-            <Typography
-              style={{
-                fontFamily: `"Arial", "Helvetica", sans-serif`,
-                fontWeight: "bold",
-                fontSize: "20px",
-              }}
-            >
-              Reset your password
+      <ThemeProvider theme={theme}>
+        <Header />
+        <Grid
+          container
+          alignItems="flex-end"
+          justify="center"
+          style={{
+            backgroundColor: "rgb(234, 244, 246)",
+            height: "20vh",
+            paddingBottom: "1vh",
+          }}
+        >
+          <Grid container item xs={10} style={{ paddingBottom: "3vh" }} >
+            <Grid item xs={12}>
+              <Typography
+                style={{
+                  fontFamily: `"Arial", "Helvetica", sans-serif`,
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                }}
+              >
+                Reset your password
             </Typography>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid container justify="center">
-        <Grid item xs={10}>
-          <TextField
-            error={otpErrorField}
-            margin="normal"
-            required
-            fullWidth
-            name="otp"
-            label="OTP code"
-            id="otp"
-            onChange={e => setOTPCode(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={10}>
-          <TextField
-            error={emailErrorField}
-            margin="normal"
-            required
-            fullWidth
-            name="email"
-            label="Registered Email"
-            type="email"
-            id="email"
-            onChange={e => setEmailId(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={10}>
-          <TextField
-            error={passwordErrorField}
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="New Password"
-            type="password"
-            id="password"
-            onChange={e => setPassword(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={10}>
-          <TextField
-            error={passwordErrorField}
-            margin="normal"
-            required
-            fullWidth
-            name="confirm password"
-            label="Confirm Password"
-            type="password"
-            id="confirmPassword"
-            onChange={e => {
-              setConfirmPassword(e.target.value);
-            }}
-          />
-        </Grid>
-        <Grid item xs={10} style={{ padding: " 7vh 0" }}>
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={validationCheck}
-            style={{
-              color: "white",
-              borderRadius: "25px",
-              border: "1px solid #087b94",
-              backgroundColor: "#087b94 !important",
-              height: 55,
-            }}
-          >
-            Send
+        <Grid container justify="center">
+          <Grid item xs={10}>
+            <TextField
+              error={otpErrorField}
+              margin="normal"
+              required
+              fullWidth
+              name="otp"
+              label="OTP code"
+              id="otp"
+              onChange={e => setOTPCode(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={10}>
+            <TextField
+              error={emailErrorField}
+              margin="normal"
+              required
+              fullWidth
+              name="email"
+              label="Registered Email"
+              type="email"
+              id="email"
+              onChange={e => setEmailId(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={10}>
+            <TextField
+              error={passwordErrorField}
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="New Password"
+              type="password"
+              id="password"
+              onChange={e => setPassword(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={10}>
+            <TextField
+              error={passwordErrorField}
+              margin="normal"
+              required
+              fullWidth
+              name="confirm password"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              onChange={e => {
+                setConfirmPassword(e.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={10} style={{ padding: " 7vh 0" }}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={validationCheck}
+              style={{
+                color: "white",
+                borderRadius: "25px",
+                border: "1px solid #087b94",
+                backgroundColor: "#087b94 !important",
+                height: 55,
+              }}
+            >
+              Send
           </Button>
+          </Grid>
         </Grid>
-      </Grid>
-    </ThemeProvider>
-  );
+      </ThemeProvider>
+    );
 };
 
 export default withRouter(ResetPasswordSecondStep);
