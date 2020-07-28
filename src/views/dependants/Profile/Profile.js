@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
+import moment from "moment-timezone";
 
 import {
   Typography,
@@ -164,7 +165,7 @@ const Profile = () => {
   const certificatesComponent =
     typeof userProfile === "object" &&
       Array.isArray(certificates) ? (
-        certificates.map((certificate, index) => {
+        certificates.sort((certA, certB) => moment(certB.issueDate).diff(certA.issueDate)).map((certificate, index) => {
           return <Certificate getUpdatedCertificates={getUpdatedCertificates} key={"certificate_" + index}
             _id={certificate._id}
             credentialUrl={certificate.credentialUrl}

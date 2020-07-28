@@ -63,11 +63,11 @@ class API {
       .then(response => {
         setAccessToken(response.data.data.accessToken);
         return response.data.data;
-    })
-    .catch(error => {
-      console.log(error);
-      return false;
-    });
+      })
+      .catch(error => {
+        console.log(error);
+        return false;
+      });
   };
 
   logout = async () => {
@@ -570,9 +570,12 @@ class API {
       headers: {
         authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       }
-    }).then((response) => {
-      performCallback(callback, response.data.data);
-    }).catch(error => errorHelper(error));
+    }).then(() => {
+      performCallback(callback, true);
+    }).catch(error => {
+      console.log(error)
+      errorHelper(error)
+    });
   }
 
   /**
