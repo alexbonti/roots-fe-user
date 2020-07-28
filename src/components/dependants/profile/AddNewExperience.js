@@ -141,7 +141,8 @@ export const AddNewExperience = props => {
       setIsAddMode(false);
       setIsUpdated(true);
     });
-  }, [certificateCredentialId, certificateCredentialUrl, certificateExpiryDate, certificateIssueDate, certificateNoExpiryDate, certificateOrganisation, props, certificateTitle]);
+  }, [certificateCredentialId, certificateCredentialUrl, certificateExpiryDate, certificateIssueDate, certificateNoExpiryDate,
+    certificateOrganisation, certificateTitle, setIsAddMode, setIsUpdated]);
 
   const UpdateSingleUserExp = async field => {
     if (field === "work") {
