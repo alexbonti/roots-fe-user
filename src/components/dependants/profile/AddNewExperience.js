@@ -206,6 +206,7 @@ export const AddNewExperience = props => {
           <Grid
             item
             container
+
             justify="space-evenly"
             style={{ padding: "2vh 0" }}
           >
@@ -217,7 +218,7 @@ export const AddNewExperience = props => {
                   format="MM/yyyy"
                   margin="normal"
                   value={selectedStartDate}
-                  id="date-picker-inline"
+                  id="start-date-inline"
                   label="Start Date"
                   onChange={handleDateChange}
                   KeyboardButtonProps={{
@@ -234,7 +235,7 @@ export const AddNewExperience = props => {
                   format="MM/yyyy"
                   margin="normal"
                   value={selectedEndDate}
-                  id="date-picker-inline"
+                  id="end-date-inline"
                   label="End Date"
                   onChange={handleDateChangeEnd}
                   KeyboardButtonProps={{
@@ -269,12 +270,12 @@ export const AddNewExperience = props => {
             </Grid>
           </Grid>
           <Grid item xs={11} container alignItems="center">
-            <Grid xs={6}>
+            <Grid item xs={6}>
               <Typography className={classes.textField}>
                 Currently working here
               </Typography>
             </Grid>
-            <Grid xs={4}>
+            <Grid item xs={4}>
               <Checkbox
                 checked={checked}
                 onChange={handleChange}
@@ -473,7 +474,7 @@ export const AddNewExperience = props => {
               margin="normal"
               required
               value={certificateIssueDate ? moment(certificateIssueDate).format("yyyy[-]MM[-]DD") : Date.now()}
-              id="date-picker-inline"
+              id="issuedate-picker-inline"
               label="Issue Date"
               onChange={(date) => {
                 setCertificateIssueDate(date);
@@ -496,7 +497,7 @@ export const AddNewExperience = props => {
                 format="dd/MM/yyyy"
                 margin="normal"
                 value={certificateExpiryDate ? moment(certificateExpiryDate).format("YYYY[-]MM[-]DD") : Date.now()}
-                id="date-picker-inline"
+                id="expirydate-picker-inline"
                 label="Expiry Date"
                 onChange={(date) => {
                   setCertificateExpiryDate(date);
@@ -518,8 +519,6 @@ export const AddNewExperience = props => {
         container
         justify="space-evenly"
       >
-
-
         <Button
           className={classes.buttons}
           fullWidth
