@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import PropTypes from "prop-types";
 
 export const UserContext = createContext();
 
@@ -12,12 +13,13 @@ export const UserProvider = props => {
   const [avatarProfile, setAvatarProfile] = useState("");
   const [fileURL, setFileURL] = useState("");
   const [coverLetterUrl, setCoverLetterUrl] = useState("");
-  const [isEditMode, setIsEditMode] = useState({status: false, id:""});
+  const [isEditMode, setIsEditMode] = useState({ status: false, id: "" });
   const [isEditGeneralProfile, setIsEditGeneralProfile] = useState(false);
 
   const [isAddMode, setIsAddMode] = useState(false);
   const [preferredIndustry, setPreferredIndustry] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [certificates, setCertificates] = useState([]);
   const { children } = props;
 
   return (
@@ -41,18 +43,23 @@ export const UserProvider = props => {
         setIsEditMode,
         isAddMode,
         setIsAddMode,
-        skills, 
+        skills,
         setSkills,
-        coverLetterUrl, 
+        coverLetterUrl,
         setCoverLetterUrl,
-        preferredIndustry, 
+        preferredIndustry,
         setPreferredIndustry,
-        isEditGeneralProfile, 
-        setIsEditGeneralProfile
-    
+        isEditGeneralProfile,
+        setIsEditGeneralProfile,
+        certificates,
+        setCertificates
       }}
     >
       {children}
     </UserContext.Provider>
   );
+};
+
+UserProvider.propTypes = {
+  children: PropTypes.node.isRequired
 };

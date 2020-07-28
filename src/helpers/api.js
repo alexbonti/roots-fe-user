@@ -1,10 +1,13 @@
 import axios from "axios";
 import { axiosInstance, axiosInstanceNews } from "helpers";
-import {notify} from 'components';
-import {logout } from "contexts/helpers";
+import { notify } from 'components';
+import { logout } from "contexts/helpers";
 
-
-
+/**
+ * 
+ * @param {Object} error Error Object from axios error catch 
+ * @param {String} variant "login" or undefined
+ */
 const errorHelper = (error, variant) => {
   if (error.response === undefined) {
     notify("Network Error");
@@ -38,13 +41,26 @@ const errorHelper = (error, variant) => {
   }
 };
 
+/**
+ * @author Sanchit Dang
+ * @param {Function} callback Callback function to perform
+ * @param {any} data Data to pass as param 
+ */
+const performCallback = (callback, data) => {
+  if (callback instanceof Function) {
+    if (data !== undefined)
+      return callback(data);
+    callback();
+  }
+};
+
 
 
 class API {
   loginUser = async (data, setAccessToken) => {
     return await axiosInstance
-    .post("/user/login",data)
-    .then(response => {
+      .post("/user/login", data)
+      .then(response => {
         setAccessToken(response.data.data.accessToken);
         return response.data.data;
     })
@@ -80,11 +96,11 @@ class API {
     return await axiosInstance
       .post("/user/register", data)
       .then(response => {
-        return { response: response.data.data};
+        return { response: response.data.data };
       })
       .catch(error => {
         errorHelper(error);
-        
+
       });
   };
 
@@ -462,10 +478,12 @@ class API {
         },
       })
       .then(response => {
-        return response})
+        return response
+      })
       .catch(error => {
         console.log(error)
-        errorHelper(error)});
+        errorHelper(error)
+      });
   };
 
   getNews = async data => {
@@ -502,7 +520,7 @@ class API {
   };
   resendOTP = async (accessToken) => {
     return await axiosInstance
-      .put("/user/resendOTP",{}, {
+      .put("/user/resendOTP", {}, {
         headers: {
           authorization: "Bearer " + accessToken,
         },
@@ -515,6 +533,70 @@ class API {
         return errorHelper(error);
       });
   };
+
+  getAllCertificates = (callback) => {
+    axiosInstance.get("/user/certificates/getUserCertificates", {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }
+    }).then((response) => {
+      performCallback(callback, response.data.data);
+    }).catch(error => errorHelper(error));
+  }
+
+  deleteCertificate = (certificateId, callback) => {
+    axiosInstance.delete(`/user/certificates/delete/${certificateId}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }
+    }).then((response) => {
+      performCallback(callback, response.data.data);
+    }).catch(error => errorHelper(error));
+  }
+
+  /**
+   * 
+   * @author Sanchit Dang
+   * @param {Object} certificateData Certificate Data to create
+   * @param {String} certificateData.title Certificate Title 
+   * @param {String} certificateData.organisation Certificate Organisation 
+   * @param {String} certificateData.credentialUrl Certificate credentialUrl 
+   * @param {Date} certificateData.issueDate Certificate issueDate
+   * @param {Date} certificateData.expiryDate Certificate expiryDate
+   * @param {Function} callback Callback function
+   */
+  createCretificate = (certificateData, callback) => {
+    axiosInstance.post(`/user/certificates/addCertificate`, certificateData, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }
+    }).then((response) => {
+      performCallback(callback, response.data.data);
+    }).catch(error => errorHelper(error));
+  }
+
+  /**
+   * 
+   * @author Sanchit Dang
+   * @param {String} certificateId Certificate ID 
+   * @param {Object} certificateData Certificate Data to create
+   * @param {String} certificateData.title Certificate Title 
+   * @param {String} certificateData.organisation Certificate Organisation 
+   * @param {String} certificateData.credentialId Certificate credentialId
+   * @param {String} certificateData.credentialUrl Certificate credentialUrl 
+   * @param {Date} certificateData.issueDate Certificate issueDate
+   * @param {Date} certificateData.expiryDate Certificate expiryDate
+   * @param {Function} callback Callback function
+   */
+  updateCretificate = (certificateId, certificateData, callback) => {
+    axiosInstance.put(`/user/certificates/edit/${certificateId}`, certificateData, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }
+    }).then((response) => {
+      performCallback(callback, response.data.data);
+    }).catch(error => errorHelper(error));
+  }
 }
 
 const instance = new API();

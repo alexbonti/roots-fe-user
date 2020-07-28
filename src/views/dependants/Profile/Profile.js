@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core/styles";
 
@@ -24,6 +24,7 @@ import {
   AddNewExperience,
   EditProfile,
   GeneralProfile,
+  Certificate
 } from "components";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
@@ -53,7 +54,7 @@ const theme = createMuiTheme({
   },
 });
 
-const Profile = props => {
+const Profile = () => {
   const { loginStatus } = useContext(LoginContext);
   const { setIsFullView, setIsFullViewApplied } = useContext(HomeContext);
   const { coverLetter } = useContext(TextEditorContext);
@@ -80,11 +81,20 @@ const Profile = props => {
     setPreferredIndustry,
     isEditGeneralProfile,
     setIsEditGeneralProfile,
+    certificates,
+    setCertificates
   } = useContext(UserContext);
   const [field, setField] = useState("");
   const [data, setData] = useState("");
   const [chipValue, setChipValue] = useState("");
   const [isEditSkills, setIsEditSkills] = useState(false);
+
+  const getUpdatedCertificates = useCallback(() => {
+    setCertificates(undefined);
+    API.getAllCertificates((response) => {
+      setCertificates(response);
+    });
+  }, [setCertificates]);
 
   useEffect(() => {
     setIsFullView(false);
@@ -103,6 +113,7 @@ const Profile = props => {
         setUserProfile(profileExtData.response);
         setAvatarProfile(profileExtData.response.avatar);
         setSkills(profileExtData.response.skills);
+        setCertificates(profileExtData.response.certificates);
         setPreferredIndustry(profileExtData.response.preferredIndustry);
         setData(profileExtData.response);
       }
@@ -129,7 +140,8 @@ const Profile = props => {
     setIsEditGeneralProfile,
     setIsFullViewApplied,
     setIsUpdated,
-    setPreferredIndustry
+    setPreferredIndustry,
+    setCertificates
   ]);
 
   const openAddMode = field => {
@@ -143,11 +155,31 @@ const Profile = props => {
 
   const buttonIcon = isEditSkills ? (
     <CancelPresentationIcon onClick={() => openAddMode("edit skills")} />
-  ) : (
-      <AddBoxIcon onClick={() => openAddMode("edit skills")} />
-    );
+  ) : <AddBoxIcon onClick={() => openAddMode("edit skills")} />;
 
   //------------PROFILE EDIT ----------------------------
+
+
+  //------------CERTIFICATES--------------------------------
+  const certificatesComponent =
+    typeof userProfile === "object" &&
+      Array.isArray(certificates) ? (
+        certificates.map((certificate, index) => {
+          return <Certificate getUpdatedCertificates={getUpdatedCertificates} key={"certificate_" + index}
+            _id={certificate._id}
+            credentialUrl={certificate.credentialUrl}
+            issueDate={certificate.issueDate}
+            organisation={certificate.organisation}
+            title={certificate.title}
+            expiryDate={certificate.expiryDate}
+            credentialId={certificate.credentialId}
+          />;
+        })
+      ) : (
+        <Spinner />
+      );
+
+
 
   //------------EXPERIENCE--------------------------------
   const experience =
@@ -167,9 +199,7 @@ const Profile = props => {
       userProfile.education.map((education, index) => {
         return <Education key={index} data={education} />;
       })
-    ) : (
-        <Spinner />
-      );
+    ) : <Spinner />;
 
   //---------------Skills--------------------------------
   const editSkills = isEditSkills ? (
@@ -214,9 +244,7 @@ const Profile = props => {
         </Grid>
       </Grid>
     </Grid>
-  ) : (
-      ""
-    );
+  ) : null;
 
   const deleteChip = chip => {
     let newArray = [];
@@ -332,6 +360,27 @@ const Profile = props => {
                 justify="space-between"
                 xs={12}
                 style={{
+                  backgroundColor: "rgba(8, 124, 149, 0.1)",
+                  height: "8vh",
+                  padding: "2vh",
+                }}
+              >
+                <Grid item>
+                  <Typography variant="h5">Certificates</Typography>
+                </Grid>
+                <Grid item>
+                  <AddBoxIcon onClick={() => openAddMode("certificates")} />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid container>{certificatesComponent}</Grid>
+            <Grid container>
+              <Grid
+                item
+                container
+                justify="space-between"
+                xs={12}
+                style={{
                   backgroundColor: isEditSkills
                     ? "rgba(255, 129, 0, 0.21)"
                     : "rgba(8, 124, 149, 0.1)",
@@ -368,9 +417,9 @@ const Profile = props => {
           </Grid>
         </ThemeProvider>
       </>
-    ) : (
-        <Spinner />
-      );
+    ) :
+      <Spinner />;
+
 
   return isAddMode ? (
     <AddNewExperience data={field} />
@@ -387,9 +436,7 @@ const Profile = props => {
         }}
       />
     </ThemeProvider>
-  ) : (
-        content
-      );
+  ) : content;
 };
 
 export default withRouter(Profile);
