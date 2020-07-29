@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 class TextHelper {
   /**
    * @author Sanchit Dang
@@ -48,6 +50,15 @@ class TextHelper {
       "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
       "(\\#[-a-z\\d_]*)?$", "i"); // fragment locator
     return !!pattern.test(email);
+  }
+
+  /**
+   * 
+   * @param {Date} date Date to be formatted
+   * @returns {String} Formatted date
+   */
+  formatToD_MMMM_YYYY(date) {
+    return moment(date).format("D MMMM YYYY");
   }
 }
 

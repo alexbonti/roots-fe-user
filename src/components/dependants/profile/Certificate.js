@@ -5,7 +5,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/picker
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import moment from "moment-timezone";
-import { API } from "helpers/index";
+import { API, TextHelper } from "helpers/index";
 
 
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
@@ -70,7 +70,7 @@ export const Certificate = props => {
     <Grid container justify="center" style={{ padding: "2vh" }}>
       <Grid item container justify="space-between">
         <Grid item>
-          <Typography variant="h6">{props.title}</Typography>
+          <Typography variant="h6">{TextHelper.titleCase(props.title)}</Typography>
         </Grid>
         <Grid item>
           <EditOutlinedIcon
@@ -81,29 +81,36 @@ export const Certificate = props => {
         </Grid>
 
         <Grid container style={{ padding: "2vh 0" }}>
+          <Grid item xs={12}>
+            <Typography variant="subtitle1">{TextHelper.titleCase(props.organisation)}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1">
+              {`Issued on ${TextHelper.formatToD_MMMM_YYYY(props.issueDate)} - 
+            ${props.expiryDate === undefined || props.expiryDate === null ? "No Expiration Date" : `Expires on ${moment(props.expiryDate).format("D MMMM YYYY")}`}`}
+            </Typography>
+          </Grid>
           <Grid item xs={12} >
             <Typography variant="body1">
-              {props.credentialId && <> <strong>Credential ID:</strong> {props.credentialId}</>}<br />
-              <strong>Credential Url:</strong> <a target="_blank" rel="noopener noreferrer" href={props.credentialUrl}>{props.credentialUrl}</a>
+              {props.credentialId && `Credential ID: ${props.credentialId}`}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body1"><strong>Issuer: </strong>{props.organisation}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body1">
-              <strong>Issue Date:</strong> {moment(props.issueDate).format("D MMMM YYYY")}<br />
-              {props.expiryDate === undefined || props.expiryDate === null ? <strong>No Expiration Date</strong> : <><strong>Expiry Date: </strong> {moment(props.expiryDate).format("D MMMM YYYY")}</>}
+          <Grid item xs={12} >
+            <Typography style={{
+              textDecoration: "none",
+              color: "#087B94"
+            }} variant="body1" target="_blank" rel="noopener noreferrer" href={props.credentialUrl} component="a">
+              See Credential
             </Typography>
           </Grid>
-
         </Grid>
+
       </Grid>
     </Grid>
   </>);
 
   let edit = (<>
-    <Grid container justify="center" style={{ padding: "2vh 0" }}>
+    <Grid container justify="center" >
       <Grid
         item
         container
@@ -207,7 +214,7 @@ export const Certificate = props => {
               format="dd/MM/yyyy"
               margin="normal"
               value={issueDate ? moment(issueDate).format("yyyy[-]MM[-]DD") : Date.now()}
-              id="date-picker-inline"
+              id="issue-date-picker-inline"
               label="Issue Date"
               onChange={(date) => {
                 setIssueDate(date);
@@ -230,7 +237,7 @@ export const Certificate = props => {
                 format="dd/MM/yyyy"
                 margin="normal"
                 value={expiryDate ? moment(expiryDate).format("YYYY[-]MM[-]DD") : Date.now()}
-                id="date-picker-inline"
+                id="expiry-date-picker-inline"
                 label="Expiry Date"
                 onChange={(date) => {
                   setExpiryDate(date);

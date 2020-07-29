@@ -44,7 +44,7 @@ export const Experience = props => {
               />
             </Grid>
           </Grid>
-          <Grid container xs={12} style={{ padding: "2vh 0" }}>
+          <Grid item container xs={12} style={{ padding: "2vh 0" }}>
             <Grid item xs={12}>
               <Typography variant="body1">{companyName}</Typography>
             </Grid>

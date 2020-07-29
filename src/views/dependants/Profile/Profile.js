@@ -10,6 +10,7 @@ import {
   Button,
   TextField,
   createMuiTheme,
+  Divider
 } from "@material-ui/core/";
 import { API } from "helpers";
 import {
@@ -166,14 +167,12 @@ const Profile = () => {
     typeof userProfile === "object" &&
       Array.isArray(certificates) ? (
         certificates.sort((certA, certB) => moment(certB.issueDate).diff(certA.issueDate)).map((certificate, index) => {
-          return <Certificate getUpdatedCertificates={getUpdatedCertificates} key={"certificate_" + index}
-            _id={certificate._id}
-            credentialUrl={certificate.credentialUrl}
-            issueDate={certificate.issueDate}
-            organisation={certificate.organisation}
-            title={certificate.title}
-            expiryDate={certificate.expiryDate}
-            credentialId={certificate.credentialId}
+          if (index + 1 < certificates.length) return <div key={"certificate_" + index}>
+            <Certificate getUpdatedCertificates={getUpdatedCertificates} {...certificate} />
+            <Divider />
+          </div>;
+          return <Certificate getUpdatedCertificates={getUpdatedCertificates} getUpdatedCertificates={getUpdatedCertificates} key={"certificate_" + index}
+            {...certificate}
           />;
         })
       ) : (
