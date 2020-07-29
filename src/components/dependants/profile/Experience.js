@@ -33,10 +33,10 @@ export const Experience = props => {
       <>
         <Grid container justify="center" style={{ padding: "2vh" }}>
           <Grid item container justify="space-between">
-            <Grid item xs={12}>
+            <Grid item xs={11}>
               <Typography variant="h6">{positionTitle}</Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={1}>
               <EditOutlinedIcon
                 onClick={() => {
                   setIsEditModeOn(true);
