@@ -56,10 +56,11 @@ export const FullListJobs = props => {
       props.data.length > 0
     ) {
       let selectedJob = props.data.filter(jobs => jobs._id === id);
-      return {
-        data: selectedJob[0],
-        savedStatus: listSavedJobs.includes(selectedJob[0]._id),
-      };
+      if (selectedJob.length > 0)
+        return {
+          data: selectedJob[0],
+          savedStatus: listSavedJobs.includes(selectedJob[0]._id),
+        };
     }
   };
 
@@ -100,8 +101,8 @@ export const FullListJobs = props => {
       </Typography>
     </Grid>
   ) : (
-    ""
-  );
+      ""
+    );
 
   let searchTab = searchSettingTab ? (
     <>
@@ -117,37 +118,37 @@ export const FullListJobs = props => {
       </Grid>
     </>
   ) : (
-    <>
-      <Grid
-        container
-        alignItems="center"
-        justify="space-evenly"
-        style={{
-          height: "100px",
-          backgroundColor: "rgba(8, 124, 149, 0.1)",
-        }}
-      >
-        <Grid item xs={10} lg={8} md={10}>
-          <Typography variant="h6">
-            We found {filteredNumber} {filteredResultString}
-          </Typography>
-        </Grid>
+      <>
         <Grid
-          item
-          xs={1}
-          align="right"
-          onClick={() => setSearchSettingTab(true)}
+          container
+          alignItems="center"
+          justify="space-evenly"
+          style={{
+            height: "100px",
+            backgroundColor: "rgba(8, 124, 149, 0.1)",
+          }}
         >
-          <img
-            src={FilterListIcon}
-            alt="search-icon"
-            style={{ color: "rgba(0, 0, 0, 0.71)" }}
-          />
+          <Grid item xs={10} lg={8} md={10}>
+            <Typography variant="h6">
+              We found {filteredNumber} {filteredResultString}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={1}
+            align="right"
+            onClick={() => setSearchSettingTab(true)}
+          >
+            <img
+              src={FilterListIcon}
+              alt="search-icon"
+              style={{ color: "rgba(0, 0, 0, 0.71)" }}
+            />
+          </Grid>
+          {resetValuesButton}
         </Grid>
-        {resetValuesButton}
-      </Grid>
-    </>
-  );
+      </>
+    );
 
   let listOfJobs = Array.isArray(props.data) ? (
     <>
@@ -159,29 +160,29 @@ export const FullListJobs = props => {
             return listSavedJobs !== "" ? (
               <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
             ) : (
-              ""
-            );
+                ""
+              );
           })}
         </Grid>
       </Grid>{" "}
     </>
   ) : (
-    <Grid
-      container
-      alignItems="center"
-      justify="center"
-      style={{ height: "60vh" }}
-    >
-      <Grid item>
-        <Spinner />
+      <Grid
+        container
+        alignItems="center"
+        justify="center"
+        style={{ height: "60vh" }}
+      >
+        <Grid item>
+          <Spinner />
+        </Grid>
       </Grid>
-    </Grid>
-  );
+    );
 
   let contentNotFiltered =
     isFullView &&
-    Object.prototype.hasOwnProperty.call(props, "data") &&
-    singleJobData !== undefined ? (
+      Object.prototype.hasOwnProperty.call(props, "data") &&
+      singleJobData !== undefined ? (
         <JobFullView
           data={singleJobData.data}
           savedStatus={singleJobData.savedStatus}
@@ -201,20 +202,20 @@ export const FullListJobs = props => {
               return listSavedJobs !== "" ? (
                 <JobSmallCard key={job._id} data={job} savedStatus={isSaved} />
               ) : (
-                ""
-              );
+                  ""
+                );
             })}
           </Grid>
         </Grid>{" "}
       </>
     ) : (
-      <Grid>No results</Grid>
-    );
+        <Grid>No results</Grid>
+      );
 
   let contentFiltered =
     isFullView &&
-    Object.prototype.hasOwnProperty.call(props,"data") &&
-    singleJobData !== undefined ? (
+      Object.prototype.hasOwnProperty.call(props, "data") &&
+      singleJobData !== undefined ? (
         <JobFullView
           data={singleJobData.data}
           savedStatus={singleJobData.savedStatus}
