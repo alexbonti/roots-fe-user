@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { useDropzone } from "react-dropzone";
 import { API } from "helpers/index";
-import { Grid } from "@material-ui/core/";
+import { Grid, Avatar } from "@material-ui/core/";
 import {
   OnBoardingContext,
   HomeContext,
@@ -70,7 +70,7 @@ export default function Accept({ avatar, ...props }) {
   }
   const preAvatar =
     avatar !== "" && avatar !== undefined ? (
-      <img src={avatar} alt="avatar" className={classes.avatar} />
+      <Avatar src={avatar} alt="avatar" className={classes.avatar} />
     ) : (
         logo
       );
@@ -144,14 +144,14 @@ export default function Accept({ avatar, ...props }) {
     setFileURL,
     setProgressBar,
     setIsUpdated,
-    avatarPictureURL, 
-    coverLetter, 
-    coverLetterUrl, 
-    fileURL, 
-    preferredIndustry, 
-    props, 
-    setAvatarProfile, 
-    setCoverLetterUrl, 
+    avatarPictureURL,
+    coverLetter,
+    coverLetterUrl,
+    fileURL,
+    preferredIndustry,
+    props,
+    setAvatarProfile,
+    setCoverLetterUrl,
     skills
   ]);
 
