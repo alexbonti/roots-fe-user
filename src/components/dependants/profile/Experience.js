@@ -33,10 +33,10 @@ export const Experience = props => {
       <>
         <Grid container justify="center" style={{ padding: "2vh" }}>
           <Grid item container justify="space-between">
-            <Grid item>
+            <Grid item xs={12}>
               <Typography variant="h6">{positionTitle}</Typography>
             </Grid>
-            <Grid item>
+            <Grid item xs={12}>
               <EditOutlinedIcon
                 onClick={() => {
                   setIsEditModeOn(true);
@@ -44,7 +44,7 @@ export const Experience = props => {
               />
             </Grid>
           </Grid>
-          <Grid container style={{ padding: "2vh 0" }}>
+          <Grid container xs={12} style={{ padding: "2vh 0" }}>
             <Grid item xs={12}>
               <Typography variant="body1">{companyName}</Typography>
             </Grid>
@@ -55,9 +55,7 @@ export const Experience = props => {
               </Typography>
             </Grid>
 
-            {props.data.referee === undefined ? (
-              ""
-            ) : (
+            {props.data.referee === undefined && (
               <Grid item xs={12} container>
                 <Grid item xs={11}>
                   <Typography variant="caption">
@@ -73,9 +71,7 @@ export const Experience = props => {
           </Grid>
         </Grid>
       </>
-    ) : (
-      <Spinner />
-    );
+    ) : <Spinner />;
 
   return isEditModeOn ? <EditExperience data={props.data} /> : content;
 };

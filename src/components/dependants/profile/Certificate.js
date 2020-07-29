@@ -36,18 +36,19 @@ export const Certificate = props => {
   const [isEditing, setIsEditing] = useState(false);
   const classes = useStyles();
 
-  const [title, setTitle] = useState();
-  const [organisation, setOrganisation] = useState();
-  const [credentialId, setCredentialId] = useState();
-  const [credentialUrl, setCredentialUrl] = useState();
-  const [issueDate, setIssueDate] = useState();
-  const [expiryDate, setExpiryDate] = useState();
+  const [title, setTitle] = useState(props.title);
+  const [organisation, setOrganisation] = useState(props.organisation);
+  const [credentialId, setCredentialId] = useState(props.credentialId);
+  const [credentialUrl, setCredentialUrl] = useState(props.credentialUrl);
+  const [issueDate, setIssueDate] = useState(props.issueDate);
+  const [expiryDate, setExpiryDate] = useState(props.expiryDate);
   const [noExpiryDate, setNoExpiryDate] = useState(false);
 
   useEffect(() => {
     if (!props.expiryDate) setNoExpiryDate(true);
     if (props.issueDate) setIssueDate(props.issueDate);
   }, [props]);
+
 
   const updateCertificate = useCallback(() => {
     let certificateData = {
@@ -131,7 +132,6 @@ export const Certificate = props => {
           placeholder="Certificate title"
           fullWidth
           value={title}
-          defaultValue={props.title}
           onChange={event => {
             setTitle(event.target.value);
           }}
@@ -142,7 +142,6 @@ export const Certificate = props => {
           placeholder="Certificate Issuer"
           fullWidth
           value={organisation}
-          defaultValue={props.organisation}
           onChange={event => {
             setOrganisation(event.target.value);
           }}
@@ -153,7 +152,6 @@ export const Certificate = props => {
           placeholder="Credential Id"
           fullWidth
           value={credentialId}
-          defaultValue={props.credentialId}
           onChange={event => {
             setCredentialId(event.target.value);
           }}
@@ -164,7 +162,6 @@ export const Certificate = props => {
           placeholder="Credential URL"
           value={credentialUrl}
           fullWidth
-          defaultValue={props.credentialUrl}
           onChange={event => {
             setCredentialUrl(event.target.value);
           }}
