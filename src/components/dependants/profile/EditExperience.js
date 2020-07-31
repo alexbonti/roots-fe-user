@@ -168,7 +168,7 @@ export const EditExperience = props => {
   const content = referee !== undefined ? (
     <>
       <ThemeProvider theme={theme}>
-        <Grid container justify="center" style={{ padding: "2vh 0" }}>
+        <Grid container justify="center">
           <Grid
             item
             container

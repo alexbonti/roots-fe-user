@@ -171,15 +171,11 @@ const Profile = () => {
             <Certificate getUpdatedCertificates={getUpdatedCertificates} {...certificate} />
             <Divider />
           </div>;
-          return <Certificate getUpdatedCertificates={getUpdatedCertificates} getUpdatedCertificates={getUpdatedCertificates} key={"certificate_" + index}
+          return <Certificate getUpdatedCertificates={getUpdatedCertificates} key={"certificate_" + index}
             {...certificate}
           />;
         })
-      ) : (
-        <Spinner />
-      );
-
-
+      ) : <Spinner />;
 
   //------------EXPERIENCE--------------------------------
   const experience =
@@ -188,9 +184,7 @@ const Profile = () => {
         userProfile.workExperience.map((experience, index) => {
           return <Experience key={index} data={experience} />;
         })
-      ) : (
-        <Spinner />
-      );
+      ) : <Spinner />;
 
   //------------EDUCATION--------------------------------
 
