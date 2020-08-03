@@ -4,6 +4,7 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import ReactHtmlParser from "react-html-parser";
 import { EditExperience } from "components/index";
 import { Spinner } from "components";
+import { TextHelper } from "helpers/index";
 
 export const Experience = props => {
   const [isEditModeOn, setIsEditModeOn] = useState(false);
@@ -28,13 +29,22 @@ export const Experience = props => {
 
   newTimeE = endDate === "Currently working here" ? endDate : newTimeE;
 
+  if (companyName === undefined || positionTitle === undefined || referee === undefined || description === undefined)
+    return <Spinner />;
+
   let content =
     props.data !== null && props.data !== undefined ? (
       <>
         <Grid container justify="center" style={{ padding: "2vh" }}>
           <Grid item container justify="space-between">
-            <Grid item xs={11}>
-              <Typography variant="h6">{positionTitle}</Typography>
+            <Grid item xs={11} style={{ color: "#545353" }}>
+              <Typography variant="h6">
+                <span>{`${TextHelper.titleCase(positionTitle)} • `}</span>
+                <span style={{
+                  fontWeight: "300",
+                  fontSize: "smaller"
+                }}>{`${TextHelper.titleCase(companyName)}`}</span>
+              </Typography>
             </Grid>
             <Grid item xs={1}>
               <EditOutlinedIcon
@@ -45,30 +55,38 @@ export const Experience = props => {
             </Grid>
           </Grid>
           <Grid item container xs={12} style={{ padding: "2vh 0" }}>
-            <Grid item xs={12}>
-              <Typography variant="body1">{companyName}</Typography>
-            </Grid>
-            <Grid item xs={12}>
+
+            <Grid item xs={12} style={{ color: "#545353" }}>
               <Typography variant="body1">
-                {newTimeS} {" ~ "}
-                {newTimeE}
+                {`${TextHelper.formatToD_MMMM_YYYY(startDate)} - 
+                      ${endDate === undefined || endDate === null ? "Present" : `${TextHelper.formatToD_MMMM_YYYY(endDate)}`}`
+                }
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} style={{ color: "#545353" }}>
+            <Typography variant="body1">
+              {ReactHtmlParser(description)}
+            </Typography>
+          </Grid>
+          {referee !== undefined ? (<>
+            <Grid item xs={12}>
+              <Typography variant="body1" style={{ color: "#545353", fontWeigth: "600" }}>
+                Refrees
+              </Typography>
+            </Grid>
+            <Grid item xs={12} style={{ color: "#545353" }}>
+              <Typography variant="body1">
+                <span style={{
+                  fontWeight: "400"
+                }}>{`${TextHelper.titleCase(referee.name)} •`}</span><span style={{
+                  fontWeight: "300"
+                }}> {`${referee.phoneNumber}`}</span>
               </Typography>
             </Grid>
 
-            {props.data.referee === undefined && (
-              <Grid item xs={12} container>
-                <Grid item xs={11}>
-                  <Typography variant="caption">
-                    Referee: {referee.name}{" "}
-                    {referee.phoneNumber}{" "}
-                  </Typography>
-                </Grid>
-              </Grid>
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            {ReactHtmlParser(description)}{" "}
-          </Grid>
+          </>
+          ) : null}
         </Grid>
       </>
     ) : <Spinner />;

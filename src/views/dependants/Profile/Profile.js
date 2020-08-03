@@ -182,6 +182,10 @@ const Profile = () => {
     typeof userProfile === "object" &&
       Array.isArray(userProfile.workExperience) ? (
         userProfile.workExperience.map((experience, index) => {
+          if (index + 1 < userProfile.workExperience.length) return <div key={"experience_" + index}>
+            <Experience key={index} data={experience} />
+            <Divider />
+          </div>;
           return <Experience key={index} data={experience} />;
         })
       ) : <Spinner />;
@@ -191,6 +195,10 @@ const Profile = () => {
   const education =
     typeof userProfile === "object" && Array.isArray(userProfile.education) ? (
       userProfile.education.map((education, index) => {
+        if (index + 1 < userProfile.education.length) return <div key={"education_" + index}>
+          <Education key={index} data={education} />
+          <Divider />
+        </div>;
         return <Education key={index} data={education} />;
       })
     ) : <Spinner />;

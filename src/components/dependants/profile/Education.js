@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Typography, Grid } from "@material-ui/core/";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import { EditEducation } from "components/index";
+import { TextHelper } from "helpers/index";
+
 
 export const Education = props => {
   const { degree, major, endDate, startDate, school } = props.data;
@@ -19,32 +21,35 @@ export const Education = props => {
   let content = (
     <>
       <Grid container justify="center" style={{ padding: "2vh" }}>
-        <Grid item container justify="space-between">
-          <Grid item>
-            <Typography variant="h6">{major}</Typography>
+        <Grid item container justify="space-between" xs={12}>
+          <Grid item xs={11}>
+            <Typography variant="h6">
+              <span>{`${TextHelper.titleCase(degree)} • `}</span>
+              <span style={{
+                fontWeight: "300",
+                fontSize: "smaller"
+              }}>{`${TextHelper.titleCase(major)}`}</span>
+            </Typography>
           </Grid>
-          <Grid item>
+          <Grid item xs={1}>
             <EditOutlinedIcon
               onClick={() => {
                 setIsEditModeOn(true);
               }}
             />
           </Grid>
-        </Grid>
-        <Grid container style={{ padding: "2vh 0" }}>
-          <Grid item xs={12}>
-            <Typography variant="body1">{school}</Typography>
-          </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{ color: "#545353" }}>
             <Typography variant="body1">
-              {newTimeS} {" ~ "}
-              {newTimeE}
+              {`${TextHelper.titleCase(school)}`}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} style={{ color: "#545353" }}>
+            <Typography variant="body1">
+              {`${TextHelper.formatToMMMM_YYYY(startDate)} - ${TextHelper.formatToMMMM_YYYY(endDate)}`}
             </Typography>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">{degree}</Typography>
-        </Grid>
+
       </Grid>
     </>
   );
