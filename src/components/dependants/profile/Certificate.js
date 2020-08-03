@@ -68,11 +68,11 @@ export const Certificate = props => {
 
   let certificate = (<>
     <Grid container justify="center" style={{ padding: "2vh" }}>
-      <Grid item container justify="space-between">
-        <Grid item>
+      <Grid item container justify="space-between" xs={12}>
+        <Grid item xs={11}>
           <Typography variant="h6">{TextHelper.titleCase(props.title)}</Typography>
         </Grid>
-        <Grid item>
+        <Grid item xs={1}>
           <EditOutlinedIcon
             onClick={() => {
               setIsEditing(true);
@@ -80,7 +80,7 @@ export const Certificate = props => {
           />
         </Grid>
 
-        <Grid container style={{ padding: "2vh 0" }}>
+        <Grid item xs={12} container spacing={0} style={{ padding: "2vh 0" }}>
           <Grid item xs={12}>
             <Typography variant="subtitle1">{TextHelper.titleCase(props.organisation)}</Typography>
           </Grid>
@@ -91,7 +91,7 @@ export const Certificate = props => {
             </Typography>
           </Grid>
           <Grid item xs={12} >
-            <Typography variant="body1">
+            <Typography variant="body1" style={{ overflowWrap: "anywhere" }}>
               {props.credentialId && `Credential ID: ${props.credentialId}`}
             </Typography>
           </Grid>
@@ -119,13 +119,13 @@ export const Certificate = props => {
         style={{
           backgroundColor: "rgba(255, 129, 0, 0.21)",
           height: "8vh",
-          padding: "2vh",
+          padding: "2vh 4vw",
         }}
       >
-        <Grid item>
+        <Grid item xs={11}>
           <Typography variant="h6">Edit</Typography>
         </Grid>
-        <Grid item>
+        <Grid item xs={1}>
           <CancelPresentationIcon
             onClick={() => {
               setIsEditing(false);
@@ -134,7 +134,7 @@ export const Certificate = props => {
         </Grid>
       </Grid>
 
-      <Grid item xs={11} style={{ padding: "2vh 0" }}>
+      <Grid item xs={12} style={{ padding: "2vh 4vw" }}>
         <TextField
           placeholder="Certificate title"
           fullWidth
@@ -144,7 +144,7 @@ export const Certificate = props => {
           }}
         />
       </Grid>
-      <Grid item xs={11} style={{ padding: "2vh 0" }}>
+      <Grid item xs={12} style={{ padding: "2vh 4vw" }}>
         <TextField
           placeholder="Certificate Issuer"
           fullWidth
@@ -154,7 +154,7 @@ export const Certificate = props => {
           }}
         />
       </Grid>
-      <Grid item xs={11} style={{ padding: "2vh 0" }}>
+      <Grid item xs={12} style={{ padding: "2vh 4vw" }}>
         <TextField
           placeholder="Credential Id"
           fullWidth
@@ -164,7 +164,7 @@ export const Certificate = props => {
           }}
         />
       </Grid>
-      <Grid item xs={11} style={{ padding: "2vh 0" }}>
+      <Grid item xs={12} style={{ padding: "2vh 4vw" }}>
         <TextField
           placeholder="Credential URL"
           value={credentialUrl}
@@ -176,7 +176,8 @@ export const Certificate = props => {
       </Grid>
       <Grid
         item
-        xs={11}
+        style={{ padding: "2vh 4vw" }}
+        xs={12}
         container
         justify="flex-start"
         alignItems="center"
@@ -201,14 +202,16 @@ export const Certificate = props => {
       </Grid>
       <Grid
         item
+        xs={12}
         container
-        justify="space-evenly"
+        justify="center"
         alignItems="center"
-        style={{ padding: "2vh 0" }}
+        style={{ padding: "2vh 4vw" }}
       >
-        <Grid item xs={5}>
+        <Grid item xs={6} style={{ padding: "0 1vw" }}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
+              style={{ width: "100%" }}
               disableToolbar
               variant="inline"
               format="dd/MM/yyyy"
@@ -225,7 +228,7 @@ export const Certificate = props => {
             />
           </MuiPickersUtilsProvider>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={6} style={{ padding: "0 1vw" }}>
           {noExpiryDate ?
             <Typography>
               No Expiration Date
@@ -233,6 +236,7 @@ export const Certificate = props => {
             : <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 disableToolbar
+                style={{ width: "100%" }}
                 variant="inline"
                 format="dd/MM/yyyy"
                 margin="normal"
@@ -252,14 +256,14 @@ export const Certificate = props => {
 
       <Grid
         item
-        xs={11}
-        md={5}
-        lg={4}
-        style={{ padding: "4vh 0" }}
+        xs={12}
+        md={12}
+        lg={12}
+        style={{ padding: "2vh 4vw" }}
         container
         justify="space-evenly"
       >
-        <Grid item xs={5}>
+        <Grid item xs={6} style={{ padding: "0 1vw" }}>
           <Button
             className={classes.buttonVariant}
             fullWidth
@@ -273,7 +277,7 @@ export const Certificate = props => {
             Delete
           </Button>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={6} style={{ padding: "0 1vw" }}>
           <Button
             className={classes.buttons}
             fullWidth
