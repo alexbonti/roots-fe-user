@@ -32,12 +32,12 @@ const useStyles = makeStyles(() => ({
 export const EditProfile = ({ data }) => {
   const ImageAvatar =
     data.avatarProfile === "" ||
-    data.avatarProfile === undefined ||
-    data.avatarProfile === "string"
+      data.avatarProfile === undefined ||
+      data.avatarProfile === "string"
       ? data.FallBackAvatar
       : data.avatarProfile;
 
-  const {  setIsEditGeneralProfile, setIsUpdated} = useContext(
+  const { setIsEditGeneralProfile, setIsUpdated } = useContext(
     UserContext
   );
   const [newFirstName, setNewFirstName] = useState(data.userName);
@@ -82,21 +82,21 @@ export const EditProfile = ({ data }) => {
     }
   };
 
-  const updateUser = () => {
-    const triggerAPI = async () => {
-      const data = {
-        first_name: newFirstName,
-        last_name: newLastName,
-        "firstLogin": false,
-      };
-      const dataProfile = await API.updateUserProfile(data);
-      if (dataProfile) {
-        setIsUpdated(true);
-        notify("Details changed");
-      }
+
+
+  const updateUser = async () => {
+    let data = {
+      first_name: newFirstName,
+      last_name: newLastName,
+      "firstLogin": false,
     };
-    triggerAPI();
+    const dataProfile = await API.updateUserProfile(data);
+    if (dataProfile) {
+      setIsUpdated(true);
+      notify("Details changed");
+    }
   };
+  
   const classes = useStyles();
   return (
     <>

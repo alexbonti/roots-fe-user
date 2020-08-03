@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { API } from "helpers/index";
 import { Grid, Avatar } from "@material-ui/core/";
@@ -6,7 +6,6 @@ import {
   OnBoardingContext,
   HomeContext,
   UserContext,
-  TextEditorContext,
 } from "contexts/index";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -39,12 +38,9 @@ export default function Accept({ avatar, ...props }) {
     setFileURL,
     setAvatarProfile,
     setIsUpdated,
-    preferredIndustry,
-    skills,
     coverLetterUrl,
     setCoverLetterUrl,
   } = useContext(UserContext);
-  const { coverLetter } = useContext(TextEditorContext);
   const { setProgressBar } = useContext(HomeContext);
 
   let logo;
@@ -53,9 +49,7 @@ export default function Accept({ avatar, ...props }) {
     logo =
       avatarPictureURL === "" ? (
         ""
-      ) : (
-          <img src={avatarPictureURL} alt=" avatar" />
-        );
+      ) : <img src={avatarPictureURL} alt=" avatar" />;
   } else if (props.data === "file" || props.data === "coverletter") {
     logo = <DescriptionIcon fontSize="large" color="secondary" />;
   } else if (props.size === "small") {
@@ -71,9 +65,35 @@ export default function Accept({ avatar, ...props }) {
   const preAvatar =
     avatar !== "" && avatar !== undefined ? (
       <Avatar src={avatar} alt="avatar" className={classes.avatar} />
-    ) : (
-        logo
-      );
+    ) : logo;
+
+  const updateProfilePicture = useCallback(async (imageData) => {
+    let dataUserExt = {
+      "avatar": imageData.response.data.data.imageFileURL.thumbnail
+    };
+    await API.updateUserPreferences(dataUserExt);
+    setAvatarPictureURL(
+      imageData.response.data.data.imageFileURL.thumbnail
+    );
+    setAvatarProfile(imageData.response.data.data.imageFileURL.thumbnail);
+  }, [setAvatarPictureURL, setAvatarProfile]);
+
+  const updateProfileResume = useCallback(async (fileData) => {
+    setFileURL(fileData.response.data.data.documentFileUrl.original);
+
+    const data = {
+      resumeURL: fileData.response.data.data.documentFileUrl.original
+    };
+    await API.updateUserResumeAndCoverLetter(data);
+    setProgressBar(false);
+  }, [setProgressBar, setFileURL]);
+
+  const updateProfileCoverletter = useCallback(async (fileData) => {
+    setCoverLetterUrl(
+      fileData.response.data.data.documentFileUrl.original
+    );
+    setProgressBar(false);
+  }, [setProgressBar, setCoverLetterUrl]);
 
   useEffect(() => {
     if (acceptedFiles.length > 0 && props.data === "photo") {
@@ -82,77 +102,42 @@ export default function Accept({ avatar, ...props }) {
         file.append("imageFile", data[0]);
         const imageData = await API.uploadImage(file);
         if (imageData) {
-          let dataUserExt = {
-            "avatar": imageData.response.data.data.imageFileURL.thumbnail,
-            "preferredLocation": "",
-            "coverLetter": coverLetter !== "" ? coverLetter : coverLetterUrl,
-            "skills": skills !== [] && skills !== null ? skills : [],
-            "preferredIndustry":
-              preferredIndustry !== [] ? preferredIndustry : [],
-            "resumeURL": fileURL,
-          };
-          await API.updateUserPreferences(dataUserExt);
-          setAvatarPictureURL(
-            imageData.response.data.data.imageFileURL.thumbnail
-          );
-          setAvatarProfile(imageData.response.data.data.imageFileURL.thumbnail);
+          updateProfilePicture(imageData);
         }
       };
       uploadImageImported(acceptedFiles);
     } else if (acceptedFiles.length > 0 && props.data === "file") {
       const upLoadFile = async data => {
-        if (avatarPictureURL === "" && acceptedFiles.length > 0) {
+        if (acceptedFiles.length > 0) {
           setProgressBar(true);
         }
         let file = new FormData();
         file.append("documentFile", data[0]);
         const fileData = await API.upLoadFile(file);
         if (fileData) {
-          setFileURL(fileData.response.data.data.documentFileUrl.original);
-
-          const data = {
-            resumeURL: fileData.response.data.data.documentFileUrl.original,
-            coverLetter: coverLetter !== "" ? coverLetter : coverLetterUrl,
-          };
-          await API.updateUserResumeAndCoverLetter(data);
-          setProgressBar(false);
+          updateProfileResume(fileData);
         }
       };
       setIsUpdated(true);
       upLoadFile(acceptedFiles);
     } else if (acceptedFiles.length > 0 && props.data === "coverletter") {
       const upLoadFile = async data => {
-        if (avatarPictureURL === "" && acceptedFiles.length > 0) {
+        if (acceptedFiles.length > 0) {
           setProgressBar(true);
         }
         let file = new FormData();
         file.append("documentFile", data[0]);
         const fileData = await API.upLoadFile(file);
         if (fileData) {
-          setCoverLetterUrl(
-            fileData.response.data.data.documentFileUrl.original
-          );
-          setProgressBar(false);
+          updateProfileCoverletter(fileData);
         }
       };
       setIsUpdated(true);
       upLoadFile(acceptedFiles);
     }
-  }, [
-    acceptedFiles,
-    setAvatarPictureURL,
-    setFileURL,
-    setProgressBar,
-    setIsUpdated,
-    avatarPictureURL,
-    coverLetter,
-    coverLetterUrl,
-    fileURL,
-    preferredIndustry,
-    props,
-    setAvatarProfile,
-    setCoverLetterUrl,
-    skills
+  }, [acceptedFiles, props.data,
+    setIsUpdated, setProgressBar, updateProfileCoverletter,
+    updateProfilePicture, updateProfileResume
   ]);
 
   let style =
