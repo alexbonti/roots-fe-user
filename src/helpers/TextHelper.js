@@ -60,6 +60,20 @@ class TextHelper {
   formatToD_MMMM_YYYY(date) {
     return moment(date).format("D MMMM YYYY");
   }
+
+
+  /**
+   * 
+   * @param {Object} data Data to send
+   * @param {String} data.content [Required] Content to truncate 
+   * @param {Number} data.words [Optional] Max no of words 
+   */
+  truncate({ content, words = 160 }) {
+    if (content instanceof String)
+      return content.split(" ").splice(0, words).join(" ");
+    return String(content).split(" ").splice(0, words).join(" ");
+
+  }
 }
 
 const instance = new TextHelper();
