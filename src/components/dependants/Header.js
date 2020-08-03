@@ -4,13 +4,10 @@ import { AppBar, Avatar, Grid, Typography } from "@material-ui/core";
 import { LoginContext } from "contexts";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-//import API from "../../helpers/api";
 import { TemporaryDrawer } from "../index";
 import { UserContext } from "contexts/index";
 import FallBackAvatar from "../../helpers/img/man.svg";
 import Logo from "../../helpers/img/favicon.png";
-
-// import { AccessToken } from "contexts/helpers/index";
 
 const drawerWidth = 240;
 
@@ -18,10 +15,10 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     paddingRight: 2, // keep right padding when drawer closed
     backgroundColor: "#2C2C29",
-    height: "56px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    ...theme.mixins.toolbar
   },
   avatar: {
     margin: 10,
@@ -121,19 +118,16 @@ export const Header = () => {
 
   const ImageAvatar =
     avatarProfile === "" ||
-    avatarProfile === undefined ||
-    avatarProfile === "string"
+      avatarProfile === undefined ||
+      avatarProfile === "string"
       ? FallBackAvatar
       : avatarProfile;
   let registerStatus = {
     menu: !loginStatus ? "" : <TemporaryDrawer />,
-    avatar: !loginStatus ? (
-      ""
-    ) : (
+    avatar: !loginStatus ? null :
       <Link to="/profile" state={"test"}>
         <Avatar src={ImageAvatar}></Avatar>
       </Link>
-    ),
   };
 
   let content = (
@@ -145,15 +139,15 @@ export const Header = () => {
           </Grid>
 
           <Grid item xs={6} container justify="center" alignItems="center">
-            <Grid item xs={3} align="right" style={{margin: "0 -4px", marginLeft: "8vw"}}>
-              <Avatar src={Logo} style={{transform: "scale(.7)", margin: "0 2px"}} />
+            <Grid item xs={3} align="right" style={{ margin: "0 -4px", marginLeft: "8vw" }}>
+              <Avatar src={Logo} style={{ transform: "scale(.7)", margin: "0 2px" }} />
             </Grid>
             <Grid item xs={6}>
               <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                 <Typography
                   style={{
                     fontSize: "20px",
-                    fontFamily: `"Arial", " Roboto", "Helvetica", sans-serif`,
+                    fontFamily: "\"Arial\", \" Roboto\", \"Helvetica\", sans-serif",
                     fontWeight: "bold",
                   }}
                 >
