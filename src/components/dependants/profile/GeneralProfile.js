@@ -28,15 +28,6 @@ export const GeneralProfile = ({ data }) => {
       : avatarProfile;
   return (
     <Grid container spacing={2} style={{ padding: "2vh 2vw" }}>
-      <Grid container justify="flex-end" item xs={12}>
-        <Grid>
-          <EditOutlinedIcon
-            onClick={() => {
-              setIsEditGeneralProfile(true);
-            }}
-          />
-        </Grid>
-      </Grid>
       <Grid item container justify="flex-start" alignItems="center" spacing={1} xs={12}>
         <Grid item xs={4} md={1}>
           <Avatar src={ImageAvatar} alt="avatar" style={{
@@ -44,13 +35,20 @@ export const GeneralProfile = ({ data }) => {
             height: "auto",
           }} />
         </Grid>
-        <Grid item xs={8} md={11}>
+        <Grid item xs={7} md={10} >
           <Typography variant="h6">
             {userName} {userLastName}
           </Typography>
           <Typography variant="caption">
             {userEmail}
           </Typography>
+        </Grid>
+        <Grid item xs={1} md={1} style={{ height: "100%" }}>
+          <EditOutlinedIcon
+            onClick={() => {
+              setIsEditGeneralProfile(true);
+            }}
+          />
         </Grid>
       </Grid>
     </Grid >
