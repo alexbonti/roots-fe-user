@@ -5,7 +5,6 @@ const useStyles = makeStyles(() => ({
   responsiveImage: {
     height: "auto",
     maxWidth: "100%",
-    imageRendering: "pixelated"
   }
 }));
 
