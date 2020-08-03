@@ -61,6 +61,15 @@ class TextHelper {
     return moment(date).format("D MMMM YYYY");
   }
 
+  /**
+   * 
+   * @param {Date} date Date to be formatted
+   * @returns {String} Formatted date
+   */
+  formatToMMMM_YYYY(date) {
+    return moment(date).format("MMMM YYYY");
+  }
+
 
   /**
    * 
