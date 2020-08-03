@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import { NewsCard, LargeNewsCard, Spinner } from "components";
+import { NewsCard, LargeNewsCard, Spinner, } from "components";
 import { API } from "helpers/index";
 import { NewsFullView } from "components/index";
 import { HomeContext } from "contexts/index";
-import { createMuiTheme } from "@material-ui/core/";
+import { createMuiTheme, Grid } from "@material-ui/core/";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { LoginContext } from "contexts";
 
@@ -57,17 +57,21 @@ export const ListNews = () => {
     <ThemeProvider theme={theme}>
       <NewsFullView data={detailsNews} />
     </ThemeProvider>
-  ) : (
-      <>
-        <ThemeProvider theme={theme}>
-          {" "}
-          <LargeNewsCard data={newsArray[0]} />
-          {newsArray.map((news, i) => {
-            return i !== 0 ? <NewsCard key={news.title + i} data={news} /> : "";
-          })}
-        </ThemeProvider>
-      </>
-    );
+  ) :
+    <ThemeProvider theme={theme}>
+      <LargeNewsCard data={newsArray[0]} />
+      {newsArray.length > 0 && <Grid container spacing={2}>
+        {newsArray.map((news, i, array) => {
+          if (i === 0) return null;
+          if (i === array.length - 1)
+            return <NewsCard key={news.title + i} data={news} />;
+          return <NewsCard key={news.title + i} data={news} displayDivider />;
+        })}
+      </Grid>
+      }
+
+    </ThemeProvider>
+    ;
 
   return newsArray.length > 0 ? <>{content}</> : <Spinner />;
 };

@@ -1,11 +1,14 @@
 import React from "react";
-import { Typography, Grid } from "@material-ui/core/";
-import { Spinner } from "components";
+import { Typography, Grid, Divider } from "@material-ui/core/";
+import { Spinner, Image } from "components";
 import { HomeContext } from "contexts";
+import { TextHelper } from "helpers/index";
 import PropTypes from "prop-types";
 
-export const NewsCard = ({ data }) => {
-  const { imageURL, title, datePublished } = data;
+
+
+export const NewsCard = ({ data, displayDivider }) => {
+  const { imageURL, title, datePublished, content } = data;
 
   const { setDetailsNews, setIsFullViewNews } = React.useContext(HomeContext);
 
@@ -14,57 +17,42 @@ export const NewsCard = ({ data }) => {
     setIsFullViewNews(true);
   };
 
-  return data !== undefined ? (
-    <>
-      <Grid container justify="center" onClick={() => openFullNews()}>
-        <Grid item xs={4} md={4}>
-          <img
-            src={imageURL}
-            alt={title}
-            style={{
-              maxHeight: 100,
-              width: "95%",
-              height: "100%",
-              padding: "5px 10px",
-            }}
-          />
-        </Grid>
-        <Grid
-          container
-          item
-          xs={8}
-          md={3}
-          justify="center"
-          //alignItems="center"
-          style={{ padding: "0 1vw" }}
-        >
-          <Grid item xs={11}>
-            <Typography variant="h5" style={{ fontSize: "16px" }}>
-              {title}
-            </Typography>
-          </Grid>
-          <Grid item xs={11} style={{ maxHeight: 100, overflow: "hidden" }}>
-            <Typography
-              variant="body1"
-            // dangerouslySetInnerHTML={{ __html: content}}
-            >
-              Here there's some test
-            </Typography>
-          </Grid>
-          <Grid item xs={11}>
-            <Typography variant="body1">
-              {datePublished.substring(0, 10)}
-            </Typography>
-          </Grid>
-        </Grid>
+  if (data === undefined) return <Spinner />;
+
+  let card = (<Grid item container justify="center" spacing={1} onClick={() => openFullNews()}>
+    <Grid item xs={4} md={4} style={{ maxHeight: "100px", overflow: "hidden" }}>
+      <Image src={imageURL} alt={title} style={{
+        objectFit: "cover"
+      }} />
+    </Grid>
+    <Grid container
+      style={{ maxHeight: "120px", overflow: "hidden" }}
+      item xs={8} md={8}
+    >
+      <Grid item xs={12}>
+        <Typography style={{ fontSize: "16px", fontWeight: "600" }}>
+          {TextHelper.titleCase(title)}
+        </Typography>
       </Grid>
-      <Grid item xs={12} md={4}>
-        <hr style={{ border: "4px solid rgb(249, 249, 249)", margin: 0 }} />
+      <Grid item xs={12} style={{ maxHeight: "55px", overflow: "hidden" }}>
+        <Typography variant="caption" >{TextHelper.truncate({ content: content, words: 20 })}</Typography>
       </Grid>
-    </>
-  ) : (
-      <Spinner />
-    );
+      <Grid item xs={12}>
+        <Typography variant="body1"> {TextHelper.formatToD_MMMM_YYYY(datePublished)}  </Typography>
+      </Grid>
+
+    </Grid>
+    {
+      displayDivider === true &&
+      <Grid item xs={12} style={{ height: "10px", }} >
+        <Divider style={{
+          border: "5px solid rgb(249, 249, 249)"
+        }} />
+      </Grid>
+    }
+  </Grid >);
+
+  return card;
 };
 
 NewsCard.prototype = {

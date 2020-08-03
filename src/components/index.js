@@ -42,6 +42,7 @@ import { NewsFullView } from "./dependants/newsTab/NewsFullView";
 import { MenuHamburger } from "../helpers/MenuHamburger";
 import { FilterOpportunity } from "./dependants/MapsInput";
 import { Certificate } from "./dependants/profile/Certificate";
+import { Image } from "./common/Media";
 
 export {
   Notification,
@@ -88,5 +89,6 @@ export {
   NewsCard,
   NewsFullView,
   MenuHamburger,
-  Certificate
+  Certificate,
+  Image
 };
