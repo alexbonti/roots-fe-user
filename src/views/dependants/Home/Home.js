@@ -148,7 +148,7 @@ const Home = () => {
             aria-label="full width tabs example"
             style={{ marginTop: 0, height: "58px" }}
           >
-            <Tab label="Search" {...a11yProps(0)} className={classes.tab} />
+            <Tab label="Jobs" {...a11yProps(0)} className={classes.tab} />
             <Tab label="News" {...a11yProps(1)} className={classes.tab} />
             <Tab label="Resources" {...a11yProps(2)} className={classes.tab} />
           </Tabs>
@@ -174,9 +174,7 @@ const Home = () => {
         {/* </SwipeableViews> */}
       </div>
     </ThemeProvider>
-  ) : (
-      <Spinner />
-    );
+  ) : <Spinner />;
 };
 
 export default withRouter(Home);
