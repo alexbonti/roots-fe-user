@@ -20,14 +20,14 @@ export const NewsCard = ({ data, displayDivider }) => {
   if (data === undefined) return <Spinner />;
 
   let card = (<Grid item container justify="center" spacing={1} onClick={() => openFullNews()}>
-    <Grid item xs={4} md={4} style={{ maxHeight: "100px", overflow: "hidden" }}>
+    <Grid item xs={4} md={2} style={{ maxHeight: "100px", overflow: "hidden" }}>
       <Image src={imageURL} alt={title} style={{
         objectFit: "cover"
       }} />
     </Grid>
     <Grid container
       style={{ maxHeight: "120px", overflow: "hidden" }}
-      item xs={8} md={8}
+      item xs={8} md={10}
     >
       <Grid item xs={12}>
         <Typography style={{ fontSize: "16px", fontWeight: "600" }}>
