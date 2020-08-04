@@ -9,15 +9,6 @@ export const Education = props => {
   const { degree, major, endDate, startDate, school } = props.data;
   const [isEditModeOn, setIsEditModeOn] = useState(false);
 
-  let newTimeS =
-    typeof startDate === "object"
-      ? `${startDate.getMonth()} - ${startDate.getFullYear()}`
-      : startDate.substring(0, 10);
-  let newTimeE =
-    typeof endDate === "object"
-      ? `${endDate.getMonth()} - ${endDate.getFullYear()}`
-      : endDate.substring(0, 10);
-
   let content = (
     <>
       <Grid container justify="center" style={{ padding: "2vh" }}>

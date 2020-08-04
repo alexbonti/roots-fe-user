@@ -18,16 +18,6 @@ export const Experience = props => {
     referee,
   } = props.data;
 
-  let newTimeS =
-    typeof startDate === "object"
-      ? `${startDate.getMonth() + 1} - ${startDate.getFullYear()}`
-      : startDate.substring(0, 10);
-  let newTimeE =
-    typeof endDate === "object"
-      ? `${endDate.getMonth() + 1} - ${endDate.getFullYear()}`
-      : endDate.substring(0, 10);
-
-  newTimeE = endDate === "Currently working here" ? endDate : newTimeE;
 
   if (companyName === undefined || positionTitle === undefined || referee === undefined || description === undefined)
     return <Spinner />;
