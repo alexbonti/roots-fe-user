@@ -19,7 +19,7 @@ export const Experience = props => {
   } = props.data;
 
 
-  if (companyName === undefined || positionTitle === undefined || referee === undefined || description === undefined)
+  if (companyName === undefined || positionTitle === undefined || description === undefined)
     return <Spinner />;
 
   let content =
