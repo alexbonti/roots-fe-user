@@ -167,13 +167,13 @@ const Profile = () => {
     typeof userProfile === "object" &&
       Array.isArray(certificates) ? (
         certificates.sort((certA, certB) => moment(certB.issueDate).diff(certA.issueDate)).map((certificate, index) => {
-          if (index + 1 < certificates.length) return <div key={"certificate_" + index}>
+          if (index + 1 < certificates.length) return <Grid item xs={12} key={"certificate_" + index}>
             <Certificate getUpdatedCertificates={getUpdatedCertificates} {...certificate} />
             <Divider />
-          </div>;
-          return <Certificate getUpdatedCertificates={getUpdatedCertificates} key={"certificate_" + index}
+          </Grid>;
+          return <Grid key={"certificate_" + index} item xs={12}><Certificate getUpdatedCertificates={getUpdatedCertificates} key={"certificate_" + index}
             {...certificate}
-          />;
+          /></Grid>;
         })
       ) : <Spinner />;
 
@@ -182,11 +182,11 @@ const Profile = () => {
     typeof userProfile === "object" &&
       Array.isArray(userProfile.workExperience) ? (
         userProfile.workExperience.map((experience, index) => {
-          if (index + 1 < userProfile.workExperience.length) return <div key={"experience_" + index}>
+          if (index + 1 < userProfile.workExperience.length) return <Grid item xs={12} key={"experience_" + index}>
             <Experience key={index} data={experience} />
             <Divider />
-          </div>;
-          return <Experience key={index} data={experience} />;
+          </Grid>;
+          return <Grid key={"experience_" + index} item xs={12}> <Experience key={index} data={experience} /></Grid>;
         })
       ) : <Spinner />;
 
