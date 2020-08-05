@@ -1,4 +1,4 @@
-import React, {  useContext } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
 import { Button, Grid, Typography } from "@material-ui/core/";
@@ -47,7 +47,7 @@ export const TemporaryDrawer = () => {
       <List
         style={{
           height: "100%",
-          paddingTop: "8px",
+          paddingTop: "20px",
           backgroundColor: "rgba(8, 124, 149, .1)",
         }}
       >
@@ -58,41 +58,25 @@ export const TemporaryDrawer = () => {
           direction="column"
           style={{ height: "100%" }}
         >
-          <Grid item>
-            <Grid
-              item
-              container
-              justify="center"
-              alignItems="center"
-              style={{
-                backgroundColor: "rgba(8,124,149, 1)",
-                height: "53px",
-              }}
-            >
-              <Grid item container alignItems="center">
-                <Grid>
-                  <Link
-                    user={userProfile}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                    to="/profile"
-                  >
-                    <Typography
-                      variant="body1"
-                      style={{
-                        color: "rgb(243,243,243)",
-                        fontSize: "16px",
-                        fontFamily: "Arial Rounded MD, sans-serif",
-                        fontWeight: "bold",
-                        padding: "17px 10px 18px 33px ",
-                      }}
-                    >
-                      My profile
-                    </Typography>
-                  </Link>
-                </Grid>
-              </Grid>
-            </Grid>
-
+          <Grid item style={{ width: "100%" }}>
+            <ListItem button>
+              <Link
+                user={userProfile}
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/profile"
+              >
+                <Typography
+                  style={{
+                    paddingLeft: "5px",
+                    fontSize: "16px",
+                    fontFamily: "Arial Rounded MD, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  My profile
+                </Typography>
+              </Link>
+            </ListItem>
             <ListItem button>
               <Link
                 user={userProfile}
@@ -101,35 +85,16 @@ export const TemporaryDrawer = () => {
               >
                 <Typography
                   style={{
-                    paddingLeft: "33.5px",
+                    paddingLeft: "5px",
                     fontSize: "16px",
                     fontFamily: "Arial Rounded MD, sans-serif",
                     fontWeight: "bold",
                   }}
                 >
-                   Opportunities
+                  Opportunities
                 </Typography>
               </Link>
             </ListItem>
-
-            {/* <ListItem button>
-              <Link
-                user={userProfile}
-                style={{ textDecoration: "none", color: "inherit" }}
-                to={{ pathname: "/jobs", state: { direction: "applied-jobs" } }}
-              >
-                <Typography
-                  style={{
-                    paddingLeft: "33.5px",
-                    fontSize: "16px",
-                    fontFamily: "Arial Rounded MD, sans-serif",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Applied Opportunities
-                </Typography>
-              </Link>
-            </ListItem> */}
 
             <ListItem button>
               <Link
@@ -139,7 +104,7 @@ export const TemporaryDrawer = () => {
               >
                 <Typography
                   style={{
-                    paddingLeft: "33.5px",
+                    paddingLeft: "5px",
                     fontSize: "16px",
                     fontFamily: "Arial Rounded MD, sans-serif",
                     fontWeight: "bold",
