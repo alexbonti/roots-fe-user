@@ -25,6 +25,6 @@ jobs:
         cf_api: https://api.au-syd.cf.cloud.ibm.com
         cf_username: ${{ secrets.CF_USER }}
         cf_password: ${{ secrets.CF_PASSWORD }}
-        cf_org: rocketpunch
-        cf_space: dev 
+        cf_org: university-roots
+        cf_space: roots 
         command: push -f manifest.yml
