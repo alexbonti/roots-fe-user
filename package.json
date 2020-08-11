@@ -1,6 +1,6 @@
 {
-  "name": "refugee-jobsearch-user",
-  "version": "0.1.0-alpha",
+  "name": "garage-jobsearch-user",
+  "version": "0.2.0-beta",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
