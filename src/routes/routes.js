@@ -15,11 +15,22 @@ import {
   SearchSettings,
 } from "views";
 import { Layout } from "../layout";
-import { ResetPassword,  ResetPasswordSecondStep, RegisterSuccess} from "views/index";
+import { ResetPassword, ResetPasswordSecondStep, RegisterSuccess } from "views/index";
+import { UserContext } from "contexts/index";
+import { Spinner } from "components/index";
 
 export const AppRoutes = props => {
   const { loginStatus } = useContext(LoginContext);
+  const { userProfileSetupComplete } = useContext(UserContext);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
+
+  const userOnboardingStatusCheck = (node) => {
+    if (userProfileSetupComplete === undefined)
+      return <Spinner />;
+    if (userProfileSetupComplete === false)
+      return <Redirect to={{ pathname: "/onboarding" }} {...props} />;
+    return node;
+  };
 
   useEffect(() => {
     if (loginStatus) setRedirectToLogin(false);
@@ -33,9 +44,8 @@ export const AppRoutes = props => {
         render={() =>
           redirectToLogin ? (
             <Redirect to={{ pathname: "/login" }} {...props} />
-          ) : (
-            <Redirect to={{ pathname: "/home" }} {...props} />
-          )
+          ) :
+            userOnboardingStatusCheck(<Redirect to={{ pathname: "/home" }} {...props} />)
         }
       />
       <Route
@@ -54,11 +64,9 @@ export const AppRoutes = props => {
         exact
         path="/login"
         render={() =>
-          !redirectToLogin ? (
-            <Redirect to={{ pathname: "/home" }} {...props} />
-          ) : (
-            <Login {...props} />
-          )
+          !redirectToLogin ?
+            <Redirect to={{ pathname: "/home" }} {...props} /> :
+            userOnboardingStatusCheck(<Login {...props} />)
         }
       />
       <Route
@@ -66,10 +74,9 @@ export const AppRoutes = props => {
         path="/register"
         render={() =>
           !redirectToLogin ? (
-            <Redirect to={{ pathname: "/home" }} {...props} />
-          ) : (
+            userOnboardingStatusCheck(<Redirect to={{ pathname: "/home" }} {...props} />)
+          ) :
             <Register {...props} />
-          )
         }
       />
       <Layout>
@@ -77,14 +84,12 @@ export const AppRoutes = props => {
           exact
           path="/home"
           render={() =>
-            redirectToLogin ? (
+            redirectToLogin ?
               <Redirect to={{ pathname: "/login" }} {...props} />
-            ) : (
-              <Home {...props} />
-            )
+              : userOnboardingStatusCheck(<Home {...props} />)
           }
         />
-        
+
         <Route
           exact
           path="/registerSuccess"
@@ -94,11 +99,11 @@ export const AppRoutes = props => {
         <Route
           exact
           path="/registerEnd"
-          render={() =>  redirectToLogin ? (
+          render={() => redirectToLogin ? (
             <Redirect to={{ pathname: "/login" }} {...props} />
-          ) : (
+          ) :
             <RegisterSuccess {...props} />
-          )}
+          }
         />
 
         <Route
@@ -107,9 +112,8 @@ export const AppRoutes = props => {
           render={() =>
             redirectToLogin ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
-            ) : (
+            ) :
               <OnBoarding {...props} />
-            )
           }
         />
         <Route
@@ -118,9 +122,8 @@ export const AppRoutes = props => {
           render={() =>
             redirectToLogin ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
-            ) : (
+            ) :
               <Profile {...props} />
-            )
           }
         />
         <Route
@@ -130,8 +133,8 @@ export const AppRoutes = props => {
             redirectToLogin ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
             ) : (
-              <SavedAndAppliedJobs {...props} />
-            )
+                <SavedAndAppliedJobs {...props} />
+              )
           }
         />
         <Route
@@ -141,8 +144,8 @@ export const AppRoutes = props => {
             redirectToLogin ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
             ) : (
-              <SearchSettings {...props} />
-            )
+                <SearchSettings {...props} />
+              )
           }
         />
       </Layout>

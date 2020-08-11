@@ -64,7 +64,7 @@ export const NoExperience = () => {
       <ThemeProvider theme={theme}>
         <Grid container justify="center">
           <Grid item xs={11}>
-            <Typography style={{fonstSize: "16px", fontFamily: `"Arial", "Helvetica", sans-serif`, fontWeight: "bold"}}>
+            <Typography style={{ fonstSize: "16px", fontFamily: `"Arial", "Helvetica", sans-serif`, fontWeight: "bold" }}>
               Let's do this! <br />
               Where do you want to get your first job?
             </Typography>
@@ -73,12 +73,12 @@ export const NoExperience = () => {
             <div>
               <TextField
                 required
-                id="standard-required"
                 label="Location"
                 value={inputPosition}
                 placeholder="Location"
                 margin="normal"
                 fullWidth
+                autocomplete={false}
                 onChange={event => {
                   event.preventDefault();
                   autoFill(event);
@@ -86,8 +86,8 @@ export const NoExperience = () => {
               />
               <div>
                 {positionSuggestions !== null &&
-                positionSuggestions !== undefined &&
-                positionSuggestions !== "" ? (
+                  positionSuggestions !== undefined &&
+                  positionSuggestions !== "" ?
                   <div className={classes.suggestion}>
                     {positionSuggestions.map(suggestion => {
                       return (
@@ -100,14 +100,12 @@ export const NoExperience = () => {
                           }}
                         >
                           {suggestion.label.substring(16, suggestion.label.lenght)}
-                          
+
                         </div>
                       );
                     })}
                   </div>
-                ) : (
-                  ""
-                )}
+                  : null}
               </div>
               <div />
             </div>

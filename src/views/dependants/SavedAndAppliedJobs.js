@@ -127,6 +127,7 @@ const SavedAndAppliedJobs = props => {
     const triggerAPI = async () => {
       const profileResponse = await API.getUserProfile();
       if (profileResponse) {
+        console.log(profileResponse.response);
         setUserName(profileResponse.response.first_name);
         setUserLastName(profileResponse.response.last_name);
         setUserEmail(profileResponse.response.emailId);

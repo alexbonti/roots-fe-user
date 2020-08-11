@@ -7,7 +7,7 @@ import {
   TextEditorContext,
   TextEditorProvider,
 } from "./dependants/TextEditorContext";
-import {logout} from "./common/LoginContext"
+import { logout } from "./common/LoginContext"
 
 import {
   OnBoardingContext,
@@ -38,7 +38,9 @@ export const ContextManager = props => {
         <UserProvider>
           <OnBoardingProvider>
             <HomeProvider>
-              <TextEditorProvider>{children}</TextEditorProvider>
+              <TextEditorProvider>
+                {children}
+              </TextEditorProvider>
             </HomeProvider>
           </OnBoardingProvider>
         </UserProvider>

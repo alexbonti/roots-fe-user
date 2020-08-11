@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Typography, Grid, Button } from "@material-ui/core/";
+import { Typography, Grid, Button, Avatar, Badge } from "@material-ui/core/";
 import MyDropzone from "../DropDrag";
 import { OnBoardingContext, LoginContext, UserContext } from "contexts";
 import { API } from "helpers";
@@ -43,6 +43,7 @@ const theme = createMuiTheme({
 
 export const AvatarPictureUpload = () => {
   const classes = useStyles();
+  const [uploadedAvatar, setuploadedAvatar] = useState();
 
   const {
     setActiveStep,
@@ -53,7 +54,6 @@ export const AvatarPictureUpload = () => {
     startDate,
     endDate,
     industryField,
-    avatarPictureURL,
     userHasExperience,
   } = useContext(OnBoardingContext);
 
@@ -76,13 +76,13 @@ export const AvatarPictureUpload = () => {
             companyName,
             startDate: new Date(startDate).toISOString(),
             endDate: new Date(endDate).toISOString(),
-            description: "sda",
+            description: "",
           },
         };
       }
 
       let userPreferencesData = {
-        avatar: avatarPictureURL,
+        avatar: uploadedAvatar,
         preferredLocation: location,
         skills: [],
         coverLetter: "",
@@ -121,15 +121,13 @@ export const AvatarPictureUpload = () => {
           handleNext();
         }
       }
-
-
       setIsUpdated(false);
     }
     setIsUpdated(true);
   };
 
   const confirmButton =
-    avatarPictureURL !== "" ? (
+    uploadedAvatar ? (
       <Grid item xs={8}>
         <Button
           fullWidth
@@ -142,9 +140,7 @@ export const AvatarPictureUpload = () => {
           Confirm
         </Button>
       </Grid>
-    ) : (
-      ""
-    );
+    ) : null;
 
   return (
     <>
@@ -159,8 +155,27 @@ export const AvatarPictureUpload = () => {
           <Grid item xs={9}>
             <Typography variant="body1">Add your profile photo</Typography>
           </Grid>
-          <Grid item xs={10}>
-            <MyDropzone data={"photo"} />
+          <Grid item xs={12} style={{ margin: "0 25vw" }}>
+            {uploadedAvatar ? <Badge
+              style={{
+                margin: "0 auto"
+              }} overlap="circle"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              badgeContent={<Avatar style={{ backgroundColor: "red" }}><i onClick={() => {
+                setuploadedAvatar("");
+              }} className="material-icons" >
+                delete
+              </i></Avatar>}
+            >
+              <Avatar src={uploadedAvatar} alt="avatar" style={{ width: "200px", height: "200px" }} />
+            </Badge> :
+              <MyDropzone data={"onboardingPhoto"} helpers={{
+                getPhotoPictureUrl: (imageData) => setuploadedAvatar(imageData.original)
+              }} />
+            }
           </Grid>
           {confirmButton}
           <Grid item>

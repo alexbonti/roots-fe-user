@@ -413,8 +413,7 @@ const Profile = () => {
                       />
                     </Grid>
                   );
-                })
-                : ""}
+                }) : null}
             </Grid>
           </Grid>
         </ThemeProvider>
