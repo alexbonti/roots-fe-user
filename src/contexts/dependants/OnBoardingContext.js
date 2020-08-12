@@ -4,7 +4,7 @@ export const OnBoardingContext = createContext();
 
 export const OnBoardingProvider = props => {
 
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(0);
   const [isStart, setIsStart] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
   const [userHasExperience, setUserHasExperience] = useState(false);
