@@ -41,18 +41,19 @@ export const ListNews = () => {
     if (loginStatus) {
       const triggerAPI = async () => {
         let data = {
-          "category": "MECHID",
-          "numberOfRecords": 10,
+          "category": "",
+          "numberOfRecords": 0,
         };
         const allNewsData = await API.getNews(data);
         if (allNewsData) {
-          setNewsArray(allNewsData?.response?.data?.data?.data);
+          console.log(allNewsData.response)
+          setNewsArray(allNewsData?.response);
         }
       };
       triggerAPI();
     }
   }, [loginStatus]);
-  
+
   if (newsArray === undefined) return <Spinner />;
 
   const content = isFullViewNews ?

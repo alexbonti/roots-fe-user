@@ -1,40 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Grid } from "@material-ui/core/";
 import { Spinner } from "components";
 import { HomeContext } from "contexts";
 import PropTypes from "prop-types";
 
-export const LargeNewsCard = ({ data }) => {
-  const { imageURL, title, datePublished, content } = data;
+export const LargeNewsCard = (props) => {
   const { setDetailsNews, setIsFullViewNews } = React.useContext(HomeContext);
+  const [newsData] = useState(props.data);
 
   const openFullNews = () => {
-    setDetailsNews(data);
+    setDetailsNews(props.data);
     setIsFullViewNews(true);
   };
-  return data !== undefined ? (
+  return newsData !== undefined ? (
     <>
       <Grid container justify="center" onClick={() => openFullNews()}>
         <Grid item xs={12} md={7}>
           <img
-            src={imageURL}
-            alt={title}
+            src={newsData?.imageURL}
+            alt={newsData?.title}
             style={{ width: "100%", height: "30vh" }}
           />
         </Grid>
         <Grid container item xs={11} md={7}>
           <Grid item xs={12}>
-            <Typography variant="h5">{title}</Typography>
+            <Typography variant="h5">{newsData?.title}</Typography>
           </Grid>
           <Grid item xs={11}>
             <Typography variant="h5" style={{ fontSize: 14 }}>
-              {datePublished.substring(0, 10)}
+              {newsData?.datePublished.substring(0, 10)}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography
               variant="body1"
-              dangerouslySetInnerHTML={{ __html: content.substring(0, 150) }}
+              dangerouslySetInnerHTML={{ __html: newsData?.content.substring(0, 150) }}
             >
             </Typography>
             <Typography>...</Typography>
@@ -46,8 +46,8 @@ export const LargeNewsCard = ({ data }) => {
       </Grid>
     </>
   ) : (
-    <Spinner />
-  );
+      <Spinner />
+    );
 };
 
 LargeNewsCard.prototype = {

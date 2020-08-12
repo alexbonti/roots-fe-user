@@ -523,7 +523,7 @@ class API {
     return await axiosInstanceNews
       .post("/news/getNews", data)
       .then(response => {
-        return sendSuccess(response);
+        return sendSuccess(response?.data?.data?.data);
       })
       .catch(error => {
         return errorHelper(error);

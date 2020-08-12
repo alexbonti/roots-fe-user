@@ -45,10 +45,10 @@ export const FullListResources = () => {
 
         const APIResponse = await API.getNews(data);
         if (APIResponse.success)
-          if (APIResponse?.response?.data?.data?.data) {
+          if (APIResponse?.response) {
             accumulator.push({
               categorie,
-              data: APIResponse.response.data.data.data,
+              data: APIResponse?.response,
             });
           }
         setResourceArray(accumulator);
