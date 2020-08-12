@@ -43,13 +43,14 @@ export const FullListResources = () => {
           "numberOfRecords": 10,
         };
 
-        const allNewsData = await API.getNews(data);
-        if (allNewsData && allNewsData.response.data.data.data.length > 0) {
-          accumulator.push({
-            categorie,
-            data: allNewsData.response.data.data.data,
-          });
-        }
+        const APIResponse = await API.getNews(data);
+        if (APIResponse.success)
+          if (APIResponse?.response?.data?.data?.data) {
+            accumulator.push({
+              categorie,
+              data: APIResponse.response.data.data.data,
+            });
+          }
         setResourceArray(accumulator);
       };
 
@@ -66,15 +67,11 @@ export const FullListResources = () => {
       resourceArray.map((dataCategory, i) => {
         return <ResourceSmallCard key={i} data={dataCategory} />;
       })
-    ) : (
-        <Spinner />
-      );
+    ) : <Spinner />;
 
   let content = isFullViewResource ? (
     <ResourceFullView data={dataToBeSentResources} />
-  ) : (
-      list
-    );
+  ) : list;
 
   return (
     <>

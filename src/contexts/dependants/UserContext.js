@@ -27,9 +27,12 @@ export const UserProvider = props => {
   useEffect(() => {
     (async () => {
       const response = await API.getUserProfile();
-      if (response?.response?.userProfileSetupComplete) {
-        return setUserProfileSetupComplete(true);
-      } setUserProfileSetupComplete(false);
+      if (response.success) {
+        if (response?.response?.userProfileSetupComplete) {
+          return setUserProfileSetupComplete(true);
+        }
+        setUserProfileSetupComplete(false);
+      }
     })();
   }, []);
 

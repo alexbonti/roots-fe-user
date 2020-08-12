@@ -4,6 +4,17 @@ import { notify } from 'components';
 import { logout } from "contexts/helpers";
 
 /**
+ * @param {any} data data to return in response
+ * @returns {Object}
+ */
+const sendSuccess = (data) => {
+  return {
+    "success": true,
+    "response": data
+  };
+};
+
+/**
  * 
  * @param {Object} error Error Object from axios error catch 
  * @param {String} variant "login" or undefined
@@ -11,33 +22,57 @@ import { logout } from "contexts/helpers";
 const errorHelper = (error, variant) => {
   if (error.response === undefined) {
     notify("Network Error");
-    return false;
+    return {
+      "success": false,
+      "response": "Network Error"
+    };
   }
   if (error.response.statusCode === 401) {
-    if (variant === "login") return notify("Invalid Credentials");
+    if (variant === "login") {
+      notify("Invalid Credentials");
+      return {
+        "success": false,
+        "response": "Invalid Credentials"
+      };
+    }
     notify("You may have been logged out");
     logout();
-    return false;
+    return {
+      "success": false,
+      "response": error
+    };
   }
   if (error.response.data.statusCode === 401) {
     if (variant === "login") return notify("Invalid Credentials");
     notify("You may have been logged out");
     logout();
-    return false;
+    return {
+      "success": false,
+      "response": error
+    };
   }
   if (error.response.status === 401) {
     if (variant === "login") return notify("Invalid Credentials");
     notify("You may have been logged out");
     logout();
-    return false;
+    return {
+      "success": false,
+      "response": error
+    };
   }
   if (error.response.data.message !== "") {
     notify(error.response.data.message);
-    return false;
+    return {
+      "success": false,
+      "response": error
+    };
   }
   if (error.response.statusText !== "") {
     notify(error.response.statusText);
-    return false;
+    return {
+      "success": false,
+      "response": error
+    };
   }
 };
 
@@ -65,8 +100,7 @@ class API {
         return response.data.data;
       })
       .catch(error => {
-        console.log(error);
-        return false;
+        return errorHelper(error, "login");
       });
   };
 
@@ -155,7 +189,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response.data.data.customerData };
+        return sendSuccess(response?.data?.data?.customerData);
       })
       .catch(error => {
         return errorHelper(error)
@@ -277,7 +311,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(error)
@@ -293,7 +327,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(error)
@@ -309,7 +343,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(error)
@@ -325,7 +359,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(error);
@@ -340,7 +374,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         return errorHelper(error);
@@ -356,7 +390,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(error);
@@ -373,7 +407,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(error);
@@ -390,7 +424,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(errorHelper);
@@ -407,7 +441,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(error);
@@ -423,7 +457,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(error)
@@ -462,7 +496,7 @@ class API {
         },
       })
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         errorHelper(error)
@@ -481,7 +515,6 @@ class API {
         return response
       })
       .catch(error => {
-        console.log(error)
         errorHelper(error)
       });
   };
@@ -490,7 +523,7 @@ class API {
     return await axiosInstanceNews
       .post("/news/getNews", data)
       .then(response => {
-        return { "response": response };
+        return sendSuccess(response);
       })
       .catch(error => {
         return errorHelper(error);
@@ -514,7 +547,6 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        console.log(error)
         return errorHelper(error);
       });
   };
@@ -529,7 +561,6 @@ class API {
         return { "response": response };
       })
       .catch(error => {
-        console.log(error)
         return errorHelper(error);
       });
   };
@@ -573,7 +604,6 @@ class API {
     }).then(() => {
       performCallback(callback, true);
     }).catch(error => {
-      console.log(error)
       errorHelper(error)
     });
   }
