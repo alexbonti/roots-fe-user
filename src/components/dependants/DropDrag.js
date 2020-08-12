@@ -95,7 +95,6 @@ export default function Accept({ avatar, ...props }) {
   }, [setProgressBar, setCoverLetterUrl]);
 
   useEffect(() => {
-    console.log("Calling this useEffect")
     if (acceptedFiles.length > 0) {
       switch (props.data) {
         case "onboardingPhoto": {
