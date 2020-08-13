@@ -46,7 +46,6 @@ export const ListNews = () => {
         };
         const allNewsData = await API.getNews(data);
         if (allNewsData) {
-          console.log(allNewsData.response)
           setNewsArray(allNewsData?.response);
         }
       };
