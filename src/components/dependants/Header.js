@@ -151,7 +151,7 @@ export const Header = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  MECHID
+                  {process.env.REACT_APP_NAME}
                 </Typography>
               </Link>
             </Grid>
