@@ -32,7 +32,7 @@ const theme = createMuiTheme({
   },
 });
 export const ListNews = () => {
-  const [newsArray, setNewsArray] = useState([]);
+  const [newsArray, setNewsArray] = useState();
   const { loginStatus } = useContext(LoginContext);
 
   const { detailsNews, isFullViewNews } = React.useContext(HomeContext);
@@ -41,23 +41,25 @@ export const ListNews = () => {
     if (loginStatus) {
       const triggerAPI = async () => {
         let data = {
-          "category": "MECHID",
-          "numberOfRecords": 10,
+          "category": "",
+          "numberOfRecords": 0,
         };
         const allNewsData = await API.getNews(data);
         if (allNewsData) {
-          setNewsArray(allNewsData.response.data.data.data);
+          setNewsArray(allNewsData?.response);
         }
       };
       triggerAPI();
     }
   }, [loginStatus]);
 
-  const content = isFullViewNews ? (
+  if (newsArray === undefined) return <Spinner />;
+
+  const content = isFullViewNews ?
     <ThemeProvider theme={theme}>
       <NewsFullView data={detailsNews} />
     </ThemeProvider>
-  ) :
+    :
     <ThemeProvider theme={theme}>
       <LargeNewsCard data={newsArray[0]} />
       {newsArray.length > 0 && <Grid container spacing={2}>
@@ -68,10 +70,9 @@ export const ListNews = () => {
           return <NewsCard key={news.title + i} data={news} displayDivider />;
         })}
       </Grid>
-      }
+      }</ThemeProvider>;
 
-    </ThemeProvider>
-    ;
 
-  return newsArray.length > 0 ? <>{content}</> : <Spinner />;
+  return content;
+
 };

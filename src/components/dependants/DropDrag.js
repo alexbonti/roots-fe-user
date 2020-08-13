@@ -1,12 +1,10 @@
 import React, { useEffect, useContext, useCallback } from "react";
+import PropTypes from "prop-types";
+
 import { useDropzone } from "react-dropzone";
 import { API } from "helpers/index";
 import { Grid, Avatar } from "@material-ui/core/";
-import {
-  OnBoardingContext,
-  HomeContext,
-  UserContext,
-} from "contexts/index";
+import { OnBoardingContext, HomeContext, UserContext } from "contexts/index";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import DescriptionIcon from "@material-ui/icons/Description";
 import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
@@ -43,13 +41,14 @@ export default function Accept({ avatar, ...props }) {
   } = useContext(UserContext);
   const { setProgressBar } = useContext(HomeContext);
 
+  const getPhotoPictureUrl = useCallback((data) =>
+    props.helpers.getPhotoPictureUrl(data), [props.helpers]
+  );
+
   let logo;
 
   if (props.data === "photo" && !props.size) {
-    logo =
-      avatarPictureURL === "" ? (
-        ""
-      ) : <img src={avatarPictureURL} alt=" avatar" />;
+    logo = avatarPictureURL === "" ? null : <img src={avatarPictureURL} alt="avatar" />;
   } else if (props.data === "file" || props.data === "coverletter") {
     logo = <DescriptionIcon fontSize="large" color="secondary" />;
   } else if (props.size === "small") {
@@ -96,49 +95,67 @@ export default function Accept({ avatar, ...props }) {
   }, [setProgressBar, setCoverLetterUrl]);
 
   useEffect(() => {
-    if (acceptedFiles.length > 0 && props.data === "photo") {
-      const uploadImageImported = async data => {
-        let file = new FormData();
-        file.append("imageFile", data[0]);
-        const imageData = await API.uploadImage(file);
-        if (imageData) {
-          updateProfilePicture(imageData);
+    if (acceptedFiles.length > 0) {
+      switch (props.data) {
+        case "onboardingPhoto": {
+          (async files => {
+            let file = new FormData();
+            file.append("imageFile", files[0]);
+            const response = await API.uploadImage(file);
+            if (response) {
+              if (getPhotoPictureUrl instanceof Function)
+                getPhotoPictureUrl(response?.response?.data?.data?.imageFileURL);
+            }
+          })(acceptedFiles);
+          break;
         }
-      };
-      uploadImageImported(acceptedFiles);
-    } else if (acceptedFiles.length > 0 && props.data === "file") {
-      const upLoadFile = async data => {
-        if (acceptedFiles.length > 0) {
-          setProgressBar(true);
+        case "photo": {
+          (async files => {
+            let file = new FormData();
+            file.append("imageFile", files[0]);
+            const imageData = await API.uploadImage(file);
+            if (imageData) {
+              updateProfilePicture(imageData);
+            }
+          })(acceptedFiles);
+          break;
         }
-        let file = new FormData();
-        file.append("documentFile", data[0]);
-        const fileData = await API.upLoadFile(file);
-        if (fileData) {
-          updateProfileResume(fileData);
+
+        case "coverletter": {
+          const upLoadFile = async files => {
+            if (acceptedFiles.length > 0) {
+              setProgressBar(true);
+            }
+            let file = new FormData();
+            file.append("documentFile", files[0]);
+            const fileData = await API.upLoadFile(file);
+            if (fileData) {
+              updateProfileCoverletter(fileData);
+            }
+          };
+          setIsUpdated(true);
+          upLoadFile(acceptedFiles);
+          break;
         }
-      };
-      setIsUpdated(true);
-      upLoadFile(acceptedFiles);
-    } else if (acceptedFiles.length > 0 && props.data === "coverletter") {
-      const upLoadFile = async data => {
-        if (acceptedFiles.length > 0) {
-          setProgressBar(true);
+        default: {
+          const upLoadFile = async files => {
+            if (acceptedFiles.length > 0) {
+              setProgressBar(true);
+            }
+            let file = new FormData();
+            file.append("documentFile", files[0]);
+            const fileData = await API.upLoadFile(file);
+            if (fileData) {
+              updateProfileResume(fileData);
+            }
+          };
+          setIsUpdated(true);
+          upLoadFile(acceptedFiles);
         }
-        let file = new FormData();
-        file.append("documentFile", data[0]);
-        const fileData = await API.upLoadFile(file);
-        if (fileData) {
-          updateProfileCoverletter(fileData);
-        }
-      };
-      setIsUpdated(true);
-      upLoadFile(acceptedFiles);
+      }
     }
-  }, [acceptedFiles, props.data,
-    setIsUpdated, setProgressBar, updateProfileCoverletter,
-    updateProfilePicture, updateProfileResume
-  ]);
+
+  }, [acceptedFiles, props.data, getPhotoPictureUrl, props.uploadedAvatar, setIsUpdated, setProgressBar, updateProfileCoverletter, updateProfilePicture, updateProfileResume]);
 
   let style =
     props.size === "small"
@@ -183,3 +200,10 @@ export default function Accept({ avatar, ...props }) {
     </Grid>
   );
 }
+
+Accept.propTypes = {
+  data: PropTypes.string.isRequired,
+  helpers: PropTypes.shape({
+    getPhotoPictureUrl: PropTypes.func
+  })
+};

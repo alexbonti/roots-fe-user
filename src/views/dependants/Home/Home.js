@@ -148,8 +148,8 @@ const Home = () => {
             aria-label="full width tabs example"
             style={{ marginTop: 0, height: "58px" }}
           >
-            <Tab label="Jobs" {...a11yProps(0)} className={classes.tab} />
-            <Tab label="News" {...a11yProps(1)} className={classes.tab} />
+            <Tab label="News" {...a11yProps(0)} className={classes.tab} />
+            <Tab label="Jobs" {...a11yProps(1)} className={classes.tab} />
             <Tab label="Resources" {...a11yProps(2)} className={classes.tab} />
           </Tabs>
         </AppBar>
@@ -158,15 +158,16 @@ const Home = () => {
           index={value}
           onChangeIndex={handleChangeIndex}
         > */}
+
         <TabPanel value={value} index={0} dir={theme.direction}>
+          <ListNews />
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
           <FullListJobs
             data={oppData}
             savedJobs={listSavedJobs}
             searchSetting={searchSettings}
           />
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
-          <ListNews />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
           <FullListResources />

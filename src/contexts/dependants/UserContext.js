@@ -1,5 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { API } from "helpers";
 
 export const UserContext = createContext();
 
@@ -15,12 +16,25 @@ export const UserProvider = props => {
   const [coverLetterUrl, setCoverLetterUrl] = useState("");
   const [isEditMode, setIsEditMode] = useState({ status: false, id: "" });
   const [isEditGeneralProfile, setIsEditGeneralProfile] = useState(false);
+  const [userProfileSetupComplete, setUserProfileSetupComplete] = useState();
 
   const [isAddMode, setIsAddMode] = useState(false);
   const [preferredIndustry, setPreferredIndustry] = useState([]);
   const [skills, setSkills] = useState([]);
   const [certificates, setCertificates] = useState([]);
   const { children } = props;
+
+  useEffect(() => {
+    (async () => {
+      const response = await API.getUserProfile();
+      if (response.success) {
+        if (response?.response?.userProfileSetupComplete) {
+          return setUserProfileSetupComplete(true);
+        }
+        setUserProfileSetupComplete(false);
+      }
+    })();
+  }, []);
 
   return (
     <UserContext.Provider
@@ -52,7 +66,9 @@ export const UserProvider = props => {
         isEditGeneralProfile,
         setIsEditGeneralProfile,
         certificates,
-        setCertificates
+        setCertificates,
+        userProfileSetupComplete,
+        setUserProfileSetupComplete
       }}
     >
       {children}

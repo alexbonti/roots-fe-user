@@ -60,23 +60,10 @@ const OnBoarding = () => {
 
   useEffect(() => {
     if (loginStatus) {
-      const triggerAPI = async () => {
-        const data = {
-          avatar: "string",
-          preferredLocation: "",
-          skills: [],
-          preferredIndustry: [],
-          resumeURL: "",
-          coverLetter: "",
-        };
+      (async () => {
         const profileData = await API.getUserProfile(accessToken);
-        if (profileData) {
-          setUserProfile(profileData.response);
-        }
-
-        await API.updateUserPreferences(data);
-      };
-      triggerAPI(accessToken);
+        if (profileData) setUserProfile(profileData.response);
+      })();
     }
   }, [accessToken, loginStatus, setUserProfile]);
 
@@ -106,9 +93,7 @@ const OnBoarding = () => {
         {activeStep === steps.length - 1 ? "Finish" : "Continue"}
       </Button>
     </Grid>
-  ) : (
-      ""
-    );
+  ) : null;
 
   //--------------------------------------------------------------
   function getStepContent(stepIndex) {
@@ -150,60 +135,58 @@ const OnBoarding = () => {
   const mainContent =
     activeStep > 2 ? (
       <EndOnBoarding />
-    ) : (
-        <>
-          <Grid container className={classes.topper} alignItems="flex-end">
-            <Button onClick={handleBack} className={classes.backButton} disabled={buttonStatusDisabled}>
-              {"<"} Back
+    ) :
+      <>
+        <Grid container className={classes.topper} alignItems="flex-end">
+          <Button onClick={handleBack} className={classes.backButton} disabled={buttonStatusDisabled}>
+            {"<"} Back
           </Button>
-          </Grid>
+        </Grid>
 
-          <Grid
-            container
-            item
-            xs={12}
-            justify="center"
-            alignItems="center"
-            style={{ height: "15vh", backgroundColor: "rgb(234, 244, 246)" }}
-          >
-            <Grid item xs={11}>
-              <Typography variant="h6">
-                Welcome, {userProfile.first_name}. <br />
-              Let's get your profile ready.
+        <Grid
+          container
+          item
+          xs={12}
+          justify="center"
+          alignItems="center"
+          style={{ height: "15vh", backgroundColor: "rgb(234, 244, 246)" }}
+        >
+          <Grid item xs={11}>
+            <Typography variant="h6">
+              Welcome, {userProfile.first_name}. <br />
+              Let&apos;s get your profile ready.
             </Typography>
-            </Grid>
           </Grid>
-          <Grid
+        </Grid>
+        <Grid
+          style={{
+            height: "5vh",
+            width: "100vw",
+            position: "relative",
+            top: "-13px"
+          }}
+        >
+          <Stepper
+            activeStep={activeStep}
+            alternativeLabel
             style={{
-              height: "5vh",
-              width: "100vw",
-              position: "relative",
-              top: "-13px"
+              backgroundColor: "transparent",
+              padding: "unset",
             }}
           >
-            <Stepper
-              activeStep={activeStep}
-              alternativeLabel
-              style={{
-                backgroundColor: "transparent",
-                padding: "unset",
-              }}
-            >
-              <Step>
-                <StepLabel></StepLabel>
-              </Step>
-              <Step>
-                <StepLabel></StepLabel>
-              </Step>
-              <Step>
-                <StepLabel></StepLabel>
-              </Step>
-            </Stepper>
-          </Grid>
-          {getStepContent(activeStep)}
-        </>
-      );
-
+            <Step>
+              <StepLabel></StepLabel>
+            </Step>
+            <Step>
+              <StepLabel></StepLabel>
+            </Step>
+            <Step>
+              <StepLabel></StepLabel>
+            </Step>
+          </Stepper>
+        </Grid>
+        {getStepContent(activeStep)}
+      </>;
 
   return <>{mainContent}</>;
 };

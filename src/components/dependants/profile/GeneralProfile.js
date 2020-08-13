@@ -31,8 +31,7 @@ export const GeneralProfile = ({ data }) => {
       <Grid item container justify="flex-start" alignItems="center" spacing={1} xs={12}>
         <Grid item xs={4} md={1}>
           <Avatar src={ImageAvatar} alt="avatar" style={{
-            width: "fit-content",
-            height: "auto",
+            width: "100px", height: "100px"
           }} />
         </Grid>
         <Grid item xs={7} md={10} >

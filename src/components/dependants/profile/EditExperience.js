@@ -76,10 +76,9 @@ export const EditExperience = props => {
 
   const [newPositionName, setNewPositionName] = useState(positionTitle);
   const [newCompanyName, setNewCompanyName] = useState(companyName);
- 
+
 
   const [newReferee, setNewReferee] = useState(referee);
-  const [dataToSendToComp, setDataToSendToComp] = useState(props.data);
 
   const handleDateChange = date => {
     setSelectedStartDate(date);
@@ -127,7 +126,7 @@ export const EditExperience = props => {
           "startDate": selectedStartDate,
           "endDate": selectedEndDate,
           "description": description,
-          "referee": {name: newReferee.name, phoneNumber: newReferee.phoneNumber.toString()}
+          "referee": { name: newReferee.name, phoneNumber: newReferee.phoneNumber.toString() }
         };
       } else {
         data = {
@@ -137,22 +136,13 @@ export const EditExperience = props => {
           "startDate": selectedStartDate,
           "endDate": selectedEndDate,
           "description": workExperience,
-          "referee": {name: newReferee.name, phoneNumber: newReferee.phoneNumber.toString()}
+          "referee": { name: newReferee.name, phoneNumber: newReferee.phoneNumber.toString() }
         };
       }
-
-      setDataToSendToComp({
-        companyName: newCompanyName,
-        description: workExperience,
-        endDate: selectedEndDate,
-        startDate: selectedStartDate,
-        positionTitle: newPositionName,
-      });
-
       const workExpApiData = await API.editWorkExperience(data);
       if (workExpApiData) {
         notify(" Work Experience edited successfully");
-        setIsUpdated(false);
+        setIsUpdated(true);
         setIsEditModeOn(false);
       }
     };
@@ -261,7 +251,7 @@ export const EditExperience = props => {
                   fullWidth
                   defaultValue={referee.name}
                   onChange={event => {
-                    setNewReferee({name: event.target.value, phoneNumber: newReferee.phoneNumber});
+                    setNewReferee({ name: event.target.value, phoneNumber: newReferee.phoneNumber });
                   }}
                 />
               </Grid>
@@ -271,7 +261,7 @@ export const EditExperience = props => {
                   defaultValue={referee.phoneNumber}
                   fullWidth
                   onChange={event => {
-                    setNewReferee({phoneNumber: event.target.value, name: newReferee.name });
+                    setNewReferee({ phoneNumber: event.target.value, name: newReferee.name });
                   }}
                 />
               </Grid>
@@ -335,5 +325,5 @@ export const EditExperience = props => {
     </>
   ) : "";
 
-  return isEditModeOn ? content : <Experience data={dataToSendToComp} />;
+  return isEditModeOn ? content : <Experience data={props.data} />;
 };
