@@ -28,7 +28,7 @@ export const UserProvider = props => {
 
   useEffect(() => {
     (async () => {
-      if (loginStatus) {
+      if (loginStatus===true) {
         const response = await API.getUserProfile();
         if (response.success) {
           if (response?.response?.userProfileSetupComplete) {
