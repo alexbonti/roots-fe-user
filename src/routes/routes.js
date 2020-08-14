@@ -65,8 +65,8 @@ export const AppRoutes = props => {
         path="/login"
         render={() =>
           !redirectToLogin ?
-            <Redirect to={{ pathname: "/home" }} {...props} /> :
-            userOnboardingStatusCheck(<Login {...props} />)
+            userOnboardingStatusCheck(<Redirect to={{ pathname: "/home" }} {...props} />) :
+            <Login {...props} />
         }
       />
       <Route
