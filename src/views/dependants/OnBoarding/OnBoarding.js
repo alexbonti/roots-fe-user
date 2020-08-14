@@ -98,16 +98,11 @@ const OnBoarding = () => {
   //--------------------------------------------------------------
   function getStepContent(stepIndex) {
     switch (stepIndex) {
-      case 0:
-        return startContent;
-      case 1:
-        return industryContent;
-      case 2:
-        return <AvatarPictureUpload />;
-      case 3:
-        return <EndOnBoarding />;
-      default:
-        return "Sorry wrong page!";
+      case 0: return startContent;
+      case 1: return industryContent;
+      case 2: return <AvatarPictureUpload />;
+      case 3: return <EndOnBoarding />;
+      default: return "Sorry wrong page!";
     }
   }
   //-------------------content------------------------------------
