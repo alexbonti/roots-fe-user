@@ -17,7 +17,7 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@material-ui/core/styles";
-import Image from "../../../helpers/img/Hands.svg";
+import Image from "../../../helpers/img/Root-logo2.png";
 
 let theme = createMuiTheme({
   palette: {
@@ -157,7 +157,7 @@ export const Login = () => {
                 <img
                   src={Image}
                   alt="logo"
-                  style={{ height: "100%", width: "100%" }}
+                  style={{ height: "100%", width: "100%",padding:'5px',paddingBottom:'-30px' }}
                 />
               </Grid>
             </Grid>
@@ -241,7 +241,7 @@ export const Login = () => {
                 item
                 xs={10}
                 sm={8}
-                style={{ paddingTop: "2vh", paddingBottom: "51.3px" }}
+                style={{ paddingTop: "2vh", paddingBottom: "41.3px" }}
               >
                 <Button
                   fullWidth

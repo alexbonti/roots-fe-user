@@ -7,7 +7,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import { TemporaryDrawer } from "../index";
 import { UserContext } from "contexts/index";
 import FallBackAvatar from "../../helpers/img/man.svg";
-import Logo from "../../helpers/img/favicon.png";
+import Logo from "../../helpers/img/Root_logo_white.png";
 
 const drawerWidth = 240;
 
@@ -140,8 +140,13 @@ export const Header = () => {
 
           <Grid item xs={6} container justify="center" alignItems="center">
             <Grid item xs={3} align="right" style={{ margin: "0 -4px", marginLeft: "8vw" }}>
-              <Avatar src={Logo} style={{ transform: "scale(.7)", margin: "0 2px" }} />
+              <img
+              src={Logo}
+              alt="logo"
+              style={{ height: "41px"}}
+            />
             </Grid>
+          
             <Grid item xs={6}>
               <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                 <Typography
@@ -151,7 +156,6 @@ export const Header = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  MECHID
                 </Typography>
               </Link>
             </Grid>
