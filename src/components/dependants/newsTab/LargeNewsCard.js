@@ -3,6 +3,7 @@ import { Typography, Grid } from "@material-ui/core/";
 import { Spinner } from "components";
 import { HomeContext } from "contexts";
 import PropTypes from "prop-types";
+import { TextHelper } from "helpers/index"
 
 export const LargeNewsCard = (props) => {
   const { setDetailsNews, setIsFullViewNews } = React.useContext(HomeContext);
@@ -28,13 +29,13 @@ export const LargeNewsCard = (props) => {
           </Grid>
           <Grid item xs={11}>
             <Typography variant="h5" style={{ fontSize: 14 }}>
-              {newsData?.datePublished.substring(0, 10)}
+              {TextHelper.formatToD_MMMM_YYYY(newsData?.datePublished)}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography
               variant="body1"
-              dangerouslySetInnerHTML={{ __html: newsData?.content.substring(0, 150) }}
+              dangerouslySetInnerHTML={{ __html: TextHelper.truncate({ content: newsData?.content, words: 150 }) }}
             >
             </Typography>
             <Typography>...</Typography>

@@ -1,10 +1,12 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { API } from "helpers";
+import { LoginContext } from "contexts/common/LoginContext";
 
 export const UserContext = createContext();
 
 export const UserProvider = props => {
+  const { loginStatus } = useContext(LoginContext)
 
   const [userName, setUserName] = useState("");
   const [userLastName, setUserLastName] = useState("");
@@ -26,16 +28,18 @@ export const UserProvider = props => {
 
   useEffect(() => {
     (async () => {
-      const response = await API.getUserProfile();
-      if (response.success) {
-        if (response?.response?.userProfileSetupComplete) {
-          return setUserProfileSetupComplete(true);
-        }
-        setUserProfileSetupComplete(false);
-      } else if (response.success === false)
-        return setUserProfileSetupComplete(false);
+      if (loginStatus) {
+        const response = await API.getUserProfile();
+        if (response.success) {
+          if (response?.response?.userProfileSetupComplete) {
+            return setUserProfileSetupComplete(true);
+          }
+          setUserProfileSetupComplete(false);
+        } else if (response.success === false)
+          return setUserProfileSetupComplete();
+      }
     })();
-  }, []);
+  }, [loginStatus]);
 
   return (
     <UserContext.Provider

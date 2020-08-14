@@ -45,7 +45,7 @@ export const ListNews = () => {
           "numberOfRecords": 0,
         };
         const allNewsData = await API.getNews(data);
-        if (allNewsData) {
+        if (allNewsData.success) {
           setNewsArray(allNewsData?.response);
         }
       };
@@ -53,16 +53,15 @@ export const ListNews = () => {
     }
   }, [loginStatus]);
 
-  if (newsArray === undefined) return <Spinner />;
-
+  if (newsArray === undefined || newsArray) return <Spinner />;
   const content = isFullViewNews ?
     <ThemeProvider theme={theme}>
       <NewsFullView data={detailsNews} />
     </ThemeProvider>
     :
     <ThemeProvider theme={theme}>
-      <LargeNewsCard data={newsArray[0]} />
-      {newsArray.length > 0 && <Grid container spacing={2}>
+      <LargeNewsCard data={Array.isArray(newsArray) ? newsArray[0] : []} />
+      {Array.isArray(newsArray) && newsArray.length > 0 && <Grid container spacing={2}>
         {newsArray.map((news, i, array) => {
           if (i === 0) return null;
           if (i === array.length - 1)
