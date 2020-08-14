@@ -32,7 +32,8 @@ export const UserProvider = props => {
           return setUserProfileSetupComplete(true);
         }
         setUserProfileSetupComplete(false);
-      }
+      } else if (response.success === false)
+        return setUserProfileSetupComplete(false);
     })();
   }, []);
 
