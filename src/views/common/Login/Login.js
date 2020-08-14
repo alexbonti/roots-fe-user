@@ -28,71 +28,74 @@ let theme = createMuiTheme({
 
 theme = responsiveFontSizes(theme);
 
-const useStyles = makeStyles(theme => ({
-  "@global": {
-    body: {
-      backgroundColor: theme.palette.common.dark,
-    },
-  },
-  header: {
-    paddingBottom: "1vh ",
-  },
-  footer: {
-    backgroundColor: "#363635",
-    color: "#f0f0f0",
-    fontSize: ".3rem",
-  },
-
-  creator: {
-    fontSize: ".7rem",
-    padding: ".5rem",
-  },
-
-  divider: {
-    border: "1px solid #FFD923",
-    width: "65%",
-    marginLeft: "10%",
-  },
-
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  secondaryText: {
-    color: "white",
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  buttons: {
-    color: "white",
-    borderRadius: "25px",
-    border: "1px solid #087b94",
-    backgroundColor: "#087b94 !important",
-    height: "55px",
-    boxShadow: "none",
-  },
-  buttonRegister: {
-    color: "#087b94",
-    borderRadius: "25px",
-    border: "2px solid #087b94",
-    backgroundColor: "white",
-    height: "55px",
-    boxShadow: "none",
-  },
-  developMessage: {},
-  inputText: {
-    ".MuiInput-underline:after": {
-      borderBottom: "2px solid green",
-    },
-  },
-}));
 
 export const Login = () => {
+  const useStyles = makeStyles(theme => ({
+    "@global": {
+      body: {
+        backgroundColor: theme.palette.common.dark,
+      },
+    },
+    header: {
+      paddingBottom: "1vh ",
+    },
+    footer: {
+      backgroundColor: "#363635",
+      color: "#f0f0f0",
+      fontSize: ".3rem",
+    },
+
+    creator: {
+      fontSize: ".7rem",
+      padding: ".5rem",
+    },
+
+    divider: {
+      border: "1px solid #FFD923",
+      width: "65%",
+      marginLeft: "10%",
+    },
+
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    secondaryText: {
+      color: "white",
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+    buttons: {
+      color: "white",
+      borderRadius: "25px",
+      border: "1px solid #087b94",
+      backgroundColor: "#087b94 !important",
+      height: "55px",
+      boxShadow: "none",
+    },
+    buttonRegister: {
+      color: "#087b94",
+      borderRadius: "25px",
+      border: "2px solid #087b94",
+      backgroundColor: "white",
+      height: "55px",
+      boxShadow: "none",
+    },
+    developMessage: {},
+    inputText: {
+      ".MuiInput-underline:after": {
+        borderBottom: "2px solid green",
+      },
+    },
+  }));
+
   const classes = useStyles();
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const { devMode, loginStatus, setAccessToken } = useContext(LoginContext);
+
+
 
   const performLogin = async () => {
     const data = {
@@ -134,21 +137,21 @@ export const Login = () => {
   };
 
   let content = (
-    <div style={{display: "flex", justifyContent: "center"}}>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <ThemeProvider theme={theme}>
-        <Grid container justify="center" alignItems="center"item xs={12} md={4}>
+        <Grid container justify="center" alignItems="center" item xs={12}>
           <Grid
             container
             item
             justify="center"
             alignItems="center"
             className={classes.header}
-            xs={12} 
+            xs={12}
+            md={4}
           >
             <Grid
               item
               xs={12}
-
               container
               justify="center"
               alignItems="center"
@@ -168,7 +171,7 @@ export const Login = () => {
             alignItems="flex-start"
             className={classes.body}
           >
-            <Grid className={classes.loginBox} item xs={10} container>
+            <Grid className={classes.loginBox} item xs={12} style={{ padding: "0 10vw" }}>
               <form noValidate>
                 <TextField
                   margin="normal"

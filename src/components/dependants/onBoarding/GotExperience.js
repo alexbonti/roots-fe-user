@@ -5,7 +5,7 @@ import { Typography, Grid, TextField, Checkbox } from "@material-ui/core/";
 import { OnBoardingContext } from "contexts/index";
 import { API } from "helpers";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   rootMain: {
     backgroundColor: "white",
     padding: "5vh 0",
@@ -48,8 +48,6 @@ export const GotExperience = () => {
     setEndDate,
     endDate
   } = useContext(OnBoardingContext);
-  const [, setLat] = useState("");
-  const [, setLong] = useState("");
 
   const autoFill = async event => {
     setInputPosition(event.target.value);
@@ -65,14 +63,9 @@ export const GotExperience = () => {
     setIsStart(true);
   };
 
-  const getLongLat = async input => {
-    const data = await API.getLatLong(input.locationId);
-    setLat(data.response.latitude);
-    setLong(data.response.longitude);
-  };
 
   const handleChange = event => {
-    setEndDate(`${new Date().getFullYear()} ${new Date().getMonth()+1} ${new Date().getDate()}`);
+    setEndDate(`${new Date().getFullYear()} ${new Date().getMonth() + 1} ${new Date().getDate()}`);
     setChecked(event.target.checked);
   };
 
@@ -159,7 +152,7 @@ export const GotExperience = () => {
               />
             </Grid>
           </Grid>
-          <Grid item xs={11} container  alignItems="center">
+          <Grid item xs={11} container alignItems="center">
             <Grid xs={6}>
               <Typography className={classes.textField}>
                 Currently working here
@@ -174,12 +167,11 @@ export const GotExperience = () => {
               />
             </Grid>
           </Grid>
-
           <Grid item xs={11} style={{ padding: "120px 0 0 0" }}>
             <Typography
               style={{
                 fonstSize: "16px",
-                fontFamily: `"Arial", "Helvetica", sans-serif`,
+                fontFamily: "\"Arial\", \"Helvetica\", sans-serif",
                 fontWeight: "bold",
               }}
             >
@@ -204,8 +196,8 @@ export const GotExperience = () => {
               />
               <div>
                 {positionSuggestions !== null &&
-                positionSuggestions !== undefined &&
-                positionSuggestions !== "" ? (
+                  positionSuggestions !== undefined &&
+                  positionSuggestions !== "" ?
                   <div className={classes.suggestion}>
                     {positionSuggestions.map(suggestion => {
                       return (
@@ -214,7 +206,6 @@ export const GotExperience = () => {
                           onClick={event => {
                             event.preventDefault();
                             setSuggestions(event);
-                            getLongLat(suggestion);
                           }}
                         >
                           {suggestion.label.substring(16, suggestion.label.lenght)}
@@ -222,9 +213,7 @@ export const GotExperience = () => {
                       );
                     })}
                   </div>
-                ) : (
-                  ""
-                )}
+                  : null}
               </div>
               <div />
             </div>

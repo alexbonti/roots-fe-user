@@ -155,21 +155,16 @@ export const EditExperience = props => {
   };
 
   //EDIT FORM
-  const content = referee !== undefined ? (
+  const content = (
     <>
       <ThemeProvider theme={theme}>
         <Grid container justify="center">
-          <Grid
-            item
-            container
-            justify="space-between"
-            xs={12}
+          <Grid item container justify="space-between" xs={12}
             style={{
               backgroundColor: "rgba(255, 129, 0, 0.21)",
               height: "8vh",
               padding: "2vh",
-            }}
-          >
+            }} >
             <Grid item>
               <Typography variant="h6">Edit</Typography>
             </Grid>
@@ -249,7 +244,7 @@ export const EditExperience = props => {
                 <TextField
                   placeholder="Name"
                   fullWidth
-                  defaultValue={referee.name}
+                  defaultValue={referee?.name || ""}
                   onChange={event => {
                     setNewReferee({ name: event.target.value, phoneNumber: newReferee.phoneNumber });
                   }}
@@ -258,7 +253,7 @@ export const EditExperience = props => {
               <Grid xs={12} item style={{ padding: "2vh 0" }}>
                 <TextField
                   placeholder="Contact number"
-                  defaultValue={referee.phoneNumber}
+                  defaultValue={referee?.phoneNumber || ""}
                   fullWidth
                   onChange={event => {
                     setNewReferee({ phoneNumber: event.target.value, name: newReferee.name });
@@ -323,7 +318,7 @@ export const EditExperience = props => {
         </Grid>
       </ThemeProvider>
     </>
-  ) : "";
+  );
 
   return isEditModeOn ? content : <Experience data={props.data} />;
 };

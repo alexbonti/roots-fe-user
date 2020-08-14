@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
+import { withRouter } from "react-router-dom";
 import { makeStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import { Typography, Grid, Button, Avatar, Badge } from "@material-ui/core/";
+import { Typography, Grid, Button, Avatar, Badge, Link } from "@material-ui/core/";
 import MyDropzone from "../DropDrag";
 import { OnBoardingContext, LoginContext, UserContext } from "contexts";
-import { API } from "helpers";
+import { API } from "helpers/index";
 
 //TODO add type controls check on files uploading
 
@@ -41,7 +42,7 @@ const theme = createMuiTheme({
   },
 });
 
-export const AvatarPictureUpload = () => {
+export const AvatarPictureUpload = withRouter((props) => {
   const classes = useStyles();
   const [uploadedAvatar, setuploadedAvatar] = useState();
 
@@ -82,7 +83,7 @@ export const AvatarPictureUpload = () => {
       }
 
       let userPreferencesData = {
-        avatar: uploadedAvatar,
+        avatar: uploadedAvatar || "",
         preferredLocation: location,
         skills: [],
         coverLetter: "",
@@ -180,11 +181,15 @@ export const AvatarPictureUpload = () => {
           {confirmButton}
           <Grid item>
             <Typography variant="body2">
-              You can always do it <a href="/">later</a>
+              You can always do it <Link style={{ cursor: "pointer" }} onClick={() => {
+                API.skipUserOnboarding(() => {
+                  props.history.push("/");
+                });
+              }} to="/">later</Link>
             </Typography>
           </Grid>
         </Grid>
       </ThemeProvider>
     </>
   );
-};
+});

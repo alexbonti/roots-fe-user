@@ -22,11 +22,12 @@ export const NewsCard = ({ data, displayDivider }) => {
   let card = (<Grid item container justify="center" spacing={1} onClick={() => openFullNews()}>
     <Grid item xs={4} md={2} style={{ maxHeight: "100px", overflow: "hidden" }}>
       <Image src={imageURL} alt={title} style={{
-        objectFit: "cover"
+        objectFit: "cover",
+
       }} />
     </Grid>
     <Grid container
-      style={{ maxHeight: "120px", overflow: "hidden" }}
+
       item xs={8} md={10}
     >
       <Grid item xs={12}>
@@ -34,12 +35,13 @@ export const NewsCard = ({ data, displayDivider }) => {
           {TextHelper.titleCase(title)}
         </Typography>
       </Grid>
-      <Grid item xs={12} style={{ maxHeight: "55px", overflow: "hidden" }}>
-        <Typography variant="caption" >{TextHelper.truncate({ content: content, words: 20 })}</Typography>
-      </Grid>
       <Grid item xs={12}>
         <Typography variant="body1"> {TextHelper.formatToD_MMMM_YYYY(datePublished)}  </Typography>
       </Grid>
+      <Grid item xs={12}>
+        <Typography variant="caption" >{TextHelper.truncate({ content: TextHelper.removeHTMLTags(content), words: 20 })}</Typography>
+      </Grid>
+
 
     </Grid>
     {

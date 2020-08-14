@@ -22,7 +22,7 @@ export const FullListSavedJobs = props => {
   const { isFullViewSaved, jobId } = useContext(HomeContext);
 
   const findSingleJobData = id => {
-    if (Array.isArray(props.data)  && props.data.length > 0) {
+    if (Array.isArray(props.data) && props.data.length > 0) {
       let selectedJob = props.data.filter(job => job._id === id);
       return selectedJob[0];
     }
@@ -33,7 +33,7 @@ export const FullListSavedJobs = props => {
   let introMessage = props.data.length < 1 ? <Grid item xs={11}><Typography variant="h6" align="center">No saved jobs at the moment</Typography></Grid> : "";
 
 
-  let listOfJobs = Array.isArray(props.data)? (
+  let listOfJobs = Array.isArray(props.data) ? (
     <>
       <Grid container style={{ backgroundColor: "white" }} justify="center">
         {introMessage}
@@ -42,14 +42,12 @@ export const FullListSavedJobs = props => {
             let isSaved = props.savedJobs.includes(job._id);
             return isSaved ? (
               <JobSavedSmallCard key={job._id} data={job} savedStatus={isSaved} />
-            ) : (
-              ""
-            );
+            ) : null;
           })}
         </Grid>
       </Grid>{" "}
     </>
-  ) : (
+  ) :
     <Grid
       container
       alignItems="center"
@@ -60,16 +58,16 @@ export const FullListSavedJobs = props => {
         <Spinner />
       </Grid>
     </Grid>
-  );
+    ;
 
   let content =
-  isFullViewSaved &&
-    props.hasOwnProperty("data") &&
-    singleJobData !== undefined ? (
-      <JobFullView data={singleJobData} comingFromSavedSection={true} />
-    ) : (
-      listOfJobs
-    );
+    isFullViewSaved &&
+      props.hasOwnProperty("data") &&
+      singleJobData !== undefined ? (
+        <JobFullView data={singleJobData} comingFromSavedSection={true} />
+      ) : (
+        listOfJobs
+      );
   return (
     <>
       <ThemeProvider theme={theme}>{content}</ThemeProvider>

@@ -29,7 +29,7 @@ export const IndustrySelection = () => {
             <Typography
               style={{
                 fonstSize: "16px",
-                fontFamily: `"Arial", "Helvetica", sans-serif`,
+                fontFamily: "\"Arial\", \"Helvetica\", sans-serif",
                 fontWeight: "bold",
               }}
             >

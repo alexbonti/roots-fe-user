@@ -72,7 +72,7 @@ const Home = () => {
   const [value, setValue] = useState(0);
 
   //CONTEXT
-  const { listSavedJobs, setIsFullViewApplied, setListSavedJobs, setIsFullView } = useContext(
+  const { listSavedJobs, setIsFullViewApplied, setListSavedJobs, setIsFullView, setIsFullViewNews } = useContext(
     HomeContext
   );
   const {
@@ -89,6 +89,10 @@ const Home = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    setIsFullViewNews(false);
+  }, [setIsFullViewNews]);
 
   //API CALLS
   useEffect(() => {
