@@ -80,12 +80,26 @@ class TextHelper {
    * @param {String} data.content [Required] Content to truncate 
    * @param {Number} data.words [Optional] Max no of words 
    */
-  truncate({ content, words = 160 }) {
+  truncate({ content, words = 160, addDots = false }) {
     if (content === undefined) return "";
+    let truncatedContent;
     if (content instanceof String)
-      return content.split(" ").splice(0, words).join(" ");
-    return String(content).split(" ").splice(0, words).join(" ");
+      truncatedContent = content.split(" ").splice(0, words).join(" ");
+    truncatedContent = String(content).split(" ").splice(0, words).join(" ");
+    if (addDots) return truncatedContent + "...";
+    return truncatedContent;
+  }
 
+  /**
+   * @description Remove HTML Tags from a string
+   * @param {String} str 
+   */
+  removeHTMLTags(str) {
+    if ((str === null) || (str === ""))
+      return false;
+    else
+      str = str.toString();
+    return str.replace(/(<([^>]+)>)/ig, "");
   }
 }
 

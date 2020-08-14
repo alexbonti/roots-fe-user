@@ -38,8 +38,8 @@ export const ListNews = () => {
   const { detailsNews, isFullViewNews } = React.useContext(HomeContext);
 
   useEffect(() => {
-    if (loginStatus) {
-      const triggerAPI = async () => {
+    if (loginStatus)
+      (async () => {
         let data = {
           "category": "",
           "numberOfRecords": 0,
@@ -48,12 +48,11 @@ export const ListNews = () => {
         if (allNewsData.success) {
           setNewsArray(allNewsData?.response);
         }
-      };
-      triggerAPI();
-    }
+      })();
+
   }, [loginStatus]);
 
-  if (newsArray === undefined || newsArray) return <Spinner />;
+  if (newsArray === undefined || !Array.isArray(newsArray)) return <Spinner />;
   const content = isFullViewNews ?
     <ThemeProvider theme={theme}>
       <NewsFullView data={detailsNews} />

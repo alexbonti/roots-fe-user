@@ -630,6 +630,20 @@ class API {
       performCallback(callback, response.data.data);
     }).catch(error => errorHelper(error));
   }
+
+  /**
+   * @author Sanchit Dang
+   * @description Skip User Onboarding process
+   * @param {Function} callback 
+   */
+  skipUserOnboarding(callback) {
+    axiosInstance.put("/user/skipUserOnboarding", {}, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }
+    }).then((response) => performCallback(callback, response)).catch(error => errorHelper(error));
+
+  }
 }
 
 const instance = new API();
