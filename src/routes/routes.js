@@ -1,7 +1,7 @@
 /***
  *  Created by Sanchit Dang
  ***/
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { LoginContext } from "contexts";
 import {
@@ -22,7 +22,6 @@ import { Spinner } from "components/index";
 export const AppRoutes = props => {
   const { loginStatus } = useContext(LoginContext);
   const { userProfileSetupComplete } = useContext(UserContext);
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   const userOnboardingStatusCheck = (node) => {
     if (userProfileSetupComplete === undefined)
@@ -32,17 +31,13 @@ export const AppRoutes = props => {
     return node;
   };
 
-  useEffect(() => {
-    if (loginStatus) setRedirectToLogin(false);
-    else setRedirectToLogin(true);
-  }, [loginStatus]);
   return (
     <Switch>
       <Route
         exact
         path="/"
         render={() =>
-          redirectToLogin ? (
+          loginStatus ? (
             <Redirect to={{ pathname: "/login" }} {...props} />
           ) :
             userOnboardingStatusCheck(<Redirect to={{ pathname: "/home" }} {...props} />)
@@ -64,7 +59,7 @@ export const AppRoutes = props => {
         exact
         path="/login"
         render={() =>
-          !redirectToLogin ?
+          loginStatus ?
             userOnboardingStatusCheck(<Redirect to={{ pathname: "/home" }} {...props} />) :
             <Login {...props} />
         }
@@ -73,7 +68,7 @@ export const AppRoutes = props => {
         exact
         path="/register"
         render={() =>
-          !redirectToLogin ? (
+          loginStatus ? (
             userOnboardingStatusCheck(<Redirect to={{ pathname: "/home" }} {...props} />)
           ) :
             <Register {...props} />
@@ -84,7 +79,7 @@ export const AppRoutes = props => {
           exact
           path="/home"
           render={() =>
-            redirectToLogin ?
+            !loginStatus ?
               <Redirect to={{ pathname: "/login" }} {...props} />
               : userOnboardingStatusCheck(<Home {...props} />)
           }
@@ -99,7 +94,7 @@ export const AppRoutes = props => {
         <Route
           exact
           path="/registerEnd"
-          render={() => redirectToLogin ? (
+          render={() => !loginStatus ? (
             <Redirect to={{ pathname: "/login" }} {...props} />
           ) :
             <RegisterSuccess {...props} />
@@ -110,7 +105,7 @@ export const AppRoutes = props => {
           exact
           path="/onboarding"
           render={() =>
-            redirectToLogin ? (
+            !loginStatus ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
             ) :
               <OnBoarding {...props} />
@@ -120,7 +115,7 @@ export const AppRoutes = props => {
           exact
           path="/profile"
           render={() =>
-            redirectToLogin ? (
+            !loginStatus ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
             ) :
               <Profile {...props} />
@@ -130,22 +125,21 @@ export const AppRoutes = props => {
           exact
           path="/jobs"
           render={() =>
-            redirectToLogin ? (
+            !loginStatus ? (
               <Redirect to={{ pathname: "/login" }} {...props} />
-            ) : (
-                <SavedAndAppliedJobs {...props} />
-              )
+            ) : <SavedAndAppliedJobs {...props} />
+
           }
         />
         <Route
           exact
           path="/search"
           render={() =>
-            redirectToLogin ? (
+            !loginStatus ?
               <Redirect to={{ pathname: "/login" }} {...props} />
-            ) : (
-                <SearchSettings {...props} />
-              )
+              :
+              <SearchSettings {...props} />
+
           }
         />
       </Layout>

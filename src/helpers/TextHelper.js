@@ -43,6 +43,7 @@ class TextHelper {
   * @returns {Boolean} isEmailValid
   */
   validateEmail(email) {
+    if (email === undefined) return false;
     var pattern = new RegExp("^(https?:\\/\\/)?" +
       "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
       "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
@@ -58,6 +59,7 @@ class TextHelper {
    * @returns {String} Formatted date
    */
   formatToD_MMMM_YYYY(date) {
+    if (date === undefined) return "";
     return moment(date).format("D MMMM YYYY");
   }
 
@@ -67,6 +69,7 @@ class TextHelper {
    * @returns {String} Formatted date
    */
   formatToMMMM_YYYY(date) {
+    if (date === undefined) return "";
     return moment(date).format("MMMM YYYY");
   }
 
@@ -78,6 +81,7 @@ class TextHelper {
    * @param {Number} data.words [Optional] Max no of words 
    */
   truncate({ content, words = 160 }) {
+    if (content === undefined) return "";
     if (content instanceof String)
       return content.split(" ").splice(0, words).join(" ");
     return String(content).split(" ").splice(0, words).join(" ");
