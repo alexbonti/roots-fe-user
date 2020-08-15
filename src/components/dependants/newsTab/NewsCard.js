@@ -31,17 +31,26 @@ export const NewsCard = ({ data, displayDivider }) => {
       item xs={8} md={10}
     >
       <Grid item xs={12}>
-        <Typography style={{ fontSize: "16px", fontWeight: "600" }}>
+        <Typography style={{ fontSize: "14px", fontWeight: "600" }}>
           {TextHelper.titleCase(title)}
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="body1"> {TextHelper.formatToD_MMMM_YYYY(datePublished)}  </Typography>
+        <Typography variant="body1"
+         style={{
+           fontSize:"11px",
+          lineHeight:0.5
+        }}> {TextHelper.formatToD_MMMM_YYYY(datePublished)}  </Typography>
       </Grid>
-      <Grid item xs={12}>
-        <Typography variant="caption" >{TextHelper.truncate({ content: TextHelper.removeHTMLTags(content), words: 20 })}</Typography>
+      {<Grid item xs={12}>
+        <Typography variant="body1"
+        style={{
+          
+          lineHeight:1,
+        }}
+        >{TextHelper.truncate({ content: TextHelper.removeHTMLTags(content), words: 10 })} ...</Typography>
       </Grid>
-
+      }
 
     </Grid>
     {
