@@ -8,6 +8,9 @@ App {
   background-color: white !important;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
 
 
 .App-logo {
