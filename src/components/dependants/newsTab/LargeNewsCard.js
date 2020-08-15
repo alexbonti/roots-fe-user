@@ -19,7 +19,7 @@ export const LargeNewsCard = (props) => {
         <Grid item xs={12} md={7}>
           <img
             src={newsData?.imageURL}
-            alt={newsData?.title}
+            //alt={newsData?.title}
             style={{ width: "100%", height: "30vh" }}
           />
         </Grid>
