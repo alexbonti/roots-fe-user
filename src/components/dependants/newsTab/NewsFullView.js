@@ -66,7 +66,8 @@ export const NewsFullView = props => {
           />
         </Grid>
         <Grid item xs={11} style={{ padding: "1vh 0" }}>
-          <Typography variant="h6">{props.data.title}</Typography>
+          <Typography variant="h6"
+          style={{color:"black"}}>{props.data.title}</Typography>
         </Grid>
         <Grid item xs={11} style={{ padding: "1vh 0" }}>
           <Typography variant="body1">

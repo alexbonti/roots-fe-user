@@ -35,10 +35,10 @@ export const LargeNewsCard = (props) => {
           <Grid item xs={12}>
             <Typography
               variant="body1"
-              dangerouslySetInnerHTML={{ __html: TextHelper.truncate({ content: newsData?.content, words: 150 }) }}
+              dangerouslySetInnerHTML={{ __html: TextHelper.truncate({ content: newsData?.content, words: 50 }) }} 
             >
             </Typography>
-            <Typography>...</Typography>
+            <Typography><b>...Read more</b></Typography>
           </Grid>
         </Grid>
         <Grid item xs={12}>

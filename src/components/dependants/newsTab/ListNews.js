@@ -68,7 +68,8 @@ export const ListNews = () => {
           return <NewsCard key={news.title + i} data={news} displayDivider />;
         })}
       </Grid>
-      }</ThemeProvider>;
+      }
+      </ThemeProvider>;
 
 
   return content;
