@@ -140,13 +140,15 @@ export const Header = () => {
 
           <Grid item xs={6} container justify="center" alignItems="center">
             <Grid item xs={3} align="right" style={{ margin: "0 -4px", marginLeft: "8vw" }}>
-              <img
-              src={Logo}
-              alt="logo"
-              style={{ height: "41px"}}
-            />
+              <Link to="/">
+                <img
+                  src={Logo}
+                  alt="logo"
+                  style={{ height: "41px" }}
+                />
+              </Link>
             </Grid>
-          
+
             <Grid item xs={6}>
               <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                 <Typography
