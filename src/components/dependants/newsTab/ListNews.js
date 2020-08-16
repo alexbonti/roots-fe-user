@@ -3,9 +3,15 @@ import { NewsCard, LargeNewsCard, Spinner, } from "components";
 import { API } from "helpers/index";
 import { NewsFullView } from "components/index";
 import { HomeContext } from "contexts/index";
-import { createMuiTheme, Grid } from "@material-ui/core/";
+import { createMuiTheme, Grid, useMediaQuery, Container } from "@material-ui/core/";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { LoginContext } from "contexts";
+
+const DynamicContainer = ({ children }) => {
+  let isItDesktop = useMediaQuery('(min-width:600px) and (min-height:600px)');
+  if (isItDesktop) return <Container>{children}</Container>;
+  return children;
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -59,16 +65,19 @@ export const ListNews = () => {
     </ThemeProvider>
     :
     <ThemeProvider theme={theme}>
-      <LargeNewsCard data={Array.isArray(newsArray) ? newsArray[0] : []} />
-      {Array.isArray(newsArray) && newsArray.length > 0 && <Grid container spacing={2}>
-        {newsArray.map((news, i, array) => {
-          if (i === 0) return null;
-          if (i === array.length - 1)
-            return <NewsCard key={news.title + i} data={news} />;
-          return <NewsCard key={news.title + i} data={news} displayDivider />;
-        })}
-      </Grid>
-      }</ThemeProvider>;
+      <DynamicContainer>
+        <LargeNewsCard data={Array.isArray(newsArray) ? newsArray[0] : []} />
+        {Array.isArray(newsArray) && newsArray.length > 0 && <Grid container spacing={2}>
+          {newsArray.map((news, i, array) => {
+            if (i === 0) return null;
+            if (i === array.length - 1)
+              return <NewsCard key={news.title + i} data={news} />;
+            return <NewsCard key={news.title + i} data={news} displayDivider />;
+          })}
+        </Grid>
+        }
+      </DynamicContainer>
+    </ThemeProvider>;
 
 
   return content;
