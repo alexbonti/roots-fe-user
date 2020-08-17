@@ -12,6 +12,7 @@ import API from "../../../helpers/api";
 import { ThemeProvider } from "@material-ui/styles";
 import { Header } from "../../../components/dependants/Header";
 import { withRouter, Redirect } from "react-router-dom";
+import { TextHelper } from "helpers/index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,54 +89,44 @@ const Register = () => {
     triggerAPI();
   };
 
+
+  const resetErrors = () => {
+    setFirstNameErrorField(false);
+    setLastNameErrorField(false);
+    setEmailErrorField(false);
+    setPasswordErrorField(false);
+  };
+
   const validationCheck = () => {
-    if (firstName.length < 0 || firstName.length === 0) {
+    resetErrors();
+    if (firstName.length === 0) {
       setFirstNameErrorField(true);
-      return notify("first name field can not be empty");
-    } else {
-      setFirstNameErrorField(false);
+      return notify("First name can not be empty");
     }
-
-    if (lastName.length < 0 || lastName.length === 0) {
+    if (lastName.length === 0) {
       setLastNameErrorField(true);
-      return notify("last name field can not be empty");
-    } else {
-      setLastNameErrorField(false);
+      return notify("Last name field can not be empty");
     }
-
-    if (emailId.length < 0 || emailId === "") {
+    if (emailId.length === 0) {
       setEmailErrorField(true);
-      return notify("email field can not be empty");
-    } else {
-      setEmailErrorField(false);
+      return notify("EmailID can not be empty");
     }
-    if (password.length < 0 || confirmPassword.length < 0) {
+    if (password.length === 0 || confirmPassword.length === 0) {
       setPasswordErrorField(true);
-      return notify("Password field can not be empty");
-    } else {
-      setPasswordErrorField(false);
+      return notify("Passwords can not be empty");
     }
-
-    let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    let emailPatternTest = emailPattern.test(emailId);
-    if (!emailPatternTest) {
+    if (!TextHelper.validateEmail(emailId)) {
       setEmailErrorField(true);
-      notify("Please provide a rigth email address");
-    } else {
-      setEmailErrorField(false);
+      notify("Invalid Email");
     }
     if (password !== confirmPassword) {
       setPasswordErrorField(true);
       setPassword("");
       setConfirmPassword("");
       return notify("Passwords don't match.");
-    } else {
-      setPasswordErrorField(false);
     }
-    if (emailPatternTest) {
-      return registerUser();
-    }
+    return registerUser();
+
   };
 
   let content = redirect ? (
@@ -178,6 +169,7 @@ const Register = () => {
                 fullWidth
                 id="firstName"
                 label="First Name"
+                value={firstName}
                 name="firstName"
                 autoComplete="email"
                 onChange={(e) => setFirstName(e.target.value)}
@@ -188,6 +180,7 @@ const Register = () => {
                 margin="normal"
                 required
                 fullWidth
+                value={lastName}
                 id="lastName"
                 label="Last Name"
                 name="lastName"
@@ -199,6 +192,7 @@ const Register = () => {
                 required
                 error={emailErrorField}
                 fullWidth
+                value={emailId}
                 id="email"
                 label="Email Address"
                 name="email"
@@ -210,6 +204,7 @@ const Register = () => {
                 margin="normal"
                 required
                 fullWidth
+                value={password}
                 name="password"
                 label="Password"
                 type="password"
@@ -221,6 +216,7 @@ const Register = () => {
                 error={passwordErrorField}
                 margin="normal"
                 required
+                value={confirmPassword}
                 fullWidth
                 name="confirmPassword"
                 label="Confirm Password"
@@ -239,7 +235,7 @@ const Register = () => {
               onClick={validationCheck}
               className={classes.buttons}
             >
-              SIGN UP
+                SIGN UP
             </Button>
           </Grid>
         </Grid>
