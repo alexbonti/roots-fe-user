@@ -1,11 +1,11 @@
-import React, {useContext} from "react";
-import { Link } from 'react-router-dom'
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { Typography, Grid, Button } from "@material-ui/core/";
-import {UserContext} from "contexts";
+import { UserContext } from "contexts";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   buttons: {
     color: "white",
     borderRadius: "25px",
@@ -29,7 +29,7 @@ const theme = createMuiTheme({
 });
 
 export const EndOnBoarding = () => {
-  const {userProfile} = useContext(UserContext)
+  const { userProfile } = useContext(UserContext);
   const classes = useStyles();
   return (
     <>
@@ -45,7 +45,7 @@ export const EndOnBoarding = () => {
           }}
         >
           <Grid item xs={8}>
-            <Typography style={{fontFamily: "Arial Rounded MT, sans-serif", fontSize: "21px", fontWeight: "bold"}}>
+            <Typography style={{ fontFamily: "Arial Rounded MT, sans-serif", fontSize: "21px", fontWeight: "bold" }}>
               Congratulation, {userProfile.first_name}. <br /> Now, you are all set for your next
               job!
             </Typography>
@@ -56,14 +56,14 @@ export const EndOnBoarding = () => {
               variant="contained"
               color="primary"
               component={Link}
-              to="/"
+              to="/home"
               className={classes.buttons}
             >
-              Search Opportunities 
+              Search Opportunities
             </Button>
           </Grid>
         </Grid>
-        <Grid style={{height: "35vh", backgroundColor: "white"}} />
+        <Grid style={{ height: "35vh", backgroundColor: "white" }} />
       </ThemeProvider>
     </>
   );

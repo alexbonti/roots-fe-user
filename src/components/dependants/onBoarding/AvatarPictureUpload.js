@@ -59,7 +59,7 @@ export const AvatarPictureUpload = withRouter((props) => {
   } = useContext(OnBoardingContext);
 
   const { loginStatus } = useContext(LoginContext);
-  const { userProfile } = useContext(UserContext);
+  const { userProfile, loadProfileStatus } = useContext(UserContext);
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -125,6 +125,7 @@ export const AvatarPictureUpload = withRouter((props) => {
       setIsUpdated(false);
     }
     setIsUpdated(true);
+    loadProfileStatus();
   };
 
   const confirmButton =
@@ -183,6 +184,7 @@ export const AvatarPictureUpload = withRouter((props) => {
             <Typography variant="body2">
               You can always do it <Link style={{ cursor: "pointer" }} onClick={() => {
                 API.skipUserOnboarding(() => {
+                  loadProfileStatus();
                   props.history.push("/");
                 });
               }} to="/">later</Link>

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useContext, useCallback } from "react";
 import PropTypes from "prop-types";
 import { API } from "helpers";
 import { LoginContext } from "contexts/common/LoginContext";
@@ -26,20 +26,24 @@ export const UserProvider = props => {
   const [certificates, setCertificates] = useState([]);
   const { children } = props;
 
+  const loadProfileStatus = useCallback(async () => {
+    const response = await API.getUserProfile();
+    if (response.success) {
+      if (response?.response?.userProfileSetupComplete) {
+        return setUserProfileSetupComplete(true);
+      }
+      setUserProfileSetupComplete(false);
+    } else if (response.success === false)
+      return setUserProfileSetupComplete();
+  }, [])
+
   useEffect(() => {
     (async () => {
-      if (loginStatus===true) {
-        const response = await API.getUserProfile();
-        if (response.success) {
-          if (response?.response?.userProfileSetupComplete) {
-            return setUserProfileSetupComplete(true);
-          }
-          setUserProfileSetupComplete(false);
-        } else if (response.success === false)
-          return setUserProfileSetupComplete();
+      if (loginStatus === true) {
+        loadProfileStatus();
       }
     })();
-  }, [loginStatus]);
+  }, [loginStatus, loadProfileStatus]);
 
   return (
     <UserContext.Provider
@@ -73,7 +77,8 @@ export const UserProvider = props => {
         certificates,
         setCertificates,
         userProfileSetupComplete,
-        setUserProfileSetupComplete
+        setUserProfileSetupComplete,
+        loadProfileStatus
       }}
     >
       {children}
