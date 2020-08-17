@@ -95,14 +95,6 @@ const RegistrationConfirmation = ({ ...props }) => {
     if (verificationStatus) {
       window.localStorage.setItem("accessToken", accessToken);
       setIsVerified(true);
-      API.updateUserPreferences({
-        "avatar": "string",
-        "preferredLocation": "",
-        "skills": [],
-        "preferredIndustry": [],
-        "resumeURL": "",
-        "coverLetter": "",
-      });
       setUserProfile(userDetails);
       setLoginStatus(true);
       setIsRedirect(true);
@@ -116,12 +108,12 @@ const RegistrationConfirmation = ({ ...props }) => {
         state: { userProfile },
       }}
     />
-  ) : (
+  ) :
     <ThemeProvider theme={theme}>
       <Grid container className={classes.registerBox} justify="center">
         <Grid item xs={11} md={7} justify="center" container style={{ paddingTop: "5vh" }}>
           <Typography className={classes.text}>
-              A verification code has been sent to: <br />
+            A verification code has been sent to: <br />
             {props.location.state.emailId}
           </Typography>
         </Grid>
@@ -131,6 +123,7 @@ const RegistrationConfirmation = ({ ...props }) => {
               margin="normal"
               required
               fullWidth
+              value={code}
               id="otpCode"
               label="Verification Code"
               name="Verification Code"
@@ -145,7 +138,7 @@ const RegistrationConfirmation = ({ ...props }) => {
                 sendCode();
               }}
             >
-                Send
+              Send
             </Button>
           </Grid>
           <Grid item xs={10} style={{ paddingTop: "5vh" }}>
@@ -156,13 +149,12 @@ const RegistrationConfirmation = ({ ...props }) => {
                 resendOTP();
               }}
             >
-                Resend OTP
+              Resend OTP
             </Button>
           </Grid>
         </Grid>
       </Grid>
-    </ThemeProvider>
-  );
+    </ThemeProvider>;
 
   if (!hasGotRights) {
     return <Redirect to="/" />;
