@@ -81,7 +81,7 @@ const RegisterSuccess = ({ ...props }) => {
               fullWidth
               className={classes.buttons}
             >
-              Home
+              Setup Profile
             </Button>
           </Grid>
         </Grid>
