@@ -15,8 +15,9 @@ import {
   IndustrySelection,
   AvatarPictureUpload,
   EndOnBoarding,
+  Spinner
 } from "components";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   topper: {
@@ -49,12 +50,12 @@ function getSteps() {
   return ["", "", ""];
 }
 
-const OnBoarding = () => {
+const OnBoarding = withRouter(() => {
   const classes = useStyles();
   const { activeStep, setActiveStep, isStart } = useContext(OnBoardingContext);
   const steps = getSteps();
   const { loginStatus, accessToken } = useContext(LoginContext);
-  const { userProfile, setUserProfile } = useContext(
+  const { userProfile, setUserProfile, userProfileSetupComplete } = useContext(
     UserContext
   );
 
@@ -77,6 +78,10 @@ const OnBoarding = () => {
       setActiveStep(prevActiveStep => prevActiveStep - 1);
     }
   };
+
+  if (userProfileSetupComplete === undefined) return <Spinner />;
+
+  if (userProfileSetupComplete) return <Redirect to="/home" />;
 
   const buttonStatusDisabled = activeStep < 1 ? true : false;
   // ---------------------button stepper------------------------
@@ -184,6 +189,6 @@ const OnBoarding = () => {
       </>;
 
   return <>{mainContent}</>;
-};
+});
 
-export default withRouter(OnBoarding);
+export default OnBoarding;
