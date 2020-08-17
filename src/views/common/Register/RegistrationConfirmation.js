@@ -92,12 +92,15 @@ const RegistrationConfirmation = ({ ...props }) => {
       { "OTPCode": code },
       accessToken
     );
-    if (verificationStatus) {
+    if (verificationStatus.success === true) {
       window.localStorage.setItem("accessToken", accessToken);
       setIsVerified(true);
       setUserProfile(userDetails);
       setLoginStatus(true);
       setIsRedirect(true);
+    } else {
+      setCode("");
+      notify("Incorrect OTP");
     }
   };
 

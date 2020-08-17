@@ -147,7 +147,9 @@ class API {
         },
       })
       .then(response => {
-        return response.status;
+        return {
+          success: true
+        };
       })
       .catch(error => errorHelper(error))
   };
