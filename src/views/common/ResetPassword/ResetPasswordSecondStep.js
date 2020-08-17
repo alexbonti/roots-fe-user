@@ -11,6 +11,7 @@ import { Header, notify } from "components";
 import { ThemeProvider } from "@material-ui/styles";
 import { API } from "helpers";
 import { LoginContext } from "contexts";
+import { TextHelper } from "helpers/index";
 
 /*------------------------------------------------*/
 
@@ -69,34 +70,22 @@ const ResetPasswordSecondStep = () => {
   };
 
   const validationCheck = () => {
-    if (OTPCode.length < 0 || OTPCode === "") {
+    if (OTPCode.length === 0) {
       setOtpErrorField(true);
       return notify("OTP field can not be empty");
-    } else {
-      setOtpErrorField(false);
     }
 
-    if (emailId.length < 0 || emailId === "") {
+    if (emailId.length === 0) {
       setEmailErrorField(true);
       return notify("email field can not be empty");
-    } else {
-      setEmailErrorField(false);
     }
-    if (password.length < 0 || confirmPassword.length < 0) {
+    if (password.length === 0) {
       setPasswordErrorField(true);
       return notify("Password field can not be empty");
-    } else {
-      setPasswordErrorField(false);
     }
-
-    let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    let emailPatternTest = emailPattern.test(emailId);
-    if (!emailPatternTest) {
+    if (!TextHelper.validateEmail(emailId)) {
       setEmailErrorField(true);
       notify("Please provide a rigth email address");
-    } else {
-      setEmailErrorField(false);
     }
 
     if (password !== confirmPassword) {
@@ -104,12 +93,9 @@ const ResetPasswordSecondStep = () => {
       setPassword("");
       setConfirmPassword("");
       return notify("Passwords don't match.");
-    } else {
-      setPasswordErrorField(false);
     }
-    if (emailPatternTest) {
-      return sendResetPasswordEmail();
-    }
+    return sendResetPasswordEmail();
+
   };
   return redirect ? (
     <Redirect
