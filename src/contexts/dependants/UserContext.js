@@ -35,7 +35,21 @@ export const UserProvider = props => {
       setUserProfileSetupComplete(false);
     } else if (response.success === false)
       return setUserProfileSetupComplete(false);
-  }, [])
+  }, []);
+
+  const resetUserDetails = useCallback(() => {
+    setAvatarProfile("");
+    setUserProfile({});
+    setUserLastName("");
+    setUserName("");
+    setUserEmail("");
+    setIsUpdated(false);
+    setSkills([]);
+    setIsEditGeneralProfile("");
+    setPreferredIndustry([]);
+    setIsAddMode(false);
+    setCertificates([]);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -78,7 +92,8 @@ export const UserProvider = props => {
         setCertificates,
         userProfileSetupComplete,
         setUserProfileSetupComplete,
-        loadProfileStatus
+        loadProfileStatus,
+        resetUserDetails
       }}
     >
       {children}
