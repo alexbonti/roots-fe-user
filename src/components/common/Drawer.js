@@ -61,6 +61,23 @@ export const TemporaryDrawer = () => {
           <Grid item style={{ width: "100%" }}>
             <ListItem button>
               <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to="/home"
+              >
+                <Typography
+                  style={{
+                    paddingLeft: "5px",
+                    fontSize: "16px",
+                    fontFamily: "Arial Rounded MD, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Home
+                </Typography>
+              </Link>
+            </ListItem>
+            <ListItem button>
+              <Link
                 user={userProfile}
                 style={{ textDecoration: "none", color: "inherit" }}
                 to="/profile"
@@ -139,19 +156,6 @@ export const TemporaryDrawer = () => {
                 </Typography>
               </ListItem>
             </Grid>
-          </Grid>
-          <Grid item>
-            <ListItem style={{ paddingLeft: "102.5px", paddingBottom: "60px" }}>
-              <Typography
-                style={{
-                  fontSize: "14px",
-                  fontFamily: "Arial Rounded MD, sans-serif",
-                  fontWeight: "bold",
-                }}
-              >
-                MECHID
-              </Typography>
-            </ListItem>
           </Grid>
         </Grid>
       </List>
