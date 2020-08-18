@@ -34,7 +34,7 @@ export const UserProvider = props => {
       }
       setUserProfileSetupComplete(false);
     } else if (response.success === false)
-      return setUserProfileSetupComplete();
+      return setUserProfileSetupComplete(false);
   }, [])
 
   useEffect(() => {
