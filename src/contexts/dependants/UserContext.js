@@ -52,11 +52,12 @@ export const UserProvider = props => {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      if (loginStatus === true) {
-        loadProfileStatus();
-      }
-    })();
+    if (loginStatus === true) {
+      loadProfileStatus();
+    } else if (loginStatus === false) {
+      setUserProfileSetupComplete(false);
+    }
+
   }, [loginStatus, loadProfileStatus]);
 
   return (
