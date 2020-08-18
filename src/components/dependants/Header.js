@@ -119,7 +119,7 @@ export const Header = () => {
   const ImageAvatar =
     avatarProfile === "" ||
       avatarProfile === undefined ||
-      avatarProfile === "string"
+      avatarProfile === null
       ? FallBackAvatar
       : avatarProfile;
   let registerStatus = {

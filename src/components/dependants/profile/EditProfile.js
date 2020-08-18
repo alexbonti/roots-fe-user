@@ -33,7 +33,7 @@ export const EditProfile = ({ data }) => {
   const ImageAvatar =
     data.avatarProfile === "" ||
       data.avatarProfile === undefined ||
-      data.avatarProfile === "string"
+      data.avatarProfile === null
       ? data.FallBackAvatar
       : data.avatarProfile;
 

@@ -23,7 +23,7 @@ export const GeneralProfile = ({ data }) => {
   const ImageAvatar =
     avatarProfile === "" ||
       avatarProfile === undefined ||
-      avatarProfile === "string"
+      avatarProfile === null
       ? FallBackAvatar
       : avatarProfile;
   return (
