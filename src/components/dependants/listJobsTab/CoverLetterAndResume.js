@@ -69,18 +69,28 @@ export const CoverLetterAndResume = props => {
   };
 
   const applyJob = async () => {
-    if (!checked) {
-      return notify("You must hold a refugee or asylum visa status");
+    let data = {
+      jobId: props.data,
+      coverLetter,
+      criteriaSelection
+    };
+    const saveJobResData = await API.userApplyJob(data);
+    if (saveJobResData) {
+
+      notify("Congratulation your application has been sent");
+      setUserWantsToApply(true);
+      setHasApplied(true);
+
+    }
+    /* we don't require refugee status so i will remove it here*/
+    /*if (!checked) {
+      return notify("You must enrolled at Deakin to apply");
     } else {
       let data = {
         jobId: props.data,
         coverLetter,
         criteriaSelection
       };
-
-
-
-
       const saveJobResData = await API.userApplyJob(data);
       if (saveJobResData) {
 
@@ -89,7 +99,7 @@ export const CoverLetterAndResume = props => {
         setHasApplied(true);
 
       }
-    }
+    }*/
   };
 
 
@@ -144,10 +154,10 @@ export const CoverLetterAndResume = props => {
         </Grid>
 
         <Grid container justify="center" style={{ padding: "3vh 0" }}>
-          <Grid item container xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
+          {/*<Grid item container xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
             <Grid item xs={10}>
               <Typography variant="body1">
-                Do you hold a refugee or asylum seeker related visa ? *{" "}
+                Are you currently enrolled at Deakin ? *{" "}
               </Typography>
             </Grid>
             <Grid item xs={2} alignItems="flex-end" container>
@@ -158,10 +168,10 @@ export const CoverLetterAndResume = props => {
                 inputProps={{ "aria-label": "primary checkbox" }}
               />
             </Grid>
-          </Grid>
+            </Grid>*/}
           <Grid container item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
             <Grid item xs={10}>
-              <Typography variant="h6">Add your coverletter</Typography>
+              <Typography variant="h6">Add your coverletter (Max 900 characters)</Typography>
             </Grid>
             <Grid item xs={2}>
               <Checkbox
@@ -182,7 +192,7 @@ export const CoverLetterAndResume = props => {
           <Grid container item xs={11} md={8} lg={8} style={{ padding: "2vh 0" }}>
             <Grid item xs={10}>
               <Typography variant="h6">
-                Add your key selection criteria
+                Add your key selection criteria (if needed)
             </Typography>
             </Grid>
             <Grid item xs={2}>

@@ -58,18 +58,19 @@ export const NewsFullView = props => {
             {" < "} Back to the News{" "}
           </Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md={9} lg={8}>
           <img
             src={props.data.imageURL}
             alt={props.data.title}
             style={{ height: "33vh", width: "100%" }}
           />
         </Grid>
-        <Grid item xs={11} style={{ padding: "1vh 0" }}>
-          <Typography variant="h6"
-          style={{color:"black"}}>{props.data.title}</Typography>
-        </Grid>
-        <Grid item xs={11} style={{ padding: "1vh 0" }}>
+        <Grid container  xs={11} md={9} lg={8} center>
+          <Grid item  style={{ padding: "1vh 0" }}>
+            <Typography variant="h6"
+              style={{ color: "black" }}>{props.data.title}</Typography>
+          </Grid>
+          <Grid item xs={11} style={{ padding: "1vh 0" }}>
           <Typography variant="body1">
             {props.data.datePublished.substring(0, 10)}
           </Typography>
@@ -80,9 +81,12 @@ export const NewsFullView = props => {
             variant="body1"
           />
         </Grid>
+        </Grid>
+
+        
       </Grid>
     </MuiThemeProvider>
   ) : (
-    <Spinner />
-  );
+      <Spinner />
+    );
 };
